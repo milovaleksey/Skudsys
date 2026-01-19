@@ -5,6 +5,7 @@ import { registerLocale } from 'react-datepicker';
 import { ru } from 'date-fns/locale/ru';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/datepicker-custom.css';
+import * as XLSX from 'xlsx';
 
 registerLocale('ru', ru);
 
@@ -99,11 +100,67 @@ export function StudentsReportPage() {
   const handleExportExcel = () => {
     console.log('Exporting to Excel');
     // Здесь будет логика экспорта в Excel
+    const worksheet = XLSX.utils.json_to_sheet(studentRecords);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Отчет по студентам');
+    XLSX.writeFile(workbook, 'Отчет по студентам.xlsx');
   };
 
   const handleExportPDF = () => {
     console.log('Exporting to PDF');
-    // Здесь будет логика экспорта в PDF
+    // Create HTML table for PDF export
+    const tableContent = `
+      <html>
+        <head>
+          <meta charset="UTF-8">
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; }
+            h1 { color: #00aeef; margin-bottom: 10px; }
+            p { color: #666; margin-bottom: 20px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th { background-color: #00aeef; color: white; padding: 12px; text-align: left; border: 1px solid #ddd; }
+            td { padding: 10px; border: 1px solid #ddd; }
+            tr:nth-child(even) { background-color: #f9f9f9; }
+          </style>
+        </head>
+        <body>
+          <h1>Отчет по студентам</h1>
+          <p>Информация о проходах студентов через контрольные точки</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Время</th>
+                <th>ФИО</th>
+                <th>UPN</th>
+                <th>Номер карты</th>
+                <th>Курс</th>
+                <th>Группа</th>
+                <th>Точка прохода</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${studentRecords.map(record => `
+                <tr>
+                  <td>${record.time}</td>
+                  <td>${record.fullName}</td>
+                  <td>${record.upn}</td>
+                  <td>${record.cardNumber}</td>
+                  <td>${record.course}</td>
+                  <td>${record.group}</td>
+                  <td>${record.checkpoint}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `;
+    
+    const blob = new Blob([tableContent], { type: 'text/html;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Отчет по студентам.html';
+    link.click();
   };
 
   const totalRecords = studentRecords.length;

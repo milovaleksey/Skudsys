@@ -5,6 +5,7 @@ import { registerLocale } from 'react-datepicker';
 import { ru } from 'date-fns/locale/ru';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/datepicker-custom.css';
+import * as XLSX from 'xlsx';
 
 registerLocale('ru', ru);
 
@@ -101,11 +102,10 @@ export function PassesReportPage() {
   const handleExportExcel = () => {
     console.log('Exporting to Excel');
     // Здесь будет логика экспорта в Excel
-  };
-
-  const handleExportPDF = () => {
-    console.log('Exporting to PDF');
-    // Здесь будет логика экспорта в PDF
+    const worksheet = XLSX.utils.json_to_sheet(passRecords);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Passes');
+    XLSX.writeFile(workbook, 'passes_report.xlsx');
   };
 
   const totalRecords = passRecords.length;
@@ -122,13 +122,6 @@ export function PassesReportPage() {
           >
             <FileSpreadsheet size={20} style={{ color: '#00aeef' }} />
             <span>Excel</span>
-          </button>
-          <button
-            onClick={handleExportPDF}
-            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700"
-          >
-            <FileText size={20} style={{ color: '#00aeef' }} />
-            <span>PDF</span>
           </button>
         </div>
       </div>
