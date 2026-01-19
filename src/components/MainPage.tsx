@@ -10,7 +10,8 @@ import {
   LogOut,
   Menu,
   X,
-  Home
+  Home,
+  Settings
 } from 'lucide-react';
 import { useState } from 'react';
 import logo from 'figma:asset/32eaed114e6767da38e137450e9193fa44597d9f.png';
@@ -20,17 +21,15 @@ import { StudentsReportPage } from './StudentsReportPage';
 import { EmployeesReportPage } from './EmployeesReportPage';
 import { ParkingPage } from './ParkingPage';
 import { UnderConstructionPage } from './UnderConstructionPage';
+import { UsersSettingsPage } from './UsersSettingsPage';
+import { useAuth } from '../contexts/AuthContext';
+import { Badge } from './ui/badge';
+import { RoleSwitcher } from './RoleSwitcher';
 
 export function MainPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activePage, setActivePage] = useState('dashboard');
-
-  // Mock user data
-  const user = {
-    login: 'admin_security',
-    fullName: 'Иванов Иван Иванович',
-    role: 'Администратор системы'
-  };
+  const { user, logout, hasPermission } = useAuth();
 
   // Statistics data
   const statistics = [
@@ -44,54 +43,84 @@ export function MainPage() {
     { label: 'Парковочных мест занято', value: '156 / 200' },
   ];
 
-  // Menu items
-  const menuItems = [
+  // Получение метки роли
+  const getRoleLabel = (role: string) => {
+    const labels: Record<string, string> = {
+      admin: 'Администратор',
+      security: 'Безопасность',
+      manager: 'Менеджер',
+      operator: 'Оператор',
+      viewer: 'Наблюдатель',
+    };
+    return labels[role] || role;
+  };
+
+  // Menu items с проверкой прав доступа
+  const allMenuItems = [
     {
       id: 'dashboard',
       label: 'Главная',
       icon: Home,
+      permission: 'dashboard',
     },
     {
       id: 'passes',
       label: 'Отчет о проходах',
       icon: UserCheck,
+      permission: 'passes',
     },
     {
       id: 'location',
       label: 'Где находится человек',
       icon: MapPin,
+      permission: 'location',
     },
     {
       id: 'analytics',
       label: 'Аналитика',
       icon: BarChart3,
+      permission: 'analytics',
     },
     {
       id: 'parking',
       label: 'Парковочная система',
       icon: Car,
+      permission: 'parking',
     },
     {
       id: 'storage',
       label: 'Система хранения вещей',
       icon: Package,
+      permission: 'storage',
     },
     {
       id: 'foreign-students',
       label: 'Отчет по иностранным студентам',
       icon: Users,
+      permission: 'foreign-students',
     },
     {
       id: 'students',
       label: 'Отчет по студентам',
       icon: FileText,
+      permission: 'students',
     },
     {
       id: 'employees',
       label: 'Отчет по сотрудникам',
       icon: Briefcase,
+      permission: 'employees',
+    },
+    {
+      id: 'users-settings',
+      label: 'Управление пользователями',
+      icon: Settings,
+      permission: 'users-settings',
     },
   ];
+
+  // Фильтрация меню по правам доступа
+  const menuItems = allMenuItems.filter(item => hasPermission(item.permission));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex">
@@ -147,6 +176,7 @@ export function MainPage() {
             <button 
               className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/50 transition-colors text-gray-700"
               title="Выйти"
+              onClick={logout}
             >
               <LogOut size={20} />
               {isSidebarOpen && <span>Выйти</span>}
@@ -154,7 +184,7 @@ export function MainPage() {
           </div>
 
           {/* User Info Card - Only show on dashboard */}
-          {activePage === 'dashboard' && (
+          {activePage === 'dashboard' && user && (
             <div className="bg-white rounded-xl shadow-md p-6 max-w-md">
               <h2 className="text-lg font-semibold mb-3" style={{ color: '#00aeef' }}>
                 Информация о пользователе
@@ -162,7 +192,7 @@ export function MainPage() {
               <div className="space-y-2 text-sm">
                 <div className="flex">
                   <span className="font-medium text-gray-600 w-32">Логин:</span>
-                  <span className="text-gray-900">{user.login}</span>
+                  <span className="text-gray-900">{user.username}</span>
                 </div>
                 <div className="flex">
                   <span className="font-medium text-gray-600 w-32">ФИО:</span>
@@ -170,7 +200,9 @@ export function MainPage() {
                 </div>
                 <div className="flex">
                   <span className="font-medium text-gray-600 w-32">Права доступа:</span>
-                  <span className="text-gray-900">{user.role}</span>
+                  <span className="text-gray-900">
+                    <Badge>{getRoleLabel(user.role)}</Badge>
+                  </span>
                 </div>
               </div>
             </div>
@@ -180,6 +212,9 @@ export function MainPage() {
         {/* Page Content */}
         {activePage === 'dashboard' && (
           <div>
+            {/* Role Switcher для демонстрации */}
+            <RoleSwitcher />
+            
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">Статистика</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {statistics.map((stat, index) => (
@@ -205,6 +240,7 @@ export function MainPage() {
         {activePage === 'analytics' && <UnderConstructionPage />}
         {activePage === 'storage' && <UnderConstructionPage />}
         {activePage === 'foreign-students' && <UnderConstructionPage />}
+        {activePage === 'users-settings' && <UsersSettingsPage />}
       </main>
     </div>
   );
