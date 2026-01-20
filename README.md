@@ -1,7 +1,7 @@
 
   # Login Page
 
-  This is a code bundle for Login Page. Created to introduces analitic functions of based security systems of Tyumen State university 
+  This is a code bundle for Login Page. The original project is available at https://www.figma.com/design/jmRFe1P9uuqRMqPLbRWj9g/Login-Page.
 
   ## Running the code
 
