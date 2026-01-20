@@ -1,0 +1,41 @@
+[Unit]
+Description=UTMN Security System Backend API
+Documentation=https://github.com/your-org/utmn-security
+After=network.target mysql.service
+Wants=mysql.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/utmn-security/backend
+
+# Запуск приложения
+ExecStart=/usr/bin/node src/server.js
+
+# Перезапуск при падении
+Restart=always
+RestartSec=10
+
+# Логирование
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=utmn-security
+
+# Переменные окружения
+Environment=NODE_ENV=production
+Environment=PORT=3000
+
+# Безопасность
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/www/utmn-security/backend/logs
+
+# Ограничения ресурсов
+LimitNOFILE=65536
+LimitNPROC=4096
+
+[Install]
+WantedBy=multi-user.target
