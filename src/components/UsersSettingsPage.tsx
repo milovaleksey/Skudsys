@@ -1,28 +1,26 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
+import { User, useAuth } from '../contexts/AuthContext';
+import { RolesManagementPage } from './RolesManagementPage';
 import { 
-  Plus, 
   Search, 
-  UserPlus, 
+  Plus, 
   Edit, 
   Trash2, 
-  Shield, 
+  UserPlus, 
+  Save, 
+  X, 
   Lock, 
-  UserCog,
-  Eye,
+  Shield, 
+  Eye, 
   EyeOff,
-  Save,
-  X
+  UserCog
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogDescription,
-  DialogFooter 
-} from './ui/dialog';
+import { Label } from './ui/label';
+import { Badge } from './ui/badge';
+import { Switch } from './ui/switch';
 import { 
   Select, 
   SelectContent, 
@@ -30,11 +28,21 @@ import {
   SelectTrigger, 
   SelectValue 
 } from './ui/select';
-import { Label } from './ui/label';
-import { Badge } from './ui/badge';
-import { Switch } from './ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle 
+} from './ui/dialog';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from './ui/tabs';
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -44,9 +52,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from './ui/alert-dialog';
-import { toast } from 'sonner@2.0.3';
-import { User, useAuth } from '../contexts/AuthContext';
-import { RolesManagementPage } from './RolesManagementPage';
+
+// Define UserRole type
+type UserRole = 'admin' | 'security' | 'manager' | 'operator' | 'viewer';
 
 // Mock данные пользователей
 const initialUsers: User[] = [

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Eye, EyeOff, Lock, User } from 'lucide-react';
-import logo from 'figma:asset/32eaed114e6767da38e137450e9193fa44597d9f.png';
 
 interface LoginPageProps {
   onLogin: () => void;
@@ -31,7 +30,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
           {/* Header */}
           <div className="text-center mb-8">
             <div className="flex justify-center mb-4">
-              <img src={logo} alt="ТюмГУ" className="h-24 w-auto" />
+              <img src="/logo.svg" alt="ТюмГУ" className="h-24 w-auto" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Добро пожаловать</h1>
             <p className="text-gray-600">Войдите в свой аккаунт</p>

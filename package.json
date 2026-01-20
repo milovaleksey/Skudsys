@@ -43,7 +43,6 @@
           "path": "*",
           "react": "^18.3.1",
           "react-datepicker": "*",
-          "react-day-picker": "^8.10.1",
           "react-dom": "^18.3.1",
           "react-hook-form": "^7.55.0",
           "react-resizable-panels": "^2.1.7",

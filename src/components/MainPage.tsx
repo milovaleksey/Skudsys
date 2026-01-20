@@ -14,7 +14,6 @@ import {
   Settings
 } from 'lucide-react';
 import { useState } from 'react';
-import logo from 'figma:asset/32eaed114e6767da38e137450e9193fa44597d9f.png';
 import { PassesReportPage } from './PassesReportPage';
 import { LocationPage } from './LocationPage';
 import { StudentsReportPage } from './StudentsReportPage';
@@ -133,7 +132,7 @@ export function MainPage() {
         {/* Logo Section */}
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-center">
-            <img src={logo} alt="ТюмГУ" className={`transition-all duration-300 ${isSidebarOpen ? 'h-16' : 'h-12'}`} />
+            <img src="/logo.svg" alt="ТюмГУ" className={`transition-all duration-300 ${isSidebarOpen ? 'h-16' : 'h-12'}`} />
           </div>
         </div>
 

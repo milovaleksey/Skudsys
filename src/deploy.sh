@@ -296,7 +296,12 @@ build_frontend() {
     cd "$APP_DIR"
     
     log_info "Установка зависимостей..."
-    npm install
+    
+    # Попытка обычной установки
+    if ! npm install 2>/dev/null; then
+        log_warning "Обычная установка не удалась, пробуем с --legacy-peer-deps..."
+        npm install --legacy-peer-deps
+    fi
     
     log_info "Сборка production версии..."
     npm run build
@@ -442,7 +447,7 @@ setup_permissions() {
     find "$APP_DIR" -type f -exec chmod 644 {} \;
     find "$APP_DIR" -type d -exec chmod 755 {} \;
     
-    # Защита .env файла
+    # За��ита .env файла
     chmod 600 "$APP_DIR/backend/.env"
     
     log_success "Права доступа настроены"

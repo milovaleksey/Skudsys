@@ -7,8 +7,7 @@ import {
   Save,
   X,
   Lock,
-  AlertTriangle,
-  Check
+  AlertTriangle
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -34,7 +33,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from './ui/alert-dialog';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { useAuth, Role, ALL_PERMISSIONS } from '../contexts/AuthContext';
 import { ScrollArea } from './ui/scroll-area';
 
