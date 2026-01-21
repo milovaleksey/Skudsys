@@ -18,6 +18,7 @@ export interface Role {
 // Список всех доступных прав (permissions)
 export const ALL_PERMISSIONS = [
   { id: 'dashboard', name: 'Главная панель', category: 'Основные' },
+  { id: 'dashboard-builder', name: 'Конструктор дашборда', category: 'Администрирование' },
   { id: 'passes', name: 'Отчет о проходах', category: 'Безопасность' },
   { id: 'location', name: 'Местонахождение людей', category: 'Безопасность' },
   { id: 'analytics', name: 'Аналитика', category: 'Отчеты' },
@@ -28,6 +29,7 @@ export const ALL_PERMISSIONS = [
   { id: 'employees', name: 'Отчет по сотрудникам', category: 'Отчеты' },
   { id: 'users-settings', name: 'Управление пользователями', category: 'Администрирование' },
   { id: 'roles-settings', name: 'Управление ролями', category: 'Администрирование' },
+  { id: 'user-logs', name: 'Логи действий пользователей', category: 'Администрирование' },
 ];
 
 // Системные роли (по умолчанию)

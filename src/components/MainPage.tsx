@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { 
   Users, 
   BarChart3, 
@@ -11,9 +12,10 @@ import {
   Menu,
   X,
   Home,
-  Settings
+  Settings,
+  Layout,
+  ScrollText
 } from 'lucide-react';
-import { useState } from 'react';
 import { PassesReportPage } from './PassesReportPage';
 import { LocationPage } from './LocationPage';
 import { StudentsReportPage } from './StudentsReportPage';
@@ -21,9 +23,12 @@ import { EmployeesReportPage } from './EmployeesReportPage';
 import { ParkingPage } from './ParkingPage';
 import { UnderConstructionPage } from './UnderConstructionPage';
 import { UsersSettingsPage } from './UsersSettingsPage';
+import { DashboardBuilder } from './DashboardBuilder';
+import { UserLogsPage } from './UserLogsPage';
 import { useAuth } from '../contexts/AuthContext';
 import { Badge } from './ui/badge';
 import { RoleSwitcher } from './RoleSwitcher';
+import { Logo } from './Logo';
 
 export function MainPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -61,6 +66,12 @@ export function MainPage() {
       label: 'Главная',
       icon: Home,
       permission: 'dashboard',
+    },
+    {
+      id: 'dashboard-builder',
+      label: 'Конструктор дашборда',
+      icon: Layout,
+      permission: 'dashboard-builder',
     },
     {
       id: 'passes',
@@ -116,6 +127,12 @@ export function MainPage() {
       icon: Settings,
       permission: 'users-settings',
     },
+    {
+      id: 'user-logs',
+      label: 'Логи пользователей',
+      icon: ScrollText,
+      permission: 'user-logs',
+    },
   ];
 
   // Фильтрация меню по правам доступа
@@ -132,7 +149,7 @@ export function MainPage() {
         {/* Logo Section */}
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-center">
-            <img src="/logo.svg" alt="ТюмГУ" className={`transition-all duration-300 ${isSidebarOpen ? 'h-16' : 'h-12'}`} />
+            <Logo className={`transition-all duration-300 ${isSidebarOpen ? 'h-16' : 'h-12'}`} />
           </div>
         </div>
 
@@ -231,6 +248,7 @@ export function MainPage() {
           </div>
         )}
 
+        {activePage === 'dashboard-builder' && <DashboardBuilder />}
         {activePage === 'passes' && <PassesReportPage />}
         {activePage === 'location' && <LocationPage />}
         {activePage === 'students' && <StudentsReportPage />}
@@ -240,6 +258,7 @@ export function MainPage() {
         {activePage === 'storage' && <UnderConstructionPage />}
         {activePage === 'foreign-students' && <UnderConstructionPage />}
         {activePage === 'users-settings' && <UsersSettingsPage />}
+        {activePage === 'user-logs' && <UserLogsPage />}
       </main>
     </div>
   );

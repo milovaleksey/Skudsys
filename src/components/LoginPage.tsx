@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Eye, EyeOff, Lock, User } from 'lucide-react';
+import { Logo } from './Logo';
 
 interface LoginPageProps {
   onLogin: () => void;
@@ -30,7 +31,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
           {/* Header */}
           <div className="text-center mb-8">
             <div className="flex justify-center mb-4">
-              <img src="/logo.svg" alt="ТюмГУ" className="h-24 w-auto" />
+              <Logo className="h-24 w-auto" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Добро пожаловать</h1>
             <p className="text-gray-600">Войдите в свой аккаунт</p>

@@ -1,4 +1,7 @@
-import { Car, Clock } from 'lucide-react';
+import { useState } from 'react';
+import { Car, Clock, Search, ChevronDown, ChevronUp } from 'lucide-react';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
 
 interface ParkingRecord {
   id: number;
@@ -17,6 +20,11 @@ interface ParkingLot {
 }
 
 export function ParkingPage() {
+  const [searchK1, setSearchK1] = useState('');
+  const [searchK5, setSearchK5] = useState('');
+  const [isK1Expanded, setIsK1Expanded] = useState(false);
+  const [isK5Expanded, setIsK5Expanded] = useState(false);
+
   // Mock data for Parking K1
   const parkingK1: ParkingLot = {
     name: 'Парковка К1',
@@ -147,10 +155,29 @@ export function ParkingPage() {
     ]
   };
 
-  const renderParkingBlock = (parking: ParkingLot) => {
+  // Функция фильтрации
+  const filterRecords = (records: ParkingRecord[], searchQuery: string) => {
+    if (!searchQuery.trim()) return records;
+    
+    const query = searchQuery.toLowerCase();
+    return records.filter(record => 
+      record.fullName.toLowerCase().includes(query) ||
+      record.licensePlate.toLowerCase().includes(query)
+    );
+  };
+
+  const renderParkingBlock = (
+    parking: ParkingLot, 
+    searchQuery: string, 
+    setSearchQuery: (value: string) => void,
+    isExpanded: boolean,
+    setIsExpanded: (value: boolean) => void
+  ) => {
     const occupancyPercentage = (parking.currentCount / parking.totalCapacity) * 100;
     const isCrowded = occupancyPercentage > 80;
     const isModerate = occupancyPercentage > 50 && occupancyPercentage <= 80;
+    
+    const filteredRecords = filterRecords(parking.records, searchQuery);
 
     return (
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
@@ -198,58 +225,102 @@ export function ParkingPage() {
           </div>
         </div>
 
+        {/* Панель управления */}
+        <div className="p-4 bg-gray-50 border-b border-gray-200">
+          <div className="flex items-center gap-4">
+            {/* Поиск */}
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Поиск по ФИО или ГРЗ..."
+                className="pl-10"
+              />
+            </div>
+            
+            {/* Кнопка разворачивания */}
+            <Button
+              onClick={() => setIsExpanded(!isExpanded)}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              {isExpanded ? (
+                <>
+                  <ChevronUp className="w-4 h-4" />
+                  Свернуть таблицу
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="w-4 h-4" />
+                  Развернуть таблицу ({parking.records.length})
+                </>
+              )}
+            </Button>
+          </div>
+          
+          {/* Счетчик результатов поиска */}
+          {searchQuery && (
+            <div className="mt-2 text-sm text-gray-600">
+              Найдено: <span className="font-semibold text-gray-900">{filteredRecords.length}</span> из {parking.records.length}
+            </div>
+          )}
+        </div>
+
         {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                  <div className="flex items-center gap-2">
-                    <Clock size={16} />
-                    <span>Время заезда</span>
-                  </div>
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">ФИО</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">UPN</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Марка автомобиля</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">ГРЗ</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {parking.records.length > 0 ? (
-                parking.records.map((record, index) => (
-                  <tr 
-                    key={record.id}
-                    className={`hover:bg-gray-50 transition-colors ${
-                      index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                    }`}
-                  >
-                    <td className="px-6 py-4 text-sm text-gray-900 font-medium">
-                      {record.entryTime}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-900">{record.fullName}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600">{record.upn}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600">{record.carBrand}</td>
-                    <td className="px-6 py-4 text-sm">
-                      <span 
-                        className="inline-block px-3 py-1 rounded font-mono font-semibold text-white"
-                        style={{ backgroundColor: '#00aeef' }}
-                      >
-                        {record.licensePlate}
-                      </span>
+        {isExpanded && (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                    <div className="flex items-center gap-2">
+                      <Clock size={16} />
+                      <span>Время заезда</span>
+                    </div>
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">ФИО</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">UPN</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Марка автомобиля</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">ГРЗ</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {filteredRecords.length > 0 ? (
+                  filteredRecords.map((record, index) => (
+                    <tr 
+                      key={record.id}
+                      className={`hover:bg-gray-50 transition-colors ${
+                        index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                      }`}
+                    >
+                      <td className="px-6 py-4 text-sm text-gray-900 font-medium">
+                        {record.entryTime}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-900">{record.fullName}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600">{record.upn}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600">{record.carBrand}</td>
+                      <td className="px-6 py-4 text-sm">
+                        <span 
+                          className="inline-block px-3 py-1 rounded font-mono font-semibold text-white"
+                          style={{ backgroundColor: '#00aeef' }}
+                        >
+                          {record.licensePlate}
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                      {searchQuery ? 'По вашему запросу ничего не найдено' : 'Нет припаркованных автомобилей'}
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
-                    Нет припаркованных автомобилей
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     );
   };
@@ -313,10 +384,10 @@ export function ParkingPage() {
       </div>
 
       {/* Parking K1 */}
-      {renderParkingBlock(parkingK1)}
+      {renderParkingBlock(parkingK1, searchK1, setSearchK1, isK1Expanded, setIsK1Expanded)}
 
       {/* Parking K5 */}
-      {renderParkingBlock(parkingK5)}
+      {renderParkingBlock(parkingK5, searchK5, setSearchK5, isK5Expanded, setIsK5Expanded)}
     </div>
   );
 }

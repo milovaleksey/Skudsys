@@ -1,17 +1,16 @@
-<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
   <!-- Фон -->
-  <rect width="120" height="120" rx="20" fill="#00aeef"/>
+  <rect width="200" height="200" rx="20" fill="white"/>
   
-  <!-- Щит безопасности -->
-  <path d="M60 25L35 35V55C35 70 45 82 60 87C75 82 85 70 85 55V35L60 25Z" fill="white" opacity="0.2"/>
-  <path d="M60 30L40 38V55C40 68 48 78 60 82C72 78 80 68 80 55V38L60 30Z" fill="white"/>
+  <!-- Синий круг -->
+  <circle cx="100" cy="100" r="80" fill="#00aeef"/>
   
-  <!-- Замок -->
-  <rect x="52" y="52" width="16" height="18" rx="2" fill="#00aeef"/>
-  <path d="M55 52V48C55 45.2 57.2 43 60 43C62.8 43 65 45.2 65 48V52" stroke="#00aeef" stroke-width="3" fill="none"/>
-  <circle cx="60" cy="60" r="2" fill="white"/>
-  <rect x="59" y="60" width="2" height="6" fill="white"/>
+  <!-- Белый текст ТюмГУ -->
+  <text x="100" y="95" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">Тюм</text>
+  <text x="100" y="125" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">ГУ</text>
   
-  <!-- Текст ТюмГУ -->
-  <text x="60" y="105" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">ТюмГУ</text>
+  <!-- Декоративные элементы -->
+  <circle cx="100" cy="40" r="5" fill="white" opacity="0.6"/>
+  <circle cx="130" cy="50" r="3" fill="white" opacity="0.4"/>
+  <circle cx="70" cy="50" r="3" fill="white" opacity="0.4"/>
 </svg>
