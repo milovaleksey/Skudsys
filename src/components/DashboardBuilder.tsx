@@ -38,8 +38,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from './ui/select';
-import { Switch } from './ui/switch';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 // Типы виджетов
 export type WidgetType = 

@@ -7,7 +7,8 @@ import {
   Save,
   X,
   Lock,
-  AlertTriangle
+  AlertTriangle,
+  Users
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -49,7 +50,11 @@ export function RolesManagementPage() {
     displayName: '',
     description: '',
     permissions: [] as string[],
+    externalGroups: [] as string[],
   });
+
+  // Состояние для ввода новой группы
+  const [newGroupInput, setNewGroupInput] = useState('');
 
   // Группировка прав по категориям
   const permissionsByCategory = ALL_PERMISSIONS.reduce((acc, perm) => {
@@ -67,7 +72,9 @@ export function RolesManagementPage() {
       displayName: '',
       description: '',
       permissions: [],
+      externalGroups: [],
     });
+    setNewGroupInput('');
   };
 
   // Открытие диалога создания
@@ -84,7 +91,9 @@ export function RolesManagementPage() {
       displayName: role.displayName,
       description: role.description,
       permissions: [...role.permissions],
+      externalGroups: role.externalGroups ? [...role.externalGroups] : [],
     });
+    setNewGroupInput('');
     setIsEditDialogOpen(true);
   };
 
@@ -114,6 +123,7 @@ export function RolesManagementPage() {
         description: formData.description,
         permissions: formData.permissions,
         isSystem: false,
+        externalGroups: formData.externalGroups,
       });
       setIsAddDialogOpen(false);
       toast.success('Роль успешно создана');
@@ -143,6 +153,7 @@ export function RolesManagementPage() {
         displayName: formData.displayName,
         description: formData.description,
         permissions: formData.permissions,
+        externalGroups: formData.externalGroups,
       });
       setIsEditDialogOpen(false);
       setSelectedRole(null);
@@ -195,6 +206,25 @@ export function RolesManagementPage() {
         permissions: [...new Set([...prev.permissions, ...categoryPerms])]
       }));
     }
+  };
+
+  // Добавление новой группы
+  const handleAddGroup = () => {
+    if (!newGroupInput) return;
+
+    setFormData(prev => ({
+      ...prev,
+      externalGroups: [...prev.externalGroups, newGroupInput]
+    }));
+    setNewGroupInput('');
+  };
+
+  // Удаление группы
+  const handleRemoveGroup = (group: string) => {
+    setFormData(prev => ({
+      ...prev,
+      externalGroups: prev.externalGroups.filter(g => g !== group)
+    }));
   };
 
   // Получение badge для типа роли
@@ -320,6 +350,24 @@ export function RolesManagementPage() {
               </div>
             </div>
 
+            {role.externalGroups && role.externalGroups.length > 0 && (
+              <div className="border-t pt-4 mt-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Users className="w-4 h-4 text-purple-600" />
+                  <div className="text-sm font-medium text-gray-700">
+                    Внешние группы AD/SSO ({role.externalGroups.length}):
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {role.externalGroups.map((group) => (
+                    <Badge key={group} variant="outline" className="text-xs bg-purple-50 border-purple-200 text-purple-700">
+                      {group}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {role.updatedAt && (
               <div className="mt-3 text-xs text-gray-500">
                 Обновлено: {new Date(role.updatedAt).toLocaleDateString('ru-RU', {
@@ -432,6 +480,71 @@ export function RolesManagementPage() {
                     </div>
                   );
                 })}
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Users className="w-4 h-4 text-purple-600" />
+                  <Label>Маппинг внешних групп AD/SSO</Label>
+                </div>
+                <p className="text-sm text-gray-500">
+                  Укажите имена групп Active Directory или SSO для автоматического назначения этой роли.
+                  Например: <code className="text-xs bg-gray-100 px-1 rounded">dl-human-monitor-admin</code>
+                </p>
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={newGroupInput}
+                    onChange={(e) => setNewGroupInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleAddGroup();
+                      }
+                    }}
+                    placeholder="dl-human-monitor-admin"
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    onClick={handleAddGroup}
+                    disabled={!newGroupInput}
+                    className="bg-purple-600 hover:bg-purple-700"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Добавить
+                  </Button>
+                </div>
+                
+                {formData.externalGroups.length > 0 ? (
+                  <div className="border rounded-lg p-3 bg-purple-50/30">
+                    <div className="text-sm font-medium text-gray-700 mb-2">
+                      Назначенные группы:
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {formData.externalGroups.map(group => (
+                        <Badge
+                          key={group}
+                          variant="outline"
+                          className="text-xs bg-purple-100 border-purple-300 text-purple-800 pl-2 pr-1 py-1"
+                        >
+                          <Users className="w-3 h-3 mr-1 inline" />
+                          {group}
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveGroup(group)}
+                            className="ml-1 hover:bg-purple-200 rounded p-0.5 transition-colors"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="border rounded-lg p-3 bg-gray-50 text-sm text-gray-500 text-center">
+                    Группы не назначены. Добавьте группы AD/SSO для автоматического маппинга.
+                  </div>
+                )}
               </div>
             </div>
           </ScrollArea>
@@ -552,6 +665,71 @@ export function RolesManagementPage() {
                     </div>
                   );
                 })}
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Users className="w-4 h-4 text-purple-600" />
+                  <Label>Маппинг внешних групп AD/SSO</Label>
+                </div>
+                <p className="text-sm text-gray-500">
+                  Укажите имена групп Active Directory или SSO для автоматического назначения этой роли.
+                  Например: <code className="text-xs bg-gray-100 px-1 rounded">dl-human-monitor-admin</code>
+                </p>
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={newGroupInput}
+                    onChange={(e) => setNewGroupInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleAddGroup();
+                      }
+                    }}
+                    placeholder="dl-human-monitor-admin"
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    onClick={handleAddGroup}
+                    disabled={!newGroupInput}
+                    className="bg-purple-600 hover:bg-purple-700"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Добавить
+                  </Button>
+                </div>
+                
+                {formData.externalGroups.length > 0 ? (
+                  <div className="border rounded-lg p-3 bg-purple-50/30">
+                    <div className="text-sm font-medium text-gray-700 mb-2">
+                      Назначенные группы:
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {formData.externalGroups.map(group => (
+                        <Badge
+                          key={group}
+                          variant="outline"
+                          className="text-xs bg-purple-100 border-purple-300 text-purple-800 pl-2 pr-1 py-1"
+                        >
+                          <Users className="w-3 h-3 mr-1 inline" />
+                          {group}
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveGroup(group)}
+                            className="ml-1 hover:bg-purple-200 rounded p-0.5 transition-colors"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="border rounded-lg p-3 bg-gray-50 text-sm text-gray-500 text-center">
+                    Группы не назначены. Добавьте группы AD/SSO для автоматического маппинга.
+                  </div>
+                )}
               </div>
             </div>
           </ScrollArea>

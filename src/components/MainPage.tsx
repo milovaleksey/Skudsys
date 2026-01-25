@@ -14,7 +14,8 @@ import {
   Home,
   Settings,
   Layout,
-  ScrollText
+  ScrollText,
+  Search
 } from 'lucide-react';
 import { PassesReportPage } from './PassesReportPage';
 import { LocationPage } from './LocationPage';
@@ -23,8 +24,10 @@ import { EmployeesReportPage } from './EmployeesReportPage';
 import { ParkingPage } from './ParkingPage';
 import { UnderConstructionPage } from './UnderConstructionPage';
 import { UsersSettingsPage } from './UsersSettingsPage';
+import { RolesManagementPage } from './RolesManagementPage';
 import { DashboardBuilder } from './DashboardBuilder';
 import { UserLogsPage } from './UserLogsPage';
+import { IdentifierSearchPage } from './IdentifierSearchPage';
 import { useAuth } from '../contexts/AuthContext';
 import { Badge } from './ui/badge';
 import { RoleSwitcher } from './RoleSwitcher';
@@ -80,6 +83,12 @@ export function MainPage() {
       permission: 'passes',
     },
     {
+      id: 'identifier-search',
+      label: 'Поиск по идентификатору',
+      icon: Search,
+      permission: 'identifier-search',
+    },
+    {
       id: 'location',
       label: 'Где находится человек',
       icon: MapPin,
@@ -126,6 +135,12 @@ export function MainPage() {
       label: 'Управление пользователями',
       icon: Settings,
       permission: 'users-settings',
+    },
+    {
+      id: 'roles-settings',
+      label: 'Управление ролями',
+      icon: Settings,
+      permission: 'roles-settings',
     },
     {
       id: 'user-logs',
@@ -228,7 +243,7 @@ export function MainPage() {
         {/* Page Content */}
         {activePage === 'dashboard' && (
           <div>
-            {/* Role Switcher для демонстрации */}
+            {/* Role Switcher для демонстр��ции */}
             <RoleSwitcher />
             
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">Статистика</h2>
@@ -258,7 +273,9 @@ export function MainPage() {
         {activePage === 'storage' && <UnderConstructionPage />}
         {activePage === 'foreign-students' && <UnderConstructionPage />}
         {activePage === 'users-settings' && <UsersSettingsPage />}
+        {activePage === 'roles-settings' && <RolesManagementPage />}
         {activePage === 'user-logs' && <UserLogsPage />}
+        {activePage === 'identifier-search' && <IdentifierSearchPage />}
       </main>
     </div>
   );

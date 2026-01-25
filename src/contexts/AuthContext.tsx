@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { authApi, TokenManager, usersApi } from '../lib/api';
+import { createContext, useContext, useState, ReactNode } from 'react';
+import { TokenManager } from '../lib/api';
 
 // Определение базовых ролей
 export type UserRole = string; // Теперь может быть любая строка
@@ -12,6 +12,7 @@ export interface Role {
   description: string;
   permissions: string[];
   isSystem: boolean; // Системные роли нельзя удалять
+  externalGroups?: string[]; // Внешние группы AD/SSO для автоматического маппинга
   createdAt: string;
   updatedAt?: string;
 }
@@ -21,6 +22,7 @@ export const ALL_PERMISSIONS = [
   { id: 'dashboard', name: 'Главная панель', category: 'Основные' },
   { id: 'dashboard-builder', name: 'Конструктор дашборда', category: 'Администрирование' },
   { id: 'passes', name: 'Отчет о проходах', category: 'Безопасность' },
+  { id: 'identifier-search', name: 'Поиск по идентификатору', category: 'Безопасность' },
   { id: 'location', name: 'Местонахождение людей', category: 'Безопасность' },
   { id: 'analytics', name: 'Аналитика', category: 'Отчеты' },
   { id: 'parking', name: 'Парковочная система', category: 'Инфраструктура' },
@@ -49,7 +51,7 @@ export const DEFAULT_ROLES: Role[] = [
     name: 'security',
     displayName: 'Безопасность',
     description: 'Доступ к системам безопасности и контроля доступа',
-    permissions: ['dashboard', 'passes', 'location', 'parking', 'storage'],
+    permissions: ['dashboard', 'passes', 'identifier-search', 'location', 'parking', 'storage'],
     isSystem: true,
     createdAt: '2026-01-01T00:00:00Z',
   },
@@ -67,7 +69,7 @@ export const DEFAULT_ROLES: Role[] = [
     name: 'operator',
     displayName: 'Оператор',
     description: 'Доступ к просмотру и работе с данными',
-    permissions: ['dashboard', 'passes', 'location', 'students', 'employees'],
+    permissions: ['dashboard', 'passes', 'identifier-search', 'location', 'students', 'employees'],
     isSystem: true,
     createdAt: '2026-01-01T00:00:00Z',
   },

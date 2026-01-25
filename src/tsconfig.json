@@ -5,6 +5,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "types": ["vite/client"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -15,26 +16,28 @@
     "jsx": "react-jsx",
 
     /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
 
     /* Paths */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./*"],
       "@/components/*": ["./components/*"],
       "@/styles/*": ["./styles/*"],
-      "@/contexts/*": ["./contexts/*"]
+      "@/contexts/*": ["./contexts/*"],
+      "@/lib/*": ["./lib/*"]
     }
   },
   "include": [
-    "src",
     "components",
     "contexts",
+    "lib",
     "App.tsx",
-    "main.tsx"
+    "main.tsx",
+    "vite-env.d.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

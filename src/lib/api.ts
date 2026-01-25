@@ -4,9 +4,11 @@
  */
 
 // Конфигурация API
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+// Если VITE_API_BASE_URL пустой или не задан, используем относительный путь (для Nginx proxy)
+// Иначе используем полный URL (для прямого подключения)
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 const API_VERSION = import.meta.env.VITE_API_VERSION || 'v1';
-const API_URL = `${API_BASE_URL}/${API_VERSION}`;
+const API_URL = API_BASE_URL ? `${API_BASE_URL}/${API_VERSION}` : `/${API_VERSION}`;
 
 // Типы
 export interface ApiResponse<T> {
@@ -88,9 +90,9 @@ class ApiClient {
   ): Promise<ApiResponse<T>> {
     const token = TokenManager.getToken();
     
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...(options.headers as Record<string, string>),
     };
 
     if (token) {
