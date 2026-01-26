@@ -21,6 +21,10 @@ const storageRoutes = require('./routes/storage.routes');
 const analyticsRoutes = require('./routes/analytics.routes');
 
 const app = express();
+
+// Trust first proxy (Nginx) to fix X-Forwarded-For header issues with rate limiting
+app.set('trust proxy', 1);
+
 const PORT = process.env.PORT || 3000;
 const API_VERSION = process.env.API_VERSION || 'v1';
 
