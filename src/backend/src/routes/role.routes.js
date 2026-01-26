@@ -1,34 +1,27 @@
 const express = require('express');
 const router = express.Router();
+const roleController = require('../controllers/role.controller');
 const { authenticate, authorize } = require('../middleware/auth');
 
 // Все маршруты требуют авторизации
 router.use(authenticate);
-router.use(authorize('roles-settings', 'users-settings'));
 
-// Заглушки для API ролей
-router.get('/', (req, res) => {
-  res.json({ success: true, message: 'GET /roles - получить список ролей' });
-});
+// GET /roles - получить список всех ролей
+router.get('/', roleController.getRoles);
 
-router.get('/:id', (req, res) => {
-  res.json({ success: true, message: 'GET /roles/:id - получить роль по ID' });
-});
+// GET /roles/permissions - получить список всех прав
+router.get('/permissions', roleController.getPermissions);
 
-router.post('/', authorize('roles-settings'), (req, res) => {
-  res.json({ success: true, message: 'POST /roles - создать роль' });
-});
+// GET /roles/:id - получить роль по ID
+router.get('/:id', roleController.getRoleById);
 
-router.put('/:id', authorize('roles-settings'), (req, res) => {
-  res.json({ success: true, message: 'PUT /roles/:id - обновить роль' });
-});
+// POST /roles - создать роль (только для пользователей с правом roles-settings)
+router.post('/', authorize('roles-settings'), roleController.createRole);
 
-router.delete('/:id', authorize('roles-settings'), (req, res) => {
-  res.json({ success: true, message: 'DELETE /roles/:id - удалить роль' });
-});
+// PUT /roles/:id - обновить роль (только для пользователей с правом roles-settings)
+router.put('/:id', authorize('roles-settings'), roleController.updateRole);
 
-router.get('/permissions', (req, res) => {
-  res.json({ success: true, message: 'GET /roles/permissions - список прав' });
-});
+// DELETE /roles/:id - удалить роль (только для пользователей с правом roles-settings)
+router.delete('/:id', authorize('roles-settings'), roleController.deleteRole);
 
 module.exports = router;

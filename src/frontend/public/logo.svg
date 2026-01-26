@@ -1,0 +1,16 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Фон -->
+  <rect width="200" height="200" rx="20" fill="white"/>
+  
+  <!-- Синий круг -->
+  <circle cx="100" cy="100" r="80" fill="#00aeef"/>
+  
+  <!-- Белый текст ТюмГУ -->
+  <text x="100" y="95" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">Тюм</text>
+  <text x="100" y="125" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">ГУ</text>
+  
+  <!-- Декоративные элементы -->
+  <circle cx="100" cy="40" r="5" fill="white" opacity="0.6"/>
+  <circle cx="130" cy="50" r="3" fill="white" opacity="0.4"/>
+  <circle cx="70" cy="50" r="3" fill="white" opacity="0.4"/>
+</svg>

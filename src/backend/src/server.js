@@ -48,7 +48,17 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API маршруты
+// Health check с префиксом /api
+app.get('/api/health', (req, res) => {
+  res.json({
+    success: true,
+    message: 'API работает',
+    timestamp: new Date().toISOString(),
+    version: API_VERSION
+  });
+});
+
+// API маршруты (версия с /v1)
 app.use(`/${API_VERSION}/auth`, authRoutes);
 app.use(`/${API_VERSION}/users`, userRoutes);
 app.use(`/${API_VERSION}/roles`, roleRoutes);
@@ -58,6 +68,17 @@ app.use(`/${API_VERSION}/access-logs`, accessLogRoutes);
 app.use(`/${API_VERSION}/parking`, parkingRoutes);
 app.use(`/${API_VERSION}/storage`, storageRoutes);
 app.use(`/${API_VERSION}/analytics`, analyticsRoutes);
+
+// API маршруты (версия с /api для совместимости)
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/roles', roleRoutes);
+app.use('/api/students', studentRoutes);
+app.use('/api/employees', employeeRoutes);
+app.use('/api/access-logs', accessLogRoutes);
+app.use('/api/parking', parkingRoutes);
+app.use('/api/storage', storageRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // 404 handler
 app.use((req, res) => {

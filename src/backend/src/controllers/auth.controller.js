@@ -6,7 +6,8 @@ const Joi = require('joi');
 // Схема валидации для локального входа
 const loginSchema = Joi.object({
   username: Joi.string().required(),
-  password: Joi.string().required()
+  password: Joi.string().required(),
+  authType: Joi.string().valid('local', 'sso').optional()
 });
 
 class AuthController {

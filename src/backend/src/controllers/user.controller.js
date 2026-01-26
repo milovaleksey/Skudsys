@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const { getPool } = require('../config/database');
-const { validate } = require('../utils/validation');
 const Joi = require('joi');
 
 // Схема валидации для создания пользователя

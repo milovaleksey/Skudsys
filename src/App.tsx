@@ -1,24 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LoginPage } from './components/LoginPage';
 import { MainPage } from './components/MainPage';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { Toaster } from 'sonner';
 
-export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Изменено на true для быстрого просмотра
+function AppContent() {
+  const { user } = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Синхронизируем состояние с AuthContext
+  useEffect(() => {
+    setIsLoggedIn(!!user);
+  }, [user]);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
 
   return (
-    <AuthProvider>
+    <>
       <Toaster position="top-right" richColors />
       {!isLoggedIn ? (
         <LoginPage onLogin={handleLogin} />
       ) : (
         <MainPage />
       )}
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
     </AuthProvider>
   );
 }

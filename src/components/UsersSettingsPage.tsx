@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { User, useAuth } from '../contexts/AuthContext';
+import { usersApi } from '../lib/api';
 import { RolesManagementPage } from './RolesManagementPage';
 import { 
   Search, 
@@ -120,13 +121,13 @@ interface UserFormData {
   fullName: string;
   email: string;
   password: string;
-  role: UserRole;
+  role: string; // Изменено с UserRole на string для совместимости
   authType: 'local' | 'sso';
   isActive: boolean;
 }
 
 export function UsersSettingsPage() {
-  const { roles } = useAuth();
+  const { roles, loading: authLoading } = useAuth();
   const [users, setUsers] = useState<User[]>(initialUsers);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterRole, setFilterRole] = useState<string>('all');
@@ -137,6 +138,7 @@ export function UsersSettingsPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState('users');
+  const [loadingUsers, setLoadingUsers] = useState(false);
 
   const [formData, setFormData] = useState<UserFormData>({
     username: '',
@@ -147,6 +149,29 @@ export function UsersSettingsPage() {
     authType: 'local',
     isActive: true,
   });
+
+  // Загрузка пользователей из API при монтировании
+  useEffect(() => {
+    const loadUsers = async () => {
+      setLoadingUsers(true);
+      try {
+        const response = await usersApi.getAll();
+        if (response.success && response.data) {
+          // API возвращает { users: [...], pagination: {...} }
+          const data = response.data as { users: User[], pagination: any };
+          setUsers(data.users);
+        }
+      } catch (error) {
+        console.error('Failed to load users:', error);
+        toast.error('Ошибка загрузки пользователей');
+        // Оставляем mock данные в случае ошибки
+      } finally {
+        setLoadingUsers(false);
+      }
+    };
+
+    loadUsers();
+  }, []);
 
   // Фильтрация пользователей
   const filteredUsers = users.filter(user => {
@@ -262,8 +287,8 @@ export function UsersSettingsPage() {
   };
 
   // Получение badge для роли
-  const getRoleBadge = (role: UserRole) => {
-    const colors = {
+  const getRoleBadge = (role: string) => {
+    const colors: Record<string, string> = {
       admin: 'bg-red-100 text-red-800 border-red-200',
       security: 'bg-blue-100 text-blue-800 border-blue-200',
       manager: 'bg-purple-100 text-purple-800 border-purple-200',
@@ -271,7 +296,7 @@ export function UsersSettingsPage() {
       viewer: 'bg-gray-100 text-gray-800 border-gray-200',
     };
 
-    const labels = {
+    const labels: Record<string, string> = {
       admin: 'Администратор',
       security: 'Безопасность',
       manager: 'Менеджер',
@@ -280,8 +305,8 @@ export function UsersSettingsPage() {
     };
 
     return (
-      <Badge className={`${colors[role]} border`}>
-        {labels[role]}
+      <Badge className={`${colors[role] || 'bg-gray-100 text-gray-800 border-gray-200'} border`}>
+        {labels[role] || role}
       </Badge>
     );
   };
@@ -491,7 +516,7 @@ export function UsersSettingsPage() {
 
             {filteredUsers.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-gray-500">Пользователи не найдены</p>
+                <p className="text-gray-500">Пользоватеи не найдены</p>
               </div>
             )}
           </div>
@@ -561,7 +586,7 @@ export function UsersSettingsPage() {
                   <SelectItem value="local">
                     <div className="flex items-center gap-2">
                       <Lock className="w-4 h-4" />
-                      Локальная авторизация
+                      Локальная авторизаия
                     </div>
                   </SelectItem>
                   <SelectItem value="sso">
