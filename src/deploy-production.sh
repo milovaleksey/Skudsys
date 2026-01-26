@@ -8,7 +8,7 @@ set -e
 # КОНФИГУРАЦИЯ
 # ============================================================================
 
-SYNC_DIR="/opt/utmn-security"
+SYNC_DIR="/opt/Skudsys/src"
 PROD_DIR="/var/www/utmn-security"
 SERVICE_NAME="utmn-security"
 BACKUP_DIR="/var/backups/utmn-security"
@@ -374,7 +374,13 @@ deploy_files() {
     
     # Backend
     log "Копирование backend..."
-    rsync -av --exclude='node_modules' --exclude='.env' "$SYNC_DIR/backend/" "$PROD_DIR/backend/"
+    # Используем cp вместо rsync, так как rsync может отсутствовать
+    # Копируем все, кроме node_modules и .env
+    if [ -d "$SYNC_DIR/backend" ]; then
+        cd "$SYNC_DIR/backend" || exit 1
+        # Копируем все файлы и папки текущего уровня, исключая node_modules и .env
+        find . -maxdepth 1 -not -name 'node_modules' -not -name '.env' -not -name '.' -exec cp -r {} "$PROD_DIR/backend/" \;
+    fi
     success "Backend скопирован"
     
     # .env для backend
