@@ -179,6 +179,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.log('Token:', response.data.token ? response.data.token.substring(0, 20) + '...' : 'null');
         console.log('Refresh Token:', response.data.refreshToken ? 'present' : 'null');
         
+        // Сначала сохраняем токен
         TokenManager.setToken(response.data.token);
         TokenManager.setRefreshToken(response.data.refreshToken);
         
@@ -189,16 +190,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const savedToken = TokenManager.getToken();
         console.log('✔️ Token verification after save:', savedToken ? 'saved' : 'NOT SAVED!');
         
-        // Загружаем роли после успешного логина
-        try {
-          const rolesResponse = await rolesApi.getAll();
-          if (rolesResponse.success && rolesResponse.data) {
-            setRoles(rolesResponse.data as Role[]);
+        // Загружаем роли ПОСЛЕ того как токен точно установлен
+        // Используем setTimeout чтобы дать время на обновление состояния
+        setTimeout(async () => {
+          try {
+            console.log('📋 Loading roles with token...');
+            const rolesResponse = await rolesApi.getAll();
+            if (rolesResponse.success && rolesResponse.data) {
+              console.log('✅ Roles loaded:', rolesResponse.data);
+              setRoles(rolesResponse.data as Role[]);
+            }
+          } catch (error) {
+            console.error('Failed to load roles after login:', error);
+            // Не критично, используем роли по умолчанию
           }
-        } catch (error) {
-          console.error('Failed to load roles after login:', error);
-          // Не критично, используем роли по умолчанию
-        }
+        }, 100);
       } else {
         throw new Error(response.error?.message || 'Ошибка авторизации');
       }

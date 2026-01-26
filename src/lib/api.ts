@@ -103,6 +103,9 @@ class ApiClient {
 
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
+      console.log('🌐 Making request to:', endpoint, 'with token');
+    } else {
+      console.log('🌐 Making request to:', endpoint, 'without token');
     }
 
     try {
@@ -114,10 +117,12 @@ class ApiClient {
       const data = await response.json();
 
       if (!response.ok) {
-        // Если токен истёк, пытаемся обновить
-        if (response.status === 401 && token) {
+        // Если токен истёк, пытаемся обновить (но не для auth endpoints)
+        if (response.status === 401 && token && !endpoint.includes('/auth/')) {
+          console.log('⚠️ Got 401, attempting token refresh...');
           const refreshed = await this.refreshToken();
           if (refreshed) {
+            console.log('✅ Token refreshed, retrying request...');
             // Повторяем запрос с новым токеном
             return this.request<T>(endpoint, options);
           }

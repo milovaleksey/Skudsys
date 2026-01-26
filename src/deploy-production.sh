@@ -338,10 +338,16 @@ build_frontend() {
     
     cd "$SYNC_DIR/frontend"
     
-    if [ ! -d "node_modules" ]; then
-        log "Установка зависимостей frontend..."
-        npm install
+    # Проверяем наличие package.json
+    if [ ! -f "package.json" ]; then
+        error "package.json не найден в $SYNC_DIR/frontend"
+        exit 1
     fi
+    
+    # Всегда устанавливаем зависимости (обновляет если изменился package.json)
+    log "Установка/обновление зависимостей frontend..."
+    npm install
+    success "Зависимости frontend установлены"
     
     log "Запуск npm run build..."
     npm run build

@@ -24,7 +24,8 @@ echo ""
 # Frontend
 log "Сборка frontend..."
 cd "$SYNC_DIR/frontend"
-[ ! -d "node_modules" ] && npm install > /dev/null 2>&1
+log "Установка зависимостей..."
+npm install > /dev/null 2>&1
 npm run build
 success "Frontend собран"
 
