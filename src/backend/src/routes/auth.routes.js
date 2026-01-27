@@ -7,6 +7,9 @@ const { authRateLimiter } = require('../middleware/rateLimiter');
 // POST /auth/login - локальная авторизация
 router.post('/login', authRateLimiter, authController.login);
 
+// POST /auth/refresh - обновление токена
+router.post('/refresh', authRateLimiter, authController.refresh);
+
 // POST /auth/sso - SSO авторизация
 router.post('/sso', authRateLimiter, authController.ssoLogin);
 

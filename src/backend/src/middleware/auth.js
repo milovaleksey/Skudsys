@@ -28,6 +28,7 @@ const authenticate = async (req, res, next) => {
       );
 
       if (users.length === 0) {
+        console.warn(`[Auth] User not found or inactive for ID: ${decoded.userId}`);
         return res.status(401).json({
           success: false,
           error: {
@@ -40,7 +41,14 @@ const authenticate = async (req, res, next) => {
       const user = users[0];
       
       // Парсинг JSON прав
-      user.permissions = JSON.parse(user.permissions);
+      try {
+        user.permissions = typeof user.permissions === 'string' 
+          ? JSON.parse(user.permissions) 
+          : (user.permissions || []);
+      } catch (e) {
+        console.error(`[Auth] Failed to parse permissions for user ${user.id}:`, e);
+        user.permissions = [];
+      }
 
       // Добавляем пользователя в request
       req.user = {
@@ -66,6 +74,7 @@ const authenticate = async (req, res, next) => {
         });
       }
 
+      console.error('[Auth] Token verification failed:', error.message);
       return res.status(401).json({
         success: false,
         error: {

@@ -94,6 +94,13 @@ class AuthController {
         { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
       );
 
+      // Создать Refresh токен
+      const refreshToken = jwt.sign(
+        { userId: user.id },
+        process.env.JWT_REFRESH_SECRET || 'change_this_refresh_secret',
+        { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d' }
+      );
+
       // Записать в audit_log
       await pool.query(
         `INSERT INTO audit_log (user_id, action, entity_type, entity_id, ip_address, user_agent)
@@ -105,6 +112,7 @@ class AuthController {
         success: true,
         data: {
           token,
+          refreshToken,
           expiresIn: 86400, // 24 часа в секундах
           user: {
             id: user.id,
@@ -256,6 +264,73 @@ class AuthController {
         success: true,
         data: req.user
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // Обновление токена
+  async refresh(req, res, next) {
+    try {
+      const { refreshToken } = req.body;
+
+      if (!refreshToken) {
+        return res.status(400).json({
+          success: false,
+          error: {
+            code: 'VALIDATION_ERROR',
+            message: 'Refresh token не предоставлен'
+          }
+        });
+      }
+
+      try {
+        const decoded = jwt.verify(
+          refreshToken, 
+          process.env.JWT_REFRESH_SECRET || 'change_this_refresh_secret'
+        );
+
+        const pool = getPool();
+        const [users] = await pool.query(
+          `SELECT * FROM users WHERE id = ? AND is_active = TRUE`,
+          [decoded.userId]
+        );
+
+        if (users.length === 0) {
+          return res.status(401).json({
+            success: false,
+            error: {
+              code: 'USER_NOT_FOUND',
+              message: 'Пользователь не найден'
+            }
+          });
+        }
+
+        const user = users[0];
+
+        // Создать новый access токен
+        const token = jwt.sign(
+          { userId: user.id, username: user.username },
+          process.env.JWT_SECRET,
+          { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
+        );
+
+        res.json({
+          success: true,
+          data: {
+            token
+          }
+        });
+
+      } catch (error) {
+        return res.status(401).json({
+          success: false,
+          error: {
+            code: 'INVALID_REFRESH_TOKEN',
+            message: 'Недействительный refresh token'
+          }
+        });
+      }
     } catch (error) {
       next(error);
     }
