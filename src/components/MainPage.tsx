@@ -54,9 +54,9 @@ export function MainPage() {
         ]);
         
         setStats([
-          { label: 'Всего студентов', value: students.success ? students.data.total : 'Нет данных' },
-          { label: 'Всего сотрудников', value: employees.success ? employees.data.total : 'Нет данных' },
-          { label: 'Парковочных мест занято', value: parking.success ? `${parking.data.occupied} / ${parking.data.total}` : 'Нет данных' },
+          { label: 'Всего студентов', value: students.success ? (students.data as any).total : 'Нет данных' },
+          { label: 'Всего сотрудников', value: employees.success ? (employees.data as any).total : 'Нет данных' },
+          { label: 'Парковочных мест занято', value: parking.success ? `${(parking.data as any).occupied} / ${(parking.data as any).total}` : 'Нет данных' },
         ]);
       } catch (e) {
         console.error('Failed to load stats', e);

@@ -174,11 +174,7 @@ export function UserLogsPage() {
 
   // Обновить логи
   const handleRefresh = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setLogs(generateMockLogs());
-      setIsLoading(false);
-    }, 1000);
+    loadLogs();
   };
 
   // Экспорт логов
@@ -458,7 +454,7 @@ export function UserLogsPage() {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {currentLogs.map((log) => {
-                const ActionIcon = actionIcons[log.action];
+                const ActionIcon = getActionIcon(log.action);
                 const LevelIcon = levelIcons[log.level];
                 
                 return (
