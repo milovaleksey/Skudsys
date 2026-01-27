@@ -192,6 +192,7 @@ class RoleController {
       );
 
       const newRole = newRoles[0];
+      newRole.id = String(newRole.id);
       newRole.permissions = JSON.parse(newRole.permissions || '[]');
       newRole.externalGroups = newRole.externalGroups ? JSON.parse(newRole.externalGroups) : [];
       newRole.isSystem = Boolean(newRole.isSystem);
@@ -327,6 +328,7 @@ class RoleController {
       );
 
       const updatedRole = updatedRoles[0];
+      updatedRole.id = String(updatedRole.id);
       updatedRole.permissions = JSON.parse(updatedRole.permissions || '[]');
       updatedRole.externalGroups = updatedRole.externalGroups ? JSON.parse(updatedRole.externalGroups) : [];
       updatedRole.isSystem = Boolean(updatedRole.isSystem);
