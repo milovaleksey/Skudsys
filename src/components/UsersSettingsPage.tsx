@@ -57,64 +57,12 @@ import {
 // Define UserRole type
 type UserRole = 'admin' | 'security' | 'manager' | 'operator' | 'viewer';
 
-// Mock данные пользователей
+// Mock данные пользователей удалены
+/*
 const initialUsers: User[] = [
-  {
-    id: 1,
-    username: 'admin_security',
-    fullName: 'Иванов Иван Иванович',
-    email: 'ivanov@utmn.ru',
-    role: 'admin',
-    authType: 'local',
-    createdAt: '2025-01-15T10:30:00Z',
-    lastLogin: '2026-01-19T08:15:00Z',
-    isActive: true,
-  },
-  {
-    id: 2,
-    username: 'petrova@utmn.ru',
-    fullName: 'Петрова Мария Сергеевна',
-    email: 'petrova@utmn.ru',
-    role: 'security',
-    authType: 'sso',
-    createdAt: '2025-02-10T14:20:00Z',
-    lastLogin: '2026-01-19T09:30:00Z',
-    isActive: true,
-  },
-  {
-    id: 3,
-    username: 'sidorov',
-    fullName: 'Сидоров Петр Алексеевич',
-    email: 'sidorov@utmn.ru',
-    role: 'manager',
-    authType: 'local',
-    createdAt: '2025-03-05T11:45:00Z',
-    lastLogin: '2026-01-18T16:20:00Z',
-    isActive: true,
-  },
-  {
-    id: 4,
-    username: 'kuznetsova@utmn.ru',
-    fullName: 'Кузнецова Елена Викторовна',
-    email: 'kuznetsova@utmn.ru',
-    role: 'operator',
-    authType: 'sso',
-    createdAt: '2025-04-12T09:15:00Z',
-    lastLogin: '2026-01-19T07:45:00Z',
-    isActive: true,
-  },
-  {
-    id: 5,
-    username: 'viewer_user',
-    fullName: 'Смирнов Андрей Николаевич',
-    email: 'smirnov@utmn.ru',
-    role: 'viewer',
-    authType: 'local',
-    createdAt: '2025-05-20T13:30:00Z',
-    lastLogin: '2026-01-17T12:10:00Z',
-    isActive: false,
-  },
+  ...
 ];
+*/
 
 interface UserFormData {
   username: string;
@@ -128,7 +76,7 @@ interface UserFormData {
 
 export function UsersSettingsPage() {
   const { roles, loading: authLoading } = useAuth();
-  const [users, setUsers] = useState<User[]>(initialUsers);
+  const [users, setUsers] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterRole, setFilterRole] = useState<string>('all');
   const [filterAuthType, setFilterAuthType] = useState<string>('all');
@@ -164,7 +112,6 @@ export function UsersSettingsPage() {
       } catch (error) {
         console.error('Failed to load users:', error);
         toast.error('Ошибка загрузки пользователей');
-        // Оставляем mock данные в случае ошибки
       } finally {
         setLoadingUsers(false);
       }

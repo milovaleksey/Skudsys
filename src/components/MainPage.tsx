@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Users, 
   BarChart3, 
@@ -30,25 +30,43 @@ import { UserLogsPage } from './UserLogsPage';
 import { IdentifierSearchPage } from './IdentifierSearchPage';
 import { useAuth } from '../contexts/AuthContext';
 import { Badge } from './ui/badge';
-import { RoleSwitcher } from './RoleSwitcher';
 import { Logo } from './Logo';
+import { studentsApi, employeesApi, parkingApi } from '../lib/api';
 
 export function MainPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activePage, setActivePage] = useState('dashboard');
   const { user, logout, hasPermission } = useAuth();
 
-  // Statistics data
-  const statistics = [
-    { label: 'Всего студентов', value: '32 000' },
-    { label: 'Всего сотрудников', value: '2 400' },
-    { label: 'Студентов в общежитии №1', value: '345' },
-    { label: 'Студентов в общежитии №2', value: '264' },
-    { label: 'Студентов в общежитии №3', value: '412' },
-    { label: 'Студентов в общежитии №4', value: '298' },
-    { label: 'Иностранных студентов', value: '1 247' },
-    { label: 'Парковочных мест занято', value: '156 / 200' },
-  ];
+  const [stats, setStats] = useState([
+    { label: 'Всего студентов', value: '...' },
+    { label: 'Всего сотрудников', value: '...' },
+    { label: 'Парковочных мест занято', value: '...' },
+  ]);
+
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        const [students, employees, parking] = await Promise.all([
+           studentsApi.getStatistics().catch(() => ({ success: false, data: { total: 0 } })),
+           employeesApi.getStatistics().catch(() => ({ success: false, data: { total: 0 } })),
+           parkingApi.getStatistics().catch(() => ({ success: false, data: { occupied: 0, total: 0 } }))
+        ]);
+        
+        setStats([
+          { label: 'Всего студентов', value: students.success ? students.data.total : 'Нет данных' },
+          { label: 'Всего сотрудников', value: employees.success ? employees.data.total : 'Нет данных' },
+          { label: 'Парковочных мест занято', value: parking.success ? `${parking.data.occupied} / ${parking.data.total}` : 'Нет данных' },
+        ]);
+      } catch (e) {
+        console.error('Failed to load stats', e);
+      }
+    };
+    
+    if (activePage === 'dashboard') {
+      loadStats();
+    }
+  }, [activePage]);
 
   // Получение метки роли
   const getRoleLabel = (role: string) => {
@@ -243,12 +261,10 @@ export function MainPage() {
         {/* Page Content */}
         {activePage === 'dashboard' && (
           <div>
-            {/* Role Switcher для демонстр��ции */}
-            <RoleSwitcher />
             
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">Статистика</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {statistics.map((stat, index) => (
+              {stats.map((stat, index) => (
                 <div
                   key={index}
                   className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow"

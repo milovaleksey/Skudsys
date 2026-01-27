@@ -15,8 +15,13 @@ const authenticate = async (req, res, next) => {
     const token = authHeader.substring(7);
 
     try {
+      // Подробное логирование токена перед верификацией
+      // console.log(`[Auth] Verifying token: ${token.substring(0, 20)}...`); 
+      
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       
+      // console.log(`[Auth] Token verified for userId: ${decoded.userId}`);
+
       // Получить пользователя из БД
       const pool = getPool();
       const [users] = await pool.query(

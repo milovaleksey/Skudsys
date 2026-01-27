@@ -92,7 +92,8 @@ class ApiClient {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
+    _isRetry = false
   ): Promise<ApiResponse<T>> {
     const token = TokenManager.getToken();
     
@@ -117,14 +118,14 @@ class ApiClient {
       const data = await response.json();
 
       if (!response.ok) {
-        // Если токен истёк, пытаемся обновить (но не для auth endpoints)
-        if (response.status === 401 && token && !endpoint.includes('/auth/')) {
+        // Если токен истёк, пытаемся обновить (но не для auth endpoints и не если это уже повторная попытка)
+        if (response.status === 401 && token && !endpoint.includes('/auth/') && !_isRetry) {
           console.log('⚠️ Got 401, attempting token refresh...');
           const refreshed = await this.refreshToken();
           if (refreshed) {
             console.log('✅ Token refreshed, retrying request...');
-            // Повторяем запрос с новым токеном
-            return this.request<T>(endpoint, options);
+            // Повторяем запрос с новым токеном и флагом _isRetry
+            return this.request<T>(endpoint, options, true);
           }
         }
 

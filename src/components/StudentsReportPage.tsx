@@ -28,69 +28,13 @@ export function StudentsReportPage() {
     dateTo: null as Date | null
   });
 
-  // Mock data for students
+  // Mock data removed. TODO: Implement API integration for student passes
+  const [studentRecords] = useState<StudentRecord[]>([]);
+/*
   const [studentRecords] = useState<StudentRecord[]>([
-    {
-      id: 1,
-      time: '2026-01-19 08:22:15',
-      fullName: 'Петрова Мария Сергеевна',
-      upn: 'petrova@study.utmn.ru',
-      cardNumber: '0987654321',
-      checkpoint: 'Вход, корпус Б',
-      course: '3 курс',
-      group: 'ИСТ-31'
-    },
-    {
-      id: 2,
-      time: '2026-01-19 09:12:03',
-      fullName: 'Смирнова Анна Дмитриевна',
-      upn: 'smirnova@study.utmn.ru',
-      cardNumber: '5544332211',
-      checkpoint: 'Библиотека',
-      course: '2 курс',
-      group: 'МАТ-21'
-    },
-    {
-      id: 3,
-      time: '2026-01-19 11:45:18',
-      fullName: 'Новикова Елена Ивановна',
-      upn: 'novikova@study.utmn.ru',
-      cardNumber: '6677889900',
-      checkpoint: 'Общежитие №2',
-      course: '1 курс',
-      group: 'ФИЛ-11'
-    },
-    {
-      id: 4,
-      time: '2026-01-19 13:20:42',
-      fullName: 'Васильева Ольга Николаевна',
-      upn: 'vasilieva@study.utmn.ru',
-      cardNumber: '7788990011',
-      checkpoint: 'Спортивный комплекс',
-      course: '4 курс',
-      group: 'ЭКО-41'
-    },
-    {
-      id: 5,
-      time: '2026-01-19 14:15:33',
-      fullName: 'Соколова Екатерина Павловна',
-      upn: 'sokolova@study.utmn.ru',
-      cardNumber: '3344556677',
-      checkpoint: 'Главный вход, корпус А',
-      course: '3 курс',
-      group: 'ЮР-31'
-    },
-    {
-      id: 6,
-      time: '2026-01-19 15:22:11',
-      fullName: 'Федоров Алексей Дмитриевич',
-      upn: 'fedorov@study.utmn.ru',
-      cardNumber: '2233445566',
-      checkpoint: 'Библиотека',
-      course: '2 курс',
-      group: 'ИНФ-21'
-    },
+    ...
   ]);
+*/
 
   const handleSearch = () => {
     console.log('Searching with filters:', filters);

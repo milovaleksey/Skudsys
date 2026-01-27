@@ -35,8 +35,11 @@ export const ALL_PERMISSIONS = [
   { id: 'user-logs', name: 'Логи действий пользователей', category: 'Администрирование' },
 ];
 
-// Системные роли (по умолчанию)
-export const DEFAULT_ROLES: Role[] = [
+// Системные роли (по умолчанию пустые, загружаются с бэкенда)
+export const DEFAULT_ROLES: Role[] = [];
+
+/*
+export const DEFAULT_ROLES_MOCK: Role[] = [
   {
     id: 'admin',
     name: 'admin',
@@ -46,43 +49,9 @@ export const DEFAULT_ROLES: Role[] = [
     isSystem: true,
     createdAt: '2026-01-01T00:00:00Z',
   },
-  {
-    id: 'security',
-    name: 'security',
-    displayName: 'Безопасность',
-    description: 'Доступ к системам безопасности и контроля доступа',
-    permissions: ['dashboard', 'passes', 'identifier-search', 'location', 'parking', 'storage'],
-    isSystem: true,
-    createdAt: '2026-01-01T00:00:00Z',
-  },
-  {
-    id: 'manager',
-    name: 'manager',
-    displayName: 'Менеджер',
-    description: 'Доступ к аналитике и отчетам',
-    permissions: ['dashboard', 'analytics', 'students', 'employees', 'foreign-students'],
-    isSystem: true,
-    createdAt: '2026-01-01T00:00:00Z',
-  },
-  {
-    id: 'operator',
-    name: 'operator',
-    displayName: 'Оператор',
-    description: 'Доступ к просмотру и работе с данными',
-    permissions: ['dashboard', 'passes', 'identifier-search', 'location', 'students', 'employees'],
-    isSystem: true,
-    createdAt: '2026-01-01T00:00:00Z',
-  },
-  {
-    id: 'viewer',
-    name: 'viewer',
-    displayName: 'Наблюдатель',
-    description: 'Только просмотр общей информации',
-    permissions: ['dashboard', 'analytics'],
-    isSystem: true,
-    createdAt: '2026-01-01T00:00:00Z',
-  },
+  ...
 ];
+*/
 
 export interface User {
   id: number;

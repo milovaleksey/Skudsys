@@ -26,73 +26,13 @@ export function PassesReportPage() {
     dateTo: null as Date | null
   });
 
-  // Mock data for passes
+  // Mock data removed. TODO: Implement API integration
+  const [passRecords] = useState<PassRecord[]>([]);
+/*
   const [passRecords] = useState<PassRecord[]>([
-    {
-      id: 1,
-      time: '2026-01-19 08:15:32',
-      fullName: 'Иванов Иван Иванович',
-      upn: 'ivanov@utmn.ru',
-      cardNumber: '1234567890',
-      checkpoint: 'Главный вход, корпус А'
-    },
-    {
-      id: 2,
-      time: '2026-01-19 08:22:15',
-      fullName: 'Петрова Мария Сергеевна',
-      upn: 'petrova@study.utmn.ru',
-      cardNumber: '0987654321',
-      checkpoint: 'Вход, корпус Б'
-    },
-    {
-      id: 3,
-      time: '2026-01-19 09:05:47',
-      fullName: 'Сидоров Петр Александрович',
-      upn: 'sidorov@utmn.ru',
-      cardNumber: '1122334455',
-      checkpoint: 'Общежитие №1'
-    },
-    {
-      id: 4,
-      time: '2026-01-19 09:12:03',
-      fullName: 'Смирнова Анна Дмитриевна',
-      upn: 'smirnova@study.utmn.ru',
-      cardNumber: '5544332211',
-      checkpoint: 'Библиотека'
-    },
-    {
-      id: 5,
-      time: '2026-01-19 10:30:21',
-      fullName: 'Козлов Дмитрий Викторович',
-      upn: 'kozlov@utmn.ru',
-      cardNumber: '9988776655',
-      checkpoint: 'Главный вход, корпус А'
-    },
-    {
-      id: 6,
-      time: '2026-01-19 11:45:18',
-      fullName: 'Новикова Елена Ивановна',
-      upn: 'novikova@study.utmn.ru',
-      cardNumber: '6677889900',
-      checkpoint: 'Общежитие №2'
-    },
-    {
-      id: 7,
-      time: '2026-01-19 12:03:55',
-      fullName: 'Морозов Алексей Петрович',
-      upn: 'morozov@utmn.ru',
-      cardNumber: '4455667788',
-      checkpoint: 'Вход, корпус В'
-    },
-    {
-      id: 8,
-      time: '2026-01-19 13:20:42',
-      fullName: 'Васильева Ольга Николаевна',
-      upn: 'vasilieva@study.utmn.ru',
-      cardNumber: '7788990011',
-      checkpoint: 'Спортивный комплекс'
-    },
+    ...
   ]);
+*/
 
   const handleSearch = () => {
     console.log('Searching with filters:', filters);

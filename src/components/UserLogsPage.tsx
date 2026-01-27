@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Search, 
   Calendar, 
@@ -26,19 +26,10 @@ import {
   SelectValue,
 } from './ui/select';
 import { Label } from './ui/label';
+import { accessLogsApi } from '../lib/api';
 
 // Типы действий пользователей
-type ActionType = 
-  | 'login' 
-  | 'logout' 
-  | 'view_report' 
-  | 'export_data'
-  | 'edit_user'
-  | 'delete_user'
-  | 'create_user'
-  | 'edit_role'
-  | 'change_settings'
-  | 'access_denied';
+type ActionType = string;
 
 // Уровень важности
 type LogLevel = 'info' | 'warning' | 'error' | 'success';
@@ -59,85 +50,8 @@ interface UserLog {
   details?: string;
 }
 
-// Моковые данные логов
-const generateMockLogs = (): UserLog[] => {
-  const actions: ActionType[] = [
-    'login',
-    'logout',
-    'view_report',
-    'export_data',
-    'edit_user',
-    'delete_user',
-    'create_user',
-    'edit_role',
-    'change_settings',
-    'access_denied'
-  ];
-
-  const users = [
-    { name: 'Иванов Иван Иванович', upn: 'ivanov@utmn.ru', role: 'admin' },
-    { name: 'Петров Петр Петрович', upn: 'petrov@utmn.ru', role: 'security' },
-    { name: 'Сидорова Анна Сергеевна', upn: 'sidorova@utmn.ru', role: 'manager' },
-    { name: 'Козлов Дмитрий Александрович', upn: 'kozlov@utmn.ru', role: 'operator' },
-    { name: 'Морозова Елена Владимировна', upn: 'morozova@utmn.ru', role: 'viewer' },
-  ];
-
-  const actionDescriptions: Record<ActionType, string> = {
-    'login': 'Вход в систему',
-    'logout': 'Выход из системы',
-    'view_report': 'Просмотр отчета',
-    'export_data': 'Экспорт данных',
-    'edit_user': 'Редактирование пользователя',
-    'delete_user': 'Удаление пользователя',
-    'create_user': 'Создание пользователя',
-    'edit_role': 'Изменение роли',
-    'change_settings': 'Изменение настроек',
-    'access_denied': 'Отказ в доступе'
-  };
-
-  const logs: UserLog[] = [];
-  const now = new Date();
-
-  for (let i = 0; i < 150; i++) {
-    const user = users[Math.floor(Math.random() * users.length)];
-    const action = actions[Math.floor(Math.random() * actions.length)];
-    const daysAgo = Math.floor(Math.random() * 30);
-    const hoursAgo = Math.floor(Math.random() * 24);
-    const minutesAgo = Math.floor(Math.random() * 60);
-
-    const timestamp = new Date(now);
-    timestamp.setDate(timestamp.getDate() - daysAgo);
-    timestamp.setHours(timestamp.getHours() - hoursAgo);
-    timestamp.setMinutes(timestamp.getMinutes() - minutesAgo);
-
-    let level: LogLevel = 'info';
-    if (action === 'access_denied') level = 'error';
-    else if (action === 'delete_user' || action === 'edit_role') level = 'warning';
-    else if (action === 'login' || action === 'create_user') level = 'success';
-
-    logs.push({
-      id: i + 1,
-      timestamp: timestamp.toISOString(),
-      userId: i + 1,
-      userName: user.name,
-      userUPN: user.upn,
-      userRole: user.role,
-      action,
-      actionDescription: actionDescriptions[action],
-      ipAddress: `192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`,
-      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-      level,
-      details: action === 'view_report' ? 'Отчет: Студенты' : 
-               action === 'export_data' ? 'Формат: Excel' :
-               action === 'edit_user' ? 'ID пользователя: 42' : undefined
-    });
-  }
-
-  return logs.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-};
-
 export function UserLogsPage() {
-  const [logs, setLogs] = useState<UserLog[]>(generateMockLogs());
+  const [logs, setLogs] = useState<UserLog[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [actionFilter, setActionFilter] = useState<string>('all');
   const [levelFilter, setLevelFilter] = useState<string>('all');
@@ -148,13 +62,38 @@ export function UserLogsPage() {
   
   const itemsPerPage = 20;
 
+  const loadLogs = async () => {
+    setIsLoading(true);
+    try {
+      // В реальном приложении здесь стоит использовать серверную пагинацию и фильтрацию
+      // Для совместимости с текущей логикой загрузим последние 1000 логов
+      const response = await accessLogsApi.getAll({ limit: 1000 });
+      if (response.success && response.data) {
+        // Маппинг данных если необходимо. Предполагаем, что API возвращает совместимый формат
+        // Если формат отличается, здесь нужно добавить преобразование
+        setLogs(response.data as any[]); 
+      }
+    } catch (error) {
+      console.error('Failed to load logs:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadLogs();
+  }, []);
+
   // Фильтрация логов
   const filteredLogs = logs.filter(log => {
     // Поиск по ФИО или UPN
     const searchLower = searchQuery.toLowerCase();
+    const userName = log.userName || '';
+    const userUPN = log.userUPN || '';
+    
     const matchesSearch = !searchQuery || 
-      log.userName.toLowerCase().includes(searchLower) ||
-      log.userUPN.toLowerCase().includes(searchLower);
+      userName.toLowerCase().includes(searchLower) ||
+      userUPN.toLowerCase().includes(searchLower);
 
     // Фильтр по типу действия
     const matchesAction = actionFilter === 'all' || log.action === actionFilter;
@@ -176,22 +115,25 @@ export function UserLogsPage() {
   const endIndex = startIndex + itemsPerPage;
   const currentLogs = filteredLogs.slice(startIndex, endIndex);
 
-  // Иконки для типов действий
-  const actionIcons: Record<ActionType, any> = {
-    'login': CheckCircle,
-    'logout': XCircle,
-    'view_report': FileText,
-    'export_data': Download,
-    'edit_user': User,
-    'delete_user': AlertCircle,
-    'create_user': User,
-    'edit_role': User,
-    'change_settings': Activity,
-    'access_denied': AlertCircle
+  // Иконки для типов действий (fallback для неизвестных типов)
+  const getActionIcon = (action: string) => {
+    const icons: Record<string, any> = {
+      'login': CheckCircle,
+      'logout': XCircle,
+      'view_report': FileText,
+      'export_data': Download,
+      'edit_user': User,
+      'delete_user': AlertCircle,
+      'create_user': User,
+      'edit_role': User,
+      'change_settings': Activity,
+      'access_denied': AlertCircle
+    };
+    return icons[action] || Activity;
   };
 
   // Цвета для уровней
-  const levelColors: Record<LogLevel, string> = {
+  const levelColors: Record<string, string> = {
     'info': 'bg-blue-100 text-blue-800',
     'success': 'bg-green-100 text-green-800',
     'warning': 'bg-yellow-100 text-yellow-800',
@@ -199,12 +141,13 @@ export function UserLogsPage() {
   };
 
   // Иконки для уровней
-  const levelIcons: Record<LogLevel, any> = {
+  const levelIcons: Record<string, any> = {
     'info': Info,
     'success': CheckCircle,
     'warning': AlertCircle,
     'error': XCircle
   };
+
 
   // Форматирование даты
   const formatDate = (dateString: string) => {

@@ -28,69 +28,13 @@ export function EmployeesReportPage() {
     dateTo: null as Date | null
   });
 
-  // Mock data for employees
+  // Mock data removed. TODO: Implement API integration for employee passes
+  const [employeeRecords] = useState<EmployeeRecord[]>([]);
+/*
   const [employeeRecords] = useState<EmployeeRecord[]>([
-    {
-      id: 1,
-      time: '2026-01-19 08:15:32',
-      fullName: 'Иванов Иван Иванович',
-      upn: 'ivanov@utmn.ru',
-      cardNumber: '1234567890',
-      checkpoint: 'Главный вход, корпус А',
-      position: 'Профессор',
-      department: 'Институт математики и компьютерных наук'
-    },
-    {
-      id: 2,
-      time: '2026-01-19 09:05:47',
-      fullName: 'Сидоров Петр Александрович',
-      upn: 'sidorov@utmn.ru',
-      cardNumber: '1122334455',
-      checkpoint: 'Общежитие №1',
-      position: 'Комендант',
-      department: 'Служба охраны и безопасности'
-    },
-    {
-      id: 3,
-      time: '2026-01-19 10:30:21',
-      fullName: 'Козлов Дмитрий Викторович',
-      upn: 'kozlov@utmn.ru',
-      cardNumber: '9988776655',
-      checkpoint: 'Главный вход, корпус А',
-      position: 'Доцент',
-      department: 'Институт социально-гуманитарных наук'
-    },
-    {
-      id: 4,
-      time: '2026-01-19 12:03:55',
-      fullName: 'Морозов Алексей Петрович',
-      upn: 'morozov@utmn.ru',
-      cardNumber: '4455667788',
-      checkpoint: 'Вход, корпус В',
-      position: 'Старший преподаватель',
-      department: 'Институт права, экономики и управления'
-    },
-    {
-      id: 5,
-      time: '2026-01-19 13:45:12',
-      fullName: 'Николаев Сергей Владимирович',
-      upn: 'nikolaev@utmn.ru',
-      cardNumber: '5566778899',
-      checkpoint: 'Библиотека',
-      position: 'Заведующий кафедрой',
-      department: 'Институт наук о Земле'
-    },
-    {
-      id: 6,
-      time: '2026-01-19 14:22:38',
-      fullName: 'Павлова Ирина Анатольевна',
-      upn: 'pavlova@utmn.ru',
-      cardNumber: '8899001122',
-      checkpoint: 'Спортивный комплекс',
-      position: 'Тренер',
-      department: 'Спортивно-оздоровительный комплекс'
-    },
+    ...
   ]);
+*/
 
   const handleSearch = () => {
     console.log('Searching with filters:', filters);
