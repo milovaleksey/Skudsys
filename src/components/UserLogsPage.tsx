@@ -12,7 +12,9 @@ import {
   AlertCircle,
   CheckCircle,
   XCircle,
-  Info
+  Info,
+  Eye,
+  Database
 } from 'lucide-react';
 import { Card } from './ui/card';
 import { Input } from './ui/input';
@@ -26,149 +28,115 @@ import {
   SelectValue,
 } from './ui/select';
 import { Label } from './ui/label';
-import { accessLogsApi } from '../lib/api';
-
-// Типы действий пользователей
-type ActionType = string;
-
-// Уровень важности
-type LogLevel = 'info' | 'warning' | 'error' | 'success';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
+import { auditLogsApi } from '../lib/api';
+import { toast } from 'sonner';
 
 // Интерфейс лога
-interface UserLog {
+interface AuditLog {
   id: number;
-  timestamp: string;
   userId: number;
-  userName: string;
-  userUPN: string;
-  userRole: string;
-  action: ActionType;
-  actionDescription: string;
+  actorUsername: string;
+  actorFullName: string;
+  action: string;
+  entityType: string;
+  entityId: string;
+  changes: any;
+  oldValues: any;
+  newValues: any;
   ipAddress: string;
   userAgent: string;
-  level: LogLevel;
-  details?: string;
+  createdAt: string;
 }
 
 export function UserLogsPage() {
-  const [logs, setLogs] = useState<UserLog[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [logs, setLogs] = useState<AuditLog[]>([]);
+  const [totalLogs, setTotalLogs] = useState(0);
+  const [filterOptions, setFilterOptions] = useState<{ actions: string[], entityTypes: string[] }>({ actions: [], entityTypes: [] });
+  
+  // Filters
   const [actionFilter, setActionFilter] = useState<string>('all');
-  const [levelFilter, setLevelFilter] = useState<string>('all');
+  const [entityTypeFilter, setEntityTypeFilter] = useState<string>('all');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
   
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Selected log for details
+  const [selectedLog, setSelectedLog] = useState<AuditLog | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   const loadLogs = async () => {
     setIsLoading(true);
     try {
-      // В реальном приложении здесь стоит использовать серверную пагинацию и фильтрацию
-      // Для совместимости с текущей логикой загрузим последние 1000 логов
-      const response = await accessLogsApi.getAll({ limit: 1000 });
+      const params: any = {
+        page: currentPage,
+        limit: itemsPerPage,
+        sortOrder: 'DESC'
+      };
+
+      if (actionFilter !== 'all') params.action = actionFilter;
+      if (entityTypeFilter !== 'all') params.entityType = entityTypeFilter;
+      if (dateFrom) params.startDate = dateFrom;
+      if (dateTo) params.endDate = dateTo + ' 23:59:59';
+
+      const response = await auditLogsApi.getAll(params);
+      
       if (response.success && response.data) {
-        // Маппинг данных если необходимо. Предполагаем, что API возвращает совместимый формат
-        // Если формат отличается, здесь нужно добавить преобразование
-        setLogs(response.data as any[]); 
+        // @ts-ignore - backend returns logs inside data object wrapper if strictly typed, but let's check structure
+        // The API returns { data: { logs: [], pagination: {} } }
+        // My interface definition in api.ts might be slightly generic, but runtime response is what matters.
+        const responseData = response.data as any;
+        setLogs(responseData.logs || []);
+        setTotalLogs(responseData.pagination?.total || 0);
       }
     } catch (error) {
       console.error('Failed to load logs:', error);
+      toast.error('Не удалось загрузить журнал аудита');
     } finally {
       setIsLoading(false);
     }
   };
 
+  const loadFilters = async () => {
+    try {
+      const response = await auditLogsApi.getFilters();
+      if (response.success && response.data) {
+        setFilterOptions(response.data as any);
+      }
+    } catch (error) {
+      console.error('Failed to load filters:', error);
+    }
+  };
+
   useEffect(() => {
-    loadLogs();
+    loadFilters();
   }, []);
 
-  // Фильтрация логов
-  const filteredLogs = logs.filter(log => {
-    // Поиск по ФИО или UPN
-    const searchLower = searchQuery.toLowerCase();
-    const userName = log.userName || '';
-    const userUPN = log.userUPN || '';
-    
-    const matchesSearch = !searchQuery || 
-      userName.toLowerCase().includes(searchLower) ||
-      userUPN.toLowerCase().includes(searchLower);
-
-    // Фильтр по типу действия
-    const matchesAction = actionFilter === 'all' || log.action === actionFilter;
-
-    // Фильтр по уровню
-    const matchesLevel = levelFilter === 'all' || log.level === levelFilter;
-
-    // Фильтр по датам
-    const logDate = new Date(log.timestamp);
-    const matchesDateFrom = !dateFrom || logDate >= new Date(dateFrom);
-    const matchesDateTo = !dateTo || logDate <= new Date(dateTo + 'T23:59:59');
-
-    return matchesSearch && matchesAction && matchesLevel && matchesDateFrom && matchesDateTo;
-  });
-
-  // Пагинация
-  const totalPages = Math.ceil(filteredLogs.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentLogs = filteredLogs.slice(startIndex, endIndex);
-
-  // Иконки для типов действий (fallback для неизвестных типов)
-  const getActionIcon = (action: string) => {
-    const icons: Record<string, any> = {
-      'login': CheckCircle,
-      'logout': XCircle,
-      'view_report': FileText,
-      'export_data': Download,
-      'edit_user': User,
-      'delete_user': AlertCircle,
-      'create_user': User,
-      'edit_role': User,
-      'change_settings': Activity,
-      'access_denied': AlertCircle
-    };
-    return icons[action] || Activity;
-  };
-
-  // Цвета для уровней
-  const levelColors: Record<string, string> = {
-    'info': 'bg-blue-100 text-blue-800',
-    'success': 'bg-green-100 text-green-800',
-    'warning': 'bg-yellow-100 text-yellow-800',
-    'error': 'bg-red-100 text-red-800'
-  };
-
-  // Иконки для уровней
-  const levelIcons: Record<string, any> = {
-    'info': Info,
-    'success': CheckCircle,
-    'warning': AlertCircle,
-    'error': XCircle
-  };
-
+  useEffect(() => {
+    loadLogs();
+  }, [currentPage, actionFilter, entityTypeFilter, dateFrom, dateTo]);
 
   // Форматирование даты
   const formatDate = (dateString: string) => {
+    if (!dateString) return '-';
     const date = new Date(dateString);
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(diff / 3600000);
-    const days = Math.floor(diff / 86400000);
-
-    if (minutes < 1) return 'Только что';
-    if (minutes < 60) return `${minutes} мин. назад`;
-    if (hours < 24) return `${hours} ч. назад`;
-    if (days < 7) return `${days} дн. назад`;
-
     return date.toLocaleString('ru-RU', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
+      second: '2-digit'
     });
   };
 
@@ -177,46 +145,43 @@ export function UserLogsPage() {
     loadLogs();
   };
 
-  // Экспорт логов
-  const handleExport = () => {
-    const csv = [
-      ['Дата и время', 'Пользователь', 'UPN', 'Роль', 'Действие', 'IP адрес', 'Уровень'].join(';'),
-      ...filteredLogs.map(log => [
-        new Date(log.timestamp).toLocaleString('ru-RU'),
-        log.userName,
-        log.userUPN,
-        log.userRole,
-        log.actionDescription,
-        log.ipAddress,
-        log.level
-      ].join(';'))
-    ].join('\n');
-
-    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `user_logs_${new Date().toISOString().split('T')[0]}.csv`;
-    link.click();
-  };
-
   // Сброс фильтров
   const handleResetFilters = () => {
-    setSearchQuery('');
     setActionFilter('all');
-    setLevelFilter('all');
+    setEntityTypeFilter('all');
     setDateFrom('');
     setDateTo('');
     setCurrentPage(1);
   };
+
+  // Просмотр деталей
+  const handleViewDetails = (log: AuditLog) => {
+    setSelectedLog(log);
+    setIsDetailsOpen(true);
+  };
+
+  // Получение цвета для бейджа действия
+  const getActionBadgeColor = (action: string) => {
+    switch (action) {
+      case 'CREATE': return 'bg-green-100 text-green-800';
+      case 'UPDATE': return 'bg-blue-100 text-blue-800';
+      case 'DELETE': return 'bg-red-100 text-red-800';
+      case 'LOGIN': return 'bg-purple-100 text-purple-800';
+      case 'LOGOUT': return 'bg-gray-100 text-gray-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const totalPages = Math.ceil(totalLogs / itemsPerPage);
 
   return (
     <div className="space-y-6">
       {/* Заголовок */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Логи действий пользователей</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Журнал аудита</h2>
           <p className="text-gray-600 mt-1">
-            История всех действий пользователей в системе
+            История изменений и действий пользователей в системе
           </p>
         </div>
         
@@ -229,72 +194,7 @@ export function UserLogsPage() {
             <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
             Обновить
           </Button>
-          
-          <Button
-            onClick={handleExport}
-            className="bg-[#00aeef] hover:bg-[#008ac4]"
-          >
-            <Download className="w-4 h-4 mr-2" />
-            Экспорт CSV
-          </Button>
         </div>
-      </div>
-
-      {/* Статистика */}
-      <div className="grid grid-cols-4 gap-4">
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
-              <FileText className="w-5 h-5 text-blue-600" />
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">Всего логов</div>
-              <div className="text-2xl font-bold text-gray-900">{logs.length}</div>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-              <CheckCircle className="w-5 h-5 text-green-600" />
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">Успешных</div>
-              <div className="text-2xl font-bold text-green-600">
-                {logs.filter(l => l.level === 'success').length}
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-yellow-100 flex items-center justify-center">
-              <AlertCircle className="w-5 h-5 text-yellow-600" />
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">Предупреждений</div>
-              <div className="text-2xl font-bold text-yellow-600">
-                {logs.filter(l => l.level === 'warning').length}
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center">
-              <XCircle className="w-5 h-5 text-red-600" />
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">Ошибок</div>
-              <div className="text-2xl font-bold text-red-600">
-                {logs.filter(l => l.level === 'error').length}
-              </div>
-            </div>
-          </div>
-        </Card>
       </div>
 
       {/* Фильтры */}
@@ -304,23 +204,49 @@ export function UserLogsPage() {
           <h3 className="font-semibold text-gray-900">Фильтры</h3>
         </div>
 
-        <div className="grid grid-cols-5 gap-4">
-          {/* Поиск по ФИО или UPN */}
-          <div className="col-span-2">
-            <Label htmlFor="search">Поиск по ФИО или UPN</Label>
-            <div className="relative mt-2">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <Input
-                id="search"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setCurrentPage(1);
-                }}
-                placeholder="Иванов или ivanov@utmn.ru"
-                className="pl-10"
-              />
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          {/* Тип действия */}
+          <div>
+            <Label htmlFor="actionFilter">Действие</Label>
+            <Select 
+              value={actionFilter} 
+              onValueChange={(value) => {
+                setActionFilter(value);
+                setCurrentPage(1);
+              }}
+            >
+              <SelectTrigger className="mt-2">
+                <SelectValue placeholder="Все действия" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Все действия</SelectItem>
+                {filterOptions.actions.map(action => (
+                  <SelectItem key={action} value={action}>{action}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Сущность */}
+          <div>
+            <Label htmlFor="entityTypeFilter">Объект</Label>
+            <Select 
+              value={entityTypeFilter} 
+              onValueChange={(value) => {
+                setEntityTypeFilter(value);
+                setCurrentPage(1);
+              }}
+            >
+              <SelectTrigger className="mt-2">
+                <SelectValue placeholder="Все объекты" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Все объекты</SelectItem>
+                {filterOptions.entityTypes.map(type => (
+                  <SelectItem key={type} value={type}>{type}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Дата от */}
@@ -359,73 +285,16 @@ export function UserLogsPage() {
             </div>
           </div>
 
-          {/* Тип действия */}
-          <div>
-            <Label htmlFor="actionFilter">Тип действия</Label>
-            <Select 
-              value={actionFilter} 
-              onValueChange={(value) => {
-                setActionFilter(value);
-                setCurrentPage(1);
-              }}
-            >
-              <SelectTrigger className="mt-2">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Все действия</SelectItem>
-                <SelectItem value="login">Вход в систему</SelectItem>
-                <SelectItem value="logout">Выход из системы</SelectItem>
-                <SelectItem value="view_report">Просмотр отчета</SelectItem>
-                <SelectItem value="export_data">Экспорт данных</SelectItem>
-                <SelectItem value="edit_user">Редактирование пользователя</SelectItem>
-                <SelectItem value="delete_user">Удаление пользователя</SelectItem>
-                <SelectItem value="create_user">Создание пользователя</SelectItem>
-                <SelectItem value="edit_role">Изменение роли</SelectItem>
-                <SelectItem value="change_settings">Изменение настроек</SelectItem>
-                <SelectItem value="access_denied">Отказ в доступе</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Уровень */}
-          <div>
-            <Label htmlFor="levelFilter">Уровень</Label>
-            <Select 
-              value={levelFilter} 
-              onValueChange={(value) => {
-                setLevelFilter(value);
-                setCurrentPage(1);
-              }}
-            >
-              <SelectTrigger className="mt-2">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Все уровни</SelectItem>
-                <SelectItem value="info">Информация</SelectItem>
-                <SelectItem value="success">Успех</SelectItem>
-                <SelectItem value="warning">Предупреждение</SelectItem>
-                <SelectItem value="error">Ошибка</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
           {/* Кнопка сброса */}
-          <div className="col-span-2 flex items-end">
+          <div className="flex items-end">
             <Button
               variant="outline"
               onClick={handleResetFilters}
               className="w-full"
             >
-              Сбросить фильтры
+              Сбросить
             </Button>
           </div>
-        </div>
-
-        {/* Результаты поиска */}
-        <div className="mt-4 text-sm text-gray-600">
-          Найдено записей: <span className="font-semibold text-gray-900">{filteredLogs.length}</span>
         </div>
       </Card>
 
@@ -436,7 +305,7 @@ export function UserLogsPage() {
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Дата и время
+                  Дата
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Пользователь
@@ -445,61 +314,58 @@ export function UserLogsPage() {
                   Действие
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  IP адрес
+                  Объект
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Уровень
+                  Детали
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {currentLogs.map((log) => {
-                const ActionIcon = getActionIcon(log.action);
-                const LevelIcon = levelIcons[log.level];
-                
-                return (
+              {logs.length === 0 && !isLoading ? (
+                <tr>
+                  <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                    Записей не найдено
+                  </td>
+                </tr>
+              ) : (
+                logs.map((log) => (
                   <tr key={log.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         <Clock className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-900">{formatDate(log.timestamp)}</span>
+                        <span className="text-sm text-gray-900">{formatDate(log.createdAt)}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <User className="w-4 h-4 text-gray-400" />
                         <div>
-                          <div className="text-sm font-medium text-gray-900">{log.userName}</div>
-                          <div className="text-xs text-gray-500">{log.userUPN}</div>
+                          <div className="text-sm font-medium text-gray-900">{log.actorFullName || log.actorUsername || 'Система'}</div>
+                          {log.actorUsername && <div className="text-xs text-gray-500">{log.actorUsername}</div>}
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
+                      <Badge className={getActionBadgeColor(log.action)}>
+                        {log.action}
+                      </Badge>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
-                        <ActionIcon className="w-4 h-4 text-[#00aeef]" />
-                        <div>
-                          <div className="text-sm text-gray-900">{log.actionDescription}</div>
-                          {log.details && (
-                            <div className="text-xs text-gray-500">{log.details}</div>
-                          )}
-                        </div>
+                        <Database className="w-4 h-4 text-gray-400" />
+                        <span className="text-sm text-gray-900">{log.entityType} #{log.entityId}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm text-gray-900 font-mono">{log.ipAddress}</span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Badge className={`${levelColors[log.level]} flex items-center gap-1 w-fit`}>
-                        <LevelIcon className="w-3 h-3" />
-                        {log.level === 'info' ? 'Инфо' :
-                         log.level === 'success' ? 'Успех' :
-                         log.level === 'warning' ? 'Предупр.' :
-                         'Ошибка'}
-                      </Badge>
+                      <Button variant="ghost" size="sm" onClick={() => handleViewDetails(log)}>
+                        <Eye className="w-4 h-4 mr-2" />
+                        Просмотр
+                      </Button>
                     </td>
                   </tr>
-                );
-              })}
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -508,7 +374,7 @@ export function UserLogsPage() {
         {totalPages > 1 && (
           <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200">
             <div className="text-sm text-gray-600">
-              Показано {startIndex + 1}-{Math.min(endIndex, filteredLogs.length)} из {filteredLogs.length}
+              Страница {currentPage} из {totalPages} ({totalLogs} записей)
             </div>
             
             <div className="flex gap-2">
@@ -518,48 +384,80 @@ export function UserLogsPage() {
                 onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
               >
-                Предыдущая
+                Назад
               </Button>
-              
-              <div className="flex items-center gap-1">
-                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                  let pageNum;
-                  if (totalPages <= 5) {
-                    pageNum = i + 1;
-                  } else if (currentPage <= 3) {
-                    pageNum = i + 1;
-                  } else if (currentPage >= totalPages - 2) {
-                    pageNum = totalPages - 4 + i;
-                  } else {
-                    pageNum = currentPage - 2 + i;
-                  }
-                  
-                  return (
-                    <Button
-                      key={pageNum}
-                      variant={currentPage === pageNum ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setCurrentPage(pageNum)}
-                      className={currentPage === pageNum ? "bg-[#00aeef] hover:bg-[#008ac4]" : ""}
-                    >
-                      {pageNum}
-                    </Button>
-                  );
-                })}
-              </div>
-              
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
               >
-                Следующая
+                Вперед
               </Button>
             </div>
           </div>
         )}
       </Card>
+
+      {/* Модальное окно деталей */}
+      <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Детали события #{selectedLog?.id}</DialogTitle>
+            <DialogDescription>
+              Полная информация о зафиксированном действии
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedLog && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-gray-500">Дата и время</Label>
+                  <div className="font-medium">{formatDate(selectedLog.createdAt)}</div>
+                </div>
+                <div>
+                  <Label className="text-gray-500">Действие</Label>
+                  <div className="font-medium">{selectedLog.action}</div>
+                </div>
+                <div>
+                  <Label className="text-gray-500">Пользователь</Label>
+                  <div className="font-medium">{selectedLog.actorFullName} ({selectedLog.actorUsername})</div>
+                </div>
+                <div>
+                  <Label className="text-gray-500">Объект</Label>
+                  <div className="font-medium">{selectedLog.entityType} #{selectedLog.entityId}</div>
+                </div>
+                <div>
+                  <Label className="text-gray-500">IP адрес</Label>
+                  <div className="font-medium">{selectedLog.ipAddress || '-'}</div>
+                </div>
+                <div>
+                  <Label className="text-gray-500">User Agent</Label>
+                  <div className="truncate text-xs text-gray-600" title={selectedLog.userAgent}>
+                    {selectedLog.userAgent || '-'}
+                  </div>
+                </div>
+              </div>
+
+              {/* Changes / Values */}
+              <div className="bg-gray-50 p-4 rounded-md overflow-x-auto">
+                <Label className="text-gray-500 mb-2 block">Изменения / Данные</Label>
+                <pre className="text-xs font-mono whitespace-pre-wrap">
+                  {selectedLog.changes 
+                    ? JSON.stringify(typeof selectedLog.changes === 'string' ? JSON.parse(selectedLog.changes) : selectedLog.changes, null, 2)
+                    : selectedLog.newValues || selectedLog.oldValues
+                      ? JSON.stringify({
+                          old: typeof selectedLog.oldValues === 'string' ? JSON.parse(selectedLog.oldValues) : selectedLog.oldValues,
+                          new: typeof selectedLog.newValues === 'string' ? JSON.parse(selectedLog.newValues) : selectedLog.newValues
+                        }, null, 2)
+                      : 'Нет данных об изменениях'}
+                </pre>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

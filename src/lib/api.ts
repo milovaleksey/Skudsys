@@ -408,6 +408,28 @@ export const analyticsApi = {
   },
 };
 
+// API методы для журнала аудита
+export const auditLogsApi = {
+  async getAll(params?: {
+    page?: number;
+    limit?: number;
+    action?: string;
+    entityType?: string;
+    entityId?: string;
+    userId?: number;
+    startDate?: string;
+    endDate?: string;
+    sortBy?: string;
+    sortOrder?: 'ASC' | 'DESC';
+  }) {
+    return apiClient.get('/audit-logs', params);
+  },
+
+  async getFilters() {
+    return apiClient.get('/audit-logs/filters');
+  }
+};
+
 // Экспорт утилит
 export { TokenManager };
 

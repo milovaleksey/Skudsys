@@ -19,6 +19,7 @@ const accessLogRoutes = require('./routes/accessLog.routes');
 const parkingRoutes = require('./routes/parking.routes');
 const storageRoutes = require('./routes/storage.routes');
 const analyticsRoutes = require('./routes/analytics.routes');
+const auditRoutes = require('./routes/audit.routes');
 
 const app = express();
 
@@ -72,6 +73,7 @@ app.use(`/${API_VERSION}/access-logs`, accessLogRoutes);
 app.use(`/${API_VERSION}/parking`, parkingRoutes);
 app.use(`/${API_VERSION}/storage`, storageRoutes);
 app.use(`/${API_VERSION}/analytics`, analyticsRoutes);
+app.use(`/${API_VERSION}/audit-logs`, auditRoutes);
 
 // API маршруты (версия с /api для совместимости)
 app.use('/api/auth', authRoutes);
@@ -83,6 +85,7 @@ app.use('/api/access-logs', accessLogRoutes);
 app.use('/api/parking', parkingRoutes);
 app.use('/api/storage', storageRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/audit-logs', auditRoutes);
 
 // 404 handler
 app.use((req, res) => {
