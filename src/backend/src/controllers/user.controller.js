@@ -22,6 +22,7 @@ const updateUserSchema = Joi.object({
   fullName: Joi.string().min(2).max(200),
   email: Joi.string().email(),
   role: Joi.string(),
+  authType: Joi.string().valid('local', 'sso'),
   isActive: Joi.boolean()
 });
 
@@ -211,6 +212,28 @@ class UserController {
         ]
       );
 
+      const newUserId = result.insertId;
+
+      // Audit log (добавлен вручную, триггер должен быть удален)
+      await pool.query(
+        `INSERT INTO audit_log (user_id, action, entity_type, entity_id, new_values, ip_address, user_agent)
+         VALUES (?, 'CREATE', 'user', ?, ?, ?, ?)`,
+        [
+          req.user.id,
+          newUserId,
+          JSON.stringify({
+            username: value.username,
+            full_name: value.fullName,
+            email: value.email,
+            role_name: value.role,
+            auth_type: value.authType,
+            is_active: value.isActive
+          }),
+          req.ip,
+          req.headers['user-agent']
+        ]
+      );
+
       // Получить созданного пользователя
       const [newUser] = await pool.query(
         `SELECT 
@@ -224,7 +247,7 @@ class UserController {
           u.created_at as createdAt
          FROM users u
          WHERE u.id = ?`,
-        [result.insertId]
+        [newUserId]
       );
 
       res.status(201).json({
@@ -257,8 +280,8 @@ class UserController {
 
       const pool = getPool();
 
-      // Проверка существования пользователя
-      const [users] = await pool.query('SELECT id FROM users WHERE id = ?', [id]);
+      // Проверка существования пользователя и получение старых данных для лога
+      const [users] = await pool.query('SELECT id, username, full_name, email, role_name, auth_type, is_active FROM users WHERE id = ?', [id]);
       if (users.length === 0) {
         return res.status(404).json({
           success: false,
@@ -268,6 +291,7 @@ class UserController {
           }
         });
       }
+      const currentUser = users[0];
 
       // Проверка роли если она обновляется
       if (value.role) {
@@ -302,6 +326,11 @@ class UserController {
         updateParams.push(value.role);
       }
 
+      if (value.authType) {
+        updateFields.push('auth_type = ?');
+        updateParams.push(value.authType);
+      }
+
       if (value.isActive !== undefined) {
         updateFields.push('is_active = ?');
         updateParams.push(value.isActive ? 1 : 0);
@@ -323,6 +352,28 @@ class UserController {
         `UPDATE users SET ${updateFields.join(', ')} WHERE id = ?`,
         updateParams
       );
+
+      // Audit log (добавлен вручную, триггер должен быть удален)
+      const changes = {};
+      if (value.fullName && value.fullName !== currentUser.full_name) changes.fullName = { old: currentUser.full_name, new: value.fullName };
+      if (value.email && value.email !== currentUser.email) changes.email = { old: currentUser.email, new: value.email };
+      if (value.role && value.role !== currentUser.role_name) changes.role = { old: currentUser.role_name, new: value.role };
+      if (value.authType && value.authType !== currentUser.auth_type) changes.authType = { old: currentUser.auth_type, new: value.authType };
+      if (value.isActive !== undefined && Boolean(value.isActive) !== Boolean(currentUser.is_active)) changes.isActive = { old: Boolean(currentUser.is_active), new: Boolean(value.isActive) };
+
+      if (Object.keys(changes).length > 0) {
+        await pool.query(
+          `INSERT INTO audit_log (user_id, action, entity_type, entity_id, changes, ip_address, user_agent)
+           VALUES (?, 'UPDATE', 'user', ?, ?, ?, ?)`,
+          [
+            req.user.id,
+            id,
+            JSON.stringify(changes),
+            req.ip,
+            req.headers['user-agent']
+          ]
+        );
+      }
 
       // Получить обновленного пользователя
       const [updatedUser] = await pool.query(
