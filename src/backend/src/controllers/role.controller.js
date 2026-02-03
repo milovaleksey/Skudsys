@@ -4,9 +4,9 @@ const Joi = require('joi');
 // Схема валидации для создания роли
 const createRoleSchema = Joi.object({
   name: Joi.string().min(2).max(50).required()
-    .pattern(/^[a-z_]+$/)
+    .pattern(/^[a-z0-9_-]+$/)
     .messages({
-      'string.pattern.base': 'Имя роли может содержать только строчные буквы и подчеркивание'
+      'string.pattern.base': 'Имя роли может содержать только строчные буквы, цифры, дефис и подчеркивание'
     }),
   displayName: Joi.string().min(2).max(100).required(),
   description: Joi.string().max(500).allow('').optional(),
