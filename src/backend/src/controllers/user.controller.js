@@ -368,7 +368,7 @@ class UserController {
       const pool = getPool();
 
       // Проверка существования
-      const [users] = await pool.query('SELECT id FROM users WHERE id = ?', [id]);
+      const [users] = await pool.query('SELECT id, username, full_name, email, role_name FROM users WHERE id = ?', [id]);
       if (users.length === 0) {
         return res.status(404).json({
           success: false,
@@ -381,6 +381,24 @@ class UserController {
 
       // Удаление
       await pool.query('DELETE FROM users WHERE id = ?', [id]);
+
+      // Audit log (добавлен вручную, так как триггер удален)
+      await pool.query(
+        `INSERT INTO audit_log (user_id, action, entity_type, entity_id, changes, ip_address, user_agent)
+         VALUES (?, 'DELETE', 'user', ?, ?, ?, ?)`,
+        [
+          req.user.id,
+          id,
+          JSON.stringify({ 
+            username: users[0].username, 
+            full_name: users[0].full_name,
+            email: users[0].email,
+            role_name: users[0].role_name
+          }),
+          req.ip,
+          req.headers['user-agent']
+        ]
+      );
 
       res.json({
         success: true,

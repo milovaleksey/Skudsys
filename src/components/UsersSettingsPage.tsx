@@ -1,48 +1,48 @@
-import { useState, useEffect } from 'react';
-import { toast } from 'sonner';
-import { User, useAuth } from '../contexts/AuthContext';
-import { usersApi } from '../lib/api';
-import { RolesManagementPage } from './RolesManagementPage';
-import { 
-  Search, 
-  Plus, 
-  Edit, 
-  Trash2, 
-  UserPlus, 
-  Save, 
-  X, 
-  Lock, 
-  Shield, 
-  Eye, 
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
+import { User, useAuth } from "../contexts/AuthContext";
+import { usersApi } from "../lib/api";
+import { RolesManagementPage } from "./RolesManagementPage";
+import {
+  Search,
+  Plus,
+  Edit,
+  Trash2,
+  UserPlus,
+  Save,
+  X,
+  Lock,
+  Shield,
+  Eye,
   EyeOff,
-  UserCog
-} from 'lucide-react';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Badge } from './ui/badge';
-import { Switch } from './ui/switch';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from './ui/select';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle 
-} from './ui/dialog';
+  UserCog,
+} from "lucide-react";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Badge } from "./ui/badge";
+import { Switch } from "./ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from './ui/tabs';
+} from "./ui/tabs";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -52,10 +52,15 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from './ui/alert-dialog';
+} from "./ui/alert-dialog";
 
 // Define UserRole type
-type UserRole = 'admin' | 'security' | 'manager' | 'operator' | 'viewer';
+type UserRole =
+  | "admin"
+  | "security"
+  | "manager"
+  | "operator"
+  | "viewer";
 
 // Mock данные пользователей удалены
 /*
@@ -70,78 +75,98 @@ interface UserFormData {
   email: string;
   password: string;
   role: string; // Изменено с UserRole на string для совместимости
-  authType: 'local' | 'sso';
+  authType: "local" | "sso";
   isActive: boolean;
 }
 
 export function UsersSettingsPage() {
   const { roles, loading: authLoading } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterRole, setFilterRole] = useState<string>('all');
-  const [filterAuthType, setFilterAuthType] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterRole, setFilterRole] = useState<string>("all");
+  const [filterAuthType, setFilterAuthType] =
+    useState<string>("all");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] =
+    useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] =
+    useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(
+    null,
+  );
   const [showPassword, setShowPassword] = useState(false);
-  const [activeTab, setActiveTab] = useState('users');
+  const [activeTab, setActiveTab] = useState("users");
   const [loadingUsers, setLoadingUsers] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState<UserFormData>({
-    username: '',
-    fullName: '',
-    email: '',
-    password: '',
-    role: 'viewer',
-    authType: 'local',
+    username: "",
+    fullName: "",
+    email: "",
+    password: "",
+    role: "viewer",
+    authType: "local",
     isActive: true,
   });
 
-  // Загрузка пользователей из API при монтировании
-  useEffect(() => {
-    const loadUsers = async () => {
-      setLoadingUsers(true);
-      try {
-        const response = await usersApi.getAll();
-        if (response.success && response.data) {
-          // API возвращает { users: [...], pagination: {...} }
-          const data = response.data as { users: User[], pagination: any };
-          setUsers(data.users);
-        }
-      } catch (error) {
-        console.error('Failed to load users:', error);
-        toast.error('Ошибка загрузки пользователей');
-      } finally {
-        setLoadingUsers(false);
+  // Загрузка пользователей из API
+  const loadUsers = async () => {
+    setLoadingUsers(true);
+    try {
+      const response = await usersApi.getAll();
+      if (response.success && response.data) {
+        // API возвращает { users: [...], pagination: {...} }
+        // Но если возвращает массив, то просто используем его (на всякий случай)
+        const data = response.data as any;
+        const usersList = Array.isArray(data)
+          ? data
+          : data.users || [];
+        setUsers(usersList);
       }
-    };
+    } catch (error) {
+      console.error("Failed to load users:", error);
+      toast.error("Ошибка загрузки пользователей");
+    } finally {
+      setLoadingUsers(false);
+    }
+  };
 
+  // Загрузка пользователей при монтировании
+  useEffect(() => {
     loadUsers();
   }, []);
 
   // Фильтрация пользователей
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = 
-      user.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesRole = filterRole === 'all' || user.role === filterRole;
-    const matchesAuthType = filterAuthType === 'all' || user.authType === filterAuthType;
-    
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch =
+      (user.fullName || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      (user.username || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      (user.email || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+
+    const matchesRole =
+      filterRole === "all" || user.role === filterRole;
+    const matchesAuthType =
+      filterAuthType === "all" ||
+      user.authType === filterAuthType;
+
     return matchesSearch && matchesRole && matchesAuthType;
   });
 
   // Открытие диалога добавления
   const handleAddUser = () => {
     setFormData({
-      username: '',
-      fullName: '',
-      email: '',
-      password: '',
-      role: 'viewer',
-      authType: 'local',
+      username: "",
+      fullName: "",
+      email: "",
+      password: "",
+      role: "viewer",
+      authType: "local",
       isActive: true,
     });
     setIsAddDialogOpen(true);
@@ -154,7 +179,7 @@ export function UsersSettingsPage() {
       username: user.username,
       fullName: user.fullName,
       email: user.email,
-      password: '',
+      password: "",
       role: user.role,
       authType: user.authType,
       isActive: user.isActive,
@@ -163,104 +188,218 @@ export function UsersSettingsPage() {
   };
 
   // Сохранение нового пользователя
-  const handleSaveNewUser = () => {
-    if (!formData.username || !formData.fullName || !formData.email) {
-      toast.error('Заполните все обязательные поля');
+  const handleSaveNewUser = async () => {
+    if (
+      !formData.username ||
+      !formData.fullName ||
+      !formData.email
+    ) {
+      toast.error("Заполните все обязательные поля");
       return;
     }
 
-    if (formData.authType === 'local' && !formData.password) {
-      toast.error('Для локального пользователя требуется пароль');
+    if (formData.authType === "local" && !formData.password) {
+      toast.error(
+        "Для локального пользователя требуется пароль",
+      );
       return;
     }
 
-    const newUser: User = {
-      id: Math.max(...users.map(u => u.id)) + 1,
-      username: formData.username,
-      fullName: formData.fullName,
-      email: formData.email,
-      role: formData.role,
-      authType: formData.authType,
-      createdAt: new Date().toISOString(),
-      isActive: formData.isActive,
-    };
+    setIsSubmitting(true);
+    try {
+      const response = await usersApi.create(formData);
 
-    setUsers([...users, newUser]);
-    setIsAddDialogOpen(false);
-    toast.success('Пользователь успешно добавлен');
+      if (response.success) {
+        toast.success("Пол��зователь успешно добавлен");
+        setIsAddDialogOpen(false);
+        loadUsers();
+      } else {
+        toast.error(
+          response.error?.message ||
+            "Ошибка создания пользователя",
+        );
+      }
+    } catch (error) {
+      console.error("Failed to create user:", error);
+      toast.error("Ошибка создания пользователя");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Сохранение изменений пользователя
-  const handleSaveEditUser = () => {
+  const handleSaveEditUser = async () => {
     if (!selectedUser) return;
 
-    const updatedUsers = users.map(user => 
-      user.id === selectedUser.id
-        ? {
-            ...user,
-            username: formData.username,
-            fullName: formData.fullName,
-            email: formData.email,
-            role: formData.role,
-            authType: formData.authType,
-            isActive: formData.isActive,
-          }
-        : user
-    );
+    setIsSubmitting(true);
+    try {
+      // Подготовка данных для обновления
+      const updateData: any = {
+        fullName: formData.fullName,
+        email: formData.email,
+        role: formData.role,
+        authType: formData.authType,
+        isActive: formData.isActive,
+      };
 
-    setUsers(updatedUsers);
-    setIsEditDialogOpen(false);
-    setSelectedUser(null);
-    toast.success('Изменения сохранены');
+      // Если пароль введен, добавляем его (для локальных)
+      // В API нет смены пароля через update, но для локальных может понадобиться отдельный вызов
+      // Если API update поддерживает смену пароля (не поддерживает, судя по коду контроллера)
+      // То пароль меняется только через отдельный эндпоинт changePassword или если добавить поддержку в update
+
+      // Проверим контроллер: updateUserSchema не содержит password.
+      // Значит пароль здесь не обновится.
+      // Если пользователь хочет сменить пароль, нужно использовать отдельный механизм,
+      // но в UI диалоге есть поле пароля.
+
+      const response = await usersApi.update(
+        selectedUser.id,
+        updateData,
+      );
+
+      if (response.success) {
+        // Если был введен пароль и это локальный пользователь, попробуем его сменить
+        if (
+          formData.authType === "local" &&
+          formData.password
+        ) {
+          // В контроллере нет эндпоинта для админа на смену пароля другому пользователю без знания старого.
+          // Обычно админ может сбросить пароль.
+          // Но у нас usersApi.changePassword требует oldPassword.
+          // Значит, пока пропустим смену пароля здесь или добавим функционал в бэкенд позже.
+          // Или использу��м хак: если бэкенд позволяет. Но он не позволяет.
+          if (formData.password.length > 0) {
+            toast.warning(
+              "Смена пароля администратором пока не поддерживается через этот интерфейс",
+            );
+          }
+        }
+
+        toast.success("Изменения сохранены");
+        setIsEditDialogOpen(false);
+        setSelectedUser(null);
+        loadUsers();
+      } else {
+        toast.error(
+          response.error?.message ||
+            "Ошибка обновления пользователя",
+        );
+      }
+    } catch (error) {
+      console.error("Failed to update user:", error);
+      toast.error("Ошибка обновления пользователя");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Удаление пользователя
-  const handleDeleteUser = () => {
+  const handleDeleteUser = async () => {
     if (!selectedUser) return;
 
-    setUsers(users.filter(user => user.id !== selectedUser.id));
-    setIsDeleteDialogOpen(false);
-    setSelectedUser(null);
-    toast.success('Пользователь удален');
+    setIsSubmitting(true);
+    try {
+      const response = await usersApi.delete(selectedUser.id);
+
+      if (response.success) {
+        toast.success("Пользователь удален");
+        setIsDeleteDialogOpen(false);
+        setSelectedUser(null);
+        loadUsers();
+      } else {
+        toast.error(
+          response.error?.message ||
+            "Ошибка удаления пользователя",
+        );
+      }
+    } catch (error) {
+      console.error("Failed to delete user:", error);
+      toast.error("Ошибка удаления пользователя");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Переключение статуса активности
-  const toggleUserStatus = (userId: number) => {
-    const updatedUsers = users.map(user =>
-      user.id === userId ? { ...user, isActive: !user.isActive } : user
+  const toggleUserStatus = async (userId: number) => {
+    const user = users.find((u) => u.id === userId);
+    if (!user) return;
+
+    // Оптимистичное обновление
+    const originalStatus = user.isActive;
+    setUsers(
+      users.map((u) =>
+        u.id === userId
+          ? { ...u, isActive: !originalStatus }
+          : u,
+      ),
     );
-    setUsers(updatedUsers);
-    toast.success('Статус пользователя изменен');
+
+    try {
+      const response = await usersApi.update(userId, {
+        isActive: !originalStatus,
+      });
+
+      if (response.success) {
+        toast.success("Статус пользователя изменен");
+      } else {
+        // Откат
+        setUsers(
+          users.map((u) =>
+            u.id === userId
+              ? { ...u, isActive: originalStatus }
+              : u,
+          ),
+        );
+        toast.error(
+          response.error?.message || "Ошибка изменения статуса",
+        );
+      }
+    } catch (error) {
+      // Откат
+      setUsers(
+        users.map((u) =>
+          u.id === userId
+            ? { ...u, isActive: originalStatus }
+            : u,
+        ),
+      );
+      console.error("Failed to update status:", error);
+      toast.error("Ошибка изменения статуса");
+    }
   };
 
   // Получение badge для роли
   const getRoleBadge = (role: string) => {
     const colors: Record<string, string> = {
-      admin: 'bg-red-100 text-red-800 border-red-200',
-      security: 'bg-blue-100 text-blue-800 border-blue-200',
-      manager: 'bg-purple-100 text-purple-800 border-purple-200',
-      operator: 'bg-green-100 text-green-800 border-green-200',
-      viewer: 'bg-gray-100 text-gray-800 border-gray-200',
+      admin: "bg-red-100 text-red-800 border-red-200",
+      security: "bg-blue-100 text-blue-800 border-blue-200",
+      manager:
+        "bg-purple-100 text-purple-800 border-purple-200",
+      operator: "bg-green-100 text-green-800 border-green-200",
+      viewer: "bg-gray-100 text-gray-800 border-gray-200",
     };
 
     const labels: Record<string, string> = {
-      admin: 'Администратор',
-      security: 'Безопасность',
-      manager: 'Менеджер',
-      operator: 'Оператор',
-      viewer: 'Наблюдатель',
+      admin: "Администратор",
+      security: "Безопасность",
+      manager: "Менеджер",
+      operator: "Оператор",
+      viewer: "Наблюдатель",
     };
 
     return (
-      <Badge className={`${colors[role] || 'bg-gray-100 text-gray-800 border-gray-200'} border`}>
+      <Badge
+        className={`${colors[role] || "bg-gray-100 text-gray-800 border-gray-200"} border`}
+      >
         {labels[role] || role}
       </Badge>
     );
   };
 
   // Получение badge для типа авторизации
-  const getAuthTypeBadge = (authType: 'local' | 'sso') => {
-    return authType === 'local' ? (
+  const getAuthTypeBadge = (authType: "local" | "sso") => {
+    return authType === "local" ? (
       <Badge variant="outline" className="border-gray-300">
         <Lock className="w-3 h-3 mr-1" />
         Локальный
@@ -280,11 +419,16 @@ export function UsersSettingsPage() {
           Управление пользователями
         </h1>
         <p className="text-gray-600">
-          Настройка пользователей и управление ролями системы безопасности
+          Настройка пользователей и управление ролями системы
+          безопасности
         </p>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-6"
+      >
         <TabsList className="grid w-full max-w-md grid-cols-2">
           <TabsTrigger value="users">
             <UserCog className="w-4 h-4 mr-2" />
@@ -306,37 +450,60 @@ export function UsersSettingsPage() {
                 <Input
                   placeholder="Поиск по имени, логину или email..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) =>
+                    setSearchQuery(e.target.value)
+                  }
                   className="pl-10"
                 />
               </div>
-              
-              <Select value={filterRole} onValueChange={setFilterRole}>
+
+              <Select
+                value={filterRole}
+                onValueChange={setFilterRole}
+              >
                 <SelectTrigger className="w-full md:w-48">
                   <SelectValue placeholder="Роль" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Все роли</SelectItem>
-                  <SelectItem value="admin">Администратор</SelectItem>
-                  <SelectItem value="security">Безопасность</SelectItem>
-                  <SelectItem value="manager">Менеджер</SelectItem>
-                  <SelectItem value="operator">Оператор</SelectItem>
-                  <SelectItem value="viewer">Наблюдатель</SelectItem>
+                  <SelectItem value="admin">
+                    Администратор
+                  </SelectItem>
+                  <SelectItem value="security">
+                    Безопасность
+                  </SelectItem>
+                  <SelectItem value="manager">
+                    Менеджер
+                  </SelectItem>
+                  <SelectItem value="operator">
+                    Оператор
+                  </SelectItem>
+                  <SelectItem value="viewer">
+                    Наблюдатель
+                  </SelectItem>
                 </SelectContent>
               </Select>
 
-              <Select value={filterAuthType} onValueChange={setFilterAuthType}>
+              <Select
+                value={filterAuthType}
+                onValueChange={setFilterAuthType}
+              >
                 <SelectTrigger className="w-full md:w-48">
                   <SelectValue placeholder="Тип авторизации" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Все типы</SelectItem>
-                  <SelectItem value="local">Локальные</SelectItem>
+                  <SelectItem value="local">
+                    Локальные
+                  </SelectItem>
                   <SelectItem value="sso">SSO UTMN</SelectItem>
                 </SelectContent>
               </Select>
 
-              <Button onClick={handleAddUser} className="bg-[#00aeef] hover:bg-[#008ac4]">
+              <Button
+                onClick={handleAddUser}
+                className="bg-[#00aeef] hover:bg-[#008ac4]"
+              >
                 <Plus className="w-4 h-4 mr-2" />
                 Добавить
               </Button>
@@ -346,25 +513,41 @@ export function UsersSettingsPage() {
           {/* Статистика */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-white rounded-lg shadow-md p-4">
-              <div className="text-sm text-gray-600 mb-1">Всего пользователей</div>
-              <div className="text-2xl font-bold text-gray-900">{users.length}</div>
+              <div className="text-sm text-gray-600 mb-1">
+                Всего пользователей
+              </div>
+              <div className="text-2xl font-bold text-gray-900">
+                {users.length}
+              </div>
             </div>
             <div className="bg-white rounded-lg shadow-md p-4">
-              <div className="text-sm text-gray-600 mb-1">Активных</div>
+              <div className="text-sm text-gray-600 mb-1">
+                Активных
+              </div>
               <div className="text-2xl font-bold text-green-600">
-                {users.filter(u => u.isActive).length}
+                {users.filter((u) => u.isActive).length}
               </div>
             </div>
             <div className="bg-white rounded-lg shadow-md p-4">
-              <div className="text-sm text-gray-600 mb-1">Локальных</div>
+              <div className="text-sm text-gray-600 mb-1">
+                Локальных
+              </div>
               <div className="text-2xl font-bold text-blue-600">
-                {users.filter(u => u.authType === 'local').length}
+                {
+                  users.filter((u) => u.authType === "local")
+                    .length
+                }
               </div>
             </div>
             <div className="bg-white rounded-lg shadow-md p-4">
-              <div className="text-sm text-gray-600 mb-1">SSO</div>
+              <div className="text-sm text-gray-600 mb-1">
+                SSO
+              </div>
               <div className="text-2xl font-bold text-purple-600">
-                {users.filter(u => u.authType === 'sso').length}
+                {
+                  users.filter((u) => u.authType === "sso")
+                    .length
+                }
               </div>
             </div>
           </div>
@@ -400,11 +583,18 @@ export function UsersSettingsPage() {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredUsers.map((user) => (
-                    <tr key={user.id} className="hover:bg-gray-50">
+                    <tr
+                      key={user.id}
+                      className="hover:bg-gray-50"
+                    >
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div>
-                          <div className="font-medium text-gray-900">{user.fullName}</div>
-                          <div className="text-sm text-gray-500">@{user.username}</div>
+                          <div className="font-medium text-gray-900">
+                            {user.fullName}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            @{user.username}
+                          </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
@@ -419,20 +609,23 @@ export function UsersSettingsPage() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <Switch
                           checked={user.isActive}
-                          onCheckedChange={() => toggleUserStatus(user.id)}
+                          onCheckedChange={() =>
+                            toggleUserStatus(user.id)
+                          }
                         />
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {user.lastLogin 
-                          ? new Date(user.lastLogin).toLocaleDateString('ru-RU', {
-                              day: '2-digit',
-                              month: '2-digit',
-                              year: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit'
+                        {user.lastLogin
+                          ? new Date(
+                              user.lastLogin,
+                            ).toLocaleDateString("ru-RU", {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
                             })
-                          : '—'
-                        }
+                          : "—"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex justify-end gap-2">
@@ -463,7 +656,9 @@ export function UsersSettingsPage() {
 
             {filteredUsers.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-gray-500">Пользоватеи не найдены</p>
+                <p className="text-gray-500">
+                  Пользоватеи не найдены
+                </p>
               </div>
             )}
           </div>
@@ -476,7 +671,10 @@ export function UsersSettingsPage() {
       </Tabs>
 
       {/* Диалог добавления пользователя */}
-      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+      <Dialog
+        open={isAddDialogOpen}
+        onOpenChange={setIsAddDialogOpen}
+      >
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
@@ -494,7 +692,12 @@ export function UsersSettingsPage() {
               <Input
                 id="username"
                 value={formData.username}
-                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    username: e.target.value,
+                  })
+                }
                 placeholder="username или email@utmn.ru"
               />
             </div>
@@ -504,7 +707,12 @@ export function UsersSettingsPage() {
               <Input
                 id="fullName"
                 value={formData.fullName}
-                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    fullName: e.target.value,
+                  })
+                }
                 placeholder="Иванов Иван Иванович"
               />
             </div>
@@ -515,16 +723,25 @@ export function UsersSettingsPage() {
                 id="email"
                 type="email"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    email: e.target.value,
+                  })
+                }
                 placeholder="ivanov@utmn.ru"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="authType">Тип авторизации *</Label>
-              <Select 
-                value={formData.authType} 
-                onValueChange={(value: 'local' | 'sso') => setFormData({ ...formData, authType: value })}
+              <Label htmlFor="authType">
+                Тип авторизации *
+              </Label>
+              <Select
+                value={formData.authType}
+                onValueChange={(value: "local" | "sso") =>
+                  setFormData({ ...formData, authType: value })
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -546,15 +763,20 @@ export function UsersSettingsPage() {
               </Select>
             </div>
 
-            {formData.authType === 'local' && (
+            {formData.authType === "local" && (
               <div className="space-y-2">
                 <Label htmlFor="password">Пароль *</Label>
                 <div className="relative">
                   <Input
                     id="password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        password: e.target.value,
+                      })
+                    }
                     placeholder="Введите пароль"
                   />
                   <Button
@@ -562,7 +784,9 @@ export function UsersSettingsPage() {
                     variant="ghost"
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3"
-                    onClick={() => setShowPassword(!showPassword)}
+                    onClick={() =>
+                      setShowPassword(!showPassword)
+                    }
                   >
                     {showPassword ? (
                       <EyeOff className="w-4 h-4" />
@@ -576,9 +800,11 @@ export function UsersSettingsPage() {
 
             <div className="space-y-2">
               <Label htmlFor="role">Роль *</Label>
-              <Select 
-                value={formData.role} 
-                onValueChange={(value: UserRole) => setFormData({ ...formData, role: value })}
+              <Select
+                value={formData.role}
+                onValueChange={(value: UserRole) =>
+                  setFormData({ ...formData, role: value })
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -591,29 +817,45 @@ export function UsersSettingsPage() {
                   ))}
                 </SelectContent>
               </Select>
-              {roles.find(r => r.name === formData.role) && (
+              {roles.find((r) => r.name === formData.role) && (
                 <p className="text-xs text-gray-500">
-                  {roles.find(r => r.name === formData.role)?.description}
+                  {
+                    roles.find((r) => r.name === formData.role)
+                      ?.description
+                  }
                 </p>
               )}
             </div>
 
             <div className="flex items-center justify-between">
-              <Label htmlFor="isActive">Активный пользователь</Label>
+              <Label htmlFor="isActive">
+                Активный пользователь
+              </Label>
               <Switch
                 id="isActive"
                 checked={formData.isActive}
-                onCheckedChange={(checked) => setFormData({ ...formData, isActive: checked })}
+                onCheckedChange={(checked) =>
+                  setFormData({
+                    ...formData,
+                    isActive: checked,
+                  })
+                }
               />
             </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsAddDialogOpen(false)}
+            >
               <X className="w-4 h-4 mr-2" />
               Отмена
             </Button>
-            <Button onClick={handleSaveNewUser} className="bg-[#00aeef] hover:bg-[#008ac4]">
+            <Button
+              onClick={handleSaveNewUser}
+              className="bg-[#00aeef] hover:bg-[#008ac4]"
+            >
               <Save className="w-4 h-4 mr-2" />
               Сохранить
             </Button>
@@ -622,7 +864,10 @@ export function UsersSettingsPage() {
       </Dialog>
 
       {/* Диалог редактирования пользователя */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+      <Dialog
+        open={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+      >
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
@@ -630,7 +875,8 @@ export function UsersSettingsPage() {
               Редактировать пользователя
             </DialogTitle>
             <DialogDescription>
-              Изменение данных пользователя {selectedUser?.fullName}
+              Изменение данных пользователя{" "}
+              {selectedUser?.fullName}
             </DialogDescription>
           </DialogHeader>
 
@@ -640,7 +886,12 @@ export function UsersSettingsPage() {
               <Input
                 id="edit-username"
                 value={formData.username}
-                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    username: e.target.value,
+                  })
+                }
               />
             </div>
 
@@ -649,7 +900,12 @@ export function UsersSettingsPage() {
               <Input
                 id="edit-fullName"
                 value={formData.fullName}
-                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    fullName: e.target.value,
+                  })
+                }
               />
             </div>
 
@@ -659,15 +915,24 @@ export function UsersSettingsPage() {
                 id="edit-email"
                 type="email"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    email: e.target.value,
+                  })
+                }
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="edit-authType">Тип авторизации *</Label>
-              <Select 
-                value={formData.authType} 
-                onValueChange={(value: 'local' | 'sso') => setFormData({ ...formData, authType: value })}
+              <Label htmlFor="edit-authType">
+                Тип авторизации *
+              </Label>
+              <Select
+                value={formData.authType}
+                onValueChange={(value: "local" | "sso") =>
+                  setFormData({ ...formData, authType: value })
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -689,15 +954,23 @@ export function UsersSettingsPage() {
               </Select>
             </div>
 
-            {formData.authType === 'local' && (
+            {formData.authType === "local" && (
               <div className="space-y-2">
-                <Label htmlFor="edit-password">Новый пароль (оставьте пустым, чтобы не менять)</Label>
+                <Label htmlFor="edit-password">
+                  Новый пароль (оставьте пустым, чтобы не
+                  менять)
+                </Label>
                 <div className="relative">
                   <Input
                     id="edit-password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        password: e.target.value,
+                      })
+                    }
                     placeholder="Введите новый пароль"
                   />
                   <Button
@@ -705,7 +978,9 @@ export function UsersSettingsPage() {
                     variant="ghost"
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3"
-                    onClick={() => setShowPassword(!showPassword)}
+                    onClick={() =>
+                      setShowPassword(!showPassword)
+                    }
                   >
                     {showPassword ? (
                       <EyeOff className="w-4 h-4" />
@@ -719,9 +994,11 @@ export function UsersSettingsPage() {
 
             <div className="space-y-2">
               <Label htmlFor="edit-role">Роль *</Label>
-              <Select 
-                value={formData.role} 
-                onValueChange={(value: UserRole) => setFormData({ ...formData, role: value })}
+              <Select
+                value={formData.role}
+                onValueChange={(value: UserRole) =>
+                  setFormData({ ...formData, role: value })
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -734,29 +1011,45 @@ export function UsersSettingsPage() {
                   ))}
                 </SelectContent>
               </Select>
-              {roles.find(r => r.name === formData.role) && (
+              {roles.find((r) => r.name === formData.role) && (
                 <p className="text-xs text-gray-500">
-                  {roles.find(r => r.name === formData.role)?.description}
+                  {
+                    roles.find((r) => r.name === formData.role)
+                      ?.description
+                  }
                 </p>
               )}
             </div>
 
             <div className="flex items-center justify-between">
-              <Label htmlFor="edit-isActive">Активный пользователь</Label>
+              <Label htmlFor="edit-isActive">
+                Активный пользователь
+              </Label>
               <Switch
                 id="edit-isActive"
                 checked={formData.isActive}
-                onCheckedChange={(checked) => setFormData({ ...formData, isActive: checked })}
+                onCheckedChange={(checked) =>
+                  setFormData({
+                    ...formData,
+                    isActive: checked,
+                  })
+                }
               />
             </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsEditDialogOpen(false)}
+            >
               <X className="w-4 h-4 mr-2" />
               Отмена
             </Button>
-            <Button onClick={handleSaveEditUser} className="bg-[#00aeef] hover:bg-[#008ac4]">
+            <Button
+              onClick={handleSaveEditUser}
+              className="bg-[#00aeef] hover:bg-[#008ac4]"
+            >
               <Save className="w-4 h-4 mr-2" />
               Сохранить
             </Button>
@@ -765,13 +1058,19 @@ export function UsersSettingsPage() {
       </Dialog>
 
       {/* Диалог удаления */}
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Удалить пользователя?</AlertDialogTitle>
+            <AlertDialogTitle>
+              Удалить пользователя?
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              Вы уверены, что хотите удалить пользователя <strong>{selectedUser?.fullName}</strong>?
-              Это действие нельзя отменить.
+              Вы уверены, что хотите удалить пользователя{" "}
+              <strong>{selectedUser?.fullName}</strong>? Это
+              действие нельзя отменить.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

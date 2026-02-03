@@ -11,7 +11,8 @@ const createRoleSchema = Joi.object({
   displayName: Joi.string().min(2).max(100).required(),
   description: Joi.string().max(500).allow('').optional(),
   permissions: Joi.array().items(Joi.string()).default([]),
-  externalGroups: Joi.array().items(Joi.string()).optional()
+  externalGroups: Joi.array().items(Joi.string()).optional(),
+  isSystem: Joi.boolean().optional()
 });
 
 // Схема валидации для обновления роли
@@ -19,7 +20,8 @@ const updateRoleSchema = Joi.object({
   displayName: Joi.string().min(2).max(100),
   description: Joi.string().max(500).allow(''),
   permissions: Joi.array().items(Joi.string()),
-  externalGroups: Joi.array().items(Joi.string())
+  externalGroups: Joi.array().items(Joi.string()),
+  isSystem: Joi.boolean().optional()
 });
 
 class RoleController {
