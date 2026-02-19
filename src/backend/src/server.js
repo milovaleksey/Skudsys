@@ -6,7 +6,7 @@ const morgan = require('morgan');
 require('dotenv').config();
 
 const { connectDatabase } = require('./config/database');
-const updatePermissions = require('../update-permissions');
+const permissionUpdater = require('./utils/permissionUpdater');
 const { errorHandler } = require('./middleware/errorHandler');
 const { rateLimiter } = require('./middleware/rateLimiter');
 
@@ -111,7 +111,7 @@ const startServer = async () => {
 
     // Обновление прав доступа
     console.log('🔄 Обновление прав доступа...');
-    await updatePermissions();
+    await permissionUpdater();
     console.log('✅ Права доступа обновлены');
 
     // Запуск сервера
