@@ -77,4 +77,8 @@ async function updatePermissions() {
   }
 }
 
-updatePermissions();
+module.exports = updatePermissions;
+
+if (require.main === module) {
+  updatePermissions();
+}

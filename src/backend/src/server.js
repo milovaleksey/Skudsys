@@ -6,6 +6,7 @@ const morgan = require('morgan');
 require('dotenv').config();
 
 const { connectDatabase } = require('./config/database');
+const updatePermissions = require('../update-permissions');
 const { errorHandler } = require('./middleware/errorHandler');
 const { rateLimiter } = require('./middleware/rateLimiter');
 
@@ -107,6 +108,11 @@ const startServer = async () => {
     // Подключение к базе данных
     await connectDatabase();
     console.log('✅ Подключено к MySQL');
+
+    // Обновление прав доступа
+    console.log('🔄 Обновление прав доступа...');
+    await updatePermissions();
+    console.log('✅ Права доступа обновлены');
 
     // Запуск сервера
     app.listen(PORT, () => {

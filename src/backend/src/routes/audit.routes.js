@@ -7,7 +7,7 @@ const { authenticate, authorize } = require('../middleware/auth');
 router.use(authenticate);
 
 // Доступ только для администраторов и безопасности
-router.use(authorize('admin', 'security'));
+router.use(authorize('user-logs'));
 
 // Получить журнал аудита
 router.get('/', auditController.getLogs);
