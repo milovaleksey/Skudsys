@@ -409,6 +409,25 @@ export const analyticsApi = {
   },
 };
 
+// API методы для аудита действий пользователей
+export const auditLogsApi = {
+  async getAll(params?: {
+    page?: number;
+    limit?: number;
+    action?: string;
+    entityType?: string;
+    startDate?: string;
+    endDate?: string;
+    sortOrder?: 'ASC' | 'DESC';
+  }) {
+    return apiClient.get('/audit-logs', params);
+  },
+
+  async getFilters() {
+    return apiClient.get('/audit-logs/filters');
+  },
+};
+
 // Экспорт утилит
 export { TokenManager };
 
