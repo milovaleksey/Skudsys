@@ -37,43 +37,38 @@ async function updatePermissions() {
     }
 
     // Update Admin role
-    const [roles] = await connection.query('SELECT * FROM roles WHERE name = ?', ['admin']);
+    const [roles] = await connection.query('SELECT * FROM roles');
     
-    if (roles.length > 0) {
-      const adminRole = roles[0];
-      let permissions = [];
-      
-      try {
-        if (typeof adminRole.permissions === 'string') {
-          permissions = JSON.parse(adminRole.permissions);
-        } else if (Array.isArray(adminRole.permissions)) {
-          permissions = adminRole.permissions;
+    for (const role of roles) {
+      if (role.name === 'admin' || role.name === 'security') {
+        let permissions = [];
+        try {
+          if (typeof role.permissions === 'string') {
+            // Handle potentially malformed JSON or single quotes
+            const cleanJson = role.permissions.replace(/'/g, '"');
+            permissions = JSON.parse(cleanJson);
+          } else if (Array.isArray(role.permissions)) {
+            permissions = role.permissions;
+          }
+        } catch (e) {
+          console.warn(`⚠️ Сброс прав для роли ${role.name} из-за ошибки парсинга:`, e.message);
+          permissions = [];
         }
-      } catch (e) {
-        console.error('Ошибка парсинга прав admin:', e);
-        permissions = [];
-      }
 
-      if (!permissions.includes('user-logs')) {
-        permissions.push('user-logs');
-        await connection.query('UPDATE roles SET permissions = ? WHERE id = ?', [JSON.stringify(permissions), adminRole.id]);
-        console.log('✅ Добавлено право user-logs для роли admin');
-      }
-    }
+        if (!Array.isArray(permissions)) permissions = [];
 
-    // Update Security role
-    const [secRoles] = await connection.query('SELECT * FROM roles WHERE name = ?', ['security']);
-    if (secRoles.length > 0) {
-      const secRole = secRoles[0];
-      let secPerms = [];
-      try {
-        secPerms = typeof secRole.permissions === 'string' ? JSON.parse(secRole.permissions) : secRole.permissions;
-      } catch (e) { secPerms = []; }
-      
-      if (!secPerms.includes('user-logs')) {
-        secPerms.push('user-logs');
-        await connection.query('UPDATE roles SET permissions = ? WHERE id = ?', [JSON.stringify(secPerms), secRole.id]);
-        console.log('✅ Добавлено право user-logs для роли security');
+          if (!permissions.includes('user-logs')) {
+            permissions.push('user-logs');
+            console.log(`➕ Добавление user-logs к роли ${role.name}`);
+            
+            await connection.query(
+              'UPDATE roles SET permissions = ? WHERE id = ?', 
+              [JSON.stringify(permissions), role.id]
+            );
+            console.log(`✅ Права роли ${role.name} обновлены:`, permissions);
+          } else {
+             console.log(`ℹ️ Роль ${role.name} уже имеет права:`, permissions);
+          }
       }
     }
 

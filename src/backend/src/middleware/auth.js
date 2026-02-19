@@ -114,12 +114,14 @@ const authorize = (...requiredPermissions) => {
     );
 
     if (!hasPermission) {
+      console.warn(`[Auth] 403 Forbidden. User: ${req.user.username} (Role: ${req.user.role}). Required: ${requiredPermissions}. Has: ${JSON.stringify(req.user.permissions)}`);
       return res.status(403).json({
         success: false,
         error: {
           code: 'FORBIDDEN',
           message: 'Недостаточно прав доступа',
-          required: requiredPermissions
+          required: requiredPermissions,
+          userPermissions: req.user.permissions // Temporary for debugging
         }
       });
     }

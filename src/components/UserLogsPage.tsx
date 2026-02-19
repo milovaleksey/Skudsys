@@ -99,7 +99,7 @@ export function UserLogsPage() {
         setLogs(responseData.logs || []);
         setTotalLogs(responseData.pagination?.total || 0);
       } else {
-        console.error('UserLogsPage: Failed to load logs', response);
+        console.error('UserLogsPage: Failed to load logs. Error details:', JSON.stringify(response.error, null, 2));
         toast.error('Не удалось загрузить журнал аудита: ' + (response.error?.message || 'Неизвестная ошибка'));
       }
     } catch (error) {
@@ -222,7 +222,7 @@ export function UserLogsPage() {
                 <SelectValue placeholder="Все действия" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Все действия</SelectItem>
+                <SelectItem value="all">Все дей��твия</SelectItem>
                 {filterOptions.actions.map(action => (
                   <SelectItem key={action} value={action}>{action}</SelectItem>
                 ))}
