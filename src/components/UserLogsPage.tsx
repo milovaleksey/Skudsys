@@ -89,18 +89,21 @@ export function UserLogsPage() {
       if (dateFrom) params.startDate = dateFrom;
       if (dateTo) params.endDate = dateTo + ' 23:59:59';
 
+      console.log('UserLogsPage: Loading logs with params:', params);
       const response = await auditLogsApi.getAll(params);
       
       if (response.success && response.data) {
         // @ts-ignore - backend returns logs inside data object wrapper if strictly typed, but let's check structure
         // The API returns { data: { logs: [], pagination: {} } }
-        // My interface definition in api.ts might be slightly generic, but runtime response is what matters.
         const responseData = response.data as any;
         setLogs(responseData.logs || []);
         setTotalLogs(responseData.pagination?.total || 0);
+      } else {
+        console.error('UserLogsPage: Failed to load logs', response);
+        toast.error('Не удалось загрузить журнал аудита: ' + (response.error?.message || 'Неизвестная ошибка'));
       }
     } catch (error) {
-      console.error('Failed to load logs:', error);
+      console.error('UserLogsPage: Exception while loading logs:', error);
       toast.error('Не удалось загрузить журнал аудита');
     } finally {
       setIsLoading(false);
@@ -181,7 +184,7 @@ export function UserLogsPage() {
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Журнал аудита</h2>
           <p className="text-gray-600 mt-1">
-            История изменений и действий пользователей в системе
+            История изменений и д��йствий пользователей в системе
           </p>
         </div>
         
