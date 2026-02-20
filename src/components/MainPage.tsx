@@ -32,10 +32,12 @@ import { useAuth } from '../contexts/AuthContext';
 import { Badge } from './ui/badge';
 import { Logo } from './Logo';
 import { studentsApi, employeesApi, parkingApi } from '../lib/api';
+import { ChangePasswordDialog } from './ChangePasswordDialog';
 
 export function MainPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activePage, setActivePage] = useState('dashboard');
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
   const { user, logout, hasPermission } = useAuth();
 
   const [stats, setStats] = useState([
@@ -254,9 +256,24 @@ export function MainPage() {
                   </span>
                 </div>
               </div>
+              
+              <div className="mt-6 pt-4 border-t border-gray-100">
+                <button
+                  onClick={() => setIsChangePasswordOpen(true)}
+                  className="text-sm text-[#00aeef] hover:underline flex items-center gap-2"
+                >
+                  <Settings size={14} />
+                  Сменить пароль
+                </button>
+              </div>
             </div>
           )}
         </div>
+
+        <ChangePasswordDialog 
+          open={isChangePasswordOpen} 
+          onOpenChange={setIsChangePasswordOpen} 
+        />
 
         {/* Page Content */}
         {activePage === 'dashboard' && (

@@ -19,4 +19,7 @@ router.post('/logout', authenticate, authController.logout);
 // GET /auth/me - информация о текущем пользователе (требует авторизации)
 router.get('/me', authenticate, authController.me);
 
+// POST /auth/change-password - смена пароля (требует авторизации)
+router.post('/change-password', authenticate, authController.changePassword);
+
 module.exports = router;

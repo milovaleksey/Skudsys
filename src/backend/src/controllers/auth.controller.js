@@ -335,6 +335,101 @@ class AuthController {
       next(error);
     }
   }
+
+  // Смена пароля
+  async changePassword(req, res, next) {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      const userId = req.user.id;
+
+      if (!currentPassword || !newPassword) {
+        return res.status(400).json({
+          success: false,
+          error: {
+            code: 'VALIDATION_ERROR',
+            message: 'Необходимо указать текущий и новый пароль'
+          }
+        });
+      }
+
+      if (newPassword.length < 6) {
+        return res.status(400).json({
+          success: false,
+          error: {
+            code: 'VALIDATION_ERROR',
+            message: 'Новый пароль должен быть не менее 6 символов'
+          }
+        });
+      }
+
+      const pool = getPool();
+      
+      // Получаем текущий хэш пароля и тип авторизации
+      const [users] = await pool.query(
+        'SELECT password_hash, auth_type FROM users WHERE id = ?', 
+        [userId]
+      );
+
+      if (users.length === 0) {
+        return res.status(404).json({
+          success: false,
+          error: {
+            code: 'USER_NOT_FOUND',
+            message: 'Пользователь не найден'
+          }
+        });
+      }
+
+      const user = users[0];
+
+      if (user.auth_type !== 'local') {
+        return res.status(400).json({
+          success: false,
+          error: {
+            code: 'INVALID_AUTH_TYPE',
+            message: 'Смена пароля доступна только для локальных аккаунтов'
+          }
+        });
+      }
+
+      // Проверка текущего пароля
+      const isPasswordValid = await bcrypt.compare(currentPassword, user.password_hash);
+      if (!isPasswordValid) {
+        return res.status(401).json({
+          success: false,
+          error: {
+            code: 'INVALID_PASSWORD',
+            message: 'Неверный текущий пароль'
+          }
+        });
+      }
+
+      // Хэширование нового пароля
+      const salt = await bcrypt.genSalt(10);
+      const newPasswordHash = await bcrypt.hash(newPassword, salt);
+
+      // Обновление пароля
+      await pool.query(
+        'UPDATE users SET password_hash = ? WHERE id = ?',
+        [newPasswordHash, userId]
+      );
+
+      // Логирование
+      await pool.query(
+        `INSERT INTO audit_log (user_id, action, entity_type, entity_id, ip_address, user_agent)
+         VALUES (?, 'CHANGE_PASSWORD', 'user', ?, ?, ?)`,
+        [userId, userId, req.ip, req.headers['user-agent']]
+      );
+
+      res.json({
+        success: true,
+        message: 'Пароль успешно изменен'
+      });
+
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new AuthController();

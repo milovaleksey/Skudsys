@@ -237,6 +237,10 @@ export const authApi = {
   async getCurrentUser(): Promise<ApiResponse<LoginResponse['user']>> {
     return apiClient.get<LoginResponse['user']>('/auth/me');
   },
+
+  async changePassword(passwordData: { currentPassword: string; newPassword: string }): Promise<ApiResponse<void>> {
+    return apiClient.post<void>('/auth/change-password', passwordData);
+  },
 };
 
 // API методы для пользователей
