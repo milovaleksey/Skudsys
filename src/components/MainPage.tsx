@@ -233,7 +233,7 @@ export function MainPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-3xl font-bold text-gray-900">
-              Системы безопасности инфраструктуры
+              Системы безопасности инфраструкт��ры
             </h1>
             <button 
               className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/50 transition-colors text-gray-700"
@@ -295,7 +295,7 @@ export function MainPage() {
                 {wsConnected ? (
                   <>
                     <Wifi className="w-5 h-5 text-green-600" />
-                    <span className="text-sm text-green-700 font-medium">MQTT подключен</span>
+                    <span className="text-sm text-green-700 font-medium">Сервер статистики подключен</span>
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   </>
                 ) : (

@@ -77,23 +77,29 @@ export function useMQTTWebSocket() {
         return;
       }
 
-      // Получаем базовый URL API
-      const apiUrl = import.meta.env.VITE_API_URL || '/v1';
+      // Получаем базовый URL API из переменной окружения
+      const apiUrl = import.meta.env.VITE_API_URL || '';
       
-      // Определяем протокол и хост для WebSocket
+      // DEBUG: Выводим что прочитали из .env
+      console.log('[WebSocket] DEBUG: VITE_API_URL =', import.meta.env.VITE_API_URL);
+      console.log('[WebSocket] DEBUG: apiUrl =', apiUrl);
+      
+      // Определяем WebSocket URL
       let wsUrl: string;
       
       // Если VITE_API_URL задан полностью (http://... или https://...)
-      if (apiUrl.startsWith('http://') || apiUrl.startsWith('https://')) {
+      if (apiUrl && (apiUrl.startsWith('http://') || apiUrl.startsWith('https://'))) {
         const url = new URL(apiUrl);
         const protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
         wsUrl = `${protocol}//${url.host}/ws/mqtt?token=${token}`;
+        console.log('[WebSocket] Используем WebSocket URL из VITE_API_URL:', wsUrl);
       } 
-      // Если задан только путь или не задан - используем текущий хост
+      // Если не задан или задан относительный путь - используем текущий хост с портом 3000
       else {
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const host = window.location.host; // host уже содержит порт если есть
-        wsUrl = `${protocol}//${host}/ws/mqtt?token=${token}`;
+        const hostname = window.location.hostname; // только hostname без порта
+        wsUrl = `${protocol}//${hostname}:3000/ws/mqtt?token=${token}`;
+        console.log('[WebSocket] Используем дефолтный WebSocket URL (порт 3000):', wsUrl);
       }
 
       console.log('[WebSocket] Подключение к', wsUrl);
@@ -240,7 +246,7 @@ export function useMQTTPublish() {
         return { success: false, error: response.message };
       }
     } catch (err) {
-      console.error('Ошибка публикации:', err);
+      console.error('шибка публикации:', err);
       return { 
         success: false, 
         error: err instanceof Error ? err.message : 'Ошибка публикации' 

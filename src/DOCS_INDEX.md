@@ -10,6 +10,9 @@
 2. Создайте `.env` с правильным `VITE_API_URL`
 3. Проверьте консоль браузера (F12)
 
+### ❌ WebSocket подключается к неправильному порту (5173 вместо 3000)?
+→ **[FIX_WEBSOCKET_PORT.md](FIX_WEBSOCKET_PORT.md)** 🔌 Исправление порта WebSocket
+
 ### ❌ Backend на другой машине (не localhost)?
 → **[FIX_REMOTE_BACKEND.md](FIX_REMOTE_BACKEND.md)** 🌐 Настройка удалённого backend  
 → **[FOR_YOUR_SITUATION.md](FOR_YOUR_SITUATION.md)** 🎯 Быстрое решение
@@ -139,6 +142,8 @@ mosquitto_pub -h localhost -t "test" -m "hello"
 |----------|----------|
 | Как запустить backend | [START_BACKEND_NOW.md](START_BACKEND_NOW.md) |
 | Backend не подключается | [WEBSOCKET_ERROR_FIX.md](WEBSOCKET_ERROR_FIX.md) |
+| WebSocket подключается к порту 5173 | [FIX_WEBSOCKET_PORT.md](FIX_WEBSOCKET_PORT.md) |
+| Backend на другой машине | [FIX_REMOTE_BACKEND.md](FIX_REMOTE_BACKEND.md) |
 | Быстрый старт всего проекта | [QUICKSTART.md](QUICKSTART.md) |
 | Что было исправлено | [CHANGELOG_MQTT.md](CHANGELOG_MQTT.md) |
 | Тестирование MQTT | [MQTT_FIXES.md](MQTT_FIXES.md) |
