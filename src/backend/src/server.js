@@ -3,12 +3,15 @@ const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
 const morgan = require('morgan');
+const http = require('http');
 require('dotenv').config();
 
 const { connectDatabase } = require('./config/database');
 const permissionUpdater = require('./utils/permissionUpdater');
 const { errorHandler } = require('./middleware/errorHandler');
 const { rateLimiter } = require('./middleware/rateLimiter');
+const mqttService = require('./services/mqtt.service');
+const { initMQTTWebSocket } = require('./websocket/mqtt.ws');
 
 // Импорт маршрутов
 const authRoutes = require('./routes/auth.routes');
@@ -21,6 +24,7 @@ const parkingRoutes = require('./routes/parking.routes');
 const storageRoutes = require('./routes/storage.routes');
 const analyticsRoutes = require('./routes/analytics.routes');
 const auditRoutes = require('./routes/audit.routes');
+const mqttRoutes = require('./routes/mqtt.routes');
 
 const app = express();
 
@@ -75,6 +79,7 @@ app.use(`/${API_VERSION}/parking`, parkingRoutes);
 app.use(`/${API_VERSION}/storage`, storageRoutes);
 app.use(`/${API_VERSION}/analytics`, analyticsRoutes);
 app.use(`/${API_VERSION}/audit-logs`, auditRoutes);
+app.use(`/${API_VERSION}/mqtt`, mqttRoutes);
 
 // API маршруты (версия с /api для совместимости)
 app.use('/api/auth', authRoutes);
@@ -87,6 +92,7 @@ app.use('/api/parking', parkingRoutes);
 app.use('/api/storage', storageRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/audit-logs', auditRoutes);
+app.use('/api/mqtt', mqttRoutes);
 
 // 404 handler
 app.use((req, res) => {
@@ -115,11 +121,23 @@ const startServer = async () => {
     console.log('✅ Права доступа обновлены');
 
     // Запуск сервера
-    app.listen(PORT, () => {
+    const server = http.createServer(app);
+    server.listen(PORT, () => {
       console.log(`🚀 Сервер запущен на порту ${PORT}`);
       console.log(`📡 API: http://localhost:${PORT}/${API_VERSION}`);
       console.log(`🏥 Health: http://localhost:${PORT}/health`);
     });
+
+    // Инициализация MQTT WebSocket
+    initMQTTWebSocket(server);
+
+    // Подключение к MQTT брокеру
+    if (process.env.MQTT_ENABLED !== 'false') {
+      console.log('🔌 Подключение к MQTT брокеру...');
+      mqttService.connect();
+    } else {
+      console.log('⚠️  MQTT отключен в конфигурации');
+    }
   } catch (error) {
     console.error('❌ Ошибка запуска сервера:', error);
     process.exit(1);
@@ -129,11 +147,13 @@ const startServer = async () => {
 // Обработка завершения
 process.on('SIGTERM', () => {
   console.log('SIGTERM получен, завершение работы...');
+  mqttService.disconnect();
   process.exit(0);
 });
 
 process.on('SIGINT', () => {
   console.log('SIGINT получен, завершение работы...');
+  mqttService.disconnect();
   process.exit(0);
 });
 

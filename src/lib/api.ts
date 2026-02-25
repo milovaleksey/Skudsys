@@ -217,6 +217,57 @@ class ApiClient {
 // Экземпляр API клиента
 const apiClient = new ApiClient(API_URL);
 
+/**
+ * Универсальная функция для выполнения API запросов
+ * Используется в хуках и компонентах для прямых запросов
+ */
+export async function apiRequest<T = any>(
+  endpoint: string,
+  options?: RequestInit
+): Promise<ApiResponse<T>> {
+  const token = TokenManager.getToken();
+  
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(options?.headers as Record<string, string>),
+  };
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      ...options,
+      headers,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: data.error || {
+          code: 'UNKNOWN_ERROR',
+          message: data.message || 'Произошла ошибка при выполнении запроса',
+        },
+      };
+    }
+
+    return data;
+  } catch (error) {
+    console.error('API Request Error:', error);
+    return {
+      success: false,
+      error: {
+        code: 'NETWORK_ERROR',
+        message: 'Не удалось подключиться к серверу',
+        details: error,
+      },
+    };
+  }
+}
+
 // API методы для авторизации
 export const authApi = {
   async login(credentials: LoginRequest): Promise<ApiResponse<LoginResponse>> {
@@ -432,6 +483,25 @@ export const auditLogsApi = {
   async getFilters() {
     return apiClient.get('/audit-logs/filters');
   }
+};
+
+// API методы для MQTT
+export const mqttApi = {
+  async getCards() {
+    return apiClient.get('/mqtt/cards');
+  },
+
+  async getValues() {
+    return apiClient.get('/mqtt/values');
+  },
+
+  async getStatus() {
+    return apiClient.get('/mqtt/status');
+  },
+
+  async publish(topic: string, message: string, retain = false) {
+    return apiClient.post('/mqtt/publish', { topic, message, retain });
+  },
 };
 
 // Экспорт утилит

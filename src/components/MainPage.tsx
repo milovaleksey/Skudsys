@@ -15,7 +15,10 @@ import {
   Settings,
   Layout,
   ScrollText,
-  Search
+  Search,
+  Wifi,
+  WifiOff,
+  RefreshCw
 } from 'lucide-react';
 import { PassesReportPage } from './PassesReportPage';
 import { LocationPage } from './LocationPage';
@@ -28,11 +31,15 @@ import { RolesManagementPage } from './RolesManagementPage';
 import { DashboardBuilder } from './DashboardBuilder';
 import { UserLogsPage } from './UserLogsPage';
 import { IdentifierSearchPage } from './IdentifierSearchPage';
+import { DynamicStatCard } from './DynamicStatCard';
 import { useAuth } from '../contexts/AuthContext';
 import { Badge } from './ui/badge';
+import { Button } from './ui/button';
 import { Logo } from './Logo';
 import { studentsApi, employeesApi, parkingApi } from '../lib/api';
 import { ChangePasswordDialog } from './ChangePasswordDialog';
+import { useMQTTWebSocket } from '../hooks/useMQTT';
+import { Card } from './ui/card';
 
 export function MainPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -40,6 +47,10 @@ export function MainPage() {
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
   const { user, logout, hasPermission } = useAuth();
 
+  // WebSocket подключение к MQTT через backend
+  const { cards: mqttCards, status: mqttStatus, isConnected: wsConnected, error: mqttError, reconnect } = useMQTTWebSocket();
+
+  // Fallback статистика из API (если MQTT не подключен)
   const [stats, setStats] = useState([
     { label: 'Всего студентов', value: '...' },
     { label: 'Всего сотрудников', value: '...' },
@@ -65,10 +76,10 @@ export function MainPage() {
       }
     };
     
-    if (activePage === 'dashboard') {
+    if (activePage === 'dashboard' && !wsConnected) {
       loadStats();
     }
-  }, [activePage]);
+  }, [activePage, wsConnected]);
 
   // Получение метки роли
   const getRoleLabel = (role: string) => {
@@ -278,21 +289,90 @@ export function MainPage() {
         {/* Page Content */}
         {activePage === 'dashboard' && (
           <div>
-            
+            {/* MQTT Connection Status */}
+            <div className="mb-6 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                {wsConnected ? (
+                  <>
+                    <Wifi className="w-5 h-5 text-green-600" />
+                    <span className="text-sm text-green-700 font-medium">MQTT подключен</span>
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  </>
+                ) : (
+                  <>
+                    <WifiOff className="w-5 h-5 text-gray-400" />
+                    <span className="text-sm text-gray-600">MQTT отключен (используются API данные)</span>
+                  </>
+                )}
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={reconnect}
+                className="flex items-center gap-2"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Переподключиться
+              </Button>
+            </div>
+
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">Статистика</h2>
+            
+            {/* Динамические карточки из MQTT или статичные из API */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow"
-                >
-                  <div className="text-sm text-gray-600 mb-2">{stat.label}</div>
-                  <div className="text-3xl font-bold" style={{ color: '#00aeef' }}>
-                    {stat.value}
+              {wsConnected && mqttCards.length > 0 ? (
+                // Динамические карточки из MQTT
+                mqttCards.map((card) => (
+                  <DynamicStatCard
+                    key={card.id}
+                    card={card}
+                    value={card.value}
+                  />
+                ))
+              ) : (
+                // Fallback статичные карточки из API
+                stats.map((stat, index) => (
+                  <div
+                    key={index}
+                    className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow"
+                  >
+                    <div className="text-sm text-gray-600 mb-2">{stat.label}</div>
+                    <div className="text-3xl font-bold" style={{ color: '#00aeef' }}>
+                      {stat.value}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Информационное сообщение если MQTT не подключен */}
+            {!wsConnected && !mqttError && (
+              <Card className="mt-6 p-4 bg-blue-50 border-blue-200">
+                <div className="flex items-start gap-3">
+                  <Wifi className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div className="text-sm text-blue-900">
+                    <p className="font-medium mb-1">Подключите MQTT для динамических данных</p>
+                    <p className="text-xs text-blue-700">
+                      Для отображения карточек в реальном времени настройте MQTT подключение. 
+                      Конфигурация карточек загружается из топика <code className="bg-blue-100 px-1 rounded">Skud/main/stat</code>.
+                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
+              </Card>
+            )}
+
+            {/* Ошибка подключения MQTT */}
+            {mqttError && (
+              <Card className="mt-6 p-4 bg-red-50 border-red-200">
+                <div className="flex items-start gap-3">
+                  <WifiOff className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  <div className="text-sm text-red-900">
+                    <p className="font-medium mb-1">Ошибка подключения к MQTT</p>
+                    <p className="text-xs text-red-700">{mqttError}</p>
+                  </div>
+                </div>
+              </Card>
+            )}
           </div>
         )}
 
