@@ -14,7 +14,10 @@ const createUserSchema = Joi.object({
   }),
   role: Joi.string().required(),
   authType: Joi.string().valid('local', 'sso').required(),
-  isActive: Joi.boolean().default(true)
+  isActive: Joi.alternatives().try(
+    Joi.boolean(),
+    Joi.number().valid(0, 1)
+  ).default(true)
 });
 
 // Схема валидации для обновления пользователя
@@ -24,7 +27,10 @@ const updateUserSchema = Joi.object({
   password: Joi.string().min(8).optional().allow(''), // Добавлено поле для смены пароля
   role: Joi.string(),
   authType: Joi.string().valid('local', 'sso'),
-  isActive: Joi.boolean()
+  isActive: Joi.alternatives().try(
+    Joi.boolean(),
+    Joi.number().valid(0, 1)
+  )
 });
 
 class UserController {
@@ -178,6 +184,11 @@ class UserController {
         });
       }
 
+      // Преобразование isActive из числа в boolean
+      if (value.isActive !== undefined) {
+        value.isActive = Boolean(value.isActive);
+      }
+
       const pool = getPool();
 
       // Проверка существования роли
@@ -281,6 +292,11 @@ class UserController {
             details: error.details.map(d => ({ field: d.path[0], message: d.message }))
           }
         });
+      }
+
+      // Преобразование isActive из числа в boolean
+      if (value.isActive !== undefined) {
+        value.isActive = Boolean(value.isActive);
       }
 
       const pool = getPool();
@@ -478,7 +494,7 @@ class UserController {
     try {
       const pool = getPool();
 
-      // Общая статистика
+      // Об��ая статистика
       const [stats] = await pool.query(`
         SELECT 
           COUNT(*) as total,
