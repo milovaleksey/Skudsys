@@ -4,11 +4,23 @@
  */
 
 // Конфигурация API
-// Если VITE_API_BASE_URL пустой или не задан, используем относительный путь (для Nginx proxy)
-// Иначе используем полный URL (для прямого подключения)
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-const API_VERSION = import.meta.env.VITE_API_VERSION || 'v1';
-const API_URL = API_BASE_URL ? `${API_BASE_URL}/${API_VERSION}` : `/${API_VERSION}`;
+// Если VITE_API_URL задан, используем его полностью
+// Иначе используем относительный путь /v1 (для Nginx proxy на том же домене)
+const getApiUrl = (): string => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  
+  if (apiUrl) {
+    // Если задан полный URL - используем его как есть
+    console.log('🌐 Using API URL from env:', apiUrl);
+    return apiUrl;
+  }
+  
+  // Иначе используем относительный путь
+  console.log('🌐 Using relative API URL: /v1');
+  return '/v1';
+};
+
+const API_URL = getApiUrl();
 
 // Типы
 export interface ApiResponse<T> {
@@ -109,10 +121,38 @@ class ApiClient {
     }
 
     try {
-      const response = await fetch(`${this.baseUrl}${endpoint}`, {
+      const url = `${this.baseUrl}${endpoint}`;
+      console.log('🌐 Full URL:', url);
+      
+      const response = await fetch(url, {
         ...options,
         headers,
       });
+
+      console.log('📡 Response status:', response.status);
+      console.log('📡 Response content-type:', response.headers.get('content-type'));
+
+      // Проверяем, что получили JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('❌ Got non-JSON response! Content-Type:', contentType);
+        const text = await response.text();
+        console.error('❌ Response body preview:', text.substring(0, 200));
+        
+        return {
+          success: false,
+          error: {
+            code: 'INVALID_RESPONSE',
+            message: `Сервер вернул ${contentType || 'неизвестный тип'} вместо JSON. Проверьте что backend запущен и доступен по адресу: ${this.baseUrl}`,
+            details: {
+              url,
+              status: response.status,
+              contentType,
+              preview: text.substring(0, 200)
+            },
+          },
+        };
+      }
 
       const data = await response.json();
 
@@ -510,7 +550,7 @@ export { TokenManager };
 // Проверка здоровья API
 export async function checkApiHealth(): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE_URL}/health`);
+    const response = await fetch(`${API_URL}/health`);
     const data = await response.json();
     return data.success === true;
   } catch (error) {
@@ -520,4 +560,4 @@ export async function checkApiHealth(): Promise<boolean> {
 }
 
 // Экспорт базового URL для других нужд
-export { API_BASE_URL, API_VERSION, API_URL };
+export { API_URL };

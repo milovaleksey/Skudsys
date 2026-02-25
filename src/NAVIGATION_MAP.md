@@ -48,9 +48,15 @@
 ### 🚨 Срочная помощь (начните здесь!)
 ```
 DO_THIS_NOW.md
-    └─> Что делать ПРЯМО СЕЙЧАС (3 команды)
-        ├─> Backend не запускается?
-        │   └─> START_BACKEND_NOW.md
+    └─> Выберите вашу ошибку:
+        ├─> "Unexpected token <!DOCTYPE" (JSON ошибка)?
+        │   └─> FIX_JSON_ERROR.md ← НОВОЕ! 📋
+        │   └─> Backend не запущен?
+        │       └─> START_BACKEND_NOW.md
+        │
+        ├─> Backend на другой машине?
+        │   └─> FIX_REMOTE_BACKEND.md 🌐
+        │   └─> FOR_YOUR_SITUATION.md
         │
         ├─> WebSocket не подключается?
         │   └─> WEBSOCKET_ERROR_FIX.md

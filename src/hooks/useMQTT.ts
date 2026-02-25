@@ -77,15 +77,24 @@ export function useMQTTWebSocket() {
         return;
       }
 
-      // Определяем протокол WebSocket (ws или wss)
-      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-      const host = window.location.hostname;
-      const port = import.meta.env.VITE_API_PORT || '3000';
+      // Получаем базовый URL API
+      const apiUrl = import.meta.env.VITE_API_URL || '/v1';
       
-      // Для локальной разработки используем localhost:3000
-      const wsUrl = import.meta.env.DEV 
-        ? `ws://localhost:3000/ws/mqtt?token=${token}`
-        : `${protocol}//${host}:${port}/ws/mqtt?token=${token}`;
+      // Определяем протокол и хост для WebSocket
+      let wsUrl: string;
+      
+      // Если VITE_API_URL задан полностью (http://... или https://...)
+      if (apiUrl.startsWith('http://') || apiUrl.startsWith('https://')) {
+        const url = new URL(apiUrl);
+        const protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+        wsUrl = `${protocol}//${url.host}/ws/mqtt?token=${token}`;
+      } 
+      // Если задан только путь или не задан - используем текущий хост
+      else {
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const host = window.location.host; // host уже содержит порт если есть
+        wsUrl = `${protocol}//${host}/ws/mqtt?token=${token}`;
+      }
 
       console.log('[WebSocket] Подключение к', wsUrl);
 

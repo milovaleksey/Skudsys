@@ -2,6 +2,18 @@
 
 ## 🚨 Срочно нужна помощь?
 
+### ❌ Ошибка: "Unexpected token '<', "<!DOCTYPE"... is not valid JSON"
+→ **[FIX_JSON_ERROR.md](FIX_JSON_ERROR.md)** 📋 Полное руководство по JSON ошибкам
+
+**Краткое решение:**
+1. Проверьте что backend запущен
+2. Создайте `.env` с правильным `VITE_API_URL`
+3. Проверьте консоль браузера (F12)
+
+### ❌ Backend на другой машине (не localhost)?
+→ **[FIX_REMOTE_BACKEND.md](FIX_REMOTE_BACKEND.md)** 🌐 Настройка удалённого backend  
+→ **[FOR_YOUR_SITUATION.md](FOR_YOUR_SITUATION.md)** 🎯 Быстрое решение
+
 ### ❌ Backend не запускается / WebSocket не подключается?
 → **[START_BACKEND_NOW.md](START_BACKEND_NOW.md)** ⚡ Решение за 3 команды!
 
@@ -55,7 +67,7 @@
 │   │   ├── services/              # Бизнес-логика
 │   │   ├── middleware/            # Express middleware
 │   │   ├── websocket/             # WebSocket сервер
-│   │   └── server.js              # Точка входа
+│   │   └── server.js              # Точка вход
 │   ├── add-mqtt-permissions.js    # Скрипт прав доступа
 │   ├── .env.example               # Пример конфигурации
 │   └── .env.mqtt.example          # Пример MQTT конфигурации

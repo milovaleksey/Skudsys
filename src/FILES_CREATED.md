@@ -12,6 +12,7 @@
 2. `/backend/.env.mqtt.example` - Пример конфигурации MQTT
 3. `/start-backend.sh` - Автоматический запуск (Linux/Mac)
 4. `/start-backend.bat` - Автоматический запуск (Windows)
+5. `/.env.example` - 🌐 Пример конфигурации frontend (НОВОЕ!)
 
 ---
 
@@ -19,20 +20,22 @@
 
 ### Срочная помощь:
 1. `/DO_THIS_NOW.md` ⚡ - **НАЧНИТЕ ОТСЮДА!** Что делать прямо сейчас
-2. `/START_BACKEND_NOW.md` 🚨 - Как запустить backend за 3 команды
+2. `/QUICK_FIX.md` 🚨 - **НОВОЕ!** Быстрое решение за 3 шага
+3. `/START_BACKEND_NOW.md` 🚨 - Как запустить backend за 3 команды
+4. `/FOR_YOUR_SITUATION.md` 🎯 - Специально для вашей ситуации
 
 ### Руководства:
-3. `/WEBSOCKET_ERROR_FIX.md` 🔧 - Полное руководство по устранению ошибок WebSocket
-4. `/QUICKSTART.md` 🚀 - Быстрый старт всего проекта за 4 шага
+5. `/FIX_JSON_ERROR.md` 📋 - **НОВОЕ!** Исправление JSON ошибок
+6. `/FIX_REMOTE_BACKEND.md` 🌐 - Backend на другой машине
+7. `/WEBSOCKET_ERROR_FIX.md` 🔧 - Полное руководство по устранению ошибок WebSocket
+8. `/QUICKSTART.md` 🚀 - Быстрый старт всего проекта за 4 шага
 
 ### Справочная информация:
-5. `/CHANGELOG_MQTT.md` 📋 - Детальная история всех изменений
-6. `/MQTT_FIXES.md` 📝 - Описание исправлений + инструкции по тестированию
-7. `/DOCS_INDEX.md` 📖 - Навигация по всей документации
+9. `/DOCS_INDEX.md` 📖 - Навигация по всей документации
 
 ### Сводка:
-8. `/README_SUMMARY.md` ✅ - Краткое резюме всех изменений
-9. `/FILES_CREATED.md` 📦 - Этот файл
+10. `/README_SUMMARY.md` ✅ - Краткое резюме всех изменений
+11. `/FILES_CREATED.md` 📦 - Этот файл
 
 ---
 

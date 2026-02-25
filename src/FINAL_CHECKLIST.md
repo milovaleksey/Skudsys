@@ -24,6 +24,8 @@
 - [x] `/DO_THIS_NOW.md` - Что делать прямо сейчас
 - [x] `/START_BACKEND_NOW.md` - Запуск backend за 3 команды
 - [x] `/WEBSOCKET_ERROR_FIX.md` - Устранение ошибок WebSocket
+- [x] `/FIX_REMOTE_BACKEND.md` - 🌐 Backend на другой машине (НОВОЕ!)
+- [x] `/FOR_YOUR_SITUATION.md` - ⚡ Специально для вашей ситуации
 - [x] `/QUICKSTART.md` - Быстрый старт проекта
 - [x] `/CHANGELOG_MQTT.md` - История изменений
 - [x] `/MQTT_FIXES.md` - Описание исправлений
@@ -31,6 +33,7 @@
 - [x] `/DOCS_INDEX.md` - Навигация по документации
 - [x] `/NAVIGATION_MAP.md` - Визуальная карта
 - [x] `/README_MQTT_START.md` - Главная точка входа
+- [x] `/.env.example` - Пример конфигурации frontend
 
 ### 4. Обновлены файлы проекта (3):
 - [x] `/backend/src/routes/mqtt.routes.js`

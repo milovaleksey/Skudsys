@@ -1,11 +1,38 @@
 # 🎯 ЧТО ДЕЛАТЬ ПРЯМО СЕЙЧАС
 
-## Ваша проблема:
-```
-WebSocket connection failed: ERR_CONNECTION_REFUSED
-```
+## Какая у вас проблема?
 
-## Решение (3 команды):
+### ❌ Ошибка: "Unexpected token '<', "<!DOCTYPE"... is not valid JSON"
+
+→ См. **[FIX_JSON_ERROR.md](FIX_JSON_ERROR.md)** 📋
+
+**Краткое решение:**
+1. Backend запущен? → `cd backend && npm run dev`
+2. Backend на другой машине? → Создайте `.env` с `VITE_API_URL=http://IP:3000/v1`
+3. Перезапустите frontend: `npm run dev`
+
+---
+
+### ❌ Ошибка: WebSocket connection failed: ERR_CONNECTION_REFUSED
+
+→ См. **[WEBSOCKET_ERROR_FIX.md](WEBSOCKET_ERROR_FIX.md)** 🔧
+
+---
+
+## ⚠️ ВАЖНО: Backend на другой машине?
+
+**Если ваш backend сервер находится на другой машине (не localhost):**
+
+→ См. **[FIX_REMOTE_BACKEND.md](FIX_REMOTE_BACKEND.md)** 🌐
+
+**Краткое решение:**
+1. Создайте файл `.env` в корне проекта
+2. Добавьте: `VITE_API_URL=http://IP_ВАШЕГО_СЕРВЕРА:3000/v1`
+3. Перезапустите frontend: `npm run dev`
+
+---
+
+## Решение для localhost (3 команды):
 
 ### 1️⃣ Откройте новый терминал
 
