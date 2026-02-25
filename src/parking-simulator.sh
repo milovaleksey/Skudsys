@@ -3,10 +3,12 @@
 # Симулятор live обновлений парковок
 # Случайно добавляет/удаляет автомобили каждые 5 секунд
 
-MQTT_HOST="localhost"
-MQTT_PORT="1883"
+# ⚙️ Конфигурация MQTT сервера
+MQTT_HOST="${MQTT_HOST:-localhost}"
+MQTT_PORT="${MQTT_PORT:-1883}"
 
 echo "🔄 Запуск симулятора парковок..."
+echo "   Сервер: $MQTT_HOST:$MQTT_PORT"
 echo "   Нажмите Ctrl+C для остановки"
 echo ""
 

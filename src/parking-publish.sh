@@ -1,10 +1,13 @@
 #!/bin/bash
 
 # Конфигурация MQTT
-MQTT_HOST="localhost"
-MQTT_PORT="1883"
+# ⚙️ Измените на адрес вашего MQTT сервера
+MQTT_HOST="${MQTT_HOST:-localhost}"
+MQTT_PORT="${MQTT_PORT:-1883}"
 
 echo "🚗 Публикация конфигурации парковок..."
+echo "   Сервер: $MQTT_HOST:$MQTT_PORT"
+echo ""
 
 # 1. Публикуем конфигурацию парковок
 mosquitto_pub -h $MQTT_HOST -p $MQTT_PORT \

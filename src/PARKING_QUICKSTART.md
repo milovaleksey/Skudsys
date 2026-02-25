@@ -3,10 +3,13 @@
 ## ⚡ Запуск за 3 команды
 
 ```bash
-# 1. Сделать исполняемыми
-chmod +x parking-publish.sh parking-simulator.sh
+# 1. Перезапустить backend
+cd /var/www/utmn-security/debug/backend && npm start
 
-# 2. Опубликовать парковки
+# 2. Опубликовать парковки (в новом терминале)
+cd /var/www/utmn-security/debug
+export MQTT_HOST=10.101.221.232
+chmod +x parking-publish.sh
 ./parking-publish.sh
 
 # 3. Открыть страницу "Парковочная система"
@@ -26,6 +29,7 @@ chmod +x parking-publish.sh parking-simulator.sh
 ## 🔄 Live обновления
 
 ```bash
+export MQTT_HOST=10.101.221.232
 ./parking-simulator.sh
 ```
 
@@ -46,8 +50,8 @@ chmod +x parking-publish.sh parking-simulator.sh
 }
 
 # 2. Опубликовать
-mosquitto_pub -t "Skud/parking/config" -f parking-config.json
-mosquitto_pub -t "Skud/parking/new/vehicles" -m '[]'
+mosquitto_pub -h 10.101.221.232 -t "Skud/parking/config" -f parking-config.json
+mosquitto_pub -h 10.101.221.232 -t "Skud/parking/new/vehicles" -m '[]'
 ```
 
 ---
@@ -56,10 +60,10 @@ mosquitto_pub -t "Skud/parking/new/vehicles" -m '[]'
 
 ```bash
 # Конфигурация
-mosquitto_sub -t "Skud/parking/config" -C 1
+mosquitto_sub -h 10.101.221.232 -t "Skud/parking/config" -C 1
 
 # Транспорт
-mosquitto_sub -t "Skud/parking/+/vehicles" -v
+mosquitto_sub -h 10.101.221.232 -t "Skud/parking/+/vehicles" -v
 ```
 
 ---
@@ -67,12 +71,12 @@ mosquitto_sub -t "Skud/parking/+/vehicles" -v
 ## 🐛 Не работает?
 
 1. Backend перезапущен? `ps aux | grep node`
-2. Mosquitto работает? `systemctl status mosquitto`
-3. Конфигурация опубликована? `./parking-publish.sh`
+2. MQTT_BROKER в .env? `cat /var/www/utmn-security/debug/backend/.env | grep MQTT_BROKER`
+3. Конфигурация опубликована? `MQTT_HOST=10.101.221.232 ./parking-publish.sh`
 4. WebSocket подключен? Смотрите "Система парковок подключена"
 
 ---
 
 ## 📖 Подробнее
 
-Читайте `PARKING_MQTT_GUIDE.md` или `PARKING_SETUP_COMPLETE.md`
+Читайте `PARKING_FINAL_READY.md` или `PARKING_MQTT_GUIDE.md`

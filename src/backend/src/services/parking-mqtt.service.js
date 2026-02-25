@@ -8,11 +8,11 @@ class ParkingMQTTService {
     this.parkingVehicles = {};
     this.wsClients = new Set();
     
-    // MQTT настройки
-    this.mqttHost = process.env.MQTT_HOST || 'localhost';
-    this.mqttPort = process.env.MQTT_PORT || 1883;
-    this.mqttUsername = process.env.MQTT_USERNAME || '';
-    this.mqttPassword = process.env.MQTT_PASSWORD || '';
+    // MQTT настройки (используем те же переменные что и основной MQTT)
+    this.mqttBroker = process.env.MQTT_BROKER || 'localhost';
+    this.mqttPort = parseInt(process.env.MQTT_PORT) || 1883;
+    this.mqttUsername = process.env.MQTT_USERNAME || undefined;
+    this.mqttPassword = process.env.MQTT_PASSWORD || undefined;
   }
 
   /**
@@ -20,20 +20,20 @@ class ParkingMQTTService {
    */
   connect() {
     try {
+      const url = `mqtt://${this.mqttBroker}:${this.mqttPort}`;
+      
+      console.log(`[Parking MQTT] Подключение к брокеру: ${url}`);
+
       const options = {
-        host: this.mqttHost,
-        port: this.mqttPort,
-        clientId: `utmn_parking_${Math.random().toString(16).slice(2, 10)}`,
         clean: true,
+        connectTimeout: 4000,
+        clientId: `utmn_parking_${Math.random().toString(16).slice(2, 10)}`,
+        username: this.mqttUsername,
+        password: this.mqttPassword,
         reconnectPeriod: 5000,
       };
 
-      if (this.mqttUsername) {
-        options.username = this.mqttUsername;
-        options.password = this.mqttPassword;
-      }
-
-      this.client = mqtt.connect(options);
+      this.client = mqtt.connect(url, options);
 
       this.client.on('connect', () => {
         console.log('[Parking MQTT] ✅ Подключено к брокеру');
@@ -42,7 +42,7 @@ class ParkingMQTTService {
         // Подписываемся на конфигурацию парковок
         this.client.subscribe('Skud/parking/config', (err) => {
           if (err) {
-            console.error('[Parking MQTT] О��ибка подписки на config:', err);
+            console.error('[Parking MQTT] Оибка подписки на config:', err);
           } else {
             console.log('[Parking MQTT] ✅ Подписка на Skud/parking/config');
           }
