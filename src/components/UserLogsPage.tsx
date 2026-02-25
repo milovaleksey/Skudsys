@@ -184,7 +184,7 @@ export function UserLogsPage() {
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Журнал аудита</h2>
           <p className="text-gray-600 mt-1">
-            История изменений и д��йствий пользователей в системе
+            История изменений и действий пользователей в системе
           </p>
         </div>
         
@@ -222,7 +222,7 @@ export function UserLogsPage() {
                 <SelectValue placeholder="Все действия" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Все дей��твия</SelectItem>
+                <SelectItem value="all">Все действия</SelectItem>
                 {filterOptions.actions.map(action => (
                   <SelectItem key={action} value={action}>{action}</SelectItem>
                 ))}
