@@ -21,6 +21,7 @@ const createUserSchema = Joi.object({
 const updateUserSchema = Joi.object({
   fullName: Joi.string().min(2).max(200),
   email: Joi.string().email(),
+  password: Joi.string().min(8).optional().allow(''), // Добавлено поле для смены пароля
   role: Joi.string(),
   authType: Joi.string().valid('local', 'sso'),
   isActive: Joi.boolean()
@@ -336,6 +337,13 @@ class UserController {
         updateParams.push(value.isActive ? 1 : 0);
       }
 
+      // Обработка смены пароля
+      if (value.password) {
+        const passwordHash = await bcrypt.hash(value.password, parseInt(process.env.BCRYPT_ROUNDS) || 10);
+        updateFields.push('password_hash = ?');
+        updateParams.push(passwordHash);
+      }
+
       if (updateFields.length === 0) {
         return res.status(400).json({
           success: false,
@@ -360,6 +368,7 @@ class UserController {
       if (value.role && value.role !== currentUser.role_name) changes.role = { old: currentUser.role_name, new: value.role };
       if (value.authType && value.authType !== currentUser.auth_type) changes.authType = { old: currentUser.auth_type, new: value.authType };
       if (value.isActive !== undefined && Boolean(value.isActive) !== Boolean(currentUser.is_active)) changes.isActive = { old: Boolean(currentUser.is_active), new: Boolean(value.isActive) };
+      if (value.password) changes.password = { old: '*****', new: '*****' };
 
       if (Object.keys(changes).length > 0) {
         await pool.query(

@@ -210,7 +210,7 @@ export function UsersSettingsPage() {
       const response = await usersApi.create(formData);
 
       if (response.success) {
-        toast.success("Пол��зователь успешно добавлен");
+        toast.success("Пользователь успешно добавлен");
         setIsAddDialogOpen(false);
         loadUsers();
       } else {
@@ -242,15 +242,10 @@ export function UsersSettingsPage() {
         isActive: formData.isActive,
       };
 
-      // Если пароль введен, добавляем его (для локальных)
-      // В API нет смены пароля через update, но для локальных может понадобиться отдельный вызов
-      // Если API update поддерживает смену пароля (не поддерживает, судя по коду контроллера)
-      // То пароль меняется только через отдельный эндпоинт changePassword или если добавить поддержку в update
-
-      // Проверим контроллер: updateUserSchema не содержит password.
-      // Значит пароль здесь не обновится.
-      // Если пользователь хочет сменить пароль, нужно использовать отдельный механизм,
-      // но в UI диалоге есть поле пароля.
+      // Если пароль введен, добавляем его (теперь поддерживается через API update)
+      if (formData.authType === "local" && formData.password && formData.password.trim().length > 0) {
+        updateData.password = formData.password;
+      }
 
       const response = await usersApi.update(
         selectedUser.id,
@@ -258,23 +253,6 @@ export function UsersSettingsPage() {
       );
 
       if (response.success) {
-        // Если был введен пароль и это локальный пользователь, попробуем его сменить
-        if (
-          formData.authType === "local" &&
-          formData.password
-        ) {
-          // В контроллере нет эндпоинта для админа на смену пароля другому пользователю без знания старого.
-          // Обычно админ может сбросить пароль.
-          // Но у нас usersApi.changePassword требует oldPassword.
-          // Значит, пока пропустим смену пароля здесь или добавим функционал в бэкенд позже.
-          // Или использу��м хак: если бэкенд позволяет. Но он не позволяет.
-          if (formData.password.length > 0) {
-            toast.warning(
-              "Смена пароля администратором пока не поддерживается через этот интерфейс",
-            );
-          }
-        }
-
         toast.success("Изменения сохранены");
         setIsEditDialogOpen(false);
         setSelectedUser(null);
