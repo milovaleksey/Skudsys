@@ -266,9 +266,13 @@ class UserController {
     try {
       const { id } = req.params;
 
+      // Логирование для отладки
+      console.log('🔧 Update user request:', { id, body: req.body });
+
       // Валидация
       const { error, value } = updateUserSchema.validate(req.body);
       if (error) {
+        console.error('❌ Validation error:', error.details);
         return res.status(400).json({
           success: false,
           error: {

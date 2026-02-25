@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { User, useAuth } from "../contexts/AuthContext";
 import { usersApi } from "../lib/api";
 import { RolesManagementPage } from "./RolesManagementPage";
+import { PasswordRequirements } from "./PasswordRequirements";
 import {
   Search,
   Plus,
@@ -773,6 +774,7 @@ export function UsersSettingsPage() {
                     )}
                   </Button>
                 </div>
+                <PasswordRequirements password={formData.password} />
               </div>
             )}
 
@@ -967,6 +969,7 @@ export function UsersSettingsPage() {
                     )}
                   </Button>
                 </div>
+                <PasswordRequirements password={formData.password} />
               </div>
             )}
 
