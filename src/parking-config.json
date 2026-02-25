@@ -1,0 +1,25 @@
+{
+  "parkings": [
+    {
+      "id": "parking_k1",
+      "name": "Парковка К1",
+      "address": "ул. Володарского, 6",
+      "maxCapacity": 50,
+      "vehiclesTopic": "Skud/parking/k1/vehicles"
+    },
+    {
+      "id": "parking_k5",
+      "name": "Парковка К5",
+      "address": "ул. Ленина, 25",
+      "maxCapacity": 40,
+      "vehiclesTopic": "Skud/parking/k5/vehicles"
+    },
+    {
+      "id": "parking_central",
+      "name": "Центральная парковка",
+      "address": "ул. Республики, 47",
+      "maxCapacity": 75,
+      "vehiclesTopic": "Skud/parking/central/vehicles"
+    }
+  ]
+}

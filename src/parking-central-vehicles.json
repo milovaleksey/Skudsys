@@ -1,0 +1,72 @@
+[
+  {
+    "entryTime": "2026-02-25 07:45:12",
+    "fullName": "Кузнецов Дмитрий Петрович",
+    "upn": "kuznetsov@utmn.ru",
+    "carBrand": "Lada Vesta",
+    "licensePlate": "А789АА72"
+  },
+  {
+    "entryTime": "2026-02-25 08:20:33",
+    "fullName": "Смирнова Екатерина Андреевна",
+    "upn": "smirnova@utmn.ru",
+    "carBrand": "Hyundai Creta",
+    "licensePlate": "В234ВВ72"
+  },
+  {
+    "entryTime": "2026-02-25 09:15:48",
+    "fullName": "Попов Александр Игоревич",
+    "upn": "popov@utmn.ru",
+    "carBrand": "Mazda CX-5",
+    "licensePlate": "С567СС72"
+  },
+  {
+    "entryTime": "2026-02-25 10:30:21",
+    "fullName": "Волкова Анна Сергеевна",
+    "upn": "volkova@utmn.ru",
+    "carBrand": "Volkswagen Tiguan",
+    "licensePlate": "Е890ЕЕ72"
+  },
+  {
+    "entryTime": "2026-02-25 11:45:55",
+    "fullName": "Соколов Михаил Дмитриевич",
+    "upn": "sokolov@utmn.ru",
+    "carBrand": "Toyota RAV4",
+    "licensePlate": "К123КК72"
+  },
+  {
+    "entryTime": "2026-02-25 12:20:18",
+    "fullName": "Морозов Игорь Викторович",
+    "upn": "morozov@utmn.ru",
+    "carBrand": "Nissan X-Trail",
+    "licensePlate": "М456ММ72"
+  },
+  {
+    "entryTime": "2026-02-25 13:05:42",
+    "fullName": "Новикова Ольга Петровна",
+    "upn": "novikova@utmn.ru",
+    "carBrand": "Kia Sportage",
+    "licensePlate": "Н789НН72"
+  },
+  {
+    "entryTime": "2026-02-25 14:30:15",
+    "fullName": "Павлов Андрей Александрович",
+    "upn": "pavlov@utmn.ru",
+    "carBrand": "Škoda Kodiaq",
+    "licensePlate": "О012ОО72"
+  },
+  {
+    "entryTime": "2026-02-25 15:10:33",
+    "fullName": "Федорова Мария Ивановна",
+    "upn": "fedorova@utmn.ru",
+    "carBrand": "Renault Kaptur",
+    "licensePlate": "Р345РР72"
+  },
+  {
+    "entryTime": "2026-02-25 15:45:21",
+    "fullName": "Лебедева Светлана Николаевна",
+    "upn": "lebedeva@utmn.ru",
+    "carBrand": "Ford Kuga",
+    "licensePlate": "Т678ТТ72"
+  }
+]

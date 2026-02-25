@@ -1,0 +1,44 @@
+[
+  {
+    "entryTime": "2026-02-25 08:30:15",
+    "fullName": "Федоров Павел Анатольевич",
+    "upn": "fedorov@utmn.ru",
+    "carBrand": "BMW 3 Series",
+    "licensePlate": "Р567РР72"
+  },
+  {
+    "entryTime": "2026-02-25 09:45:28",
+    "fullName": "Лебедев Игорь Владимирович",
+    "upn": "lebedev@utmn.ru",
+    "carBrand": "Audi A4",
+    "licensePlate": "Т890ТТ72"
+  },
+  {
+    "entryTime": "2026-02-25 11:20:42",
+    "fullName": "Васильева Анна Дмитриевна",
+    "upn": "vasilieva@utmn.ru",
+    "carBrand": "Mercedes-Benz C-Class",
+    "licensePlate": "У123УУ72"
+  },
+  {
+    "entryTime": "2026-02-25 12:35:19",
+    "fullName": "Михайлов Владимир Сергеевич",
+    "upn": "mikhailov@utmn.ru",
+    "carBrand": "Ford Focus",
+    "licensePlate": "Х456ХХ72"
+  },
+  {
+    "entryTime": "2026-02-25 13:15:37",
+    "fullName": "Павлова Светлана Николаевна",
+    "upn": "pavlova@utmn.ru",
+    "carBrand": "Chevrolet Cruze",
+    "licensePlate": "Ц789ЦЦ72"
+  },
+  {
+    "entryTime": "2026-02-25 14:40:53",
+    "fullName": "Егоров Максим Александрович",
+    "upn": "egorov@utmn.ru",
+    "carBrand": "Opel Astra",
+    "licensePlate": "Ч012ЧЧ72"
+  }
+]

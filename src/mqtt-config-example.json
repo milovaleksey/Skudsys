@@ -1,0 +1,68 @@
+{
+  "cards": [
+    {
+      "id": "total_students",
+      "title": "Всего студентов",
+      "subtitle": "Общее количество",
+      "icon": "users",
+      "color": "#00aeef",
+      "topic": "Skud/stats/students/total"
+    },
+    {
+      "id": "total_employees",
+      "title": "Всего сотрудников",
+      "subtitle": "Общее количество",
+      "icon": "briefcase",
+      "color": "#10b981",
+      "topic": "Skud/stats/employees/total"
+    },
+    {
+      "id": "dorm_1",
+      "title": "Общежитие №1",
+      "subtitle": "Проживающих",
+      "icon": "building",
+      "color": "#f59e0b",
+      "topic": "Skud/dorms/1/residents"
+    },
+    {
+      "id": "dorm_2",
+      "title": "Общежитие №2",
+      "subtitle": "Проживающих",
+      "icon": "building",
+      "color": "#8b5cf6",
+      "topic": "Skud/dorms/2/residents"
+    },
+    {
+      "id": "dorm_3",
+      "title": "Общежитие №3",
+      "subtitle": "Проживающих",
+      "icon": "building",
+      "color": "#ec4899",
+      "topic": "Skud/dorms/3/residents"
+    },
+    {
+      "id": "dorm_4",
+      "title": "Общежитие №4",
+      "subtitle": "Проживающих",
+      "icon": "building",
+      "color": "#06b6d4",
+      "topic": "Skud/dorms/4/residents"
+    },
+    {
+      "id": "dorm_5",
+      "title": "Общежитие №5",
+      "subtitle": "Проживающих",
+      "icon": "building",
+      "color": "#f97316",
+      "topic": "Skud/dorms/5/residents"
+    },
+    {
+      "id": "dorm_6",
+      "title": "Общежитие №6",
+      "subtitle": "Проживающих",
+      "icon": "building",
+      "color": "#14b8a6",
+      "topic": "Skud/dorms/6/residents"
+    }
+  ]
+}

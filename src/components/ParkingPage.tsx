@@ -1,162 +1,17 @@
 import { useState } from 'react';
-import { Car, Clock, Search, ChevronDown, ChevronUp } from 'lucide-react';
+import { Car, Clock, Search, ChevronDown, ChevronUp, Wifi, WifiOff, RefreshCw, MapPin } from 'lucide-react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
-
-interface ParkingRecord {
-  id: number;
-  entryTime: string;
-  fullName: string;
-  upn: string;
-  carBrand: string;
-  licensePlate: string;
-}
-
-interface ParkingLot {
-  name: string;
-  currentCount: number;
-  totalCapacity: number;
-  records: ParkingRecord[];
-}
+import { useParkingMQTT, ParkingVehicle } from '../hooks/useParkingMQTT';
+import { Card } from './ui/card';
 
 export function ParkingPage() {
-  const [searchK1, setSearchK1] = useState('');
-  const [searchK5, setSearchK5] = useState('');
-  const [isK1Expanded, setIsK1Expanded] = useState(false);
-  const [isK5Expanded, setIsK5Expanded] = useState(false);
-
-  // Mock data for Parking K1
-  const parkingK1: ParkingLot = {
-    name: 'Парковка К1',
-    currentCount: 8,
-    totalCapacity: 50,
-    records: [
-      {
-        id: 1,
-        entryTime: '2026-01-19 08:15:32',
-        fullName: 'Иванов Иван Иванович',
-        upn: 'ivanov@utmn.ru',
-        carBrand: 'Toyota Camry',
-        licensePlate: 'А123АА72'
-      },
-      {
-        id: 2,
-        entryTime: '2026-01-19 09:22:45',
-        fullName: 'Петров Сергей Дмитриевич',
-        upn: 'petrov@utmn.ru',
-        carBrand: 'Volkswagen Polo',
-        licensePlate: 'В456ВВ72'
-      },
-      {
-        id: 3,
-        entryTime: '2026-01-19 10:05:18',
-        fullName: 'Сидорова Мария Александровна',
-        upn: 'sidorova@utmn.ru',
-        carBrand: 'Kia Rio',
-        licensePlate: 'С789СС72'
-      },
-      {
-        id: 4,
-        entryTime: '2026-01-19 11:30:12',
-        fullName: 'Козлов Андрей Викторович',
-        upn: 'kozlov@utmn.ru',
-        carBrand: 'Hyundai Solaris',
-        licensePlate: 'Е012ЕЕ72'
-      },
-      {
-        id: 5,
-        entryTime: '2026-01-19 12:15:55',
-        fullName: 'Новиков Дмитрий Петрович',
-        upn: 'novikov@utmn.ru',
-        carBrand: 'Škoda Octavia',
-        licensePlate: 'К345КК72'
-      },
-      {
-        id: 6,
-        entryTime: '2026-01-19 13:40:33',
-        fullName: 'Морозова Елена Ивановна',
-        upn: 'morozova@utmn.ru',
-        carBrand: 'Mazda 6',
-        licensePlate: 'М678ММ72'
-      },
-      {
-        id: 7,
-        entryTime: '2026-01-19 14:10:21',
-        fullName: 'Волков Алексей Николаевич',
-        upn: 'volkov@utmn.ru',
-        carBrand: 'Nissan Qashqai',
-        licensePlate: 'Н901НН72'
-      },
-      {
-        id: 8,
-        entryTime: '2026-01-19 14:55:47',
-        fullName: 'Соколова Ольга Сергеевна',
-        upn: 'sokolova@utmn.ru',
-        carBrand: 'Renault Duster',
-        licensePlate: 'О234ОО72'
-      },
-    ]
-  };
-
-  // Mock data for Parking K5
-  const parkingK5: ParkingLot = {
-    name: 'Парковка К5',
-    currentCount: 6,
-    totalCapacity: 40,
-    records: [
-      {
-        id: 1,
-        entryTime: '2026-01-19 08:30:15',
-        fullName: 'Федоров Павел Анатольевич',
-        upn: 'fedorov@utmn.ru',
-        carBrand: 'BMW 3 Series',
-        licensePlate: 'Р567РР72'
-      },
-      {
-        id: 2,
-        entryTime: '2026-01-19 09:45:28',
-        fullName: 'Лебедев Игорь Владимирович',
-        upn: 'lebedev@utmn.ru',
-        carBrand: 'Audi A4',
-        licensePlate: 'Т890ТТ72'
-      },
-      {
-        id: 3,
-        entryTime: '2026-01-19 11:20:42',
-        fullName: 'Васильева Анна Дмитриевна',
-        upn: 'vasilieva@utmn.ru',
-        carBrand: 'Mercedes-Benz C-Class',
-        licensePlate: 'У123УУ72'
-      },
-      {
-        id: 4,
-        entryTime: '2026-01-19 12:35:19',
-        fullName: 'Михайлов Владимир Сергеевич',
-        upn: 'mikhailov@utmn.ru',
-        carBrand: 'Ford Focus',
-        licensePlate: 'Х456ХХ72'
-      },
-      {
-        id: 5,
-        entryTime: '2026-01-19 13:15:37',
-        fullName: 'Павлова Светлана Николаевна',
-        upn: 'pavlova@utmn.ru',
-        carBrand: 'Chevrolet Cruze',
-        licensePlate: 'Ц789ЦЦ72'
-      },
-      {
-        id: 6,
-        entryTime: '2026-01-19 14:40:53',
-        fullName: 'Егоров Максим Александрович',
-        upn: 'egorov@utmn.ru',
-        carBrand: 'Opel Astra',
-        licensePlate: 'Ч012ЧЧ72'
-      },
-    ]
-  };
+  const { parkings, isConnected, error, reconnect } = useParkingMQTT();
+  const [searchQueries, setSearchQueries] = useState<Record<string, string>>({});
+  const [expandedParkings, setExpandedParkings] = useState<Record<string, boolean>>({});
 
   // Функция фильтрации
-  const filterRecords = (records: ParkingRecord[], searchQuery: string) => {
+  const filterRecords = (records: ParkingVehicle[], searchQuery: string) => {
     if (!searchQuery.trim()) return records;
     
     const query = searchQuery.toLowerCase();
@@ -166,21 +21,18 @@ export function ParkingPage() {
     );
   };
 
-  const renderParkingBlock = (
-    parking: ParkingLot, 
-    searchQuery: string, 
-    setSearchQuery: (value: string) => void,
-    isExpanded: boolean,
-    setIsExpanded: (value: boolean) => void
-  ) => {
-    const occupancyPercentage = (parking.currentCount / parking.totalCapacity) * 100;
+  const renderParkingBlock = (parking: any) => {
+    const searchQuery = searchQueries[parking.id] || '';
+    const isExpanded = expandedParkings[parking.id] || false;
+    
+    const occupancyPercentage = (parking.currentCount / parking.maxCapacity) * 100;
     const isCrowded = occupancyPercentage > 80;
     const isModerate = occupancyPercentage > 50 && occupancyPercentage <= 80;
     
-    const filteredRecords = filterRecords(parking.records, searchQuery);
+    const filteredRecords = filterRecords(parking.vehicles, searchQuery);
 
     return (
-      <div className="bg-white rounded-xl shadow-md overflow-hidden">
+      <div key={parking.id} className="bg-white rounded-xl shadow-md overflow-hidden">
         {/* Header */}
         <div 
           className="p-6"
@@ -193,12 +45,15 @@ export function ParkingPage() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white">{parking.name}</h3>
-                <p className="text-blue-100 text-sm">Текущая загрузка парковки</p>
+                <div className="flex items-center gap-2 text-blue-100 text-sm mt-1">
+                  <MapPin size={14} />
+                  <span>{parking.address}</span>
+                </div>
               </div>
             </div>
             <div className="text-right">
               <div className="text-3xl font-bold text-white">
-                {parking.currentCount} / {parking.totalCapacity}
+                {parking.currentCount} / {parking.maxCapacity}
               </div>
               <div className="text-blue-100 text-sm">занято мест</div>
             </div>
@@ -219,7 +74,7 @@ export function ParkingPage() {
               />
             </div>
             <div className="flex justify-between mt-2 text-sm text-blue-100">
-              <span>Свободно: {parking.totalCapacity - parking.currentCount}</span>
+              <span>Свободно: {parking.maxCapacity - parking.currentCount}</span>
               <span>{occupancyPercentage.toFixed(1)}% загрузка</span>
             </div>
           </div>
@@ -233,15 +88,15 @@ export function ParkingPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => setSearchQueries(prev => ({ ...prev, [parking.id]: e.target.value }))}
                 placeholder="Поиск по ФИО или ГРЗ..."
                 className="pl-10"
               />
             </div>
             
-            {/* Кнопка разворачивания */}
+            {/* ��нопка разворачивания */}
             <Button
-              onClick={() => setIsExpanded(!isExpanded)}
+              onClick={() => setExpandedParkings(prev => ({ ...prev, [parking.id]: !isExpanded }))}
               variant="outline"
               className="flex items-center gap-2"
             >
@@ -253,7 +108,7 @@ export function ParkingPage() {
               ) : (
                 <>
                   <ChevronDown className="w-4 h-4" />
-                  Развернуть таблицу ({parking.records.length})
+                  Развернуть таблицу ({parking.vehicles.length})
                 </>
               )}
             </Button>
@@ -262,7 +117,7 @@ export function ParkingPage() {
           {/* Счетчик результатов поиска */}
           {searchQuery && (
             <div className="mt-2 text-sm text-gray-600">
-              Найдено: <span className="font-semibold text-gray-900">{filteredRecords.length}</span> из {parking.records.length}
+              Найдено: <span className="font-semibold text-gray-900">{filteredRecords.length}</span> из {parking.vehicles.length}
             </div>
           )}
         </div>
@@ -289,7 +144,7 @@ export function ParkingPage() {
                 {filteredRecords.length > 0 ? (
                   filteredRecords.map((record, index) => (
                     <tr 
-                      key={record.id}
+                      key={`${parking.id}-${index}`}
                       className={`hover:bg-gray-50 transition-colors ${
                         index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                       }`}
@@ -325,6 +180,10 @@ export function ParkingPage() {
     );
   };
 
+  // Подсчет общей статистики
+  const totalCapacity = parkings.reduce((sum, p) => sum + p.maxCapacity, 0);
+  const totalOccupied = parkings.reduce((sum, p) => sum + p.currentCount, 0);
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -332,6 +191,61 @@ export function ParkingPage() {
         <h2 className="text-2xl font-bold text-gray-900">Парковочная система</h2>
         <p className="text-gray-600 mt-2">Мониторинг загрузки и управление парковками университета</p>
       </div>
+
+      {/* Connection Status */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          {isConnected ? (
+            <>
+              <Wifi className="w-5 h-5 text-green-600" />
+              <span className="text-sm text-green-700 font-medium">Система парковок подключена</span>
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            </>
+          ) : (
+            <>
+              <WifiOff className="w-5 h-5 text-gray-400" />
+              <span className="text-sm text-gray-600">Отключено</span>
+            </>
+          )}
+        </div>
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={reconnect}
+          className="flex items-center gap-2"
+        >
+          <RefreshCw className="w-4 h-4" />
+          Переподключиться
+        </Button>
+      </div>
+
+      {/* Error Message */}
+      {error && (
+        <Card className="p-4 bg-red-50 border-red-200">
+          <div className="flex items-start gap-3">
+            <WifiOff className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="text-sm text-red-900">
+              <p className="font-medium mb-1">Ошибка подключения</p>
+              <p className="text-xs text-red-700">{error}</p>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {/* Info Message */}
+      {!isConnected && !error && (
+        <Card className="p-4 bg-blue-50 border-blue-200">
+          <div className="flex items-start gap-3">
+            <Wifi className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+            <div className="text-sm text-blue-900">
+              <p className="font-medium mb-1">Подключите MQTT для динамических данных парковок</p>
+              <p className="text-xs text-blue-700">
+                Конфигурация парковок загружается из топика <code className="bg-blue-100 px-1 rounded">Skud/parking/config</code>
+              </p>
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -345,7 +259,7 @@ export function ParkingPage() {
             </div>
             <div>
               <div className="text-sm text-gray-600">Всего парковок</div>
-              <div className="text-2xl font-bold text-gray-900">2</div>
+              <div className="text-2xl font-bold text-gray-900">{parkings.length}</div>
             </div>
           </div>
         </div>
@@ -359,9 +273,7 @@ export function ParkingPage() {
             </div>
             <div>
               <div className="text-sm text-gray-600">Всего мест</div>
-              <div className="text-2xl font-bold text-gray-900">
-                {parkingK1.totalCapacity + parkingK5.totalCapacity}
-              </div>
+              <div className="text-2xl font-bold text-gray-900">{totalCapacity}</div>
             </div>
           </div>
         </div>
@@ -376,18 +288,29 @@ export function ParkingPage() {
             <div>
               <div className="text-sm text-gray-600">Занято мест</div>
               <div className="text-2xl font-bold text-gray-900">
-                {parkingK1.currentCount + parkingK5.currentCount} / {parkingK1.totalCapacity + parkingK5.totalCapacity}
+                {totalOccupied} / {totalCapacity}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Parking K1 */}
-      {renderParkingBlock(parkingK1, searchK1, setSearchK1, isK1Expanded, setIsK1Expanded)}
-
-      {/* Parking K5 */}
-      {renderParkingBlock(parkingK5, searchK5, setSearchK5, isK5Expanded, setIsK5Expanded)}
+      {/* Parking Blocks */}
+      {parkings.length > 0 ? (
+        <div className="space-y-6">
+          {parkings.map(parking => renderParkingBlock(parking))}
+        </div>
+      ) : (
+        <Card className="p-8 text-center">
+          <Car className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+          <p className="text-gray-600">
+            {isConnected 
+              ? 'Парковки не настроены. Опубликуйте конфигурацию в топик Skud/parking/config'
+              : 'Подключение к системе парковок...'
+            }
+          </p>
+        </Card>
+      )}
     </div>
   );
 }

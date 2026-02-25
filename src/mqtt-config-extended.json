@@ -1,0 +1,148 @@
+{
+  "cards": [
+    {
+      "id": "total_students",
+      "title": "Всего студентов",
+      "subtitle": "В системе",
+      "icon": "users",
+      "color": "#00aeef",
+      "topic": "Skud/stats/students/total"
+    },
+    {
+      "id": "students_present",
+      "title": "Студентов на территории",
+      "subtitle": "Сейчас присутствуют",
+      "icon": "user-check",
+      "color": "#10b981",
+      "topic": "Skud/stats/students/present"
+    },
+    {
+      "id": "total_employees",
+      "title": "Всего сотрудников",
+      "subtitle": "В системе",
+      "icon": "briefcase",
+      "color": "#3b82f6",
+      "topic": "Skud/stats/employees/total"
+    },
+    {
+      "id": "employees_present",
+      "title": "Сотрудников на территории",
+      "subtitle": "Сейчас присутствуют",
+      "icon": "user-check",
+      "color": "#10b981",
+      "topic": "Skud/stats/employees/present"
+    },
+    {
+      "id": "dorm_1",
+      "title": "Общежитие №1",
+      "subtitle": "ул. Полевая, 123",
+      "icon": "building",
+      "color": "#f59e0b",
+      "topic": "Skud/dorms/1/residents"
+    },
+    {
+      "id": "dorm_1_present",
+      "title": "В общежитии №1",
+      "subtitle": "Сейчас находятся",
+      "icon": "home",
+      "color": "#fb923c",
+      "topic": "Skud/dorms/1/present"
+    },
+    {
+      "id": "dorm_2",
+      "title": "Общежитие №2",
+      "subtitle": "ул. Мельникайте, 45",
+      "icon": "building",
+      "color": "#8b5cf6",
+      "topic": "Skud/dorms/2/residents"
+    },
+    {
+      "id": "dorm_2_present",
+      "title": "В общежитии №2",
+      "subtitle": "Сейчас находятся",
+      "icon": "home",
+      "color": "#a78bfa",
+      "topic": "Skud/dorms/2/present"
+    },
+    {
+      "id": "dorm_3",
+      "title": "Общежитие №3",
+      "subtitle": "ул. Республики, 78",
+      "icon": "building",
+      "color": "#ec4899",
+      "topic": "Skud/dorms/3/residents"
+    },
+    {
+      "id": "dorm_3_present",
+      "title": "В общежитии №3",
+      "subtitle": "Сейчас находятся",
+      "icon": "home",
+      "color": "#f472b6",
+      "topic": "Skud/dorms/3/present"
+    },
+    {
+      "id": "dorm_4",
+      "title": "Общежитие №4",
+      "subtitle": "ул. Ленина, 56",
+      "icon": "building",
+      "color": "#06b6d4",
+      "topic": "Skud/dorms/4/residents"
+    },
+    {
+      "id": "dorm_4_present",
+      "title": "В общежитии №4",
+      "subtitle": "Сейчас находятся",
+      "icon": "home",
+      "color": "#22d3ee",
+      "topic": "Skud/dorms/4/present"
+    },
+    {
+      "id": "dorm_5",
+      "title": "Общежитие №5",
+      "subtitle": "ул. Володарского, 89",
+      "icon": "building",
+      "color": "#f97316",
+      "topic": "Skud/dorms/5/residents"
+    },
+    {
+      "id": "dorm_5_present",
+      "title": "В общежитии №5",
+      "subtitle": "Сейчас находятся",
+      "icon": "home",
+      "color": "#fb923c",
+      "topic": "Skud/dorms/5/present"
+    },
+    {
+      "id": "dorm_6",
+      "title": "Общежитие №6",
+      "subtitle": "ул. Первомайская, 12",
+      "icon": "building",
+      "color": "#14b8a6",
+      "topic": "Skud/dorms/6/residents"
+    },
+    {
+      "id": "dorm_6_present",
+      "title": "В общежитии №6",
+      "subtitle": "Сейчас находятся",
+      "icon": "home",
+      "color": "#2dd4bf",
+      "topic": "Skud/dorms/6/present"
+    },
+    {
+      "id": "parking_occupied",
+      "title": "Парковка",
+      "subtitle": "Занято мест",
+      "icon": "car",
+      "color": "#ef4444",
+      "topic": "Skud/parking/occupied"
+    },
+    {
+      "id": "library_visitors",
+      "title": "Библиотека",
+      "subtitle": "Посетителей",
+      "icon": "book",
+      "color": "#6366f1",
+      "topic": "Skud/library/visitors"
+    }
+  ]
+}

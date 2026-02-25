@@ -11,7 +11,9 @@ const permissionUpdater = require('./utils/permissionUpdater');
 const { errorHandler } = require('./middleware/errorHandler');
 const { rateLimiter } = require('./middleware/rateLimiter');
 const mqttService = require('./services/mqtt.service');
+const parkingMQTTService = require('./services/parking-mqtt.service');
 const { initMQTTWebSocket } = require('./websocket/mqtt.ws');
+const { initParkingWebSocket } = require('./websocket/parking.ws');
 
 // Импорт маршрутов
 const authRoutes = require('./routes/auth.routes');
@@ -115,7 +117,7 @@ const startServer = async () => {
     await connectDatabase();
     console.log('✅ Подключено к MySQL');
 
-    // Обновление прав доступа
+    // Обн��вление прав доступа
     console.log('🔄 Обновление прав доступа...');
     await permissionUpdater();
     console.log('✅ Права доступа обновлены');
@@ -131,12 +133,23 @@ const startServer = async () => {
     // Инициализация MQTT WebSocket
     initMQTTWebSocket(server);
 
+    // Инициализация Parking MQTT WebSocket
+    initParkingWebSocket(server);
+
     // Подключение к MQTT брокеру
     if (process.env.MQTT_ENABLED !== 'false') {
       console.log('🔌 Подключение к MQTT брокеру...');
       mqttService.connect();
     } else {
       console.log('⚠️  MQTT отключен в конфигурации');
+    }
+
+    // Подключение к Parking MQTT брокеру
+    if (process.env.PARKING_MQTT_ENABLED !== 'false') {
+      console.log('🔌 Подключение к Parking MQTT брокеру...');
+      parkingMQTTService.connect();
+    } else {
+      console.log('⚠️  Parking MQTT отключен в конфигурации');
     }
   } catch (error) {
     console.error('❌ Ошибка запуска сервера:', error);
@@ -148,12 +161,14 @@ const startServer = async () => {
 process.on('SIGTERM', () => {
   console.log('SIGTERM получен, завершение работы...');
   mqttService.disconnect();
+  parkingMQTTService.disconnect();
   process.exit(0);
 });
 
 process.on('SIGINT', () => {
   console.log('SIGINT получен, завершение работы...');
   mqttService.disconnect();
+  parkingMQTTService.disconnect();
   process.exit(0);
 });
 

@@ -1,0 +1,58 @@
+[
+  {
+    "entryTime": "2026-02-25 08:15:32",
+    "fullName": "Иванов Иван Иванович",
+    "upn": "ivanov@utmn.ru",
+    "carBrand": "Toyota Camry",
+    "licensePlate": "А123АА72"
+  },
+  {
+    "entryTime": "2026-02-25 09:22:45",
+    "fullName": "Петров Сергей Дмитриевич",
+    "upn": "petrov@utmn.ru",
+    "carBrand": "Volkswagen Polo",
+    "licensePlate": "В456ВВ72"
+  },
+  {
+    "entryTime": "2026-02-25 10:05:18",
+    "fullName": "Сидорова Мария Александровна",
+    "upn": "sidorova@utmn.ru",
+    "carBrand": "Kia Rio",
+    "licensePlate": "С789СС72"
+  },
+  {
+    "entryTime": "2026-02-25 11:30:12",
+    "fullName": "Козлов Андрей Викторович",
+    "upn": "kozlov@utmn.ru",
+    "carBrand": "Hyundai Solaris",
+    "licensePlate": "Е012ЕЕ72"
+  },
+  {
+    "entryTime": "2026-02-25 12:15:55",
+    "fullName": "Новиков Дмитрий Петрович",
+    "upn": "novikov@utmn.ru",
+    "carBrand": "Škoda Octavia",
+    "licensePlate": "К345КК72"
+  },
+  {
+    "entryTime": "2026-02-25 13:40:33",
+    "fullName": "Морозова Елена Ивановна",
+    "upn": "morozova@utmn.ru",
+    "carBrand": "Mazda 6",
+    "licensePlate": "М678ММ72"
+  },
+  {
+    "entryTime": "2026-02-25 14:10:21",
+    "fullName": "Волков Алексей Николаевич",
+    "upn": "volkov@utmn.ru",
+    "carBrand": "Nissan Qashqai",
+    "licensePlate": "Н901НН72"
+  },
+  {
+    "entryTime": "2026-02-25 14:55:47",
+    "fullName": "Соколова Ольга Сергеевна",
+    "upn": "sokolova@utmn.ru",
+    "carBrand": "Renault Duster",
+    "licensePlate": "О234ОО72"
+  }
+]
