@@ -1,5 +1,4 @@
 const mqtt = require('mqtt');
-const logger = require('../utils/logger');
 
 class ParkingMQTTService {
   constructor() {
@@ -37,15 +36,15 @@ class ParkingMQTTService {
       this.client = mqtt.connect(options);
 
       this.client.on('connect', () => {
-        logger.info('[Parking MQTT] ✅ Подключено к брокеру');
+        console.log('[Parking MQTT] ✅ Подключено к брокеру');
         this.isConnected = true;
 
         // Подписываемся на конфигурацию парковок
         this.client.subscribe('Skud/parking/config', (err) => {
           if (err) {
-            logger.error('[Parking MQTT] Ошибка подписки на config:', err);
+            console.error('[Parking MQTT] О��ибка подписки на config:', err);
           } else {
-            logger.info('[Parking MQTT] ✅ Подписка на Skud/parking/config');
+            console.log('[Parking MQTT] ✅ Подписка на Skud/parking/config');
           }
         });
       });
@@ -55,17 +54,17 @@ class ParkingMQTTService {
       });
 
       this.client.on('error', (error) => {
-        logger.error('[Parking MQTT] Ошибка:', error);
+        console.error('[Parking MQTT] Ошибка:', error);
         this.isConnected = false;
       });
 
       this.client.on('close', () => {
-        logger.warn('[Parking MQTT] Отключено от брокера');
+        console.warn('[Parking MQTT] Отключено от брокера');
         this.isConnected = false;
       });
 
     } catch (error) {
-      logger.error('[Parking MQTT] Ошибка подключения:', error);
+      console.error('[Parking MQTT] Ошибка подключения:', error);
     }
   }
 
@@ -81,13 +80,13 @@ class ParkingMQTTService {
         const config = JSON.parse(payload);
         this.parkingConfigs = config.parkings || [];
         
-        logger.info(`[Parking MQTT] Получена конфигурация: ${this.parkingConfigs.length} парковок`);
+        console.log(`[Parking MQTT] Получена конфигурация: ${this.parkingConfigs.length} парковок`);
         
         // Отписываемся от старых топиков
         this.parkingConfigs.forEach(parking => {
           this.client.unsubscribe(parking.vehiclesTopic, (err) => {
             if (err) {
-              logger.error(`[Parking MQTT] Ошибка отписки от ${parking.vehiclesTopic}:`, err);
+              console.error(`[Parking MQTT] Ошибка отписки от ${parking.vehiclesTopic}:`, err);
             }
           });
         });
@@ -96,9 +95,9 @@ class ParkingMQTTService {
         this.parkingConfigs.forEach(parking => {
           this.client.subscribe(parking.vehiclesTopic, (err) => {
             if (err) {
-              logger.error(`[Parking MQTT] Ошибка подписки на ${parking.vehiclesTopic}:`, err);
+              console.error(`[Parking MQTT] Ошибка подписки на ${parking.vehiclesTopic}:`, err);
             } else {
-              logger.info(`[Parking MQTT] ✅ Подписка на ${parking.vehiclesTopic}`);
+              console.log(`[Parking MQTT] ✅ Подписка на ${parking.vehiclesTopic}`);
             }
           });
           
@@ -120,7 +119,7 @@ class ParkingMQTTService {
           const vehicles = JSON.parse(payload);
           this.parkingVehicles[parking.id] = vehicles;
           
-          logger.info(`[Parking MQTT] Обновление ${parking.name}: ${vehicles.length} автомобилей`);
+          console.log(`[Parking MQTT] Обновление ${parking.name}: ${vehicles.length} автомобилей`);
           
           // Отправляем обновление клиентам
           this.broadcastToClients({
@@ -132,7 +131,7 @@ class ParkingMQTTService {
       }
       
     } catch (error) {
-      logger.error('[Parking MQTT] Ошибка обработки сообщения:', error);
+      console.error('[Parking MQTT] Ошибка обработки сообщения:', error);
     }
   }
 
@@ -141,7 +140,7 @@ class ParkingMQTTService {
    */
   registerClient(ws) {
     this.wsClients.add(ws);
-    logger.info(`[Parking MQTT] Клиент подключен. Всего: ${this.wsClients.size}`);
+    console.log(`[Parking MQTT] Клиент подключен. Всего: ${this.wsClients.size}`);
 
     // Отправляем текущую конфигурацию
     if (this.parkingConfigs.length > 0) {
@@ -164,7 +163,7 @@ class ParkingMQTTService {
 
     ws.on('close', () => {
       this.wsClients.delete(ws);
-      logger.info(`[Parking MQTT] Клиент отключен. Осталось: ${this.wsClients.size}`);
+      console.log(`[Parking MQTT] Клиент отключен. Осталось: ${this.wsClients.size}`);
     });
   }
 
@@ -182,14 +181,14 @@ class ParkingMQTTService {
           ws.send(message);
           sent++;
         } catch (error) {
-          logger.error('[Parking MQTT] Ошибка отправки клиенту:', error);
+          console.error('[Parking MQTT] Ошибка отправки клиенту:', error);
           failed++;
         }
       }
     });
 
     if (sent > 0) {
-      logger.debug(`[Parking MQTT] Отправлено ${sent} клиентам (ошибок: ${failed})`);
+      console.log(`[Parking MQTT] Отправлено ${sent} клиентам (ошибок: ${failed})`);
     }
   }
 
@@ -227,7 +226,7 @@ class ParkingMQTTService {
     if (this.client) {
       this.client.end();
       this.isConnected = false;
-      logger.info('[Parking MQTT] Отключено');
+      console.log('[Parking MQTT] Отключено');
     }
   }
 }
