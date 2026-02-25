@@ -80,7 +80,23 @@ mosquitto_pub -h localhost -t "test/value1" -m "42"
 
 ## ❓ Проблемы?
 
+### ❌ WebSocket ERR_CONNECTION_REFUSED?
+
+Это означает, что backend не запущен. См. **[WEBSOCKET_ERROR_FIX.md](WEBSOCKET_ERROR_FIX.md)** для подробного решения.
+
+**Быстрое решение:**
+```bash
+# Linux/Mac
+./start-backend.sh
+
+# Windows
+start-backend.bat
+```
+
+### ❌ Другие проблемы?
+
 См. подробную документацию:
+- **[WEBSOCKET_ERROR_FIX.md](WEBSOCKET_ERROR_FIX.md)** - Ошибки подключения WebSocket
 - **MQTT_FIXES.md** - Полное описание исправлений и troubleshooting
 - **README_MQTT.md** - Архитектура и API
 - **MQTT_SETUP.md** - Детальная настройка

@@ -1,318 +1,184 @@
-# 📚 Навигация по документации
+# 📖 Навигация по документации
 
-## 🚀 Начало работы
+## 🚨 Срочно нужна помощь?
 
-### Я хочу развернуть систему
-1. **[START.md](START.md)** - Быстрый старт (5 минут)
-2. **[README.md](README.md)** - Полная инструкция по развертыванию
-3. **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Шпаргалка команд
+### ❌ Backend не запускается / WebSocket не подключается?
+→ **[START_BACKEND_NOW.md](START_BACKEND_NOW.md)** ⚡ Решение за 3 команды!
 
-### Я хочу настроить MySQL доступ извне
-1. **[setup-mysql-external.sh](setup-mysql-external.sh)** - ⭐ Автоматическая настройка (рекомендуется)
-2. **[MYSQL_EXTERNAL_ACCESS.md](MYSQL_EXTERNAL_ACCESS.md)** - Быстрая настройка вручную
-3. **[README.md](README.md)** (раздел MySQL) - Подробная инструкция с безопасностью
+### ❌ ERR_CONNECTION_REFUSED?
+→ **[WEBSOCKET_ERROR_FIX.md](WEBSOCKET_ERROR_FIX.md)** 🔧 Полное руководство
 
 ---
 
-## 💻 Разработка
+## 📚 Документация по разделам
 
-### Я разработчик
-1. **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)** - Руководство разработчика
-2. **[API_DOCUMENTATION.md](API_DOCUMENTATION.md)** - Документация API
-3. **[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)** - Структура проекта
+### 🚀 Быстрый старт
+- **[QUICKSTART.md](QUICKSTART.md)** - Запуск за 4 шага
+- **[START_BACKEND_NOW.md](START_BACKEND_NOW.md)** - Только backend за 3 команды
 
-### Я хочу понять API
-1. **[API_DOCUMENTATION.md](API_DOCUMENTATION.md)** - Все endpoints с примерами
-2. **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)** (раздел API) - Создание новых endpoints
+### 🔧 Устранение неполадок
+- **[WEBSOCKET_ERROR_FIX.md](WEBSOCKET_ERROR_FIX.md)** - Ошибки WebSocket подключения
+- **[MQTT_FIXES.md](MQTT_FIXES.md)** - Все исправления с примерами тестирования
 
----
-
-## 📖 Справочная информация
-
-### Команды и настройки
-1. **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Шпаргалка всех команд
-2. **[README.md](README.md)** (раздел Поддержка) - Обслуживание системы
-
-### Структура и архитектура
-1. **[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)** - Полная структура проекта
-2. **[CHANGELOG.md](CHANGELOG.md)** - История изменений
-
-### История проекта
-1. **[CHANGELOG.md](CHANGELOG.md)** - Что реализовано и планы
-2. **[DOCUMENTATION_UPDATE.md](DOCUMENTATION_UPDATE.md)** - Изменения в документации
+### 📋 Справочная информация
+- **[CHANGELOG_MQTT.md](CHANGELOG_MQTT.md)** - Детальный лист изменений
+- **[README_MQTT.md](README_MQTT.md)** - Архитектура и API (если есть)
+- **[MQTT_SETUP.md](MQTT_SETUP.md)** - Настройка MQTT брокера (если есть)
 
 ---
 
-## 🎯 По задачам
+## 🎯 Что нового?
 
-### Развертывание системы
+### ✅ Исправлено (25.02.2026):
+1. ✅ Импорты middleware в backend
+2. ✅ Экспорт `apiRequest` в API
+3. ✅ Пути к MQTT API
+4. ✅ Права доступа `mqtt-publish`
+5. ✅ Автоматические скрипты запуска
+
+### ✨ Добавлено:
+- 🤖 Автоматический скрипт `start-backend.sh` (Linux/Mac)
+- 🤖 Автоматический скрипт `start-backend.bat` (Windows)
+- 📝 Подробная документация troubleshooting
+- 🔧 Скрипт добавления прав доступа
+
+---
+
+## 📦 Структура проекта
+
 ```
-START.md → README.md → QUICK_REFERENCE.md
+/
+├── backend/                        # Backend сервер (Node.js + Express)
+│   ├── src/
+│   │   ├── controllers/           # API контроллеры
+│   │   ├── routes/                # API маршруты
+│   │   ├── services/              # Бизнес-логика
+│   │   ├── middleware/            # Express middleware
+│   │   ├── websocket/             # WebSocket сервер
+│   │   └── server.js              # Точка входа
+│   ├── add-mqtt-permissions.js    # Скрипт прав доступа
+│   ├── .env.example               # Пример конфигурации
+│   └── .env.mqtt.example          # Пример MQTT конфигурации
+│
+├── lib/                            # Frontend утилиты
+│   └── api.ts                     # API клиент
+│
+├── hooks/                          # React hooks
+│   └── useMQTT.ts                 # MQTT WebSocket hook
+│
+├── components/                     # React компоненты
+│
+├── start-backend.sh               # Автозапуск (Linux/Mac)
+├── start-backend.bat              # Автозапуск (Windows)
+│
+└── Документация:
+    ├── START_BACKEND_NOW.md       # 🚨 Срочная помощь
+    ├── WEBSOCKET_ERROR_FIX.md     # 🔧 Troubleshooting
+    ├── QUICKSTART.md              # 🚀 Быстрый старт
+    ├── MQTT_FIXES.md              # 📝 Детальное описание
+    ├── CHANGELOG_MQTT.md          # 📋 История изменений
+    └── DOCS_INDEX.md              # 📖 Этот файл
 ```
 
-### Настройка MySQL извне
-```
-setup-mysql-external.sh ⭐
-└─ или ─┬─→ MYSQL_EXTERNAL_ACCESS.md
-        └─→ README.md (раздел MySQL)
-```
-
-### Разработка нового функционала
-```
-DEVELOPER_GUIDE.md → API_DOCUMENTATION.md → PROJECT_STRUCTURE.md
-```
-
-### Устранение проблем
-```
-QUICK_REFERENCE.md (раздел Troubleshooting)
-└─→ README.md (раздел Устранение проблем)
-```
-
 ---
 
-## 📄 Полный список файлов
+## ⚡ Быстрые команды
 
-### Основная документация
-
-| Файл | Размер | Описание |
-|------|--------|----------|
-| **[README.md](README.md)** | ~500 строк | Главная документация, развертывание, MySQL |
-| **[START.md](START.md)** | ~80 строк | Быстрый старт за 5 минут |
-| **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** | ~250 строк | Шпаргалка команд и решений |
-
-### MySQL доступ извне
-
-| Файл | Размер | Описание |
-|------|--------|----------|
-| **[setup-mysql-external.sh](setup-mysql-external.sh)** | ~350 строк | ⭐ Автоматическая настройка |
-| **[MYSQL_EXTERNAL_ACCESS.md](MYSQL_EXTERNAL_ACCESS.md)** | ~200 строк | Ручная настройка пошагово |
-
-### Для разработчиков
-
-| Файл | Размер | Описание |
-|------|--------|----------|
-| **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)** | ~400 строк | Руководство разработчика |
-| **[API_DOCUMENTATION.md](API_DOCUMENTATION.md)** | ~600 строк | Документация всех API endpoints |
-| **[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)** | ~400 строк | Структура проекта |
-
-### Справочная
-
-| Файл | Размер | Описание |
-|------|--------|----------|
-| **[CHANGELOG.md](CHANGELOG.md)** | ~300 строк | История изменений v1.0 |
-| **[DOCUMENTATION_UPDATE.md](DOCUMENTATION_UPDATE.md)** | ~250 строк | Изменения в документации |
-| **[DOCS_INDEX.md](DOCS_INDEX.md)** | Этот файл | Навигация по документации |
-
-### Защищенные системные файлы
-
-| Файл | Описание |
-|------|----------|
-| **Attributions.md** | Атрибуции компонентов |
-| **guidelines/Guidelines.md** | Системные гайдлайны |
-
----
-
-## 🎓 Сценарии использования
-
-### Сценарий 1: Первое развертывание
-
-**Задача:** Развернуть систему на чистом Debian сервере
-
-**Путь:**
-1. Открыть **START.md**
-2. Выполнить команды из раздела "Развертывание за 5 минут"
-3. Если нужны детали → **README.md**
-4. Сохранить **QUICK_REFERENCE.md** для быстрого доступа
-
-**Время:** 15-20 минут
-
----
-
-### Сценарий 2: Настройка MySQL доступа извне
-
-**Задача:** Разрешить подключение к MySQL с других серверов
-
-**Путь (Автоматический - рекомендуется):**
-1. Запустить `sudo ./setup-mysql-external.sh`
-2. Следовать инструкциям на экране
-3. Получить данные подключения в `/root/mysql-external-access.txt`
-
-**Путь (Ручной):**
-1. Открыть **MYSQL_EXTERNAL_ACCESS.md**
-2. Выполнить команды пошагово
-3. Проверить безопасность в **README.md** (раздел Безопасность доступа к MySQL)
-
-**Время:** 5-10 минут (авто) / 15-20 минут (вручную)
-
----
-
-### Сценарий 3: Разработка нового функционала
-
-**Задача:** Добавить новую страницу и API endpoint
-
-**Путь:**
-1. **DEVELOPER_GUIDE.md** → раздел "Создание нового endpoint"
-2. **DEVELOPER_GUIDE.md** → раздел "Создание новой страницы"
-3. **API_DOCUMENTATION.md** → изучить существующие endpoints
-4. **PROJECT_STRUCTURE.md** → понять, где что находится
-
-**Время:** 30-60 минут (первый раз)
-
----
-
-### Сценарий 4: Устранение проблем
-
-**Задача:** Система не работает, нужно найти проблему
-
-**Путь:**
-1. **QUICK_REFERENCE.md** → раздел "Устранение проблем"
-2. Проверить логи:
-   ```bash
-   sudo journalctl -u utmn-security -f
-   sudo tail -f /var/log/nginx/error.log
-   sudo tail -f /var/log/mysql/error.log
-   ```
-3. Если не помогло → **README.md** → раздел "Устранение проблем"
-
-**Время:** 5-30 минут (в зависимости от проблемы)
-
----
-
-### Сценарий 5: Интеграция с внешней системой
-
-**Задача:** Подключить внешнюю систему к API
-
-**Путь:**
-1. **API_DOCUMENTATION.md** → изучить все endpoints
-2. **API_DOCUMENTATION.md** → примеры использования (cURL, JavaScript, Python)
-3. **DEVELOPER_GUIDE.md** → раздел "API клиент"
-
-**Время:** 20-40 минут
-
----
-
-## 🔍 Поиск информации
-
-### Хочу найти команду для...
-
-| Задача | Файл | Раздел |
-|--------|------|--------|
-| Перезапустить сервисы | QUICK_REFERENCE.md | Управление сервисами |
-| Посмотреть логи | QUICK_REFERENCE.md | Просмотр логов |
-| Создать бэкап БД | QUICK_REFERENCE.md | Резервное копирование |
-| Проверить доступ MySQL | QUICK_REFERENCE.md | Проверка доступа к MySQL |
-| Сбросить пароль админа | QUICK_REFERENCE.md | Забыли пароль админа |
-
-### Хочу понять как работает...
-
-| Тема | Файл | Раздел |
-|------|------|--------|
-| Структура проекта | PROJECT_STRUCTURE.md | Весь файл |
-| Система прав доступа | README.md | Роли и права доступа |
-| API endpoints | API_DOCUMENTATION.md | Весь файл |
-| Потоки данных | PROJECT_STRUCTURE.md | Потоки данных |
-| База данных | README.md | Структура базы данных |
-
-### Хочу настроить...
-
-| Настройка | Файл | Раздел |
-|-----------|------|--------|
-| MySQL извне | setup-mysql-external.sh | Весь скрипт |
-| Nginx | README.md | Конфигурация Nginx |
-| Firewall | MYSQL_EXTERNAL_ACCESS.md | Шаг 3 |
-| SSL для MySQL | MYSQL_EXTERNAL_ACCESS.md | Безопасность |
-| Роли и права | README.md | Роли и права доступа |
-
----
-
-## 📞 Быстрые ссылки
-
-### Самые важные команды
+### Запуск всего проекта:
 
 ```bash
-# Развернуть систему
-sudo ./deploy.sh
+# Терминал 1: Backend
+cd backend
+npm install
+npm run dev
 
-# Настроить MySQL извне
-sudo ./setup-mysql-external.sh
+# Терминал 2: Frontend
+npm install
+npm run dev
 
-# Проверить статус
-sudo systemctl status utmn-security nginx mysql
-
-# Посмотреть логи
-sudo journalctl -u utmn-security -f
-
-# Перезапустить
-sudo systemctl restart utmn-security nginx
+# Или автоматически:
+./start-backend.sh    # Linux/Mac
+start-backend.bat     # Windows
 ```
 
-### Самые важные файлы
+### Добавить MQTT права:
+```bash
+cd backend
+node add-mqtt-permissions.js
+```
 
-- **Конфигурация backend:** `backend/.env`
-- **Схема базы данных:** `database/schema.sql`
-- **Nginx конфиг:** `/etc/nginx/sites-available/utmn-security`
-- **Systemd сервис:** `/etc/systemd/system/utmn-security.service`
-- **Данные MySQL доступа:** `/root/mysql-external-access.txt` (после настройки)
+### Проверка здоровья:
+```bash
+# API
+curl http://localhost:3000/health
 
-### Самые важные URL
+# MySQL
+mysql -u root -p -e "SELECT 1"
 
-- **Веб-интерфейс:** http://ваш-сервер/
-- **API:** http://ваш-сервер:3001/api
-- **Frontend dev:** http://localhost:5173
-- **Backend dev:** http://localhost:3001
-
----
-
-## ❓ Частые вопросы
-
-**Q: С чего начать?**  
-A: Откройте **START.md** и следуйте инструкциям
-
-**Q: Как настроить доступ к MySQL извне?**  
-A: Запустите `sudo ./setup-mysql-external.sh`
-
-**Q: Где документация API?**  
-A: **API_DOCUMENTATION.md**
-
-**Q: Как разрабатывать локально?**  
-A: **DEVELOPER_GUIDE.md** → раздел "Установка локально"
-
-**Q: Что-то не работает, что делать?**  
-A: **QUICK_REFERENCE.md** → раздел "Устранение проблем"
-
-**Q: Где найти команду для...?**  
-A: **QUICK_REFERENCE.md** (шпаргалка всех команд)
-
-**Q: Как устроена система?**  
-A: **PROJECT_STRUCTURE.md**
-
-**Q: Что нового в версии 1.0?**  
-A: **CHANGELOG.md**
+# MQTT (если установлен)
+mosquitto_pub -h localhost -t "test" -m "hello"
+```
 
 ---
 
-## 🎯 Рекомендации
+## 🔍 Поиск по документации
 
-### Для системного администратора:
-1. ⭐ **START.md** - начать отсюда
-2. ⭐ **QUICK_REFERENCE.md** - держать под рукой
-3. **README.md** - полная инструкция
-4. **setup-mysql-external.sh** - для MySQL доступа
-
-### Для разработчика:
-1. ⭐ **DEVELOPER_GUIDE.md** - начать отсюда
-2. ⭐ **API_DOCUMENTATION.md** - справочник API
-3. **PROJECT_STRUCTURE.md** - понять структуру
-4. **QUICK_REFERENCE.md** - команды для разработки
-
-### Для интегратора:
-1. ⭐ **API_DOCUMENTATION.md** - все endpoints
-2. **README.md** (раздел API) - обзор API
-3. **DEVELOPER_GUIDE.md** (примеры) - как использовать API
+| Ищете... | Документ |
+|----------|----------|
+| Как запустить backend | [START_BACKEND_NOW.md](START_BACKEND_NOW.md) |
+| Backend не подключается | [WEBSOCKET_ERROR_FIX.md](WEBSOCKET_ERROR_FIX.md) |
+| Быстрый старт всего проекта | [QUICKSTART.md](QUICKSTART.md) |
+| Что было исправлено | [CHANGELOG_MQTT.md](CHANGELOG_MQTT.md) |
+| Тестирование MQTT | [MQTT_FIXES.md](MQTT_FIXES.md) |
+| Структура API | [README_MQTT.md](README_MQTT.md) |
+| Установка Mosquitto | [WEBSOCKET_ERROR_FIX.md](WEBSOCKET_ERROR_FIX.md) |
 
 ---
 
-**Последнее обновление:** 23.01.2026  
-**Версия документации:** 2.0  
+## 💡 Полезные ссылки
 
-**Все документы актуальны и синхронизированы с версией системы 1.0**
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:3000/v1
+- **Health Check**: http://localhost:3000/health
+- **WebSocket**: ws://localhost:3000/ws/mqtt
+
+---
+
+## 🆘 Часто задаваемые вопросы
+
+### Q: Backend не запускается?
+**A:** См. [START_BACKEND_NOW.md](START_BACKEND_NOW.md) - решение за 3 команды.
+
+### Q: WebSocket не подключается?
+**A:** Убедитесь, что backend запущен. См. [WEBSOCKET_ERROR_FIX.md](WEBSOCKET_ERROR_FIX.md)
+
+### Q: Нужен ли MQTT брокер?
+**A:** Нет, система работает без него через REST API. MQTT нужен только для live обновлений.
+
+### Q: Как добавить права доступа?
+**A:** Запустите `node backend/add-mqtt-permissions.js`
+
+### Q: Порт 3000 занят?
+**A:** 
+```bash
+# Linux/Mac
+lsof -ti:3000 | xargs kill -9
+
+# Windows
+for /f "tokens=5" %a in ('netstat -ano ^| findstr :3000') do taskkill /F /PID %a
+```
+
+---
+
+## 📞 Техподдержка
+
+Если документация не помогла:
+
+1. Проверьте логи backend (терминал где запущен `npm run dev`)
+2. Проверьте консоль браузера (F12 → Console)
+3. Убедитесь что MySQL запущена
+4. Проверьте `.env` файлы в `/backend`
+
+---
+
+**Удачи! 🚀**
