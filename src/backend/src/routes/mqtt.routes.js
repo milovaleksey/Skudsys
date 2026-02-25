@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mqttController = require('../controllers/mqtt.controller');
-const { authenticate } = require('../middleware/auth.middleware');
-const { checkPermission } = require('../middleware/permissions.middleware');
+const { authenticate, authorize } = require('../middleware/auth');
 
 /**
  * GET /api/mqtt/cards
@@ -29,7 +28,7 @@ router.get('/status', authenticate, mqttController.getStatus);
 router.post(
   '/publish',
   authenticate,
-  checkPermission('mqtt-publish'),
+  authorize('mqtt-publish'),
   mqttController.publish
 );
 

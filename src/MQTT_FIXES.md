@@ -21,9 +21,33 @@
 ### 4. Исправлен токен в WebSocket
 - Использует правильный ключ `auth_token` вместо `token`
 
+### 5. Исправлены импорты в `/backend/src/routes/mqtt.routes.js`
+- Изменено с `require('../middleware/auth.middleware')` на `require('../middleware/auth')`
+- Изменено с `checkPermission()` на `authorize()`
+- Все импорты соответствуют другим роутам
+
+### 6. Добавлен скрипт для прав доступа
+- Создан `/backend/add-mqtt-permissions.js`
+- Автоматически добавляет право `mqtt-publish` для admin и security
+
 ## 🚀 Как протестировать:
 
-### 1. Запустите Backend
+### 1. Добавьте права доступа MQTT
+
+```bash
+cd backend
+node add-mqtt-permissions.js
+```
+
+Вы должны увидеть:
+```
+✅ Подключено к MySQL
+✅ Право mqtt-publish добавлено для роли admin
+✅ Право mqtt-publish добавлено для роли security
+✅ Все права доступа MQTT успешно обновлены!
+```
+
+### 2. Запустите Backend
 
 ```bash
 cd backend
@@ -45,7 +69,7 @@ npm run dev
 [MQTT] ❌ Ошибка подключения: connect ECONNREFUSED 127.0.0.1:1883
 ```
 
-### 2. Запустите Mosquitto (опционально для MQTT)
+### 3. Запустите Mosquitto (опционально для MQTT)
 
 ```bash
 # Ubuntu/Debian
@@ -57,7 +81,7 @@ brew install mosquitto
 brew services start mosquitto
 ```
 
-### 3. Запустите Frontend
+### 4. Запустите Frontend
 
 ```bash
 npm install  # если еще не установлены зависимости
@@ -66,7 +90,7 @@ npm run dev
 
 Откройте в браузере http://localhost:5173 (или другой порт, который укажет Vite)
 
-### 4. Проверьте работу
+### 5. Проверьте работу
 
 #### Авторизуйтесь в системе
 
@@ -88,7 +112,7 @@ npm run dev
 ```
 Значит проблема с авторизацией - перелогиньтесь.
 
-### 5. Протестируйте MQTT (если брокер запущен)
+### 6. Протестируйте MQTT (если брокер запущен)
 
 ```bash
 # Опубликуйте конфигурацию карточек
@@ -119,7 +143,7 @@ mosquitto_pub -h localhost -t "test/value2" -m "100"
 - ✅ Индикатор "MQTT подключен" с зеленой точкой
 - 📊 Две динамические карточки с live данными
 
-### 6. Проверьте live обновления
+### 7. Проверьте live обновления
 
 Откройте второй терминал:
 ```bash
