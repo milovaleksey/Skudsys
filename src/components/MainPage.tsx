@@ -233,7 +233,7 @@ export function MainPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-3xl font-bold text-gray-900">
-              Системы безопасности инфраструкт��ры
+              Системы безопасности инфраструктуры
             </h1>
             <button 
               className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/50 transition-colors text-gray-700"
