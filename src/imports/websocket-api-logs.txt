@@ -1,0 +1,656 @@
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+useMQTT.ts:111 [WebSocket] ✅ Подключено
+useMQTT.ts:107 WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY' failed: Invalid frame header
+(anonymous) @ useMQTT.ts:107
+(anonymous) @ useMQTT.ts:180
+installHook.js:1 [WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+overrideMethod @ installHook.js:1
+ws.onerror @ useMQTT.ts:165
+useMQTT.ts:170 [WebSocket] Отключено: 1006 
+useMQTT.ts:177 [WebSocket] Переподключение через 2000ms (попытка 1/5)
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+api.ts:127  GET http://10.101.221.207:3000/v1/students/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:398
+loadStats @ MainPage.tsx:64
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/employees/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:413
+loadStats @ MainPage.tsx:65
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/parking/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:456
+loadStats @ MainPage.tsx:66
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:111 [WebSocket] ✅ Подключено
+useMQTT.ts:107 WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY' failed: Invalid frame header
+(anonymous) @ useMQTT.ts:107
+(anonymous) @ useMQTT.ts:180
+installHook.js:1 [WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+overrideMethod @ installHook.js:1
+ws.onerror @ useMQTT.ts:165
+useMQTT.ts:170 [WebSocket] Отключено: 1006 
+useMQTT.ts:177 [WebSocket] Переподключение через 2000ms (попытка 1/5)
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+api.ts:127  GET http://10.101.221.207:3000/v1/students/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:398
+loadStats @ MainPage.tsx:64
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/employees/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:413
+loadStats @ MainPage.tsx:65
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/parking/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:456
+loadStats @ MainPage.tsx:66
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:111 [WebSocket] ✅ Подключено
+useMQTT.ts:107 WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY' failed: Invalid frame header
+(anonymous) @ useMQTT.ts:107
+(anonymous) @ useMQTT.ts:180
+installHook.js:1 [WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+overrideMethod @ installHook.js:1
+ws.onerror @ useMQTT.ts:165
+useMQTT.ts:170 [WebSocket] Отключено: 1006 
+useMQTT.ts:177 [WebSocket] Переподключение через 2000ms (попытка 1/5)
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+api.ts:127  GET http://10.101.221.207:3000/v1/students/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:398
+loadStats @ MainPage.tsx:64
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/employees/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:413
+loadStats @ MainPage.tsx:65
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/parking/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:456
+loadStats @ MainPage.tsx:66
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:111 [WebSocket] ✅ Подключено
+useMQTT.ts:107 WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY' failed: Invalid frame header
+(anonymous) @ useMQTT.ts:107
+(anonymous) @ useMQTT.ts:180
+installHook.js:1 [WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+overrideMethod @ installHook.js:1
+ws.onerror @ useMQTT.ts:165
+useMQTT.ts:170 [WebSocket] Отключено: 1006 
+useMQTT.ts:177 [WebSocket] Переподключение через 2000ms (попытка 1/5)
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+api.ts:127  GET http://10.101.221.207:3000/v1/employees/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:413
+loadStats @ MainPage.tsx:65
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/parking/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:456
+loadStats @ MainPage.tsx:66
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/students/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:398
+loadStats @ MainPage.tsx:64
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+useMQTT.ts:111 [WebSocket] ✅ Подключено
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+useMQTT.ts:107 WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY' failed: Invalid frame header
+(anonymous) @ useMQTT.ts:107
+(anonymous) @ useMQTT.ts:180
+installHook.js:1 [WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+overrideMethod @ installHook.js:1
+ws.onerror @ useMQTT.ts:165
+useMQTT.ts:170 [WebSocket] Отключено: 1006 
+useMQTT.ts:177 [WebSocket] Переподключение через 2000ms (попытка 1/5)
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+api.ts:127  GET http://10.101.221.207:3000/v1/students/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:398
+loadStats @ MainPage.tsx:64
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/employees/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:413
+loadStats @ MainPage.tsx:65
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/parking/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:456
+loadStats @ MainPage.tsx:66
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:111 [WebSocket] ✅ Подключено
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+useMQTT.ts:107 WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY' failed: Invalid frame header
+(anonymous) @ useMQTT.ts:107
+(anonymous) @ useMQTT.ts:180
+installHook.js:1 [WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+overrideMethod @ installHook.js:1
+ws.onerror @ useMQTT.ts:165
+useMQTT.ts:170 [WebSocket] Отключено: 1006 
+useMQTT.ts:177 [WebSocket] Переподключение через 2000ms (попытка 1/5)
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY
+api.ts:127  GET http://10.101.221.207:3000/v1/students/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:398
+loadStats @ MainPage.tsx:64
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/employees/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:413
+loadStats @ MainPage.tsx:65
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/parking/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:456
+loadStats @ MainPage.tsx:66
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:111 [WebSocket] ✅ Подключено
+useMQTT.ts:107 WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY' failed: Invalid frame header
+(anonymous) @ useMQTT.ts:107
+(anonymous) @ useMQTT.ts:180
+installHook.js:1 [WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+overrideMethod @ installHook.js:1
+ws.onerror @ useMQTT.ts:165
+useMQTT.ts:170 [WebSocket] Отключено: 1006 
+useMQTT.ts:177 [WebSocket] Переподключение через 2000ms (попытка 1/5)
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+api.ts:127  GET http://10.101.221.207:3000/v1/students/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:398
+loadStats @ MainPage.tsx:64
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/employees/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:413
+loadStats @ MainPage.tsx:65
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/parking/statistics 429 (Too Many Requests)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:456
+loadStats @ MainPage.tsx:66
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+api.ts:132 📡 Response status: 429
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+ [WebSocket] ✅ Подключено
+ WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzIwOTYwNTMsImV4cCI6MTc3MjE4MjQ1M30.wCzRYIUDNaxbCKjvSqDIBob9Jcy5FK1fi3atBQtJewY' failed: Invalid frame header
+(anonymous) @ useMQTT.ts:63
+(anonymous) @ useMQTT.ts:114
+ [WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+overrideMethod @ installHook.js:1
+ws.onerror @ useMQTT.ts:103
+ [WebSocket] Отключено: 1006 
+ [WebSocket] Переподключение через 2000ms (попытка 1/5)
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /students/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /employees/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /parking/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+  GET http://10.101.221.207:3000/v1/students/statistics 429 (Too Many Requests)
+request @ api.ts:57
+get @ api.ts:139
+getStatistics @ api.ts:270
+loadStats @ MainPage.tsx:79
+(anonymous) @ MainPage.tsx:96
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+ 📡 Response status: 429
+ 📡 Response content-type: application/json; charset=utf-8
+  GET http://10.101.221.207:3000/v1/employees/statistics 429 (Too Many Requests)
+request @ api.ts:57
+get @ api.ts:139
+getStatistics @ api.ts:281
+loadStats @ MainPage.tsx:80
+(anonymous) @ MainPage.tsx:96
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+ 📡 Response status: 429
+ 📡 Response content-type: application/json; charset=utf-8
+  GET http://10.101.221.207:3000/v1/parking/statistics 429 (Too Many Requests)
+request @ api.ts:57
+get @ api.ts:139
+getStatistics @ api.ts:307
+loadStats @ MainPage.tsx:81
+(anonymous) @ MainPage.tsx:96
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+ 📡 Response status: 429
+ 📡 Response content-type: application/json; charset=utf-8

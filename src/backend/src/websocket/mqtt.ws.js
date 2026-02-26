@@ -7,17 +7,16 @@ const mqttService = require('../services/mqtt.service');
  */
 function initMQTTWebSocket(server) {
   const wss = new WebSocket.Server({ 
-    server,
-    path: '/ws/mqtt'
+    noServer: true
   });
 
-  console.log('[WebSocket] MQTT WebSocket сервер запущен на /ws/mqtt');
+  console.log('[MQTT WebSocket] Инициализирован для /ws/mqtt');
 
   // Множество подключенных клиентов
   const clients = new Set();
 
   wss.on('connection', (ws, req) => {
-    console.log('[WebSocket] Новое подключение к MQTT WebSocket');
+    console.log('[MQTT WebSocket] Новое подключение');
 
     // Аутентификация через токен в query параметрах
     const url = new URL(req.url, `http://${req.headers.host}`);
@@ -156,7 +155,7 @@ function initMQTTWebSocket(server) {
     clearInterval(heartbeatInterval);
   });
 
-  return wss;
+  return { wss, path: '/ws/mqtt' };
 }
 
 module.exports = { initMQTTWebSocket };

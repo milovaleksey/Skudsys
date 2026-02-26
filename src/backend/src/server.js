@@ -117,7 +117,7 @@ const startServer = async () => {
     await connectDatabase();
     console.log('✅ Подключено к MySQL');
 
-    // Обн��вление прав доступа
+    // Обнвление прав доступа
     console.log('🔄 Обновление прав доступа...');
     await permissionUpdater();
     console.log('✅ Права доступа обновлены');
@@ -131,10 +131,28 @@ const startServer = async () => {
     });
 
     // Инициализация MQTT WebSocket
-    initMQTTWebSocket(server);
+    const mqttWS = initMQTTWebSocket(server);
 
     // Инициализация Parking MQTT WebSocket
-    initParkingWebSocket(server);
+    const parkingWS = initParkingWebSocket(server);
+
+    // Обработка WebSocket upgrade для разных путей
+    server.on('upgrade', (request, socket, head) => {
+      const pathname = new URL(request.url, `http://${request.headers.host}`).pathname;
+
+      if (pathname === mqttWS.path) {
+        mqttWS.wss.handleUpgrade(request, socket, head, (ws) => {
+          mqttWS.wss.emit('connection', ws, request);
+        });
+      } else if (pathname === parkingWS.path) {
+        parkingWS.wss.handleUpgrade(request, socket, head, (ws) => {
+          parkingWS.wss.emit('connection', ws, request);
+        });
+      } else {
+        console.warn(`[WebSocket] Неизвестный пу��ь: ${pathname}`);
+        socket.destroy();
+      }
+    });
 
     // Подключение к MQTT брокеру
     if (process.env.MQTT_ENABLED !== 'false') {
