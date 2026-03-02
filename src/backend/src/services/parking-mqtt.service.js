@@ -8,11 +8,13 @@ class ParkingMQTTService {
     this.parkingVehicles = {};
     this.wsClients = new Set();
     
-    // MQTT настройки (используем те же переменные что и основной MQTT)
-    this.mqttBroker = process.env.MQTT_BROKER || 'localhost';
-    this.mqttPort = parseInt(process.env.MQTT_PORT) || 1883;
-    this.mqttUsername = process.env.MQTT_USERNAME || undefined;
-    this.mqttPassword = process.env.MQTT_PASSWORD || undefined;
+    // MQTT настройки для парковки
+    this.mqttBroker = process.env.PARKING_MQTT_BROKER || process.env.MQTT_BROKER || 'localhost';
+    this.mqttPort = parseInt(process.env.PARKING_MQTT_PORT || process.env.MQTT_PORT) || 1883;
+    this.mqttUsername = process.env.PARKING_MQTT_USERNAME || process.env.MQTT_USERNAME || undefined;
+    this.mqttPassword = process.env.PARKING_MQTT_PASSWORD || process.env.MQTT_PASSWORD || undefined;
+    this.configTopic = process.env.PARKING_MQTT_CONFIG_TOPIC || 'Skud/parking/config';
+    this.vehiclesTopicPrefix = process.env.PARKING_MQTT_VEHICLES_TOPIC_PREFIX || 'Skud/parking/';
   }
 
   /**
@@ -39,14 +41,20 @@ class ParkingMQTTService {
         console.log('[Parking MQTT] ✅ Подключено к брокеру');
         this.isConnected = true;
 
-        // Подписываемс�� на конфигурацию парковок
-        this.client.subscribe('Skud/parking/config', (err) => {
+        // Подписываемс на конфигурацию парковок
+        this.client.subscribe(this.configTopic, (err) => {
           if (err) {
             console.error('[Parking MQTT] Ошибка подписки на config:', err);
           } else {
-            console.log('[Parking MQTT] ✅ Подписка на Skud/parking/config');
+            console.log(`[Parking MQTT] ✅ Подписка на ${this.configTopic}`);
           }
         });
+      });
+
+      // Обработка входящих сообщений
+      this.client.on('message', (topic, message) => {
+        console.log(`[Parking MQTT] 📨 Получено сообщение из топика: ${topic}`);
+        this.handleMessage(topic, message);
       });
 
       this.client.on('error', (error) => {
@@ -65,35 +73,46 @@ class ParkingMQTTService {
   handleMessage(topic, message) {
     try {
       const payload = message.toString();
+      console.log(`[Parking MQTT] 📦 Payload: ${payload.substring(0, 200)}...`);
       
-      if (topic === 'Skud/parking/config') {
+      if (topic === this.configTopic) {
         // Конфигурация парковок
-        const config = JSON.parse(payload);
-        this.parkingConfigs = config.parkings || [];
+        const data = JSON.parse(payload);
         
-        console.log(`[Parking MQTT] Получена конфигурация: ${this.parkingConfigs.length} парковок`);
+        // Поддерживаем два формата: { parkings: [...] } и просто [...]
+        this.parkingConfigs = Array.isArray(data) ? data : (data.parkings || []);
+        
+        console.log(`[Parking MQTT] 📊 Получена конфигурация: ${this.parkingConfigs.length} парковок`);
+        
+        if (this.parkingConfigs.length > 0) {
+          console.log('[Parking MQTT] 📝 Парковки:', this.parkingConfigs.map(p => p.id || p.name).join(', '));
+        }
         
         // Отписываемся от старых топиков
         this.parkingConfigs.forEach(parking => {
-          this.client.unsubscribe(parking.vehiclesTopic, (err) => {
-            if (err) {
-              console.error(`[Parking MQTT] Ошибка отписки от ${parking.vehiclesTopic}:`, err);
-            }
-          });
+          if (parking.vehiclesTopic) {
+            this.client.unsubscribe(parking.vehiclesTopic, (err) => {
+              if (err) {
+                console.error(`[Parking MQTT] Ошибка отписки от ${parking.vehiclesTopic}:`, err);
+              }
+            });
+          }
         });
         
         // Подписываемся на топики с транспортом
         this.parkingConfigs.forEach(parking => {
-          this.client.subscribe(parking.vehiclesTopic, (err) => {
-            if (err) {
-              console.error(`[Parking MQTT] Ошибка подписки на ${parking.vehiclesTopic}:`, err);
-            } else {
-              console.log(`[Parking MQTT] ✅ Подписка на ${parking.vehiclesTopic}`);
-            }
-          });
-          
-          // Инициализируем пустой массив
-          this.parkingVehicles[parking.id] = [];
+          if (parking.vehiclesTopic) {
+            this.client.subscribe(parking.vehiclesTopic, (err) => {
+              if (err) {
+                console.error(`[Parking MQTT] Ошибка подписки на ${parking.vehiclesTopic}:`, err);
+              } else {
+                console.log(`[Parking MQTT] ✅ Подписка на ${parking.vehiclesTopic}`);
+              }
+            });
+            
+            // Инициализируем пустой массив
+            this.parkingVehicles[parking.id] = [];
+          }
         });
         
         // Отправляем конфигурацию всем подключенным клиентам
@@ -110,7 +129,7 @@ class ParkingMQTTService {
           const vehicles = JSON.parse(payload);
           this.parkingVehicles[parking.id] = vehicles;
           
-          console.log(`[Parking MQTT] Обновление ${parking.name}: ${vehicles.length} автомобилей`);
+          console.log(`[Parking MQTT] 🚗 Обновление ${parking.name}: ${vehicles.length} автомобилей`);
           
           // Отправляем обновление клиентам
           this.broadcastToClients({
@@ -118,11 +137,15 @@ class ParkingMQTTService {
             parkingId: parking.id,
             vehicles: vehicles,
           });
+        } else {
+          console.warn(`[Parking MQTT] ⚠️ Неизвестный топик: ${topic}`);
         }
       }
       
     } catch (error) {
-      console.error('[Parking MQTT] Ошибка обработки сообщения:', error);
+      console.error('[Parking MQTT] ❌ Ошибка обработки сообщения:', error);
+      console.error('[Parking MQTT] Топик:', topic);
+      console.error('[Parking MQTT] Payload:', message.toString());
     }
   }
 

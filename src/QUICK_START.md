@@ -27,6 +27,16 @@
 - **Frontend:** Современные карточки с бейджами
 - **Файлы:** `/backend/src/controllers/skudController.js`, `/components/IdentifierSearchPage.tsx`
 
+### 6. ❌ → ✅ 404 для parking/statistics
+- **Проблема:** `GET /v1/parking/statistics 404 (Not Found)`
+- **Решение:** Добавлены API endpoints в parking.routes.js
+- **Файл:** `/backend/src/routes/parking.routes.js`
+
+### 7. ❌ → ✅ MQTT парковки не обрабатывает сообщения
+- **Проблема:** Отправка в `Skud/parking/config` не дает результата
+- **Решение:** Добавлен обработчик `client.on('message')` в parking-mqtt.service.js
+- **Файл:** `/backend/src/services/parking-mqtt.service.js`
+
 ---
 
 ## 📋 Перед запуском
@@ -158,7 +168,7 @@ http://localhost:5173
 | Парковка | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Управление пользователями | ✅ | ❌ | ❌ | ❌ | ❌ |
 | Управление ролями | ✅ | ❌ | ❌ | ❌ | ❌ |
-| Журнал аудита | ✅ | ✅ | ❌ | ❌ | ❌ |
+| Журнал ауди��а | ✅ | ✅ | ❌ | ❌ | ❌ |
 
 ---
 
@@ -176,6 +186,7 @@ http://localhost:5173
 - 🔄 `/backend/src/services/parking-mqtt.service.js` - обновлен
 - 🔄 `/backend/src/controllers/skudController.js` - обновлен
 - 🔄 `/backend/src/middleware/rateLimiter.js` - обновлен
+- 🔄 `/backend/src/routes/parking.routes.js` - обновлен
 
 ### Frontend:
 - 🔄 `/components/IdentifierSearchPage.tsx` - обновлен
