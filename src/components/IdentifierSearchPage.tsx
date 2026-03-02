@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Search, FileSpreadsheet, User, CreditCard, Building2, Clock, Mail } from 'lucide-react';
-import * as XLSX from 'xlsx';
+import { Search, User, CreditCard, Building2, Clock, Mail } from 'lucide-react';
 import { skudApi } from '../lib/api';
 import { toast } from 'sonner';
 
@@ -69,29 +68,6 @@ export function IdentifierSearchPage() {
     }
   };
 
-  const handleExportExcel = () => {
-    if (searchResults.length === 0) return;
-
-    const exportData = searchResults.map(result => ({
-      'Идентификатор': result.identifier,
-      'Тип': result.identifierType === 'employee' ? 'Сотрудник' : 'Студент',
-      'ФИО': result.fullName,
-      'Email': result.email,
-      'Должность': result.position || '-',
-      'Подразделение': result.department || '-',
-      'Номер карты': result.cardNumber || '-',
-      'Последняя активность': result.lastSeen || '-',
-      'Местоположение': result.location || '-',
-      'Статус': result.status === 'active' ? 'Активен' : 'Неактивен'
-    }));
-
-    const worksheet = XLSX.utils.json_to_sheet(exportData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Поиск');
-    XLSX.writeFile(workbook, `identifier_search_${new Date().toISOString().split('T')[0]}.xlsx`);
-    toast.success('Файл экспортирован!');
-  };
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -102,15 +78,6 @@ export function IdentifierSearchPage() {
             Поиск сотрудников и студентов по номеру карты
           </p>
         </div>
-        {searchResults.length > 0 && (
-          <button
-            onClick={handleExportExcel}
-            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700"
-          >
-            <FileSpreadsheet size={20} style={{ color: '#00aeef' }} />
-            <span>Excel</span>
-          </button>
-        )}
       </div>
 
       {/* Search Panel */}
@@ -151,25 +118,20 @@ export function IdentifierSearchPage() {
               <div className="flex items-start gap-2">
                 <CreditCard size={16} className="text-blue-600 mt-0.5" />
                 <div>
-                  <div><strong>076,10849</strong> - формат "старший байт, младшие байты"</div>
-                  <div className="text-xs text-blue-600 mt-0.5">Преобразуется в: 76 (0x4C) + 10849 (0x2A61) = 0x4C2A61 = 4991585</div>
+                  <div><strong>XXX,XXXXX</strong> (например: 076,10849)</div>
+                  <div className="text-xs text-blue-600 mt-0.5">Формат с запятой - автоматически преобразуется в число</div>
                 </div>
               </div>
               <div className="flex items-start gap-2">
                 <CreditCard size={16} className="text-blue-600 mt-0.5" />
                 <div>
-                  <div><strong>4991585</strong> - прямой числовой идентификатор</div>
-                </div>
-              </div>
-              <div className="flex items-start gap-2">
-                <CreditCard size={16} className="text-blue-600 mt-0.5" />
-                <div>
-                  <div><strong>0004991585</strong> - числовой идентификатор с ведущими нулями</div>
+                  <div><strong>XXXXXXX</strong> (например: 1446738 или 0001446738)</div>
+                  <div className="text-xs text-blue-600 mt-0.5">Просто число - можно с ведущими нулями или без них</div>
                 </div>
               </div>
             </div>
             <div className="mt-3 pt-3 border-t border-blue-200 text-xs text-blue-700">
-              💡 <strong>Совет:</strong> Введите идентификатор в любом из этих форматов для поиска владельца карты
+              💡 <strong>Совет:</strong> Введите номер карты в любом из этих форматов
             </div>
           </div>
 
