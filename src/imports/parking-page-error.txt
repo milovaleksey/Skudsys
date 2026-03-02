@@ -1,0 +1,150 @@
+ParkingPage.tsx:20 Uncaught TypeError: Cannot read properties of null (reading 'toLowerCase')
+    at ParkingPage.tsx:20:27
+    at Array.filter (<anonymous>)
+    at filterRecords (ParkingPage.tsx:18:20)
+    at renderParkingBlock (ParkingPage.tsx:32:29)
+    at ParkingPage.tsx:301:36
+    at Array.map (<anonymous>)
+    at ParkingPage (ParkingPage.tsx:301:21)
+    at renderWithHooks (chunk-NUMECXU6.js?v=298d1c50:11548:26)
+    at updateFunctionComponent (chunk-NUMECXU6.js?v=298d1c50:14582:28)
+    at beginWork (chunk-NUMECXU6.js?v=298d1c50:15924:22)
+(anonymous) @ ParkingPage.tsx:20
+filterRecords @ ParkingPage.tsx:18
+renderParkingBlock @ ParkingPage.tsx:32
+(anonymous) @ ParkingPage.tsx:301
+ParkingPage @ ParkingPage.tsx:301
+renderWithHooks @ chunk-NUMECXU6.js?v=298d1c50:11548
+updateFunctionComponent @ chunk-NUMECXU6.js?v=298d1c50:14582
+beginWork @ chunk-NUMECXU6.js?v=298d1c50:15924
+callCallback2 @ chunk-NUMECXU6.js?v=298d1c50:3674
+invokeGuardedCallbackDev @ chunk-NUMECXU6.js?v=298d1c50:3699
+invokeGuardedCallback @ chunk-NUMECXU6.js?v=298d1c50:3733
+beginWork$1 @ chunk-NUMECXU6.js?v=298d1c50:19765
+performUnitOfWork @ chunk-NUMECXU6.js?v=298d1c50:19198
+workLoopSync @ chunk-NUMECXU6.js?v=298d1c50:19137
+renderRootSync @ chunk-NUMECXU6.js?v=298d1c50:19116
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18874
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+flushSync @ chunk-NUMECXU6.js?v=298d1c50:18959
+finishEventHandler @ chunk-NUMECXU6.js?v=298d1c50:3569
+batchedUpdates @ chunk-NUMECXU6.js?v=298d1c50:3582
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=298d1c50:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=298d1c50:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=298d1c50:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=298d1c50:5449
+ParkingPage.tsx:20 Uncaught TypeError: Cannot read properties of null (reading 'toLowerCase')
+    at ParkingPage.tsx:20:27
+    at Array.filter (<anonymous>)
+    at filterRecords (ParkingPage.tsx:18:20)
+    at renderParkingBlock (ParkingPage.tsx:32:29)
+    at ParkingPage.tsx:301:36
+    at Array.map (<anonymous>)
+    at ParkingPage (ParkingPage.tsx:301:21)
+    at renderWithHooks (chunk-NUMECXU6.js?v=298d1c50:11548:26)
+    at updateFunctionComponent (chunk-NUMECXU6.js?v=298d1c50:14582:28)
+    at beginWork (chunk-NUMECXU6.js?v=298d1c50:15924:22)
+(anonymous) @ ParkingPage.tsx:20
+filterRecords @ ParkingPage.tsx:18
+renderParkingBlock @ ParkingPage.tsx:32
+(anonymous) @ ParkingPage.tsx:301
+ParkingPage @ ParkingPage.tsx:301
+renderWithHooks @ chunk-NUMECXU6.js?v=298d1c50:11548
+updateFunctionComponent @ chunk-NUMECXU6.js?v=298d1c50:14582
+beginWork @ chunk-NUMECXU6.js?v=298d1c50:15924
+callCallback2 @ chunk-NUMECXU6.js?v=298d1c50:3674
+invokeGuardedCallbackDev @ chunk-NUMECXU6.js?v=298d1c50:3699
+invokeGuardedCallback @ chunk-NUMECXU6.js?v=298d1c50:3733
+beginWork$1 @ chunk-NUMECXU6.js?v=298d1c50:19765
+performUnitOfWork @ chunk-NUMECXU6.js?v=298d1c50:19198
+workLoopSync @ chunk-NUMECXU6.js?v=298d1c50:19137
+renderRootSync @ chunk-NUMECXU6.js?v=298d1c50:19116
+recoverFromConcurrentError @ chunk-NUMECXU6.js?v=298d1c50:18736
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18879
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+flushSync @ chunk-NUMECXU6.js?v=298d1c50:18959
+finishEventHandler @ chunk-NUMECXU6.js?v=298d1c50:3569
+batchedUpdates @ chunk-NUMECXU6.js?v=298d1c50:3582
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=298d1c50:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=298d1c50:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=298d1c50:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=298d1c50:5449
+installHook.js:1 The above error occurred in the <ParkingPage> component:
+
+    at ParkingPage (http://10.101.221.207:5173/components/ParkingPage.tsx:26:55)
+    at main
+    at div
+    at MainPage (http://10.101.221.207:5173/components/MainPage.tsx:62:45)
+    at AppContent (http://10.101.221.207:5173/App.tsx:25:20)
+    at AuthProvider (http://10.101.221.207:5173/contexts/AuthContext.tsx:84:32)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+overrideMethod @ installHook.js:1
+logCapturedError @ chunk-NUMECXU6.js?v=298d1c50:14032
+update.callback @ chunk-NUMECXU6.js?v=298d1c50:14052
+callCallback @ chunk-NUMECXU6.js?v=298d1c50:11248
+commitUpdateQueue @ chunk-NUMECXU6.js?v=298d1c50:11265
+commitLayoutEffectOnFiber @ chunk-NUMECXU6.js?v=298d1c50:17093
+commitLayoutMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:17980
+commitLayoutEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:17969
+commitLayoutEffects @ chunk-NUMECXU6.js?v=298d1c50:17920
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19353
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+flushSync @ chunk-NUMECXU6.js?v=298d1c50:18959
+finishEventHandler @ chunk-NUMECXU6.js?v=298d1c50:3569
+batchedUpdates @ chunk-NUMECXU6.js?v=298d1c50:3582
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=298d1c50:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=298d1c50:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=298d1c50:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=298d1c50:5449
+chunk-NUMECXU6.js?v=298d1c50:9129 Uncaught TypeError: Cannot read properties of null (reading 'toLowerCase')
+    at ParkingPage.tsx:20:27
+    at Array.filter (<anonymous>)
+    at filterRecords (ParkingPage.tsx:18:20)
+    at renderParkingBlock (ParkingPage.tsx:32:29)
+    at ParkingPage.tsx:301:36
+    at Array.map (<anonymous>)
+    at ParkingPage (ParkingPage.tsx:301:21)
+    at renderWithHooks (chunk-NUMECXU6.js?v=298d1c50:11548:26)
+    at updateFunctionComponent (chunk-NUMECXU6.js?v=298d1c50:14582:28)
+    at beginWork (chunk-NUMECXU6.js?v=298d1c50:15924:22)
+(anonymous) @ ParkingPage.tsx:20
+filterRecords @ ParkingPage.tsx:18
+renderParkingBlock @ ParkingPage.tsx:32
+(anonymous) @ ParkingPage.tsx:301
+ParkingPage @ ParkingPage.tsx:301
+renderWithHooks @ chunk-NUMECXU6.js?v=298d1c50:11548
+updateFunctionComponent @ chunk-NUMECXU6.js?v=298d1c50:14582
+beginWork @ chunk-NUMECXU6.js?v=298d1c50:15924
+beginWork$1 @ chunk-NUMECXU6.js?v=298d1c50:19753
+performUnitOfWork @ chunk-NUMECXU6.js?v=298d1c50:19198
+workLoopSync @ chunk-NUMECXU6.js?v=298d1c50:19137
+renderRootSync @ chunk-NUMECXU6.js?v=298d1c50:19116
+recoverFromConcurrentError @ chunk-NUMECXU6.js?v=298d1c50:18736
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18879
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+flushSync @ chunk-NUMECXU6.js?v=298d1c50:18959
+finishEventHandler @ chunk-NUMECXU6.js?v=298d1c50:3569
+batchedUpdates @ chunk-NUMECXU6.js?v=298d1c50:3582
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=298d1c50:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=298d1c50:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=298d1c50:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=298d1c50:5449
+useMQTT.ts:170 [WebSocket] Отключено: 1005 
+useMQTT.ts:177 [WebSocket] Переподключение через 2000ms (попытка 1/5)
+useParkingMQTT.ts:98 [Parking WebSocket] Отключено
+useParkingMQTT.ts:106 [Parking WebSocket] Переподключение через 1000ms (попытка 1)
+useParkingMQTT.ts:39 [Parking WebSocket] Подключено
+useParkingMQTT.ts:50 [Parking WebSocket] Получена конфигурация парковок: (2) [{…}, {…}]
+useParkingMQTT.ts:61 [Parking WebSocket] Обновление транспорта: parking_k1 49
+useParkingMQTT.ts:61 [Parking WebSocket] Обновление транспорта: parking_k5 74
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI0NDg5MTUsImV4cCI6MTc3MjUzNTMxNX0.Iv79PjSEkwOCfjb3LsTV7gpve52dHTXn5_he66j7WHU
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI0NDg5MTUsImV4cCI6MTc3MjUzNTMxNX0.Iv79PjSEkwOCfjb3LsTV7gpve52dHTXn5_he66j7WHU
+useMQTT.ts:111 [WebSocket] ✅ Подключено
+useMQTT.ts:120 [WebSocket] Получено: initial

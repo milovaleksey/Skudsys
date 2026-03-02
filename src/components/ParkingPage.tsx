@@ -11,14 +11,15 @@ export function ParkingPage() {
   const [expandedParkings, setExpandedParkings] = useState<Record<string, boolean>>({});
 
   // Функция фильтрации
-  const filterRecords = (records: ParkingVehicle[], searchQuery: string) => {
-    if (!searchQuery.trim()) return records;
+  const filterRecords = (records: any[], searchQuery: string) => {
+    if (!searchQuery) return records;
     
     const query = searchQuery.toLowerCase();
-    return records.filter(record => 
-      record.fullName.toLowerCase().includes(query) ||
-      record.licensePlate.toLowerCase().includes(query)
-    );
+    return records.filter(record => {
+      const fullName = record.fullName?.toLowerCase() || '';
+      const licensePlate = record.licensePlate?.toLowerCase() || '';
+      return fullName.includes(query) || licensePlate.includes(query);
+    });
   };
 
   const renderParkingBlock = (parking: any) => {
@@ -94,7 +95,7 @@ export function ParkingPage() {
               />
             </div>
             
-            {/* ��нопка разворачивания */}
+            {/* нопка разворачивания */}
             <Button
               onClick={() => setExpandedParkings(prev => ({ ...prev, [parking.id]: !isExpanded }))}
               variant="outline"

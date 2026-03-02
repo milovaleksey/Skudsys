@@ -428,6 +428,33 @@ export const auditLogsApi = {
   },
 };
 
+// API методы для SKUD (поиск по идентификатору, проходы, местоположение)
+export const skudApi = {
+  async searchByIdentifier(query: string) {
+    return apiClient.get('/skud/search', { query });
+  },
+
+  async getPassesReport(params?: {
+    startDate?: string;
+    endDate?: string;
+    personType?: 'student' | 'employee' | 'guest';
+    accessPointId?: number;
+    direction?: 'in' | 'out';
+    limit?: number;
+    offset?: number;
+  }) {
+    return apiClient.get('/skud/passes', params);
+  },
+
+  async getPersonLocation(query: string) {
+    return apiClient.get('/skud/location', { query });
+  },
+
+  async getAccessPoints() {
+    return apiClient.get('/skud/access-points');
+  },
+};
+
 // Экспорт утилит
 export { TokenManager };
 

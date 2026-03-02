@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Search, Download, FileSpreadsheet, User, CreditCard, Building2, Clock, Mail } from 'lucide-react';
+import { Search, Download, FileSpreadsheet, User, CreditCard, Building2, Clock, Mail, AlertCircle } from 'lucide-react';
 import * as XLSX from 'xlsx';
+import { skudApi } from '../lib/api';
+import { toast } from 'sonner';
 
 interface SearchResult {
   id: number;
   identifier: string;
-  identifierType: 'card' | 'employee';
+  identifierType: 'card' | 'employee' | 'student';
   fullName: string;
   email: string;
   position?: string;
@@ -21,76 +23,44 @@ export function IdentifierSearchPage() {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock data for demonstration
-  const mockData: SearchResult[] = [
-    {
-      id: 1,
-      identifier: '123.456789',
-      identifierType: 'employee',
-      fullName: 'Иванов Иван Иванович',
-      email: 'ivanov@utmn.ru',
-      position: 'Доцент кафедры информатики',
-      department: 'Институт математики и компьютерных наук',
-      cardNumber: '1234567890123',
-      lastSeen: '2026-01-23 14:30:15',
-      location: 'Главный вход, корпус А',
-      status: 'active'
-    },
-    {
-      id: 2,
-      identifier: '1234567890123',
-      identifierType: 'card',
-      fullName: 'Петрова Мария Сергеевна',
-      email: 'petrova@study.utmn.ru',
-      position: 'Студент 3 курса',
-      department: 'Институт социально-гуманитарных наук',
-      cardNumber: '1234567890123',
-      lastSeen: '2026-01-23 09:15:42',
-      location: 'Библиотека',
-      status: 'active'
-    },
-    {
-      id: 3,
-      identifier: '987.654321',
-      identifierType: 'employee',
-      fullName: 'Сидоров Петр Александрович',
-      email: 'sidorov@utmn.ru',
-      position: 'Заведующий кафедрой',
-      department: 'Институт физики и технологий',
-      cardNumber: '9876543210987',
-      lastSeen: '2026-01-22 18:45:00',
-      location: 'Вход, корпус Б',
-      status: 'active'
-    }
-  ];
-
-  const handleSearch = () => {
+  const handleSearch = async () => {
     setIsSearching(true);
     setHasSearched(true);
+    setError(null);
 
-    // Simulate API call
-    setTimeout(() => {
-      // Validate format and search
-      const query = searchQuery.trim();
-      
-      if (!query) {
-        setSearchResults([]);
-        setIsSearching(false);
-        return;
-      }
-
-      // Search in mock data
-      const results = mockData.filter(item => 
-        item.identifier.includes(query) ||
-        item.cardNumber?.includes(query) ||
-        item.fullName.toLowerCase().includes(query.toLowerCase()) ||
-        item.email.toLowerCase().includes(query.toLowerCase())
-      );
-
-      setSearchResults(results);
+    const query = searchQuery.trim();
+    
+    if (!query) {
+      setSearchResults([]);
       setIsSearching(false);
-    }, 500);
+      return;
+    }
+
+    try {
+      const response = await skudApi.searchByIdentifier(query);
+      
+      if (response.success && response.data) {
+        setSearchResults(response.data as SearchResult[]);
+        if (response.data.length === 0) {
+          toast.info('Карта не найдена. Проверьте правильность ввода идентификатора.');
+        } else {
+          toast.success(`Найдено записей: ${response.data.length}`);
+        }
+      } else {
+        setError(response.error?.message || 'Ошибка поиска');
+        toast.error(response.error?.message || 'Ошибка поиска');
+        setSearchResults([]);
+      }
+    } catch (err) {
+      console.error('Search error:', err);
+      setError('Не удалось выполнить поиск');
+      toast.error('Не удалось выполнить поиск');
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -149,8 +119,8 @@ export function IdentifierSearchPage() {
     } else {
       return (
         <div className="text-xs text-amber-600 mt-1">
-          Введите полный идентификатор или часть для поиска
-        </div>
+        Введите полный идентификатор или часть для поиска
+      </div>
       );
     }
   };
@@ -186,7 +156,7 @@ export function IdentifierSearchPage() {
           {/* Search Input */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Идентификатор
+              Идентификатор карты
             </label>
             <div className="relative">
               <input
@@ -196,33 +166,43 @@ export function IdentifierSearchPage() {
                 onKeyPress={handleKeyPress}
                 className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors text-lg"
                 style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
-                placeholder="123.456789 или 1234567890123"
+                placeholder="076,10849 или 4991585 или 0004991585"
               />
               <Search 
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" 
                 size={20} 
               />
             </div>
-            {getFormatHint()}
           </div>
 
           {/* Format Info */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div className="text-sm font-medium text-blue-900 mb-2">
-              Поддерживаемые форматы:
+              Поддерживаемые форматы идентификатора карты:
             </div>
-            <div className="space-y-1 text-sm text-blue-800">
-              <div className="flex items-center gap-2">
-                <CreditCard size={16} className="text-blue-600" />
-                <span><strong>XXX.XXXXXX</strong> - номер карты (например: 123.456789)</span>
+            <div className="space-y-2 text-sm text-blue-800">
+              <div className="flex items-start gap-2">
+                <CreditCard size={16} className="text-blue-600 mt-0.5" />
+                <div>
+                  <div><strong>076,10849</strong> - формат "старший байт, младшие байты"</div>
+                  <div className="text-xs text-blue-600 mt-0.5">Преобразуется в: 76 (0x4C) + 10849 (0x2A61) = 0x4C2A61 = 4991585</div>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <CreditCard size={16} className="text-blue-600" />
-                <span><strong>XXXXXXXXXXXXX</strong> - номер карты (13 цифр, например: 1234567890123)</span>
+              <div className="flex items-start gap-2">
+                <CreditCard size={16} className="text-blue-600 mt-0.5" />
+                <div>
+                  <div><strong>4991585</strong> - прямой числовой идентификатор</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <CreditCard size={16} className="text-blue-600 mt-0.5" />
+                <div>
+                  <div><strong>0004991585</strong> - числовой идентификатор с ведущими нулями</div>
+                </div>
               </div>
             </div>
-            <div className="mt-2 text-xs text-blue-700">
-              Также доступен поиск по частичному совпадению ФИО или email
+            <div className="mt-3 pt-3 border-t border-blue-200 text-xs text-blue-700">
+              💡 <strong>Совет:</strong> Введите идентификатор в любом из этих форматов для поиска владельца карты
             </div>
           </div>
 

@@ -7,6 +7,7 @@ const http = require('http');
 require('dotenv').config();
 
 const { connectDatabase } = require('./config/database');
+const { connectSkudDatabase } = require('./config/skudDatabase');
 const permissionUpdater = require('./utils/permissionUpdater');
 const { errorHandler } = require('./middleware/errorHandler');
 const { rateLimiter } = require('./middleware/rateLimiter');
@@ -27,6 +28,7 @@ const storageRoutes = require('./routes/storage.routes');
 const analyticsRoutes = require('./routes/analytics.routes');
 const auditRoutes = require('./routes/audit.routes');
 const mqttRoutes = require('./routes/mqtt.routes');
+const skudRoutes = require('./routes/skud');
 
 const app = express();
 
@@ -82,6 +84,7 @@ app.use(`/${API_VERSION}/storage`, storageRoutes);
 app.use(`/${API_VERSION}/analytics`, analyticsRoutes);
 app.use(`/${API_VERSION}/audit-logs`, auditRoutes);
 app.use(`/${API_VERSION}/mqtt`, mqttRoutes);
+app.use(`/${API_VERSION}/skud`, skudRoutes);
 
 // API маршруты (версия с /api для совместимости)
 app.use('/api/auth', authRoutes);
@@ -95,6 +98,7 @@ app.use('/api/storage', storageRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/audit-logs', auditRoutes);
 app.use('/api/mqtt', mqttRoutes);
+app.use('/api/skud', skudRoutes);
 
 // 404 handler
 app.use((req, res) => {
@@ -116,6 +120,10 @@ const startServer = async () => {
     // Подключение к базе данных
     await connectDatabase();
     console.log('✅ Подключено к MySQL');
+
+    // Подключение к базе данных SKUD
+    await connectSkudDatabase();
+    console.log('✅ Подключено к базе данных SKUD');
 
     // Обнвление прав доступа
     console.log('🔄 Обновление прав доступа...');
@@ -149,7 +157,7 @@ const startServer = async () => {
           parkingWS.wss.emit('connection', ws, request);
         });
       } else {
-        console.warn(`[WebSocket] Неизвестный пу��ь: ${pathname}`);
+        console.warn(`[WebSocket] Неизвестный пуь: ${pathname}`);
         socket.destroy();
       }
     });
