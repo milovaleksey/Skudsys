@@ -7,15 +7,14 @@
 const { getSkudPool } = require('../config/skudDatabase');
 
 /**
- * Парсинг идентификатора карты из различных форматов
- * @param {string} input - Входная строка (например: "076,10849" или "4991585" или "0004991585")
- * @returns {string[]} - Массив возможных вариантов для поиска
+ * Парсинг идентификатора карты в целое число
+ * @param {string} input - Входная строка (например: "076,10849" или "4991585" или "0004991585" или "076.12345")
+ * @returns {number|null} - Целое число для поиска
  */
 function parseCardIdentifier(input) {
   const cleanInput = input.trim();
-  const results = [];
-
-  // Формат с запятой: "076,10849" → преобразуем в hex
+  
+  // Формат с запятой: "076,10849" → преобразуем в hex → decimal
   if (cleanInput.includes(',')) {
     const parts = cleanInput.split(',');
     if (parts.length === 2) {
@@ -33,36 +32,41 @@ function parseCardIdentifier(input) {
         
         console.log(`[parseCardIdentifier] Input: "${cleanInput}" → High: ${highByte} (0x${highHex}), Low: ${lowBytes} (0x${lowHex}) → Combined: ${combinedHex} → Decimal: ${decimalValue}`);
         
-        results.push(decimalValue.toString());
-        // Также добавим с ведущими нулями
-        results.push(decimalValue.toString().padStart(10, '0'));
+        return decimalValue;
       }
     }
-  } else {
-    // Чистое число: "4991585" или "0004991585"
-    const numericValue = parseInt(cleanInput, 10);
+  }
+  
+  // Формат с точкой: "076.12345" → убираем точку и преобразуем
+  if (cleanInput.includes('.')) {
+    const withoutDot = cleanInput.replace(/\./g, '');
+    const numericValue = parseInt(withoutDot, 10);
+    
     if (!isNaN(numericValue)) {
-      console.log(`[parseCardIdentifier] Input: "${cleanInput}" → Numeric: ${numericValue}`);
-      
-      // Добавляем оригинал
-      results.push(cleanInput);
-      // Добавляем без ведущих нулей
-      results.push(numericValue.toString());
-      // Добавляем с ведущими нулями (10 цифр)
-      results.push(numericValue.toString().padStart(10, '0'));
+      console.log(`[parseCardIdentifier] Input: "${cleanInput}" → Without dot: "${withoutDot}" → Numeric: ${numericValue}`);
+      return numericValue;
     }
   }
-
-  return [...new Set(results)]; // Убираем дубликаты
+  
+  // Чистое число: "4991585" или "0004991585" или "76"
+  const numericValue = parseInt(cleanInput, 10);
+  if (!isNaN(numericValue)) {
+    console.log(`[parseCardIdentifier] Input: "${cleanInput}" → Numeric: ${numericValue}`);
+    return numericValue;
+  }
+  
+  return null;
 }
 
 /**
  * Поиск по идентификатору карты
- * Использует хранимую процедуру search_card
+ * Использует хранимую процедуру sp_search_person_by_identifier
  * Поддерживает форматы:
- * - "076,10849" (старший байт, младшие байты)
+ * - "076,10849" (старший байт, младшие байты) → преобразуется в целое число
  * - "4991585" (чистое число)
- * - "0004991585" (число с ведущими нулями)
+ * - "0004991585" (число с ведущими нулями) → преобразуется в целое число
+ * - "076.12345" (старший байт, младшие байты через точку) → преобразуется в целое число
+ * - "76" (число) → 76
  * @route GET /api/v1/skud/search
  */
 const searchByIdentifier = async (req, res) => {
@@ -79,10 +83,10 @@ const searchByIdentifier = async (req, res) => {
     const searchQuery = query.trim();
     const pool = getSkudPool();
 
-    // Парсим идентификатор
-    const identifiers = parseCardIdentifier(searchQuery);
+    // Парсим идентификатор в целое число
+    const identifier = parseCardIdentifier(searchQuery);
     
-    if (identifiers.length === 0) {
+    if (identifier === null) {
       return res.json({
         success: true,
         data: [],
@@ -91,74 +95,83 @@ const searchByIdentifier = async (req, res) => {
       });
     }
 
-    console.log(`[searchByIdentifier] Search identifiers:`, identifiers);
+    console.log(`[searchByIdentifier] Calling sp_search_person_by_identifier(${identifier})`);
 
-    // Собираем все результаты из процедуры для каждого варианта идентификатора
-    const allResults = [];
-    const seenIds = new Set(); // Для избежания дубликатов
+    try {
+      // Вызываем хранимую процедуру sp_search_person_by_identifier
+      const [rows] = await pool.execute('CALL sp_search_person_by_identifier(?)', [identifier]);
+      
+      // CALL возвращает массив массивов, первый элемент - это результат SELECT
+      const results = rows[0];
+      
+      console.log(`[searchByIdentifier] Procedure returned ${results?.length || 0} results for identifier: ${identifier}`);
+      
+      if (!results || !Array.isArray(results) || results.length === 0) {
+        return res.json({
+          success: true,
+          data: [],
+          count: 0,
+          message: 'Ничего не найдено'
+        });
+      }
 
-    for (const identifier of identifiers) {
-      try {
-        console.log(`[searchByIdentifier] Calling search_card('${identifier}')`);
-        
-        // Вызываем хранимую процедуру
-        const [rows] = await pool.execute('CALL search_card(?)', [identifier]);
-        
-        // CALL возвращает массив массивов, первый элемент - это результат SELECT
-        const results = rows[0];
-        
-        console.log(`[searchByIdentifier] Procedure returned ${results?.length || 0} results for identifier: ${identifier}`);
-        
-        if (results && Array.isArray(results)) {
-          // Добавляем только уникальные результаты (по id)
-          results.forEach(result => {
-            const uniqueKey = `${result.identifierType}-${result.id}`;
-            if (!seenIds.has(uniqueKey)) {
-              seenIds.add(uniqueKey);
-              
-              // Форматируем дату lastSeen
-              let formattedLastSeen = null;
-              if (result.lastSeen) {
-                const date = new Date(result.lastSeen);
-                formattedLastSeen = date.toLocaleString('ru-RU', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  second: '2-digit'
-                });
-              }
-              
-              allResults.push({
-                id: result.id,
-                identifier: result.identifier,
-                identifierType: result.identifierType,
-                fullName: result.fullName,
-                email: result.email,
-                position: result.position,
-                department: result.department,
-                cardNumber: result.cardNumber,
-                lastSeen: formattedLastSeen,
-                location: result.location,
-                status: result.status ? 'active' : 'inactive'
-              });
-            }
+      // Форматируем результаты
+      const formattedResults = results.map(result => {
+        // Форматируем дату lastSeen
+        let formattedLastSeen = null;
+        if (result.lastSeen || result.last_seen) {
+          const dateValue = result.lastSeen || result.last_seen;
+          const date = new Date(dateValue);
+          formattedLastSeen = date.toLocaleString('ru-RU', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
           });
         }
-      } catch (procError) {
-        console.error(`[searchByIdentifier] Error calling search_card('${identifier}'):`, procError.message);
-        // Продолжаем с другими идентификаторами
+        
+        return {
+          id: result.id || result.person_id,
+          identifier: result.identifier || result.card_number,
+          identifierType: result.identifierType || result.identifier_type || result.person_type,
+          fullName: result.fullName || result.full_name || result.person_name,
+          email: result.email || result.upn,
+          position: result.position || result.job_title,
+          department: result.department || result.dept_name,
+          cardNumber: result.cardNumber || result.card_number,
+          lastSeen: formattedLastSeen,
+          location: result.location || result.last_location,
+          status: (result.status === 1 || result.status === 'active' || result.is_active === 1) ? 'active' : 'inactive'
+        };
+      });
+
+      console.log(`[searchByIdentifier] Formatted ${formattedResults.length} results`);
+
+      return res.json({
+        success: true,
+        data: formattedResults,
+        count: formattedResults.length
+      });
+
+    } catch (procError) {
+      console.error(`[searchByIdentifier] Error calling sp_search_person_by_identifier(${identifier}):`, procError.message);
+      
+      // Если процедура не существует, возвращаем дружественное сообщение
+      if (procError.message.includes('does not exist')) {
+        return res.status(500).json({
+          success: false,
+          message: 'Хранимая процедура sp_search_person_by_identifier не найдена в базе данных',
+          error: {
+            message: 'Необходимо создать процедуру sp_search_person_by_identifier в базе данных СКУД',
+            code: 'PROCEDURE_NOT_FOUND'
+          }
+        });
       }
+      
+      throw procError;
     }
-
-    console.log(`[searchByIdentifier] Total unique results: ${allResults.length}`);
-
-    return res.json({
-      success: true,
-      data: allResults,
-      count: allResults.length
-    });
 
   } catch (error) {
     console.error('[searchByIdentifier] Error:', error);

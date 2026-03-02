@@ -37,6 +37,12 @@
 - **Решение:** Добавлен обработчик `client.on('message')` в parking-mqtt.service.js
 - **Файл:** `/backend/src/services/parking-mqtt.service.js`
 
+### 8. ❌ → ✅ Поиск по идентификатору - неправильная процедура
+- **Проблема:** `PROCEDURE perco.search_card does not exist`
+- **Решение:** Изменена процедура на `sp_search_person_by_identifier(INT)`, передаётся целое число
+- **Файл:** `/backend/src/controllers/skudController.js`
+- **Требуется:** Создать процедуру в MySQL (см. `/SKUD_PROCEDURE_TEMPLATE.sql`)
+
 ---
 
 ## 📋 Перед запуском
@@ -73,7 +79,7 @@ MQTT_PORT=1883
 ```sql
 USE skud_database;
 
-CREATE PROCEDURE search_card(IN card_number VARCHAR(50))
+CREATE PROCEDURE sp_search_person_by_identifier(IN identifier INT)
 BEGIN
   -- Ваша логика поиска
   SELECT 
@@ -168,7 +174,7 @@ http://localhost:5173
 | Парковка | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Управление пользователями | ✅ | ❌ | ❌ | ❌ | ❌ |
 | Управление ролями | ✅ | ❌ | ❌ | ❌ | ❌ |
-| Журнал ауди��а | ✅ | ✅ | ❌ | ❌ | ❌ |
+| Журнал аудиа | ✅ | ✅ | ❌ | ❌ | ❌ |
 
 ---
 
@@ -276,7 +282,7 @@ CREATE DATABASE skud_database;
 ✅ **Backend запущен**  
 ✅ **Frontend запущен**  
 ✅ **База данных подключена**  
-✅ **Авторизация работает**  
+✅ **Авторизация рабо��ает**  
 ✅ **MQTT настроен (опционально)**  
 ✅ **Система прав настроена**  
 
