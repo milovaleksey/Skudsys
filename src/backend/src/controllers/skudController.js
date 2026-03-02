@@ -58,6 +58,7 @@ function parseCardIdentifier(input) {
 
 /**
  * Поиск по идентификатору карты
+ * Использует хранимую процедуру search_card
  * Поддерживает форматы:
  * - "076,10849" (старший байт, младшие байты)
  * - "4991585" (чистое число)
@@ -92,127 +93,82 @@ const searchByIdentifier = async (req, res) => {
 
     console.log(`[searchByIdentifier] Search identifiers:`, identifiers);
 
-    // Создаем условия для WHERE
-    const conditions = identifiers.map(() => 'al.card_number = ?').join(' OR ');
+    // Собираем все результаты из процедуры для каждого варианта идентификатора
+    const allResults = [];
+    const seenIds = new Set(); // Для избежания дубликатов
 
-    // Поиск среди сотрудников
-    const [employees] = await pool.execute(`
-      SELECT 
-        e.id,
-        e.employee_number as identifier,
-        'employee' as identifierType,
-        e.full_name as fullName,
-        e.email,
-        e.position,
-        e.department,
-        e.is_active as status,
-        al.card_number as cardNumber,
-        al.access_time as lastSeen,
-        CONCAT(ap.name, ', ', ap.building) as location
-      FROM employees e
-      LEFT JOIN (
-        SELECT 
-          person_id,
-          card_number,
-          access_time,
-          access_point_id,
-          ROW_NUMBER() OVER (PARTITION BY person_id ORDER BY access_time DESC) as rn
-        FROM access_logs
-        WHERE person_type = 'employee'
-      ) al ON e.id = al.person_id AND al.rn = 1
-      LEFT JOIN access_points ap ON al.access_point_id = ap.id
-      WHERE ${conditions}
-      ORDER BY e.full_name
-      LIMIT 20
-    `, identifiers);
-
-    // Поиск среди студентов
-    const [students] = await pool.execute(`
-      SELECT 
-        s.id,
-        s.student_number as identifier,
-        'student' as identifierType,
-        s.full_name as fullName,
-        s.email,
-        CONCAT(s.group_number, ', ', s.course, ' курс') as position,
-        s.faculty as department,
-        s.is_active as status,
-        al.card_number as cardNumber,
-        al.access_time as lastSeen,
-        CONCAT(ap.name, ', ', ap.building) as location
-      FROM students s
-      LEFT JOIN (
-        SELECT 
-          person_id,
-          card_number,
-          access_time,
-          access_point_id,
-          ROW_NUMBER() OVER (PARTITION BY person_id ORDER BY access_time DESC) as rn
-        FROM access_logs
-        WHERE person_type = 'student'
-      ) al ON s.id = al.person_id AND al.rn = 1
-      LEFT JOIN access_points ap ON al.access_point_id = ap.id
-      WHERE ${conditions}
-      ORDER BY s.full_name
-      LIMIT 20
-    `, identifiers);
-
-    // Поиск только по номеру карты в логах (если не нашли в основных таблицах)
-    const [cardLogs] = await pool.execute(`
-      SELECT DISTINCT
-        NULL as id,
-        al.card_number as identifier,
-        'card' as identifierType,
-        al.person_name as fullName,
-        NULL as email,
-        al.person_type as position,
-        NULL as department,
-        1 as status,
-        al.card_number as cardNumber,
-        al.access_time as lastSeen,
-        CONCAT(ap.name, ', ', ap.building) as location
-      FROM access_logs al
-      LEFT JOIN access_points ap ON al.access_point_id = ap.id
-      WHERE al.card_number LIKE ?
-      AND al.id IN (
-        SELECT MAX(id) 
-        FROM access_logs 
-        WHERE card_number LIKE ?
-        GROUP BY card_number
-      )
-      LIMIT 10
-    `, [`%${searchQuery}%`, `%${searchQuery}%`]);
-
-    // Объединяем результаты
-    const results = [...employees, ...students, ...cardLogs].map(item => ({
-      ...item,
-      status: item.status ? 'active' : 'inactive',
-      lastSeen: item.lastSeen ? formatDateTime(item.lastSeen) : null
-    }));
-
-    // Удаляем дубликаты по карте
-    const uniqueResults = results.reduce((acc, current) => {
-      const exists = acc.find(item => 
-        item.cardNumber === current.cardNumber && item.cardNumber !== null
-      );
-      if (!exists) {
-        acc.push(current);
+    for (const identifier of identifiers) {
+      try {
+        console.log(`[searchByIdentifier] Calling search_card('${identifier}')`);
+        
+        // Вызываем хранимую процедуру
+        const [rows] = await pool.execute('CALL search_card(?)', [identifier]);
+        
+        // CALL возвращает массив массивов, первый элемент - это результат SELECT
+        const results = rows[0];
+        
+        console.log(`[searchByIdentifier] Procedure returned ${results?.length || 0} results for identifier: ${identifier}`);
+        
+        if (results && Array.isArray(results)) {
+          // Добавляем только уникальные результаты (по id)
+          results.forEach(result => {
+            const uniqueKey = `${result.identifierType}-${result.id}`;
+            if (!seenIds.has(uniqueKey)) {
+              seenIds.add(uniqueKey);
+              
+              // Форматируем дату lastSeen
+              let formattedLastSeen = null;
+              if (result.lastSeen) {
+                const date = new Date(result.lastSeen);
+                formattedLastSeen = date.toLocaleString('ru-RU', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                });
+              }
+              
+              allResults.push({
+                id: result.id,
+                identifier: result.identifier,
+                identifierType: result.identifierType,
+                fullName: result.fullName,
+                email: result.email,
+                position: result.position,
+                department: result.department,
+                cardNumber: result.cardNumber,
+                lastSeen: formattedLastSeen,
+                location: result.location,
+                status: result.status ? 'active' : 'inactive'
+              });
+            }
+          });
+        }
+      } catch (procError) {
+        console.error(`[searchByIdentifier] Error calling search_card('${identifier}'):`, procError.message);
+        // Продолжаем с другими идентификаторами
       }
-      return acc;
-    }, []);
+    }
 
-    res.json({
+    console.log(`[searchByIdentifier] Total unique results: ${allResults.length}`);
+
+    return res.json({
       success: true,
-      data: uniqueResults,
-      count: uniqueResults.length
+      data: allResults,
+      count: allResults.length
     });
 
   } catch (error) {
-    console.error('Ошибка поиска по идентификатору:', error);
-    res.status(500).json({
+    console.error('[searchByIdentifier] Error:', error);
+    return res.status(500).json({
       success: false,
-      message: 'Ошибка поиска',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: 'Ошибка при поиске',
+      error: {
+        message: error.message,
+        code: 'SEARCH_ERROR'
+      }
     });
   }
 };

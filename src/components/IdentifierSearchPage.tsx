@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Download, FileSpreadsheet, User, CreditCard, Building2, Clock, Mail, AlertCircle } from 'lucide-react';
+import { Search, FileSpreadsheet, User, CreditCard, Building2, Clock, Mail } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { skudApi } from '../lib/api';
 import { toast } from 'sonner';
@@ -74,7 +74,7 @@ export function IdentifierSearchPage() {
 
     const exportData = searchResults.map(result => ({
       'Идентификатор': result.identifier,
-      'Тип': 'Номер карты',
+      'Тип': result.identifierType === 'employee' ? 'Сотрудник' : 'Студент',
       'ФИО': result.fullName,
       'Email': result.email,
       'Должность': result.position || '-',
@@ -89,40 +89,7 @@ export function IdentifierSearchPage() {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Поиск');
     XLSX.writeFile(workbook, `identifier_search_${new Date().toISOString().split('T')[0]}.xlsx`);
-  };
-
-  const validateFormat = (value: string): { valid: boolean; format?: string } => {
-    // Format XXX.XXXXXX (e.g., 123.456789)
-    const employeeFormat = /^\d{3}\.\d{6}$/;
-    // Format XXXXXXXXXXXXX (13 digits)
-    const cardFormat = /^\d{13}$/;
-
-    if (employeeFormat.test(value)) {
-      return { valid: true, format: 'employee' };
-    }
-    if (cardFormat.test(value)) {
-      return { valid: true, format: 'card' };
-    }
-    return { valid: false };
-  };
-
-  const getFormatHint = () => {
-    const validation = validateFormat(searchQuery);
-    if (!searchQuery) return null;
-
-    if (validation.valid) {
-      return (
-        <div className="text-xs text-green-600 mt-1">
-          ✓ Формат: {validation.format === 'employee' ? 'Номер карты (XXX.XXXXXX)' : 'Номер карты (13 цифр)'}
-        </div>
-      );
-    } else {
-      return (
-        <div className="text-xs text-amber-600 mt-1">
-        Введите полный идентификатор или часть для поиска
-      </div>
-      );
-    }
+    toast.success('Файл экспортирован!');
   };
 
   return (
@@ -270,7 +237,7 @@ export function IdentifierSearchPage() {
                               ? 'bg-blue-100 text-blue-800'
                               : 'bg-purple-100 text-purple-800'
                           }`}>
-                            {result.identifierType === 'employee' ? 'Сотрудник' : 'Карта доступа'}
+                            {result.identifierType === 'employee' ? 'Сотрудник' : 'Студент'}
                           </span>
                         </div>
                       </div>
@@ -326,7 +293,7 @@ export function IdentifierSearchPage() {
                       )}
 
                       {result.location && (
-                        <div className="flex start gap-2 text-sm">
+                        <div className="flex items-start gap-2 text-sm">
                           <Building2 size={16} className="text-gray-400 mt-0.5" />
                           <div>
                             <span className="text-gray-600">Местоположение:</span>
