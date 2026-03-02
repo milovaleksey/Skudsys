@@ -18,6 +18,7 @@ const rateLimiter = rateLimit({
     // Не применяем rate limiting к health check и WebSocket upgrade
     return req.path === '/health' || 
            req.path === '/api/health' || 
+           req.path.startsWith('/ws/') ||
            req.headers.upgrade === 'websocket';
   }
 });

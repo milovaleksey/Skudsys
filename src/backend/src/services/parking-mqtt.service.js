@@ -39,30 +39,21 @@ class ParkingMQTTService {
         console.log('[Parking MQTT] ✅ Подключено к брокеру');
         this.isConnected = true;
 
-        // Подписываемся на конфигурацию парковок
+        // Подписываемс�� на конфигурацию парковок
         this.client.subscribe('Skud/parking/config', (err) => {
           if (err) {
-            console.error('[Parking MQTT] Оибка подписки на config:', err);
+            console.error('[Parking MQTT] Ошибка подписки на config:', err);
           } else {
             console.log('[Parking MQTT] ✅ Подписка на Skud/parking/config');
           }
         });
       });
 
-      this.client.on('message', (topic, message) => {
-        this.handleMessage(topic, message);
-      });
-
       this.client.on('error', (error) => {
-        console.error('[Parking MQTT] Ошибка:', error);
+        console.error('[Parking MQTT] ❌ Ошибка подключения:', error.message);
         this.isConnected = false;
+        // Не пробрасываем ошибку дальше, чтобы не упал весь сервер
       });
-
-      this.client.on('close', () => {
-        console.warn('[Parking MQTT] Отключено от брокера');
-        this.isConnected = false;
-      });
-
     } catch (error) {
       console.error('[Parking MQTT] Ошибка подключения:', error);
     }

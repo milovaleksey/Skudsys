@@ -41,43 +41,48 @@ class MQTTService extends EventEmitter {
       reconnectPeriod: 5000,
     };
 
-    this.client = mqtt.connect(url, options);
+    try {
+      this.client = mqtt.connect(url, options);
 
-    this.client.on('connect', () => {
-      console.log('[MQTT] ✅ Успешно подключено к брокеру');
-      this.isConnected = true;
-      this.reconnectAttempts = 0;
-      this.emit('connected');
-      
-      // Подписываемся на топик конфигурации
-      this.subscribeToConfigTopic();
-    });
+      this.client.on('connect', () => {
+        console.log('[MQTT] ✅ Успешно подключено к брокеру');
+        this.isConnected = true;
+        this.reconnectAttempts = 0;
+        this.emit('connected');
+        
+        // Подписываемся на топик конфигурации
+        this.subscribeToConfigTopic();
+      });
 
-    this.client.on('error', (error) => {
-      console.error('[MQTT] ❌ Ошибка подключения:', error.message);
+      this.client.on('error', (error) => {
+        console.error('[MQTT] ❌ Ошибка подключения:', error.message);
+        this.isConnected = false;
+        // Не пробрасываем ошибку дальше, чтобы не упал весь сервер
+      });
+
+      this.client.on('reconnect', () => {
+        this.reconnectAttempts++;
+        console.log(`[MQTT] 🔄 Попытка переподключения ${this.reconnectAttempts}/${this.maxReconnectAttempts}`);
+        
+        if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+          console.error('[MQTT] ❌ Превышено количество попыток переподключения');
+          this.client.end();
+        }
+      });
+
+      this.client.on('close', () => {
+        console.log('[MQTT] 🔌 Соединение закрыто');
+        this.isConnected = false;
+        this.emit('disconnected');
+      });
+
+      this.client.on('message', (topic, message) => {
+        this.handleMessage(topic, message);
+      });
+    } catch (error) {
+      console.error('[MQTT] ❌ Ошибка при создании клиента:', error.message);
       this.isConnected = false;
-      this.emit('error', error);
-    });
-
-    this.client.on('reconnect', () => {
-      this.reconnectAttempts++;
-      console.log(`[MQTT] 🔄 Попытка переподключения ${this.reconnectAttempts}/${this.maxReconnectAttempts}`);
-      
-      if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-        console.error('[MQTT] ❌ Превышено количество попыток переподключения');
-        this.client.end();
-      }
-    });
-
-    this.client.on('close', () => {
-      console.log('[MQTT] 🔌 Соединение закрыто');
-      this.isConnected = false;
-      this.emit('disconnected');
-    });
-
-    this.client.on('message', (topic, message) => {
-      this.handleMessage(topic, message);
-    });
+    }
   }
 
   /**
@@ -153,7 +158,7 @@ class MQTTService extends EventEmitter {
         // Сохраняем старые топики для отписки
         const oldTopics = this.cards.map(card => card.valueTopic);
         
-        // Обновляем конфигурацию
+        // Обновляем конфигура��ию
         this.cards = newCards;
         
         // Получаем новые топики
