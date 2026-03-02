@@ -1,0 +1,380 @@
+api.ts:14 🌐 Using API URL from env: http://10.101.221.207:3000/v1
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /auth/me with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/auth/me
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /roles with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/roles
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /auth/me with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/auth/me
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /roles with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/roles
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI0NTg1MzcsImV4cCI6MTc3MjU0NDkzN30.ZUk6NLRF2UKQEP47-lKckhVX_ATaQ8Y17AXtdFDHOAM
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI0NTg1MzcsImV4cCI6MTc3MjU0NDkzN30.ZUk6NLRF2UKQEP47-lKckhVX_ATaQ8Y17AXtdFDHOAM
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+useMQTT.ts:199 WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI0NTg1MzcsImV4cCI6MTc3MjU0NDkzN30.ZUk6NLRF2UKQEP47-lKckhVX_ATaQ8Y17AXtdFDHOAM' failed: WebSocket is closed before the connection is established.
+(anonymous) @ useMQTT.ts:199
+(anonymous) @ useMQTT.ts:219
+safelyCallDestroy @ chunk-NUMECXU6.js?v=298d1c50:16748
+commitHookEffectListUnmount @ chunk-NUMECXU6.js?v=298d1c50:16875
+invokePassiveEffectUnmountInDEV @ chunk-NUMECXU6.js?v=298d1c50:18363
+invokeEffectsInDev @ chunk-NUMECXU6.js?v=298d1c50:19701
+commitDoubleInvokeEffectsInDEV @ chunk-NUMECXU6.js?v=298d1c50:19682
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19503
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19432
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=298d1c50:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18718
+workLoop @ chunk-NUMECXU6.js?v=298d1c50:197
+flushWork @ chunk-NUMECXU6.js?v=298d1c50:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=298d1c50:384
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI0NTg1MzcsImV4cCI6MTc3MjU0NDkzN30.ZUk6NLRF2UKQEP47-lKckhVX_ATaQ8Y17AXtdFDHOAM
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI0NTg1MzcsImV4cCI6MTc3MjU0NDkzN30.ZUk6NLRF2UKQEP47-lKckhVX_ATaQ8Y17AXtdFDHOAM
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+installHook.js:1 [WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+overrideMethod @ installHook.js:1
+ws.onerror @ useMQTT.ts:165
+useMQTT.ts:170 [WebSocket] Отключено: 1006 
+useMQTT.ts:177 [WebSocket] Переподключение через 2000ms (попытка 1/5)
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/employees/statistics 404 (Not Found)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:413
+loadStats @ MainPage.tsx:65
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19432
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=298d1c50:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18718
+workLoop @ chunk-NUMECXU6.js?v=298d1c50:197
+flushWork @ chunk-NUMECXU6.js?v=298d1c50:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=298d1c50:384
+api.ts:132 📡 Response status: 404
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:111 [WebSocket] ✅ Подключено
+api.ts:127  GET http://10.101.221.207:3000/v1/parking/statistics 404 (Not Found)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:456
+loadStats @ MainPage.tsx:66
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19432
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=298d1c50:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18718
+workLoop @ chunk-NUMECXU6.js?v=298d1c50:197
+flushWork @ chunk-NUMECXU6.js?v=298d1c50:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=298d1c50:384
+api.ts:132 📡 Response status: 404
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/employees/statistics 404 (Not Found)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:413
+loadStats @ MainPage.tsx:65
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+invokePassiveEffectMountInDEV @ chunk-NUMECXU6.js?v=298d1c50:18324
+invokeEffectsInDev @ chunk-NUMECXU6.js?v=298d1c50:19701
+commitDoubleInvokeEffectsInDEV @ chunk-NUMECXU6.js?v=298d1c50:19686
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19503
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19432
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=298d1c50:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18718
+workLoop @ chunk-NUMECXU6.js?v=298d1c50:197
+flushWork @ chunk-NUMECXU6.js?v=298d1c50:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=298d1c50:384
+api.ts:132 📡 Response status: 404
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/parking/statistics 404 (Not Found)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:456
+loadStats @ MainPage.tsx:66
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+invokePassiveEffectMountInDEV @ chunk-NUMECXU6.js?v=298d1c50:18324
+invokeEffectsInDev @ chunk-NUMECXU6.js?v=298d1c50:19701
+commitDoubleInvokeEffectsInDEV @ chunk-NUMECXU6.js?v=298d1c50:19686
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19503
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19432
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=298d1c50:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18718
+workLoop @ chunk-NUMECXU6.js?v=298d1c50:197
+flushWork @ chunk-NUMECXU6.js?v=298d1c50:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=298d1c50:384
+api.ts:132 📡 Response status: 404
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:120 [WebSocket] Получено: initial
+installHook.js:1 Failed to load stats TypeError: Cannot read properties of undefined (reading 'total')
+    at loadStats (MainPage.tsx:70:88)
+overrideMethod @ installHook.js:1
+loadStats @ MainPage.tsx:75
+await in loadStats
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=298d1c50:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=298d1c50:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=298d1c50:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=298d1c50:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19432
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=298d1c50:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18718
+workLoop @ chunk-NUMECXU6.js?v=298d1c50:197
+flushWork @ chunk-NUMECXU6.js?v=298d1c50:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=298d1c50:384
+installHook.js:1 Failed to load stats TypeError: Cannot read properties of undefined (reading 'total')
+    at loadStats (MainPage.tsx:70:88)
+overrideMethod @ installHook.js:1
+loadStats @ MainPage.tsx:75
+await in loadStats
+(anonymous) @ MainPage.tsx:80
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=298d1c50:16915
+invokePassiveEffectMountInDEV @ chunk-NUMECXU6.js?v=298d1c50:18324
+invokeEffectsInDev @ chunk-NUMECXU6.js?v=298d1c50:19701
+commitDoubleInvokeEffectsInDEV @ chunk-NUMECXU6.js?v=298d1c50:19686
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19503
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19432
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=298d1c50:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18718
+workLoop @ chunk-NUMECXU6.js?v=298d1c50:197
+flushWork @ chunk-NUMECXU6.js?v=298d1c50:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=298d1c50:384
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI0NTg1MzcsImV4cCI6MTc3MjU0NDkzN30.ZUk6NLRF2UKQEP47-lKckhVX_ATaQ8Y17AXtdFDHOAM
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI0NTg1MzcsImV4cCI6MTc3MjU0NDkzN30.ZUk6NLRF2UKQEP47-lKckhVX_ATaQ8Y17AXtdFDHOAM
+useMQTT.ts:111 [WebSocket] ✅ Подключено
+useMQTT.ts:120 [WebSocket] Получено: initial
+useMQTT.ts:120 [WebSocket] Получено: config-updated
+useMQTT.ts:120 [WebSocket] Получено: config-updated
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: pong
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: pong
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: pong
+client:560 [vite] server connection lost. Polling for restart...
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:749
+(anonymous) @ client:561
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: pong
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: pong
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: pong
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: pong
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: pong
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+useParkingMQTT.ts:128 WebSocket connection to 'ws://10.101.221.207:3000/parking-ws' failed: WebSocket is closed before the connection is established.
+(anonymous) @ useParkingMQTT.ts:128
+safelyCallDestroy @ chunk-NUMECXU6.js?v=298d1c50:16748
+commitHookEffectListUnmount @ chunk-NUMECXU6.js?v=298d1c50:16875
+invokePassiveEffectUnmountInDEV @ chunk-NUMECXU6.js?v=298d1c50:18363
+invokeEffectsInDev @ chunk-NUMECXU6.js?v=298d1c50:19701
+commitDoubleInvokeEffectsInDEV @ chunk-NUMECXU6.js?v=298d1c50:19682
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=298d1c50:19503
+flushPassiveEffects @ chunk-NUMECXU6.js?v=298d1c50:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=298d1c50:19416
+commitRoot @ chunk-NUMECXU6.js?v=298d1c50:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=298d1c50:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=298d1c50:9119
+(anonymous) @ chunk-NUMECXU6.js?v=298d1c50:18627
+installHook.js:1 [Parking WebSocket] Ошибка подключения: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+overrideMethod @ installHook.js:1
+ws.onerror @ useParkingMQTT.ts:93
+useParkingMQTT.ts:98 [Parking WebSocket] Отключено
+useParkingMQTT.ts:106 [Parking WebSocket] Переподключение через 1000ms (попытка 1)
+useParkingMQTT.ts:39 [Parking WebSocket] Подключено
+useParkingMQTT.ts:39 [Parking WebSocket] Подключено
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+useMQTT.ts:120 [WebSocket] Получено: value-updated
+useMQTT.ts:120 [WebSocket] Получено: value-updated
+useMQTT.ts:120 [WebSocket] Получено: value-updated
+useMQTT.ts:120 [WebSocket] Получено: value-updated
+useMQTT.ts:120 [WebSocket] Получено: value-updated
+useMQTT.ts:120 [WebSocket] Получено: value-updated
+useMQTT.ts:120 [WebSocket] Получено: value-updated
+useMQTT.ts:120 [WebSocket] Получено: value-updated
+useMQTT.ts:120 [WebSocket] Получено: value-updated
+useMQTT.ts:120 [WebSocket] Получено: value-updated
+useMQTT.ts:120 [WebSocket] Получено: value-updated
+useMQTT.ts:120 [WebSocket] Получено: value-updated
+useMQTT.ts:120 [WebSocket] Получено: value-updated
+useMQTT.ts:120 [WebSocket] Получено: value-updated
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+useMQTT.ts:120 [WebSocket] Получено: pong
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
+client:736  GET http://10.101.221.207:5173/ net::ERR_CONNECTION_REFUSED
+ping @ client:736
+waitForSuccessfulPing @ client:755
+await in waitForSuccessfulPing
+(anonymous) @ client:561
