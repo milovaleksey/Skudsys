@@ -57,4 +57,20 @@ router.get(
   skudController.getAccessPoints
 );
 
+// Журнал проходов по ФИО (хранимая процедура sp_get_passes_by_fio)
+router.get(
+  '/passes/by-fio',
+  authenticate,
+  checkPermission('passes'),
+  skudController.getPassesByFio
+);
+
+// Журнал проходов по UPN (хранимая процедура sp_get_passes_by_upn)
+router.get(
+  '/passes/by-upn',
+  authenticate,
+  checkPermission('passes'),
+  skudController.getPassesByUpn
+);
+
 module.exports = router;

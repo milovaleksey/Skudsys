@@ -187,7 +187,43 @@ const searchByIdentifier = async (req, res) => {
 };
 
 /**
- * Получение журнала проходов с фильтрацией
+ * Получение списка точек доступа
+ * @route GET /api/v1/skud/access-points
+ */
+const getAccessPoints = async (req, res) => {
+  try {
+    const pool = getSkudPool();
+
+    const [rows] = await pool.execute(`
+      SELECT 
+        id,
+        name,
+        location,
+        type,
+        building,
+        is_active as isActive
+      FROM access_points
+      WHERE is_active = 1
+      ORDER BY building, name
+    `);
+
+    res.json({
+      success: true,
+      data: rows
+    });
+
+  } catch (error) {
+    console.error('Ошибка получения точек доступа:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Ошибка получения данных',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+};
+
+/**
+ * Получение журнала проходов с фильтрацией (старый метод, использует прямые SQL запросы)
  * @route GET /api/v1/skud/passes
  */
 const getPassesReport = async (req, res) => {
@@ -280,7 +316,7 @@ const getPassesReport = async (req, res) => {
 };
 
 /**
- * Поиск местоположения человека
+ * Поиск местоположения человека (старый метод, использует прямые SQL запросы)
  * @route GET /api/v1/skud/location
  */
 const getPersonLocation = async (req, res) => {
@@ -446,7 +482,7 @@ const getLocationByFio = async (req, res) => {
 
 /**
  * Поиск последнего прохода человека по UPN (email)
- * Использует хранимую процедуру sp_get_last_entry_by_upn
+ * ��спользует хранимую процедуру sp_get_last_entry_by_upn
  * @route GET /api/v1/skud/location/by-upn
  */
 const getLocationByUpn = async (req, res) => {
@@ -539,37 +575,194 @@ const getLocationByUpn = async (req, res) => {
 };
 
 /**
- * Получение списка точек доступа
- * @route GET /api/v1/skud/access-points
+ * Получение журнала проходов по ФИО с диапазоном дат
+ * Использует хранимую процедуру sp_get_passes_by_fio
+ * @route GET /api/v1/skud/passes/by-fio
  */
-const getAccessPoints = async (req, res) => {
+const getPassesByFio = async (req, res) => {
   try {
+    const { lastName, firstName, middleName, dateFrom, dateTo } = req.query;
+
+    // Проверка обязательных полей
+    if (!lastName || !firstName || !dateFrom || !dateTo) {
+      return res.status(400).json({
+        success: false,
+        message: 'Необходимо указать фамилию, имя и диапазон дат'
+      });
+    }
+
     const pool = getSkudPool();
 
-    const [rows] = await pool.execute(`
-      SELECT 
-        id,
-        name,
-        location,
-        type,
-        building,
-        is_active as isActive
-      FROM access_points
-      WHERE is_active = 1
-      ORDER BY building, name
-    `);
+    console.log(`[getPassesByFio] Calling sp_get_passes_by_fio('${lastName}', '${firstName}', '${middleName || ''}', '${dateFrom}', '${dateTo}')`);
 
-    res.json({
-      success: true,
-      data: rows
-    });
+    try {
+      // Вызываем хранимую процедуру sp_get_passes_by_fio
+      const [rows] = await pool.execute(
+        'CALL sp_get_passes_by_fio(?, ?, ?, ?, ?)', 
+        [
+          lastName.trim(), 
+          firstName.trim(), 
+          middleName?.trim() || '',
+          dateFrom,
+          dateTo
+        ]
+      );
+      
+      // CALL возвращает массив массивов, первый элемент - это результат SELECT
+      const results = rows[0];
+      
+      console.log(`[getPassesByFio] Procedure returned ${results?.length || 0} results`);
+      
+      if (!results || !Array.isArray(results)) {
+        return res.json({
+          success: true,
+          data: [],
+          total: 0,
+          message: 'Нет данных о проходах за указанный период'
+        });
+      }
+
+      // Форматируем результаты
+      const formattedResults = results.map(result => ({
+        id: result.id || result.pass_id,
+        time: formatDateTime(result.event_time || result.access_time || result.time),
+        fullName: result.full_name || result.fullName || result.person_name,
+        upn: result.upn || result.email || null,
+        cardNumber: result.card_number || result.cardNumber || null,
+        checkpoint: result.checkpoint_name || result.checkpoint || result.access_point_name || 'Неизвестно',
+        eventName: result.event_name || result.eventName || result.event_type || null,
+        direction: result.direction || null,
+        building: result.building || null
+      }));
+
+      console.log(`[getPassesByFio] Formatted ${formattedResults.length} results`);
+
+      return res.json({
+        success: true,
+        data: formattedResults,
+        total: formattedResults.length
+      });
+
+    } catch (procError) {
+      console.error(`[getPassesByFio] Error calling sp_get_passes_by_fio:`, procError.message);
+      
+      // Если процедура не существует, возвращаем дружественное сообщение
+      if (procError.message.includes('does not exist')) {
+        return res.status(500).json({
+          success: false,
+          message: 'Хранимая процедура sp_get_passes_by_fio не найдена в базе данных',
+          error: {
+            message: 'Необходимо создать процедуру sp_get_passes_by_fio в базе данных СКУД',
+            code: 'PROCEDURE_NOT_FOUND'
+          }
+        });
+      }
+      
+      throw procError;
+    }
 
   } catch (error) {
-    console.error('Ошибка получения точек доступа:', error);
-    res.status(500).json({
+    console.error('[getPassesByFio] Error:', error);
+    return res.status(500).json({
       success: false,
-      message: 'Ошибка получения данных',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: 'Ошибка при получении журнала проходов',
+      error: {
+        message: error.message,
+        code: 'PASSES_SEARCH_ERROR'
+      }
+    });
+  }
+};
+
+/**
+ * Получение журнала проходов по UPN с диапазоном дат
+ * Использует хранимую процедуру sp_get_passes_by_upn
+ * @route GET /api/v1/skud/passes/by-upn
+ */
+const getPassesByUpn = async (req, res) => {
+  try {
+    const { upn, dateFrom, dateTo } = req.query;
+
+    if (!upn || upn.trim() === '' || !dateFrom || !dateTo) {
+      return res.status(400).json({
+        success: false,
+        message: 'Необходимо указать UPN (email) и диапазон дат'
+      });
+    }
+
+    const pool = getSkudPool();
+
+    console.log(`[getPassesByUpn] Calling sp_get_passes_by_upn('${upn}', '${dateFrom}', '${dateTo}')`);
+
+    try {
+      // Вызываем хранимую процедуру sp_get_passes_by_upn
+      const [rows] = await pool.execute(
+        'CALL sp_get_passes_by_upn(?, ?, ?)', 
+        [upn.trim(), dateFrom, dateTo]
+      );
+      
+      // CALL возвращает массив массивов, первый элемент - это результат SELECT
+      const results = rows[0];
+      
+      console.log(`[getPassesByUpn] Procedure returned ${results?.length || 0} results`);
+      
+      if (!results || !Array.isArray(results)) {
+        return res.json({
+          success: true,
+          data: [],
+          total: 0,
+          message: 'Нет данных о проходах за указанный период'
+        });
+      }
+
+      // Форматируем результаты
+      const formattedResults = results.map(result => ({
+        id: result.id || result.pass_id,
+        time: formatDateTime(result.event_time || result.access_time || result.time),
+        fullName: result.full_name || result.fullName || result.person_name,
+        upn: result.upn || result.email || upn,
+        cardNumber: result.card_number || result.cardNumber || null,
+        checkpoint: result.checkpoint_name || result.checkpoint || result.access_point_name || 'Неизвестно',
+        eventName: result.event_name || result.eventName || result.event_type || null,
+        direction: result.direction || null,
+        building: result.building || null
+      }));
+
+      console.log(`[getPassesByUpn] Formatted ${formattedResults.length} results`);
+
+      return res.json({
+        success: true,
+        data: formattedResults,
+        total: formattedResults.length
+      });
+
+    } catch (procError) {
+      console.error(`[getPassesByUpn] Error calling sp_get_passes_by_upn:`, procError.message);
+      
+      // Если процедура не существует, возвращаем дружественное сообщение
+      if (procError.message.includes('does not exist')) {
+        return res.status(500).json({
+          success: false,
+          message: 'Хранимая процедура sp_get_passes_by_upn не найдена в базе данных',
+          error: {
+            message: 'Необходимо создать процедуру sp_get_passes_by_upn в базе данных СКУД',
+            code: 'PROCEDURE_NOT_FOUND'
+          }
+        });
+      }
+      
+      throw procError;
+    }
+
+  } catch (error) {
+    console.error('[getPassesByUpn] Error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Ошибка при получении журнала проходов',
+      error: {
+        message: error.message,
+        code: 'PASSES_SEARCH_ERROR'
+      }
     });
   }
 };
@@ -593,5 +786,7 @@ module.exports = {
   getPersonLocation,
   getLocationByFio,
   getLocationByUpn,
-  getAccessPoints
+  getAccessPoints,
+  getPassesByFio,
+  getPassesByUpn
 };

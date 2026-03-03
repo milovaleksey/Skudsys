@@ -578,6 +578,24 @@ export const skudApi = {
     return apiClient.get('/skud/location/by-upn', { upn });
   },
 
+  async getPassesByFio(lastName: string, firstName: string, middleName: string, dateFrom: string, dateTo: string) {
+    return apiClient.get('/skud/passes/by-fio', { 
+      lastName, 
+      firstName, 
+      middleName: middleName || '',
+      dateFrom,
+      dateTo
+    });
+  },
+
+  async getPassesByUpn(upn: string, dateFrom: string, dateTo: string) {
+    return apiClient.get('/skud/passes/by-upn', { 
+      upn,
+      dateFrom,
+      dateTo
+    });
+  },
+
   async getAccessPoints() {
     return apiClient.get('/skud/access-points');
   },
