@@ -20,16 +20,8 @@ function initStorageWebSocket(server) {
     path: '/ws/storage'
   });
 
-  // Handle upgrade requests
-  server.on('upgrade', (request, socket, head) => {
-    const pathname = url.parse(request.url).pathname;
-
-    if (pathname === '/ws/storage') {
-      wss.handleUpgrade(request, socket, head, (ws) => {
-        wss.emit('connection', ws, request);
-      });
-    }
-  });
+  // NOTE: upgrade event is handled in server.js
+  // This function only sets up the WebSocket server
 
   wss.on('connection', (ws, request) => {
     // Extract token from query params
@@ -106,6 +98,12 @@ function initStorageWebSocket(server) {
   });
 
   logger.info('✅ Storage WebSocket server initialized on /ws/storage');
+
+  // Return wss and path for upgrade handling in server.js
+  return {
+    wss,
+    path: '/ws/storage'
+  };
 }
 
 /**

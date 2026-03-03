@@ -146,8 +146,8 @@ const startServer = async () => {
     // Инициализация Parking MQTT WebSocket
     const parkingWS = initParkingWebSocket(server);
 
-    // Инициализация Storage WebSocket (не требует возврата, управляет upgrade внутри)
-    initStorageWebSocket(server);
+    // Инициализация Storage WebSocket
+    const storageWS = initStorageWebSocket(server);
 
     // Обработка WebSocket upgrade для разных путей
     server.on('upgrade', (request, socket, head) => {
@@ -161,13 +161,13 @@ const startServer = async () => {
         parkingWS.wss.handleUpgrade(request, socket, head, (ws) => {
           parkingWS.wss.emit('connection', ws, request);
         });
+      } else if (pathname === storageWS.path) {
+        storageWS.wss.handleUpgrade(request, socket, head, (ws) => {
+          storageWS.wss.emit('connection', ws, request);
+        });
       } else {
-        // Storage WebSocket обрабатывается внутри initStorageWebSocket
-        // Если не подходит ни один путь, закрываем соединение
-        if (pathname !== '/ws/storage') {
-          console.warn(`[WebSocket] Неизвестный пуь: ${pathname}`);
-          socket.destroy();
-        }
+        console.warn(`[WebSocket] Неизвестный путь: ${pathname}`);
+        socket.destroy();
       }
     });
 
