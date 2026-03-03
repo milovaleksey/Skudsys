@@ -278,7 +278,7 @@ export function EmployeesReportPage() {
             <span className="font-medium">Примеры:</span>
             <button
               onClick={() => {
-                setSearchQuery('Милов Алексей Сергеевич');
+                setSearchQuery('Милов Алексей ��ергеевич');
                 setSearchType('fio');
               }}
               className="ml-2 px-2 py-1 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
@@ -320,13 +320,14 @@ export function EmployeesReportPage() {
                 <th className="px-6 py-4 text-left text-sm font-semibold text-white">Номер карты</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-white">Событие</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-white">Точка прохода</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Направление</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-white">Здание</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {passRecords.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-8 text-center text-gray-500">
+                  <td colSpan={8} className="px-6 py-8 text-center text-gray-500">
                     {isLoading ? 'Загрузка...' : 'Нет данных. Выполните поиск.'}
                   </td>
                 </tr>
@@ -344,6 +345,19 @@ export function EmployeesReportPage() {
                     <td className="px-6 py-4 text-sm text-gray-600">{record.cardNumber || '—'}</td>
                     <td className="px-6 py-4 text-sm text-gray-600">{record.eventName || '—'}</td>
                     <td className="px-6 py-4 text-sm text-gray-600">{record.checkpoint}</td>
+                    <td className="px-6 py-4 text-sm">
+                      {record.direction === 'in' ? (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          Вход
+                        </span>
+                      ) : record.direction === 'out' ? (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          Выход
+                        </span>
+                      ) : (
+                        <span className="text-gray-400">—</span>
+                      )}
+                    </td>
                     <td className="px-6 py-4 text-sm text-gray-600">{record.building || '—'}</td>
                   </tr>
                 ))
