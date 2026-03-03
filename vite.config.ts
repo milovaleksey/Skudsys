@@ -8,7 +8,6 @@
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
-        'sonner@2.0.3': 'sonner',
         '@': path.resolve(__dirname, './src'),
       },
     },

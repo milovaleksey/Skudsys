@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react';
 import { storageApi } from '../lib/api';
 import { useStorageWebSocket } from '../hooks/useStorageWebSocket';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { Building2, Package, Shirt, AlertCircle, CheckCircle, XCircle, Clock } from 'lucide-react';
 
 interface StorageSystem {
