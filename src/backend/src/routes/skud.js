@@ -33,6 +33,22 @@ router.get(
   skudController.getPersonLocation
 );
 
+// Местоположение по ФИО (хранимая процедура sp_get_last_entry_event)
+router.get(
+  '/location/by-fio',
+  authenticate,
+  checkPermission('location'),
+  skudController.getLocationByFio
+);
+
+// Местоположение по UPN (хранимая процедура sp_get_last_entry_by_upn)
+router.get(
+  '/location/by-upn',
+  authenticate,
+  checkPermission('location'),
+  skudController.getLocationByUpn
+);
+
 // Список точек доступа
 router.get(
   '/access-points',

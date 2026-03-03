@@ -566,6 +566,18 @@ export const skudApi = {
     return apiClient.get('/skud/location', { query });
   },
 
+  async getLocationByFio(lastName: string, firstName: string, middleName?: string) {
+    return apiClient.get('/skud/location/by-fio', { 
+      lastName, 
+      firstName, 
+      middleName: middleName || '' 
+    });
+  },
+
+  async getLocationByUpn(upn: string) {
+    return apiClient.get('/skud/location/by-upn', { upn });
+  },
+
   async getAccessPoints() {
     return apiClient.get('/skud/access-points');
   },

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Search, MapPin, User, CreditCard, Building2, Users, Clock } from 'lucide-react';
+import { skudApi } from '../lib/api';
+import { toast } from 'sonner';
 
 interface PersonInfo {
   fullName: string;
@@ -19,62 +21,50 @@ export function LocationPage() {
   const [personInfo, setPersonInfo] = useState<PersonInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Mock data for demonstration
-  const mockData: { [key: string]: PersonInfo } = {
-    'Иванов Иван Иванович': {
-      fullName: 'Иванов Иван Иванович',
-      upn: 'ivanov@utmn.ru',
-      cardNumber: '1234567890',
-      department: 'Институт математики и компьютерных наук',
-      type: 'employee',
-      lastLocation: {
-        checkpoint: 'Главный вход, корпус А',
-        time: '2026-01-19 14:35:22'
-      }
-    },
-    'ivanov@utmn.ru': {
-      fullName: 'Иванов Иван Иванович',
-      upn: 'ivanov@utmn.ru',
-      cardNumber: '1234567890',
-      department: 'Институт математики и компьютерных наук',
-      type: 'employee',
-      lastLocation: {
-        checkpoint: 'Главный вход, корпус А',
-        time: '2026-01-19 14:35:22'
-      }
-    },
-    'Петрова Мария Сергеевна': {
-      fullName: 'Петрова Мария Сергеевна',
-      upn: 'petrova@study.utmn.ru',
-      cardNumber: '0987654321',
-      department: 'Институт социально-гуманитарных наук, 3 курс',
-      type: 'student',
-      lastLocation: {
-        checkpoint: 'Библиотека',
-        time: '2026-01-19 13:20:45'
-      }
-    },
-    'petrova@study.utmn.ru': {
-      fullName: 'Петрова Мария Сергеевна',
-      upn: 'petrova@study.utmn.ru',
-      cardNumber: '0987654321',
-      department: 'Институт социально-гуманитарных наук, 3 курс',
-      type: 'student',
-      lastLocation: {
-        checkpoint: 'Библиотека',
-        time: '2026-01-19 13:20:45'
-      }
-    },
-  };
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) {
+      toast.error('Введите данные для поиска');
+      return;
+    }
 
-  const handleSearch = () => {
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      const result = mockData[searchQuery];
-      setPersonInfo(result || null);
+    setPersonInfo(null);
+
+    try {
+      let response;
+
+      if (searchType === 'fio') {
+        // Разбираем ФИО на части
+        const parts = searchQuery.trim().split(/\s+/);
+        if (parts.length < 2) {
+          toast.error('Введите хотя бы фамилию и имя');
+          setIsLoading(false);
+          return;
+        }
+
+        const [lastName, firstName, ...middleNameParts] = parts;
+        const middleName = middleNameParts.join(' ');
+
+        response = await skudApi.getLocationByFio(lastName, firstName, middleName);
+      } else {
+        // Поиск по UPN
+        response = await skudApi.getLocationByUpn(searchQuery.trim());
+      }
+
+      if (response.success && response.data) {
+        setPersonInfo(response.data as PersonInfo);
+        toast.success('Данные найдены');
+      } else {
+        toast.error(response.error?.message || 'Человек не найден');
+        setPersonInfo(null);
+      }
+    } catch (error) {
+      console.error('Search error:', error);
+      toast.error('Ошибка при поиске');
+      setPersonInfo(null);
+    } finally {
       setIsLoading(false);
-    }, 500);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

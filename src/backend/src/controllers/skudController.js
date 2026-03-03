@@ -350,6 +350,195 @@ const getPersonLocation = async (req, res) => {
 };
 
 /**
+ * Поиск последнего прохода человека по ФИО
+ * Использует хранимую процедуру sp_get_last_entry_event
+ * @route GET /api/v1/skud/location/by-fio
+ */
+const getLocationByFio = async (req, res) => {
+  try {
+    const { lastName, firstName, middleName } = req.query;
+
+    // Проверка обязательных полей
+    if (!lastName || !firstName) {
+      return res.status(400).json({
+        success: false,
+        message: 'Необходимо указать фамилию и имя'
+      });
+    }
+
+    const pool = getSkudPool();
+
+    console.log(`[getLocationByFio] Calling sp_get_last_entry_event('${lastName}', '${firstName}', '${middleName || ''}')`);
+
+    try {
+      // Вызываем хранимую процедуру sp_get_last_entry_event
+      const [rows] = await pool.execute(
+        'CALL sp_get_last_entry_event(?, ?, ?)', 
+        [lastName.trim(), firstName.trim(), middleName?.trim() || '']
+      );
+      
+      // CALL возвращает массив массивов, первый элемент - это результат SELECT
+      const results = rows[0];
+      
+      console.log(`[getLocationByFio] Procedure returned ${results?.length || 0} results`);
+      
+      if (!results || !Array.isArray(results) || results.length === 0) {
+        return res.json({
+          success: true,
+          data: null,
+          message: 'Человек не найден или нет записей о проходах'
+        });
+      }
+
+      // Берем первую запись (последнее событие)
+      const result = results[0];
+
+      // Форматируем результат
+      const formattedResult = {
+        fullName: result.full_name || result.fullName || `${lastName} ${firstName} ${middleName || ''}`.trim(),
+        upn: result.upn || result.email || null,
+        cardNumber: result.card_number || result.cardNumber || null,
+        department: result.department || result.dept_name || null,
+        type: result.person_type || result.type || (result.upn?.includes('@study.') ? 'student' : 'employee'),
+        lastLocation: {
+          checkpoint: result.checkpoint_name || result.location || result.access_point_name || 'Неизвестно',
+          time: formatDateTime(result.event_time || result.access_time || result.lastSeen)
+        }
+      };
+
+      console.log(`[getLocationByFio] Formatted result:`, formattedResult);
+
+      return res.json({
+        success: true,
+        data: formattedResult
+      });
+
+    } catch (procError) {
+      console.error(`[getLocationByFio] Error calling sp_get_last_entry_event:`, procError.message);
+      
+      // Если процедура не существует, возвращаем дружественное сообщение
+      if (procError.message.includes('does not exist')) {
+        return res.status(500).json({
+          success: false,
+          message: 'Хранимая процедура sp_get_last_entry_event не найдена в базе данных',
+          error: {
+            message: 'Необходимо создать процедуру sp_get_last_entry_event в базе данных СКУД',
+            code: 'PROCEDURE_NOT_FOUND'
+          }
+        });
+      }
+      
+      throw procError;
+    }
+
+  } catch (error) {
+    console.error('[getLocationByFio] Error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Ошибка при поиске местоположения',
+      error: {
+        message: error.message,
+        code: 'LOCATION_SEARCH_ERROR'
+      }
+    });
+  }
+};
+
+/**
+ * Поиск последнего прохода человека по UPN (email)
+ * Использует хранимую процедуру sp_get_last_entry_by_upn
+ * @route GET /api/v1/skud/location/by-upn
+ */
+const getLocationByUpn = async (req, res) => {
+  try {
+    const { upn } = req.query;
+
+    if (!upn || upn.trim() === '') {
+      return res.status(400).json({
+        success: false,
+        message: 'Необходимо указать UPN (email)'
+      });
+    }
+
+    const pool = getSkudPool();
+
+    console.log(`[getLocationByUpn] Calling sp_get_last_entry_by_upn('${upn}')`);
+
+    try {
+      // Вызываем хранимую процедуру sp_get_last_entry_by_upn
+      const [rows] = await pool.execute(
+        'CALL sp_get_last_entry_by_upn(?)', 
+        [upn.trim()]
+      );
+      
+      // CALL возвращает массив массивов, первый элемент - это результат SELECT
+      const results = rows[0];
+      
+      console.log(`[getLocationByUpn] Procedure returned ${results?.length || 0} results`);
+      
+      if (!results || !Array.isArray(results) || results.length === 0) {
+        return res.json({
+          success: true,
+          data: null,
+          message: 'Человек не найден или нет записей о проходах'
+        });
+      }
+
+      // Берем первую запись (последнее событие)
+      const result = results[0];
+
+      // Форматируем результат
+      const formattedResult = {
+        fullName: result.full_name || result.fullName || result.person_name || 'Неизвестно',
+        upn: result.upn || result.email || upn,
+        cardNumber: result.card_number || result.cardNumber || null,
+        department: result.department || result.dept_name || null,
+        type: result.person_type || result.type || (upn.includes('@study.') ? 'student' : 'employee'),
+        lastLocation: {
+          checkpoint: result.checkpoint_name || result.location || result.access_point_name || 'Неизвестно',
+          time: formatDateTime(result.event_time || result.access_time || result.lastSeen)
+        }
+      };
+
+      console.log(`[getLocationByUpn] Formatted result:`, formattedResult);
+
+      return res.json({
+        success: true,
+        data: formattedResult
+      });
+
+    } catch (procError) {
+      console.error(`[getLocationByUpn] Error calling sp_get_last_entry_by_upn:`, procError.message);
+      
+      // Если процедура не существует, возвращаем дружественное сообщение
+      if (procError.message.includes('does not exist')) {
+        return res.status(500).json({
+          success: false,
+          message: 'Хранимая процедура sp_get_last_entry_by_upn не найдена в базе данных',
+          error: {
+            message: 'Необходимо создать процедуру sp_get_last_entry_by_upn в базе данных СКУД',
+            code: 'PROCEDURE_NOT_FOUND'
+          }
+        });
+      }
+      
+      throw procError;
+    }
+
+  } catch (error) {
+    console.error('[getLocationByUpn] Error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Ошибка при поиске местоположения',
+      error: {
+        message: error.message,
+        code: 'LOCATION_SEARCH_ERROR'
+      }
+    });
+  }
+};
+
+/**
  * Получение списка точек доступа
  * @route GET /api/v1/skud/access-points
  */
@@ -402,5 +591,7 @@ module.exports = {
   searchByIdentifier,
   getPassesReport,
   getPersonLocation,
+  getLocationByFio,
+  getLocationByUpn,
   getAccessPoints
 };
