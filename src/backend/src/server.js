@@ -13,8 +13,10 @@ const { errorHandler } = require('./middleware/errorHandler');
 const { rateLimiter } = require('./middleware/rateLimiter');
 const mqttService = require('./services/mqtt.service');
 const parkingMQTTService = require('./services/parking-mqtt.service');
+const storageMQTTService = require('./services/storage-mqtt.service');
 const { initMQTTWebSocket } = require('./websocket/mqtt.ws');
 const { initParkingWebSocket } = require('./websocket/parking.ws');
+const { initStorageWebSocket } = require('./websocket/storage.ws');
 
 // Импорт маршрутов
 const authRoutes = require('./routes/auth.routes');
@@ -144,6 +146,9 @@ const startServer = async () => {
     // Инициализация Parking MQTT WebSocket
     const parkingWS = initParkingWebSocket(server);
 
+    // Инициализация Storage WebSocket (не требует возврата, управляет upgrade внутри)
+    initStorageWebSocket(server);
+
     // Обработка WebSocket upgrade для разных путей
     server.on('upgrade', (request, socket, head) => {
       const pathname = new URL(request.url, `http://${request.headers.host}`).pathname;
@@ -157,8 +162,12 @@ const startServer = async () => {
           parkingWS.wss.emit('connection', ws, request);
         });
       } else {
-        console.warn(`[WebSocket] Неизвестный пуь: ${pathname}`);
-        socket.destroy();
+        // Storage WebSocket обрабатывается внутри initStorageWebSocket
+        // Если не подходит ни один путь, закрываем соединение
+        if (pathname !== '/ws/storage') {
+          console.warn(`[WebSocket] Неизвестный пуь: ${pathname}`);
+          socket.destroy();
+        }
       }
     });
 
@@ -177,6 +186,14 @@ const startServer = async () => {
     } else {
       console.log('⚠️  Parking MQTT отключен в конфигурации');
     }
+
+    // Подключение к Storage MQTT брокеру
+    if (process.env.STORAGE_MQTT_ENABLED !== 'false') {
+      console.log('🔌 Подключение к Storage MQTT брокеру...');
+      storageMQTTService.connect();
+    } else {
+      console.log('⚠️  Storage MQTT отключен в конфигурации');
+    }
   } catch (error) {
     console.error('❌ Ошибка запуска сервера:', error);
     process.exit(1);
@@ -188,6 +205,7 @@ process.on('SIGTERM', () => {
   console.log('SIGTERM получен, завершение работы...');
   mqttService.disconnect();
   parkingMQTTService.disconnect();
+  storageMQTTService.disconnect();
   process.exit(0);
 });
 
@@ -195,6 +213,7 @@ process.on('SIGINT', () => {
   console.log('SIGINT получен, завершение работы...');
   mqttService.disconnect();
   parkingMQTTService.disconnect();
+  storageMQTTService.disconnect();
   process.exit(0);
 });
 

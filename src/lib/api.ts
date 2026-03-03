@@ -458,27 +458,19 @@ export const parkingApi = {
 };
 
 // API методы для хранилища вещей
+// Configuration comes from MQTT, only read operations available
 export const storageApi = {
-  async getAllItems(params?: { page?: number; limit?: number; search?: string; status?: string }) {
-    return apiClient.get('/storage', params);
+  // Get all storage systems
+  async getAllSystems() {
+    return apiClient.get('/storage/systems');
   },
 
-  async getById(id: number) {
-    return apiClient.get(`/storage/${id}`);
+  // Get storage system by ID
+  async getSystemById(id: number) {
+    return apiClient.get(`/storage/systems/${id}`);
   },
 
-  async create(data: any) {
-    return apiClient.post('/storage', data);
-  },
-
-  async update(id: number, data: any) {
-    return apiClient.put(`/storage/${id}`, data);
-  },
-
-  async delete(id: number) {
-    return apiClient.delete(`/storage/${id}`);
-  },
-
+  // Get storage statistics
   async getStatistics() {
     return apiClient.get('/storage/statistics');
   },

@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "name": "Гардероб 1",
+    "type": "clothes",
+    "building": "Корпус А",
+    "address": "1 этаж, вход",
+    "total_capacity": 50,
+    "mqtt_topic_status": "storage/korpusA/wardrobe1/status",
+    "mqtt_topic_occupancy": "storage/korpusA/wardrobe1/occupancy"
+  },
+  {
+    "id": 2,
+    "name": "Гардероб 2",
+    "type": "clothes",
+    "building": "Корпус А",
+    "address": "2 этаж, рекреация",
+    "total_capacity": 40,
+    "mqtt_topic_status": "storage/korpusA/wardrobe2/status",
+    "mqtt_topic_occupancy": "storage/korpusA/wardrobe2/occupancy"
+  },
+  {
+    "id": 3,
+    "name": "Камера хранения 1",
+    "type": "items",
+    "building": "Корпус А",
+    "address": "Цокольный этаж",
+    "total_capacity": 30,
+    "mqtt_topic_status": "storage/korpusA/locker1/status",
+    "mqtt_topic_occupancy": "storage/korpusA/locker1/occupancy"
+  },
+  {
+    "id": 4,
+    "name": "Гардероб 1",
+    "type": "clothes",
+    "building": "Корпус Б",
+    "address": "1 этаж, холл",
+    "total_capacity": 60,
+    "mqtt_topic_status": "storage/korpusB/wardrobe1/status",
+    "mqtt_topic_occupancy": "storage/korpusB/wardrobe1/occupancy"
+  },
+  {
+    "id": 5,
+    "name": "Камера хранения 1",
+    "type": "items",
+    "building": "Корпус Б",
+    "address": "Подвал",
+    "total_capacity": 25,
+    "mqtt_topic_status": "storage/korpusB/locker1/status",
+    "mqtt_topic_occupancy": "storage/korpusB/locker1/occupancy"
+  },
+  {
+    "id": 6,
+    "name": "Гардероб 1",
+    "type": "clothes",
+    "building": "Корпус В",
+    "address": "1 этаж",
+    "total_capacity": 45,
+    "mqtt_topic_status": "storage/korpusV/wardrobe1/status",
+    "mqtt_topic_occupancy": "storage/korpusV/wardrobe1/occupancy"
+  },
+  {
+    "id": 7,
+    "name": "Камера хранения 1",
+    "type": "items",
+    "building": "Корпус В",
+    "address": "1 этаж, справа от входа",
+    "total_capacity": 20,
+    "mqtt_topic_status": "storage/korpusV/locker1/status",
+    "mqtt_topic_occupancy": "storage/korpusV/locker1/occupancy"
+  }
+]

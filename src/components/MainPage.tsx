@@ -25,6 +25,7 @@ import { LocationPage } from './LocationPage';
 import { StudentsReportPage } from './StudentsReportPage';
 import { EmployeesReportPage } from './EmployeesReportPage';
 import { ParkingPage } from './ParkingPage';
+import { StorageSystemsPage } from './StorageSystemsPage';
 import { UnderConstructionPage } from './UnderConstructionPage';
 import { UsersSettingsPage } from './UsersSettingsPage';
 import { RolesManagementPage } from './RolesManagementPage';
@@ -382,8 +383,8 @@ export function MainPage() {
         {activePage === 'students' && <StudentsReportPage />}
         {activePage === 'employees' && <EmployeesReportPage />}
         {activePage === 'parking' && <ParkingPage />}
+        {activePage === 'storage' && <StorageSystemsPage />}
         {activePage === 'analytics' && <UnderConstructionPage />}
-        {activePage === 'storage' && <UnderConstructionPage />}
         {activePage === 'foreign-students' && <UnderConstructionPage />}
         {activePage === 'users-settings' && <UsersSettingsPage />}
         {activePage === 'roles-settings' && <RolesManagementPage />}
