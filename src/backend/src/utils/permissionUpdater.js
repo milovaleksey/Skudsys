@@ -40,35 +40,51 @@ async function updatePermissions() {
     const [roles] = await connection.query('SELECT * FROM roles');
     
     for (const role of roles) {
-      if (role.name === 'admin' || role.name === 'security') {
-        let permissions = [];
-        try {
-          if (typeof role.permissions === 'string') {
-            // Handle potentially malformed JSON or single quotes
-            const cleanJson = role.permissions.replace(/'/g, '"');
-            permissions = JSON.parse(cleanJson);
-          } else if (Array.isArray(role.permissions)) {
-            permissions = role.permissions;
-          }
-        } catch (e) {
-          console.warn(`⚠️ Сброс прав для роли ${role.name} из-за ошибки парсинга:`, e.message);
-          permissions = [];
+      // Storage permission for admin, security, teacher, student
+      const storageRoles = ['admin', 'security', 'teacher', 'student'];
+      // user-logs only for admin and security
+      const userLogsRoles = ['admin', 'security'];
+
+      let permissions = [];
+      try {
+        if (typeof role.permissions === 'string') {
+          // Handle potentially malformed JSON or single quotes
+          const cleanJson = role.permissions.replace(/'/g, '"');
+          permissions = JSON.parse(cleanJson);
+        } else if (Array.isArray(role.permissions)) {
+          permissions = role.permissions;
         }
+      } catch (e) {
+        console.warn(`⚠️ Сброс прав для роли ${role.name} из-за ошибки парсинга:`, e.message);
+        permissions = [];
+      }
 
-        if (!Array.isArray(permissions)) permissions = [];
+      if (!Array.isArray(permissions)) permissions = [];
 
-          if (!permissions.includes('user-logs')) {
-            permissions.push('user-logs');
-            console.log(`➕ Добавление user-logs к роли ${role.name}`);
-            
-            await connection.query(
-              'UPDATE roles SET permissions = ? WHERE id = ?', 
-              [JSON.stringify(permissions), role.id]
-            );
-            console.log(`✅ Права роли ${role.name} обновлены:`, permissions);
-          } else {
-             console.log(`ℹ️ Роль ${role.name} уже имеет права:`, permissions);
-          }
+      let hasUpdates = false;
+
+      // Add user-logs permission (only for admin and security)
+      if (userLogsRoles.includes(role.name) && !permissions.includes('user-logs')) {
+        permissions.push('user-logs');
+        hasUpdates = true;
+        console.log(`➕ Добавление user-logs к роли ${role.name}`);
+      }
+
+      // Add storage permission (for admin, security, teacher, student)
+      if (storageRoles.includes(role.name) && !permissions.includes('storage')) {
+        permissions.push('storage');
+        hasUpdates = true;
+        console.log(`➕ Добавление storage к роли ${role.name}`);
+      }
+
+      if (hasUpdates) {
+        await connection.query(
+          'UPDATE roles SET permissions = ? WHERE id = ?', 
+          [JSON.stringify(permissions), role.id]
+        );
+        console.log(`✅ Права роли ${role.name} обновлены:`, permissions);
+      } else if (storageRoles.includes(role.name) || userLogsRoles.includes(role.name)) {
+        console.log(`ℹ️ Роль ${role.name} уже имеет все необходимые права:`, permissions);
       }
     }
 
