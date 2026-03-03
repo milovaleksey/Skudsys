@@ -4,164 +4,38 @@
  * Similar to parking lots visualization
  */
 
-import { useState, useEffect } from 'react';
-import { storageApi } from '../lib/api';
-import { useStorageWebSocket } from '../hooks/useStorageWebSocket';
-import { toast } from 'sonner';
-import { Building2, Package, Shirt, AlertCircle, CheckCircle, XCircle, Clock } from 'lucide-react';
-
-interface StorageSystem {
-  id: number;
-  name: string;
-  type: 'clothes' | 'items';
-  building: string;
-  address?: string;
-  total_capacity: number;
-  occupied_count: number;
-  status: 'active' | 'inactive' | 'maintenance';
-  mqtt_topic_status: string;
-  mqtt_topic_occupancy: string;
-  created_at: string;
-  updated_at: string;
-}
-
-interface StorageStatistics {
-  overall: {
-    total_systems: number;
-    total_capacity: number;
-    total_occupied: number;
-    total_available: number;
-    active_systems: number;
-    inactive_systems: number;
-  };
-  byType: Array<{
-    type: 'clothes' | 'items';
-    count: number;
-    total_capacity: number;
-    occupied_count: number;
-    available_count: number;
-  }>;
-  byBuilding: Array<{
-    building: string;
-    count: number;
-    total_capacity: number;
-    occupied_count: number;
-    available_count: number;
-  }>;
-}
+import { useState } from 'react';
+import { useStorageMQTT } from '../hooks/useStorageMQTT';
+import { Building2, Package, Shirt, AlertCircle, CheckCircle, XCircle, Clock, Wifi, WifiOff, RefreshCw } from 'lucide-react';
 
 export function StorageSystemsPage() {
-  const [systems, setSystems] = useState<StorageSystem[]>([]);
-  const [statistics, setStatistics] = useState<StorageStatistics | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { storages, isConnected, error, reconnect } = useStorageMQTT();
   const [filter, setFilter] = useState<'all' | 'clothes' | 'items'>('all');
   const [buildingFilter, setBuildingFilter] = useState<string>('all');
 
-  // Load initial data
-  useEffect(() => {
-    loadData();
-  }, []);
+  // Filter storages by type
+  const filteredByType = filter === 'all' 
+    ? storages 
+    : storages.filter(s => s.type === filter);
 
-  const loadData = async () => {
-    setIsLoading(true);
-    try {
-      const [systemsRes, statsRes] = await Promise.all([
-        storageApi.getAllSystems(),
-        storageApi.getStatistics()
-      ]);
+  // Filter by building
+  const filteredStorages = buildingFilter === 'all'
+    ? filteredByType
+    : filteredByType.filter(s => s.building === buildingFilter);
 
-      if (systemsRes.success && systemsRes.data) {
-        setSystems(systemsRes.data);
-      } else {
-        toast.error('Ошибка при загрузке систем хранения');
-      }
+  // Get unique buildings for filter
+  const buildings = Array.from(new Set(storages.map(s => s.building))).sort();
 
-      if (statsRes.success && statsRes.data) {
-        setStatistics(statsRes.data);
-      }
-    } catch (error) {
-      console.error('Error loading storage data:', error);
-      toast.error('Ошибка при загрузке данных');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // Calculate statistics
+  const totalCapacity = filteredStorages.reduce((sum, s) => sum + s.totalCapacity, 0);
+  const totalOccupied = filteredStorages.reduce((sum, s) => sum + s.occupiedCount, 0);
+  const totalAvailable = totalCapacity - totalOccupied;
+  const occupancyPercentage = totalCapacity > 0 ? Math.round((totalOccupied / totalCapacity) * 100) : 0;
 
-  // WebSocket for real-time updates
-  const { isConnected } = useStorageWebSocket({
-    onOccupancyUpdate: (data) => {
-      console.log('Occupancy update:', data);
-      
-      // Update systems state
-      setSystems((prev) => {
-        return prev.map((system) => {
-          if (system.mqtt_topic_occupancy === data.topic) {
-            return {
-              ...system,
-              occupied_count: data.occupiedCount,
-              updated_at: data.timestamp
-            };
-          }
-          return system;
-        });
-      });
-
-      // Reload statistics
-      loadStatistics();
-    },
-    onStatusUpdate: (data) => {
-      console.log('Status update:', data);
-      
-      // Update systems state
-      setSystems((prev) => {
-        return prev.map((system) => {
-          if (system.mqtt_topic_status === data.topic) {
-            return {
-              ...system,
-              status: data.status,
-              updated_at: data.timestamp
-            };
-          }
-          return system;
-        });
-      });
-
-      // Reload statistics
-      loadStatistics();
-    },
-    onConnected: () => {
-      console.log('Storage WebSocket connected');
-    },
-    onDisconnected: () => {
-      console.log('Storage WebSocket disconnected');
-    },
-  });
-
-  const loadStatistics = async () => {
-    try {
-      const res = await storageApi.getStatistics();
-      if (res.success && res.data) {
-        setStatistics(res.data);
-      }
-    } catch (error) {
-      console.error('Error loading statistics:', error);
-    }
-  };
-
-  // Filter systems
-  const filteredSystems = systems.filter((system) => {
-    if (filter !== 'all' && system.type !== filter) return false;
-    if (buildingFilter !== 'all' && system.building !== buildingFilter) return false;
-    return true;
-  });
-
-  // Get unique buildings
-  const buildings = ['all', ...new Set(systems.map(s => s.building))];
-
-  // Calculate occupancy percentage
-  const getOccupancyPercentage = (system: StorageSystem) => {
-    if (system.total_capacity === 0) return 0;
-    return Math.round((system.occupied_count / system.total_capacity) * 100);
+  // Get occupancy percentage for a system
+  const getOccupancyPercentage = (system: typeof storages[0]) => {
+    if (system.totalCapacity === 0) return 0;
+    return Math.round((system.occupiedCount / system.totalCapacity) * 100);
   };
 
   // Get occupancy color
@@ -233,57 +107,55 @@ export function StorageSystemsPage() {
         </div>
 
         {/* Statistics Cards */}
-        {statistics && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">Всего систем</p>
-                  <p className="text-2xl font-bold text-gray-900">{statistics.overall.total_systems}</p>
-                </div>
-                <div style={{ backgroundColor: '#00aeef' }} className="p-3 rounded-lg">
-                  <Building2 className="w-6 h-6 text-white" />
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Всего систем</p>
+                <p className="text-2xl font-bold text-gray-900">{storages.length}</p>
               </div>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">Общая вместимость</p>
-                  <p className="text-2xl font-bold text-gray-900">{statistics.overall.total_capacity}</p>
-                </div>
-                <div className="bg-blue-500 p-3 rounded-lg">
-                  <Package className="w-6 h-6 text-white" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">Занято</p>
-                  <p className="text-2xl font-bold text-gray-900">{statistics.overall.total_occupied}</p>
-                </div>
-                <div className="bg-yellow-500 p-3 rounded-lg">
-                  <Shirt className="w-6 h-6 text-white" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">Доступно</p>
-                  <p className="text-2xl font-bold text-green-600">{statistics.overall.total_available}</p>
-                </div>
-                <div className="bg-green-500 p-3 rounded-lg">
-                  <CheckCircle className="w-6 h-6 text-white" />
-                </div>
+              <div style={{ backgroundColor: '#00aeef' }} className="p-3 rounded-lg">
+                <Building2 className="w-6 h-6 text-white" />
               </div>
             </div>
           </div>
-        )}
+
+          <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Общая вместимость</p>
+                <p className="text-2xl font-bold text-gray-900">{totalCapacity}</p>
+              </div>
+              <div className="bg-blue-500 p-3 rounded-lg">
+                <Package className="w-6 h-6 text-white" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Занято</p>
+                <p className="text-2xl font-bold text-gray-900">{totalOccupied}</p>
+              </div>
+              <div className="bg-yellow-500 p-3 rounded-lg">
+                <Shirt className="w-6 h-6 text-white" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Доступно</p>
+                <p className="text-2xl font-bold text-green-600">{totalAvailable}</p>
+              </div>
+              <div className="bg-green-500 p-3 rounded-lg">
+                <CheckCircle className="w-6 h-6 text-white" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Filters */}
@@ -334,9 +206,10 @@ export function StorageSystemsPage() {
               onChange={(e) => setBuildingFilter(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
+              <option value="all">Все корпуса</option>
               {buildings.map((building) => (
                 <option key={building} value={building}>
-                  {building === 'all' ? 'Все корпуса' : building}
+                  {building}
                 </option>
               ))}
             </select>
@@ -345,23 +218,29 @@ export function StorageSystemsPage() {
       </div>
 
       {/* Systems Grid */}
-      {isLoading ? (
+      {error ? (
         <div className="flex items-center justify-center py-20">
           <div className="text-center">
             <div className="inline-block w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
-            <p className="text-gray-600">Загрузка систем хранения...</p>
+            <p className="text-gray-600">Ошибка при загрузке систем хранения: {error}</p>
+            <button
+              onClick={reconnect}
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg"
+            >
+              Переподключиться
+            </button>
           </div>
         </div>
-      ) : filteredSystems.length === 0 ? (
+      ) : filteredStorages.length === 0 ? (
         <div className="bg-white rounded-xl p-12 shadow-md text-center">
           <AlertCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
           <p className="text-gray-600">Нет систем хранения для отображения</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredSystems.map((system) => {
+          {filteredStorages.map((system) => {
             const percentage = getOccupancyPercentage(system);
-            const availableSpots = system.total_capacity - system.occupied_count;
+            const availableSpots = system.totalCapacity - system.occupiedCount;
 
             return (
               <div
@@ -417,11 +296,11 @@ export function StorageSystemsPage() {
                 <div className="grid grid-cols-3 gap-3">
                   <div className="text-center p-3 bg-gray-50 rounded-lg">
                     <p className="text-xs text-gray-600 mb-1">Всего</p>
-                    <p className="text-lg font-bold text-gray-900">{system.total_capacity}</p>
+                    <p className="text-lg font-bold text-gray-900">{system.totalCapacity}</p>
                   </div>
                   <div className="text-center p-3 bg-yellow-50 rounded-lg">
                     <p className="text-xs text-gray-600 mb-1">Занято</p>
-                    <p className="text-lg font-bold text-yellow-600">{system.occupied_count}</p>
+                    <p className="text-lg font-bold text-yellow-600">{system.occupiedCount}</p>
                   </div>
                   <div className="text-center p-3 bg-green-50 rounded-lg">
                     <p className="text-xs text-gray-600 mb-1">Свободно</p>
@@ -442,9 +321,11 @@ export function StorageSystemsPage() {
                   >
                     {getStatusLabel(system.status)}
                   </span>
-                  <span className="text-xs text-gray-500 ml-3">
-                    Обновлено: {new Date(system.updated_at).toLocaleTimeString('ru-RU')}
-                  </span>
+                  {system.updatedAt && (
+                    <span className="text-xs text-gray-500 ml-3">
+                      Обновлено: {new Date(system.updatedAt).toLocaleTimeString('ru-RU')}
+                    </span>
+                  )}
                 </div>
               </div>
             );

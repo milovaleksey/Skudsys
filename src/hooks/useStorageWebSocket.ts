@@ -6,8 +6,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { TokenManager } from '../lib/api';
 
-const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:3000';
-
 interface StorageSystem {
   id: number;
   name: string;
@@ -69,7 +67,31 @@ export const useStorageWebSocket = (options: UseStorageWebSocketOptions = {}) =>
     }
 
     try {
-      const wsUrl = `${WS_URL}/ws/storage?token=${token}`;
+      // Получаем базовый URL API из переменной окружения
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      
+      // DEBUG: Выводим что прочитали из .env
+      console.log('[Storage WebSocket] DEBUG: VITE_API_URL =', import.meta.env.VITE_API_URL);
+      console.log('[Storage WebSocket] DEBUG: apiUrl =', apiUrl);
+      
+      // Определяем WebSocket URL
+      let wsUrl: string;
+      
+      // Если VITE_API_URL задан полностью (http://... или https://...)
+      if (apiUrl && (apiUrl.startsWith('http://') || apiUrl.startsWith('https://'))) {
+        const url = new URL(apiUrl);
+        const protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+        wsUrl = `${protocol}//${url.host}/ws/storage?token=${token}`;
+        console.log('[Storage WebSocket] Используем WebSocket URL из VITE_API_URL:', wsUrl);
+      } 
+      // Если не задан или задан относительный путь - используем текущий хост с портом 3000
+      else {
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const hostname = window.location.hostname; // только hostname без порта
+        wsUrl = `${protocol}//${hostname}:3000/ws/storage?token=${token}`;
+        console.log('[Storage WebSocket] Используем дефолтный WebSocket URL (порт 3000):', wsUrl);
+      }
+
       console.log('🔌 Connecting to Storage WebSocket:', wsUrl);
 
       const ws = new WebSocket(wsUrl);
