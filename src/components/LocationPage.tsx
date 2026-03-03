@@ -21,6 +21,24 @@ export function LocationPage() {
   const [personInfo, setPersonInfo] = useState<PersonInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Автоматическое определение типа поиска при вводе
+  const handleInputChange = (value: string) => {
+    setSearchQuery(value);
+    
+    // Если поле пустое, ничего не меняем
+    if (!value.trim()) {
+      return;
+    }
+    
+    // Если содержит @, это скорее всего UPN (email)
+    if (value.includes('@')) {
+      setSearchType('upn');
+    } else {
+      // Если нет @, это скорее всего ФИО
+      setSearchType('fio');
+    }
+  };
+
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
       toast.error('Введите данные для поиска');
@@ -118,7 +136,7 @@ export function LocationPage() {
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value)}
             onKeyPress={handleKeyPress}
             className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
             style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
