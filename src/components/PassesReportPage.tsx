@@ -320,12 +320,13 @@ export function PassesReportPage() {
                 <th className="px-6 py-4 text-left text-sm font-semibold text-white">Номер карты</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-white">Событие</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-white">Точка прохода</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Здание</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {passRecords.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
+                  <td colSpan={7} className="px-6 py-8 text-center text-gray-500">
                     {isLoading ? 'Загрузка...' : 'Нет данных. Выполните поиск.'}
                   </td>
                 </tr>
@@ -343,6 +344,7 @@ export function PassesReportPage() {
                     <td className="px-6 py-4 text-sm text-gray-600">{record.cardNumber || '—'}</td>
                     <td className="px-6 py-4 text-sm text-gray-600">{record.eventName || '—'}</td>
                     <td className="px-6 py-4 text-sm text-gray-600">{record.checkpoint}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{record.building || '—'}</td>
                   </tr>
                 ))
               )}
