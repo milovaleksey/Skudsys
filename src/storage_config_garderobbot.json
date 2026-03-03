@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "name": "Гардеробот",
+    "type": "clothes",
+    "building": "Корпус 1",
+    "address": "1 этаж",
+    "total_capacity": 100,
+    "mqtt_topic_status": "storage/k1/grbot1/status",
+    "mqtt_topic_occupancy": "storage/k1/grbot1/occupancy"
+  }
+]

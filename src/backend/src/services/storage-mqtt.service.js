@@ -212,10 +212,7 @@ class StorageMQTTService {
       logger.info(`✅ Storage configuration updated: ${validSystems.length} systems loaded`);
 
       // Broadcast config update to WebSocket clients
-      this.broadcastToWebSocket('storage-config-update', {
-        systemsCount: validSystems.length,
-        timestamp: new Date().toISOString()
-      });
+      this.broadcastToWebSocket('storage_config', validSystems);
 
     } catch (error) {
       logger.error('Error parsing storage configuration:', error);
@@ -226,10 +223,19 @@ class StorageMQTTService {
    * Broadcast update to WebSocket clients
    */
   broadcastToWebSocket(event, data) {
-    // This will be implemented by WebSocket service
-    const { broadcastStorageUpdate } = require('../websocket/storage.ws');
+    const { broadcastStorageUpdate, getClientCount } = require('../websocket/storage.ws');
     if (broadcastStorageUpdate) {
-      broadcastStorageUpdate(event, data);
+      logger.info(`Broadcasting ${event} to ${getClientCount()} clients`);
+      
+      // For storage_config, data is array of systems
+      // broadcastStorageUpdate will wrap it as {type: event, data: data}
+      // But frontend expects {type: 'storage_config', storages: [...]}
+      // So we need to pass {storages: data} as data parameter
+      if (event === 'storage_config') {
+        broadcastStorageUpdate(event, { storages: data });
+      } else {
+        broadcastStorageUpdate(event, data);
+      }
     }
   }
 

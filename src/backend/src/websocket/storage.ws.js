@@ -35,6 +35,18 @@ function initStorageWebSocket(server) {
       timestamp: new Date().toISOString()
     }));
 
+    // Send current configuration to newly connected client
+    const storageController = require('../controllers/storageController');
+    const currentSystems = storageController.getAllSystemsInternal();
+    if (currentSystems && currentSystems.length > 0) {
+      ws.send(JSON.stringify({
+        type: 'storage_config',
+        storages: currentSystems,
+        timestamp: new Date().toISOString()
+      }));
+      logger.info(`Sent current storage configuration to new client: ${currentSystems.length} systems`);
+    }
+
     ws.on('message', (message) => {
       try {
         const data = JSON.parse(message);

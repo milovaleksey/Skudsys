@@ -45,13 +45,25 @@ export function useStorageMQTT() {
           const data = JSON.parse(event.data);
           
           if (data.type === 'storage_config') {
-            console.log('[Storage WebSocket] Получена конфигурация систем хранения:', data.storages);
+            // Config can come in two formats:
+            // 1. {type: 'storage_config', storages: [...]} - direct format
+            // 2. {type: 'storage_config', data: {storages: [...]}} - wrapped format
+            const storages = data.storages || data.data?.storages || [];
+            console.log('[Storage WebSocket] Получена конфигурация систем хранения:', storages);
             
             // Инициализируем системы хранения
-            const initialStorages: StorageData[] = data.storages.map((config: StorageSystem) => ({
-              ...config,
-              occupiedCount: config.occupiedCount || 0,
+            const initialStorages: StorageData[] = storages.map((config: any) => ({
+              id: String(config.id),
+              name: config.name,
+              type: config.type,
+              building: config.building,
+              address: config.address || '',
+              totalCapacity: config.total_capacity || 0,
+              occupiedCount: config.occupied_count || 0,
               status: config.status || 'active',
+              mqttTopicStatus: config.mqtt_topic_status || '',
+              mqttTopicOccupancy: config.mqtt_topic_occupancy || '',
+              updatedAt: config.updated_at || new Date().toISOString(),
             }));
             
             setStorages(initialStorages);
@@ -59,9 +71,8 @@ export function useStorageMQTT() {
             console.log('[Storage WebSocket] Обновление занятости:', data.data);
             
             setStorages(prev => prev.map(storage => {
-              if (storage.id === data.data.systemId || 
-                  storage.name === data.data.name ||
-                  storage.building === data.data.building) {
+              if (storage.id === String(data.data.systemId) || 
+                  storage.name === data.data.systemName) {
                 return {
                   ...storage,
                   occupiedCount: data.data.occupiedCount,
@@ -74,9 +85,8 @@ export function useStorageMQTT() {
             console.log('[Storage WebSocket] Обновление статуса:', data.data);
             
             setStorages(prev => prev.map(storage => {
-              if (storage.id === data.data.systemId || 
-                  storage.name === data.data.name ||
-                  storage.building === data.data.building) {
+              if (storage.id === String(data.data.systemId) || 
+                  storage.name === data.data.systemName) {
                 return {
                   ...storage,
                   status: data.data.status,
