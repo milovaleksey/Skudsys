@@ -73,4 +73,40 @@ router.get(
   skudController.getPassesByUpn
 );
 
+// ===== ОТЧЕТЫ ПО СТУДЕНТАМ =====
+
+// Журнал проходов СТУДЕНТОВ по ФИО (хранимая процедура sp_get_students_passes_by_fio)
+router.get(
+  '/students-passes/by-fio',
+  authenticate,
+  checkPermission('passes'),
+  skudController.getStudentsPassesByFio
+);
+
+// Журнал проходов СТУДЕНТОВ по UPN (хранимая процедура sp_get_students_passes_by_upn)
+router.get(
+  '/students-passes/by-upn',
+  authenticate,
+  checkPermission('passes'),
+  skudController.getStudentsPassesByUpn
+);
+
+// ===== ОТЧЕТЫ ПО СОТРУДНИКАМ =====
+
+// Журнал проходов СОТРУДНИКОВ по ФИО (хранимая процедура sp_get_employees_passes_by_fio)
+router.get(
+  '/employees-passes/by-fio',
+  authenticate,
+  checkPermission('passes'),
+  skudController.getEmployeesPassesByFio
+);
+
+// Журнал проходов СОТРУДНИКОВ по UPN (хранимая процедура sp_get_employees_passes_by_upn)
+router.get(
+  '/employees-passes/by-upn',
+  authenticate,
+  checkPermission('passes'),
+  skudController.getEmployeesPassesByUpn
+);
+
 module.exports = router;

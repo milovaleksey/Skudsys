@@ -1,136 +1,176 @@
-import { useState } from 'react';
-import { Search, FileSpreadsheet, FileText } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, Download, FileSpreadsheet, FileText, Calendar } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 import { registerLocale } from 'react-datepicker';
 import { ru } from 'date-fns/locale/ru';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/datepicker-custom.css';
 import * as XLSX from 'xlsx';
+import { skudApi } from '../lib/api';
+import { toast } from 'sonner';
 
 registerLocale('ru', ru);
 
-interface StudentRecord {
+interface PassRecord {
   id: number;
   time: string;
   fullName: string;
-  upn: string;
-  cardNumber: string;
+  upn: string | null;
+  cardNumber: string | null;
   checkpoint: string;
-  course: string;
-  group: string;
+  eventName?: string | null;
+  direction?: string | null;
+  building?: string | null;
 }
 
 export function StudentsReportPage() {
+  // Установка сегодняшней даты по умолчанию
+  const today = new Date();
+  const todayStart = new Date(today.setHours(0, 0, 0, 0));
+  const todayEnd = new Date(today.setHours(23, 59, 59, 999));
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchType, setSearchType] = useState<'fio' | 'upn'>('fio');
   const [filters, setFilters] = useState({
-    fullName: '',
-    upn: '',
-    dateFrom: null as Date | null,
-    dateTo: null as Date | null
+    dateFrom: todayStart as Date | null,
+    dateTo: todayEnd as Date | null
   });
 
-  // Mock data removed. TODO: Implement API integration for student passes
-  const [studentRecords] = useState<StudentRecord[]>([]);
-/*
-  const [studentRecords] = useState<StudentRecord[]>([
-    ...
-  ]);
-*/
+  const [passRecords, setPassRecords] = useState<PassRecord[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSearch = () => {
-    console.log('Searching with filters:', filters);
-    // Здесь будет логика поиска
+  // Автоматическое определение типа поиска при вводе
+  const handleInputChange = (value: string) => {
+    setSearchQuery(value);
+    
+    // Если поле пустое, ничего не меняем
+    if (!value.trim()) {
+      return;
+    }
+    
+    // Если содержит @, это скорее всего UPN (email)
+    if (value.includes('@')) {
+      setSearchType('upn');
+    } else {
+      // Если нет @, это скорее всего ФИО
+      setSearchType('fio');
+    }
+  };
+
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) {
+      toast.error('Введите ФИО или UPN для поиска');
+      return;
+    }
+
+    if (!filters.dateFrom || !filters.dateTo) {
+      toast.error('Необходимо указать диапазон дат');
+      return;
+    }
+
+    setIsLoading(true);
+    setPassRecords([]);
+
+    try {
+      // Форматируем даты для API (YYYY-MM-DD HH:MM:SS)
+      const dateFrom = filters.dateFrom.toISOString().slice(0, 19).replace('T', ' ');
+      const dateTo = filters.dateTo.toISOString().slice(0, 19).replace('T', ' ');
+
+      let response;
+
+      if (searchType === 'fio') {
+        // Разбираем ФИО на части
+        const parts = searchQuery.trim().split(/\s+/);
+        if (parts.length < 2) {
+          toast.error('Введите хотя бы фамилию и имя');
+          setIsLoading(false);
+          return;
+        }
+
+        const [lastName, firstName, ...middleNameParts] = parts;
+        const middleName = middleNameParts.join(' ');
+
+        response = await skudApi.getStudentsPassesByFio(lastName, firstName, middleName, dateFrom, dateTo);
+      } else {
+        // Поиск по UPN
+        response = await skudApi.getStudentsPassesByUpn(searchQuery.trim(), dateFrom, dateTo);
+      }
+
+      if (response.success && response.data) {
+        setPassRecords(response.data as PassRecord[]);
+        if (response.data.length === 0) {
+          toast.info('Проходы студентов не найдены за указанный период');
+        } else {
+          toast.success(`Найдено записей: ${response.data.length}`);
+        }
+      } else {
+        toast.error(response.error?.message || 'Ошибка при поиске проходов студентов');
+        setPassRecords([]);
+      }
+    } catch (error) {
+      console.error('Search error:', error);
+      toast.error('Ошибка при поиске проходов студентов');
+      setPassRecords([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   const handleExportExcel = () => {
-    console.log('Exporting to Excel');
-    // Здесь будет логика экспорта в Excel
-    const worksheet = XLSX.utils.json_to_sheet(studentRecords);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Отчет по студентам');
-    XLSX.writeFile(workbook, 'Отчет по студентам.xlsx');
+    if (passRecords.length === 0) {
+      toast.warning('Нет данных для экспорта');
+      return;
+    }
+
+    try {
+      // Подготавливаем данные для экспорта
+      const exportData = passRecords.map(record => ({
+        'Время': record.time,
+        'ФИО': record.fullName,
+        'UPN': record.upn || '',
+        'Номер карты': record.cardNumber || '',
+        'Событие': record.eventName || '',
+        'Точка прохода': record.checkpoint,
+        'Направление': record.direction === 'in' ? 'Вход' : record.direction === 'out' ? 'Выход' : '',
+        'Здание': record.building || ''
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(exportData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Проходы студентов');
+      
+      // Генерируем имя файла с датой
+      const dateStr = new Date().toISOString().slice(0, 10);
+      XLSX.writeFile(workbook, `students_report_${dateStr}.xlsx`);
+      
+      toast.success('Отчет успешно выгружен в Excel');
+    } catch (error) {
+      console.error('Export error:', error);
+      toast.error('Ошибка при экспорте в Excel');
+    }
   };
 
-  const handleExportPDF = () => {
-    console.log('Exporting to PDF');
-    // Create HTML table for PDF export
-    const tableContent = `
-      <html>
-        <head>
-          <meta charset="UTF-8">
-          <style>
-            body { font-family: Arial, sans-serif; padding: 20px; }
-            h1 { color: #00aeef; margin-bottom: 10px; }
-            p { color: #666; margin-bottom: 20px; }
-            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-            th { background-color: #00aeef; color: white; padding: 12px; text-align: left; border: 1px solid #ddd; }
-            td { padding: 10px; border: 1px solid #ddd; }
-            tr:nth-child(even) { background-color: #f9f9f9; }
-          </style>
-        </head>
-        <body>
-          <h1>Отчет по студентам</h1>
-          <p>Информация о проходах студентов через контрольные точки</p>
-          <table>
-            <thead>
-              <tr>
-                <th>Время</th>
-                <th>ФИО</th>
-                <th>UPN</th>
-                <th>Номер карты</th>
-                <th>Курс</th>
-                <th>Группа</th>
-                <th>Точка прохода</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${studentRecords.map(record => `
-                <tr>
-                  <td>${record.time}</td>
-                  <td>${record.fullName}</td>
-                  <td>${record.upn}</td>
-                  <td>${record.cardNumber}</td>
-                  <td>${record.course}</td>
-                  <td>${record.group}</td>
-                  <td>${record.checkpoint}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        </body>
-      </html>
-    `;
-    
-    const blob = new Blob([tableContent], { type: 'text/html;charset=utf-8' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'Отчет по студентам.html';
-    link.click();
-  };
-
-  const totalRecords = studentRecords.length;
+  const totalRecords = passRecords.length;
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">Отчет по студентам</h2>
-          <p className="text-gray-600 mt-1">Информация о проходах студентов через контрольные точки</p>
-        </div>
+        <h2 className="text-2xl font-bold text-gray-900">Отчет по студентам</h2>
         <div className="flex gap-3">
           <button
             onClick={handleExportExcel}
-            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700"
+            disabled={passRecords.length === 0}
+            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <FileSpreadsheet size={20} style={{ color: '#00aeef' }} />
             <span>Excel</span>
-          </button>
-          <button
-            onClick={handleExportPDF}
-            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700"
-          >
-            <FileText size={20} style={{ color: '#00aeef' }} />
-            <span>PDF</span>
           </button>
         </div>
       </div>
@@ -140,34 +180,47 @@ export function StudentsReportPage() {
         <h3 className="text-lg font-semibold mb-4" style={{ color: '#00aeef' }}>
           Фильтры поиска
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* ФИО Filter */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              ФИО студента
-            </label>
-            <input
-              type="text"
-              value={filters.fullName}
-              onChange={(e) => setFilters({ ...filters, fullName: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
-              style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
-              placeholder="Иванов Иван"
-            />
-          </div>
 
-          {/* UPN Filter */}
+        {/* Search Type Selector */}
+        <div className="flex gap-4 mb-4">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              name="searchType"
+              value="fio"
+              checked={searchType === 'fio'}
+              onChange={() => setSearchType('fio')}
+              className="w-4 h-4 accent-[#00aeef]"
+            />
+            <span className="text-sm text-gray-700">По ФИО</span>
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              name="searchType"
+              value="upn"
+              checked={searchType === 'upn'}
+              onChange={() => setSearchType('upn')}
+              className="w-4 h-4 accent-[#00aeef]"
+            />
+            <span className="text-sm text-gray-700">По UPN</span>
+          </label>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* ФИО or UPN Input */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              UPN
+              {searchType === 'fio' ? 'ФИО студента' : 'UPN студента'}
             </label>
             <input
               type="text"
-              value={filters.upn}
-              onChange={(e) => setFilters({ ...filters, upn: e.target.value })}
+              value={searchQuery}
+              onChange={(e) => handleInputChange(e.target.value)}
+              onKeyPress={handleKeyPress}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
               style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
-              placeholder="student@study.utmn.ru"
+              placeholder={searchType === 'fio' ? 'Петрова Мария Сергеевна' : 'petrova@study.utmn.ru'}
             />
           </div>
 
@@ -176,15 +229,16 @@ export function StudentsReportPage() {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Дата от
             </label>
-            <DatePicker
-              selected={filters.dateFrom}
-              onChange={(date) => setFilters({ ...filters, dateFrom: date })}
-              locale="ru"
-              dateFormat="dd.MM.yyyy"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
-              placeholderText="Выберите дату"
-              isClearable
-            />
+            <div className="relative">
+              <DatePicker
+                selected={filters.dateFrom}
+                onChange={(date) => setFilters({ ...filters, dateFrom: date })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
+                placeholderText="Выберите дату"
+                locale="ru"
+                dateFormat="dd.MM.yyyy"
+              />
+            </div>
           </div>
 
           {/* Date To */}
@@ -192,30 +246,55 @@ export function StudentsReportPage() {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Дата до
             </label>
-            <DatePicker
-              selected={filters.dateTo}
-              onChange={(date) => setFilters({ ...filters, dateTo: date })}
-              locale="ru"
-              dateFormat="dd.MM.yyyy"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
-              placeholderText="Выберите дату"
-              isClearable
-            />
+            <div className="relative">
+              <DatePicker
+                selected={filters.dateTo}
+                onChange={(date) => setFilters({ ...filters, dateTo: date })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
+                placeholderText="Выберите дату"
+                locale="ru"
+                dateFormat="dd.MM.yyyy"
+              />
+            </div>
           </div>
         </div>
 
         {/* Search Button */}
-        <div className="mt-4">
+        <div className="mt-4 flex items-center gap-3">
           <button
             onClick={handleSearch}
-            className="flex items-center gap-2 px-6 py-2 text-white rounded-lg transition-colors font-medium"
+            disabled={isLoading}
+            className="flex items-center gap-2 px-6 py-2 text-white rounded-lg transition-colors font-medium disabled:opacity-50"
             style={{ backgroundColor: '#00aeef' }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0098d1'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00aeef'}
+            onMouseEnter={(e) => !isLoading && (e.currentTarget.style.backgroundColor = '#0098d1')}
+            onMouseLeave={(e) => !isLoading && (e.currentTarget.style.backgroundColor = '#00aeef')}
           >
             <Search size={20} />
-            <span>Найти</span>
+            <span>{isLoading ? 'Поиск...' : 'Найти'}</span>
           </button>
+
+          {/* Quick Examples */}
+          <div className="text-sm text-gray-500">
+            <span className="font-medium">Примеры:</span>
+            <button
+              onClick={() => {
+                setSearchQuery('Петрова Мария Сергеевна');
+                setSearchType('fio');
+              }}
+              className="ml-2 px-2 py-1 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+            >
+              Петрова Мария Сергеевна
+            </button>
+            <button
+              onClick={() => {
+                setSearchQuery('petrova@study.utmn.ru');
+                setSearchType('upn');
+              }}
+              className="ml-2 px-2 py-1 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+            >
+              petrova@study.utmn.ru
+            </button>
+          </div>
         </div>
       </div>
 
@@ -239,28 +318,36 @@ export function StudentsReportPage() {
                 <th className="px-6 py-4 text-left text-sm font-semibold text-white">ФИО</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-white">UPN</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-white">Номер карты</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Курс</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Группа</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Событие</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-white">Точка прохода</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Здание</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {studentRecords.map((record, index) => (
-                <tr 
-                  key={record.id}
-                  className={`hover:bg-gray-50 transition-colors ${
-                    index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                  }`}
-                >
-                  <td className="px-6 py-4 text-sm text-gray-900">{record.time}</td>
-                  <td className="px-6 py-4 text-sm text-gray-900">{record.fullName}</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{record.upn}</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{record.cardNumber}</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{record.course}</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{record.group}</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{record.checkpoint}</td>
+              {passRecords.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="px-6 py-8 text-center text-gray-500">
+                    {isLoading ? 'Загрузка...' : 'Нет данных. Выполните поиск.'}
+                  </td>
                 </tr>
-              ))}
+              ) : (
+                passRecords.map((record, index) => (
+                  <tr 
+                    key={record.id}
+                    className={`hover:bg-gray-50 transition-colors ${
+                      index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                    }`}
+                  >
+                    <td className="px-6 py-4 text-sm text-gray-900">{record.time}</td>
+                    <td className="px-6 py-4 text-sm text-gray-900">{record.fullName}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{record.upn || '—'}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{record.cardNumber || '—'}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{record.eventName || '—'}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{record.checkpoint}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{record.building || '—'}</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

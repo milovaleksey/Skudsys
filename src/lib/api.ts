@@ -596,6 +596,44 @@ export const skudApi = {
     });
   },
 
+  // ===== ОТЧЕТЫ ПО СТУДЕНТАМ =====
+  async getStudentsPassesByFio(lastName: string, firstName: string, middleName: string, dateFrom: string, dateTo: string) {
+    return apiClient.get('/skud/students-passes/by-fio', { 
+      lastName, 
+      firstName, 
+      middleName: middleName || '',
+      dateFrom,
+      dateTo
+    });
+  },
+
+  async getStudentsPassesByUpn(upn: string, dateFrom: string, dateTo: string) {
+    return apiClient.get('/skud/students-passes/by-upn', { 
+      upn,
+      dateFrom,
+      dateTo
+    });
+  },
+
+  // ===== ОТЧЕТЫ ПО СОТРУДНИКАМ =====
+  async getEmployeesPassesByFio(lastName: string, firstName: string, middleName: string, dateFrom: string, dateTo: string) {
+    return apiClient.get('/skud/employees-passes/by-fio', { 
+      lastName, 
+      firstName, 
+      middleName: middleName || '',
+      dateFrom,
+      dateTo
+    });
+  },
+
+  async getEmployeesPassesByUpn(upn: string, dateFrom: string, dateTo: string) {
+    return apiClient.get('/skud/employees-passes/by-upn', { 
+      upn,
+      dateFrom,
+      dateTo
+    });
+  },
+
   async getAccessPoints() {
     return apiClient.get('/skud/access-points');
   },
