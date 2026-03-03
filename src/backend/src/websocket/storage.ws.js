@@ -24,28 +24,7 @@ function initStorageWebSocket(server) {
   // This function only sets up the WebSocket server
 
   wss.on('connection', (ws, request) => {
-    // Extract token from query params
-    const params = url.parse(request.url, true).query;
-    const token = params.token;
-
-    // Verify JWT token
-    if (!token) {
-      logger.warn('Storage WebSocket connection rejected: No token provided');
-      ws.close(1008, 'Authentication required');
-      return;
-    }
-
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      ws.userId = decoded.id;
-      ws.userRole = decoded.role;
-      
-      logger.info(`Storage WebSocket client connected: User ${ws.userId} (${ws.userRole})`);
-    } catch (error) {
-      logger.warn('Storage WebSocket connection rejected: Invalid token');
-      ws.close(1008, 'Invalid authentication token');
-      return;
-    }
+    logger.info('Storage WebSocket client connected');
 
     clients.add(ws);
 
@@ -59,7 +38,7 @@ function initStorageWebSocket(server) {
     ws.on('message', (message) => {
       try {
         const data = JSON.parse(message);
-        logger.debug(`Storage WebSocket message from user ${ws.userId}:`, data);
+        logger.debug('Storage WebSocket message:', data);
 
         // Handle ping/pong for keep-alive
         if (data.type === 'ping') {
@@ -75,11 +54,11 @@ function initStorageWebSocket(server) {
 
     ws.on('close', () => {
       clients.delete(ws);
-      logger.info(`Storage WebSocket client disconnected: User ${ws.userId}`);
+      logger.info('Storage WebSocket client disconnected');
     });
 
     ws.on('error', (error) => {
-      logger.error(`Storage WebSocket error for user ${ws.userId}:`, error);
+      logger.error('Storage WebSocket error:', error);
       clients.delete(ws);
     });
 
