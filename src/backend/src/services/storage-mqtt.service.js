@@ -195,21 +195,52 @@ class StorageMQTTService {
       // Update controller with new configuration
       storageController.setStorageSystems(validSystems);
 
-      // Unsubscribe from old topics
-      const oldTopics = Array.from(this.subscribedTopics).filter(t => t !== CONFIG_TOPIC);
-      oldTopics.forEach(topic => this.unsubscribe(topic));
-
-      // Subscribe to new topics
+      // Collect new topics to subscribe to
+      const newTopics = new Set();
       validSystems.forEach(system => {
-        if (system.mqtt_topic_status) {
-          this.subscribe(system.mqtt_topic_status);
+        // Support both snake_case and camelCase
+        const statusTopic = system.mqtt_topic_status || system.mqttTopicStatus;
+        const occupancyTopic = system.mqtt_topic_occupancy || system.mqttTopicOccupancy;
+        
+        if (statusTopic) {
+          newTopics.add(statusTopic);
         }
-        if (system.mqtt_topic_occupancy) {
-          this.subscribe(system.mqtt_topic_occupancy);
+        if (occupancyTopic) {
+          newTopics.add(occupancyTopic);
         }
       });
 
-      logger.info(`✅ Storage configuration updated: ${validSystems.length} systems loaded`);
+      // Get current data topics (exclude config topic)
+      const currentTopics = Array.from(this.subscribedTopics).filter(t => t !== CONFIG_TOPIC);
+      
+      // Find topics to unsubscribe (topics that are not in new config)
+      const topicsToRemove = currentTopics.filter(t => !newTopics.has(t));
+      
+      // Find topics to add (topics that are not currently subscribed)
+      const topicsToAdd = Array.from(newTopics).filter(t => !this.subscribedTopics.has(t));
+
+      logger.info(`Topics to remove: ${topicsToRemove.length}, Topics to add: ${topicsToAdd.length}`);
+
+      // Unsubscribe from removed topics
+      topicsToRemove.forEach(topic => {
+        this.subscribedTopics.delete(topic); // Remove from set first to avoid race condition
+        if (this.client && this.client.connected) {
+          this.client.unsubscribe(topic, (err) => {
+            if (err) {
+              logger.error(`Failed to unsubscribe from topic ${topic}:`, err);
+            } else {
+              logger.info(`Unsubscribed from storage topic: ${topic}`);
+            }
+          });
+        }
+      });
+
+      // Subscribe to new topics
+      topicsToAdd.forEach(topic => {
+        this.subscribe(topic);
+      });
+
+      logger.info(`✅ Storage configuration updated: ${validSystems.length} systems, ${this.subscribedTopics.size - 1} data topics`);
 
       // Broadcast config update to WebSocket clients
       this.broadcastToWebSocket('storage_config', validSystems);

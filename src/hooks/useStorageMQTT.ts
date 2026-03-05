@@ -26,6 +26,7 @@ export function useStorageMQTT() {
   const wsRef = useRef<WebSocket | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
   const reconnectAttempts = useRef(0);
+  const lastDataRef = useRef<StorageData[]>([]); // Сохраняем последние данные
 
   const connect = () => {
     try {
@@ -38,6 +39,12 @@ export function useStorageMQTT() {
         setIsConnected(true);
         setError(null);
         reconnectAttempts.current = 0;
+        
+        // Восстанавливаем последние данные при переподключении
+        if (lastDataRef.current.length > 0) {
+          console.log('[Storage WebSocket] Восстановлены данные после переподключения:', lastDataRef.current.length);
+          setStorages(lastDataRef.current);
+        }
       };
 
       ws.onmessage = (event) => {
@@ -66,35 +73,44 @@ export function useStorageMQTT() {
               updatedAt: config.updated_at || new Date().toISOString(),
             }));
             
+            lastDataRef.current = initialStorages; // Сохраняем
             setStorages(initialStorages);
           } else if (data.type === 'storage-occupancy') {
             console.log('[Storage WebSocket] Обновление занятости:', data.data);
             
-            setStorages(prev => prev.map(storage => {
-              if (storage.id === String(data.data.systemId) || 
-                  storage.name === data.data.systemName) {
-                return {
-                  ...storage,
-                  occupiedCount: data.data.occupiedCount,
-                  updatedAt: new Date().toISOString(),
-                };
-              }
-              return storage;
-            }));
+            setStorages(prev => {
+              const updated = prev.map(storage => {
+                if (storage.id === String(data.data.systemId) || 
+                    storage.name === data.data.systemName) {
+                  return {
+                    ...storage,
+                    occupiedCount: data.data.occupiedCount,
+                    updatedAt: new Date().toISOString(),
+                  };
+                }
+                return storage;
+              });
+              lastDataRef.current = updated; // Сохраняем обновленные данные
+              return updated;
+            });
           } else if (data.type === 'storage-status') {
             console.log('[Storage WebSocket] Обновление статуса:', data.data);
             
-            setStorages(prev => prev.map(storage => {
-              if (storage.id === String(data.data.systemId) || 
-                  storage.name === data.data.systemName) {
-                return {
-                  ...storage,
-                  status: data.data.status,
-                  updatedAt: new Date().toISOString(),
-                };
-              }
-              return storage;
-            }));
+            setStorages(prev => {
+              const updated = prev.map(storage => {
+                if (storage.id === String(data.data.systemId) || 
+                    storage.name === data.data.systemName) {
+                  return {
+                    ...storage,
+                    status: data.data.status,
+                    updatedAt: new Date().toISOString(),
+                  };
+                }
+                return storage;
+              });
+              lastDataRef.current = updated; // Сохраняем обновленные данные
+              return updated;
+            });
           } else if (data.type === 'connection') {
             console.log('[Storage WebSocket] Сообщение подключения:', data.message);
           } else if (data.type === 'pong') {

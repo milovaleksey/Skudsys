@@ -127,7 +127,11 @@ function broadcastStorageUpdate(event, data) {
     }
   });
 
-  logger.debug(`Broadcasted storage update (${event}) to ${successCount} clients (${failCount} failed)`);
+  if (event === 'storage_config') {
+    logger.info(`✅ Broadcasted storage_config (${data.storages?.length || 0} systems) to ${successCount} clients (${failCount} failed)`);
+  } else {
+    logger.debug(`Broadcasted storage update (${event}) to ${successCount} clients (${failCount} failed)`);
+  }
 }
 
 /**
