@@ -37,14 +37,37 @@ export function DonutChartCard({ title, data }: DonutChartCardProps) {
     );
   }
 
-  // Подготавливаем данные для диаграммы
-  const chartData = data.map(item => ({
-    name: item.country,
-    value: item.students_count
-  }));
+  // Отладка: выводим исходные данные
+  console.log('[DonutChartCard] Исходные данные:', data);
+  console.log('[DonutChartCard] Количество записей:', data.length);
+
+  // Подготавливаем данные для диаграммы (БЕЗ фильтрации!)
+  const chartData = data
+    .map(item => {
+      // Заменяем null или пустую строну на "Без гражданства"
+      let countryName = item.country;
+      if (!countryName || countryName.trim() === '') {
+        countryName = 'Без гражданства';
+        console.log('[DonutChartCard] Заменяем null/пустую строку на "Без гражданства"');
+      }
+      
+      return {
+        name: countryName,
+        value: Number(item.students_count) || 0 // Приводим к числу, 0 если NaN
+      };
+    })
+    .filter(item => item.value > 0); // Фильтруем только записи с нулевым количеством
+
+  console.log('[DonutChartCard] Обработанные данные:', chartData);
+  console.log('[DonutChartCard] Количество после обработки:', chartData.length);
 
   // Вычисляем общее количество
-  const total = chartData.reduce((sum, item) => sum + item.value, 0);
+  const total = chartData.reduce((sum, item) => {
+    const value = Number(item.value);
+    return sum + value;
+  }, 0);
+
+  console.log('[DonutChartCard] Итоговая сумма:', total);
 
   // Кастомная метка для сегментов
   const renderCustomLabel = (entry: any) => {

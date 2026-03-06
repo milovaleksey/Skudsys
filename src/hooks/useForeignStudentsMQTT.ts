@@ -85,8 +85,26 @@ export function useForeignStudentsMQTT() {
             // Статистика по странам для диаграммы
             else if (data.topic === 'Skud/foreign-students/stats') {
               if (Array.isArray(data.payload)) {
+                console.log('[Foreign Students MQTT] Получены данные стран:', data.payload);
+                console.log('[Foreign Students MQTT] Количество записей:', data.payload.length);
+                
+                // Подсчитываем общую сумму для отладки
+                const totalFromData = data.payload.reduce((sum: number, item: any) => {
+                  const count = Number(item.students_count) || 0;
+                  return sum + count;
+                }, 0);
+                console.log('[Foreign Students MQTT] Общая сумма студентов из данных:', totalFromData);
+                
+                // Проверяем наличие записей с null или пустыми значениями
+                const nullRecords = data.payload.filter((item: any) => 
+                  !item.country || item.country.trim() === ''
+                );
+                if (nullRecords.length > 0) {
+                  console.log('[Foreign Students MQTT] Записи с null/пустой страной (будут заменены на "Без гражданства"):', nullRecords);
+                }
+                
                 setCountryStats(data.payload);
-                console.log('[Foreign Students MQTT] Country stats loaded:', data.payload.length, 'countries');
+                console.log('[Foreign Students MQTT] Country stats loaded:', data.payload.length, 'записей');
               }
             }
             
