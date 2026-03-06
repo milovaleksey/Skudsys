@@ -16,8 +16,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/datepicker-custom.css';
 import * as XLSX from 'xlsx';
 import { Card } from './ui/card';
-import { DynamicStatCard } from './DynamicStatCard';
-import { ChartStatCard } from './ChartStatCard';
+import { SimpleStatCard } from './SimpleStatCard';
+import { DonutChartCard } from './DonutChartCard';
 import { useForeignStudentsMQTT } from '../hooks/useForeignStudentsMQTT';
 import { toast } from 'sonner';
 
@@ -62,7 +62,7 @@ interface MissingResult {
 }
 
 export function ForeignStudentsReport() {
-  const { statCards, cardValues, countryStats, countries, isConnected } = useForeignStudentsMQTT();
+  const { statCards, cardValues, countryStats, isConnected } = useForeignStudentsMQTT();
   
   // Установка сегодняшней даты по умолчанию
   const today = new Date();
@@ -250,22 +250,23 @@ export function ForeignStudentsReport() {
       {/* Dynamic Stat Cards */}
       {statCards.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {statCards.map(card => (
-            <DynamicStatCard 
-              key={card.id} 
-              card={card} 
-              value={cardValues[card.id]} 
+          {statCards.map((card, index) => (
+            <SimpleStatCard 
+              key={index} 
+              title={card.title}
+              value={cardValues[card.valueTopic] || '—'}
+              icon={card.icon}
+              unit={card.unit}
             />
           ))}
         </div>
       )}
 
       {/* Chart Card - Распределение по странам */}
-      {chartData.length > 0 && (
-        <ChartStatCard 
-          label="Распределение иностранных студентов по странам"
-          description="Топ-7 стран по количеству студентов"
-          data={chartData}
+      {countryStats.length > 0 && (
+        <DonutChartCard 
+          title="Распределение иностранных студентов по странам"
+          data={countryStats.filter(item => item.country !== 'РОССИЯ').slice(0, 10)}
         />
       )}
 
@@ -523,11 +524,11 @@ export function ForeignStudentsReport() {
                   style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
                 >
                   <option value="all">Все страны (кроме России)</option>
-                  {countries
-                    .filter(c => c.name !== 'РОССИЯ')
+                  {countryStats
+                    .filter(c => c.country !== 'РОССИЯ')
                     .map(country => (
-                      <option key={country.code} value={country.code}>
-                        {country.name}
+                      <option key={country.country} value={country.country}>
+                        {country.country}
                       </option>
                     ))}
                 </select>

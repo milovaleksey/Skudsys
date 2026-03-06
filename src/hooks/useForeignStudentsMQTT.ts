@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
-import { StatCard } from '../lib/mqtt';
+
+export interface SimpleStatCardConfig {
+  title: string;
+  valueTopic: string;
+  icon?: string;
+  unit?: string;
+}
 
 export interface CountryStats {
   country: string;
   students_count: number;
 }
 
-export interface Country {
-  code: string;
-  name: string;
-}
-
 export function useForeignStudentsMQTT() {
-  const [statCards, setStatCards] = useState<StatCard[]>([]);
+  const [statCards, setStatCards] = useState<SimpleStatCardConfig[]>([]);
   const [cardValues, setCardValues] = useState<Record<string, string>>({});
   const [countryStats, setCountryStats] = useState<CountryStats[]>([]);
-  const [countries, setCountries] = useState<Country[]>([]);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,6 +33,7 @@ export function useForeignStudentsMQTT() {
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const wsUrl = `${protocol}//${window.location.host}/ws`;
         
+        console.log('[Foreign Students MQTT] Подключение к:', wsUrl);
         ws = new WebSocket(wsUrl);
 
         ws.onopen = () => {
@@ -45,8 +46,7 @@ export function useForeignStudentsMQTT() {
             action: 'subscribe',
             topics: [
               'Skud/foreign-students/config',
-              'Skud/foreign-students/stats',
-              'Skud/foreign-students/countries'
+              'Skud/foreign-students/stats'
             ]
           }));
         };
@@ -55,11 +55,28 @@ export function useForeignStudentsMQTT() {
           try {
             const data = JSON.parse(event.data);
             
+            // Игнорируем heartbeat
+            if (data.type === 'heartbeat') {
+              return;
+            }
+
+            console.log('[Foreign Students MQTT] Получено:', data);
+            
             // Конфигурация карточек статистики
             if (data.topic === 'Skud/foreign-students/config') {
               if (Array.isArray(data.payload)) {
                 setStatCards(data.payload);
                 console.log('[Foreign Students MQTT] Config loaded:', data.payload.length, 'cards');
+                
+                // Подписываемся на топики данных
+                data.payload.forEach((card: SimpleStatCardConfig) => {
+                  if (card.valueTopic) {
+                    ws?.send(JSON.stringify({
+                      action: 'subscribe',
+                      topics: [card.valueTopic]
+                    }));
+                  }
+                });
               }
             }
             
@@ -71,21 +88,14 @@ export function useForeignStudentsMQTT() {
               }
             }
             
-            // Справочник стран
-            else if (data.topic === 'Skud/foreign-students/countries') {
-              if (Array.isArray(data.payload)) {
-                setCountries(data.payload);
-                console.log('[Foreign Students MQTT] Countries loaded:', data.payload.length, 'countries');
-              }
-            }
-            
             // Динамические значения карточек
             else if (data.topic && data.topic.startsWith('Skud/foreign-students/data/')) {
-              const cardId = data.topic.replace('Skud/foreign-students/data/', '');
+              const cardId = data.topic;
               setCardValues(prev => ({
                 ...prev,
                 [cardId]: data.payload
               }));
+              console.log('[Foreign Students MQTT] Card value updated:', cardId, '=', data.payload);
             }
           } catch (err) {
             console.error('[Foreign Students MQTT] Parse error:', err);
@@ -145,7 +155,6 @@ export function useForeignStudentsMQTT() {
     statCards,
     cardValues,
     countryStats,
-    countries,
     isConnected,
     error,
     reconnect
