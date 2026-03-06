@@ -72,11 +72,10 @@ export function DynamicStatCard({ card, value }: DynamicStatCardProps) {
           )}
         </div>
 
-        {/* Live indicator */}
+        {/* Live indicator - значок галочки */}
         {value !== undefined && (
           <div className="flex items-center gap-1 mt-3">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-xs text-gray-500">Live</span>
+            <CheckCircle className="w-4 h-4 text-green-600" />
           </div>
         )}
       </div>
