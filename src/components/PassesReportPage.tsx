@@ -211,7 +211,7 @@ export function PassesReportPage() {
           </label>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* ФИО or UPN Input */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -228,12 +228,12 @@ export function PassesReportPage() {
             />
           </div>
 
-          {/* Date From */}
+          {/* Date From + Time From Group */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Дата от
             </label>
-            <div className="relative">
+            <div className="grid grid-cols-2 gap-2">
               <DatePicker
                 selected={filters.dateFrom}
                 onChange={(date) => setFilters({ ...filters, dateFrom: date })}
@@ -242,29 +242,22 @@ export function PassesReportPage() {
                 locale="ru"
                 dateFormat="dd.MM.yyyy"
               />
+              <input
+                type="time"
+                value={filters.timeFrom}
+                onChange={(e) => setFilters({ ...filters, timeFrom: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
+                style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
+              />
             </div>
           </div>
 
-          {/* Time From */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Время от
-            </label>
-            <input
-              type="time"
-              value={filters.timeFrom}
-              onChange={(e) => setFilters({ ...filters, timeFrom: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
-              style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
-            />
-          </div>
-
-          {/* Date To */}
+          {/* Date To + Time To Group */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Дата до
             </label>
-            <div className="relative">
+            <div className="grid grid-cols-2 gap-2">
               <DatePicker
                 selected={filters.dateTo}
                 onChange={(date) => setFilters({ ...filters, dateTo: date })}
@@ -273,21 +266,14 @@ export function PassesReportPage() {
                 locale="ru"
                 dateFormat="dd.MM.yyyy"
               />
+              <input
+                type="time"
+                value={filters.timeTo}
+                onChange={(e) => setFilters({ ...filters, timeTo: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
+                style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
+              />
             </div>
-          </div>
-
-          {/* Time To */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Время до
-            </label>
-            <input
-              type="time"
-              value={filters.timeTo}
-              onChange={(e) => setFilters({ ...filters, timeTo: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
-              style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
-            />
           </div>
         </div>
 
