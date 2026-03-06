@@ -75,8 +75,17 @@ export function EmployeesReportPage() {
 
     try {
       // Форматируем даты с учетом времени для API (YYYY-MM-DD HH:MM:SS)
-      const dateFromStr = filters.dateFrom.toISOString().slice(0, 10);
-      const dateToStr = filters.dateTo.toISOString().slice(0, 10);
+      // Используем локальное время, а не UTC
+      const yearFrom = filters.dateFrom.getFullYear();
+      const monthFrom = String(filters.dateFrom.getMonth() + 1).padStart(2, '0');
+      const dayFrom = String(filters.dateFrom.getDate()).padStart(2, '0');
+      const dateFromStr = `${yearFrom}-${monthFrom}-${dayFrom}`;
+      
+      const yearTo = filters.dateTo.getFullYear();
+      const monthTo = String(filters.dateTo.getMonth() + 1).padStart(2, '0');
+      const dayTo = String(filters.dateTo.getDate()).padStart(2, '0');
+      const dateToStr = `${yearTo}-${monthTo}-${dayTo}`;
+      
       const dateFrom = `${dateFromStr} ${filters.timeFrom}:00`;
       const dateTo = `${dateToStr} ${filters.timeTo}:59`;
 
