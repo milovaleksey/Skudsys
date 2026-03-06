@@ -165,7 +165,7 @@ export function MainPage() {
     },
     {
       id: 'users-settings',
-      label: 'Управление пользовате��ями',
+      label: 'Управление пользовател��ми',
       icon: Settings,
       permission: 'users-settings',
     },
