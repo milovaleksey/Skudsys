@@ -6,22 +6,32 @@ import {
   Download,
   CheckCircle,
   XCircle,
-  Globe
+  Globe,
+  FileSpreadsheet
 } from 'lucide-react';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
+import DatePicker from 'react-datepicker';
+import { registerLocale } from 'react-datepicker';
+import { ru } from 'date-fns/locale/ru';
+import 'react-datepicker/dist/react-datepicker.css';
+import '../styles/datepicker-custom.css';
+import * as XLSX from 'xlsx';
 import { Card } from './ui/card';
 import { DynamicStatCard } from './DynamicStatCard';
 import { ChartStatCard } from './ChartStatCard';
 import { useForeignStudentsMQTT } from '../hooks/useForeignStudentsMQTT';
+import { toast } from 'sonner';
+
+registerLocale('ru', ru);
 
 type ReportTemplate = 'search' | 'missing';
 
 interface SearchFormData {
-  searchType: 'fio' | 'upn' | 'email';
+  searchType: 'fio' | 'upn';
   searchValue: string;
-  dateFrom: string;
-  dateTo: string;
+  dateFrom: Date | null;
+  dateTo: Date | null;
+  timeFrom: string;
+  timeTo: string;
 }
 
 interface MissingFormData {
@@ -54,12 +64,19 @@ interface MissingResult {
 export function ForeignStudentsReport() {
   const { statCards, cardValues, countryStats, countries, isConnected } = useForeignStudentsMQTT();
   
+  // Установка сегодняшней даты по умолчанию
+  const today = new Date();
+  const todayStart = new Date(today.setHours(0, 0, 0, 0));
+  const todayEnd = new Date(today.setHours(23, 59, 59, 999));
+  
   const [activeTemplate, setActiveTemplate] = useState<ReportTemplate>('search');
   const [searchForm, setSearchForm] = useState<SearchFormData>({
     searchType: 'fio',
     searchValue: '',
-    dateFrom: '',
-    dateTo: ''
+    dateFrom: todayStart,
+    dateTo: todayEnd,
+    timeFrom: '00:00',
+    timeTo: '23:59'
   });
   const [missingForm, setMissingForm] = useState<MissingFormData>({
     country: 'all',
@@ -69,28 +86,59 @@ export function ForeignStudentsReport() {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [missingResults, setMissingResults] = useState<MissingResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  // Шаблон 1: Поиск по ФИО/Логину/Email с датами
+  // Автоматическое определение типа поиска при вводе
+  const handleInputChange = (value: string) => {
+    setSearchForm(prev => ({ ...prev, searchValue: value }));
+    
+    // Если поле пустое, ничего не меняем
+    if (!value.trim()) {
+      return;
+    }
+    
+    // Если содержит @, это скорее всего UPN (email)
+    if (value.includes('@')) {
+      setSearchForm(prev => ({ ...prev, searchType: 'upn' }));
+    } else {
+      // Если нет @, это скорее всего ФИО
+      setSearchForm(prev => ({ ...prev, searchType: 'fio' }));
+    }
+  };
+
+  // Шаблон 1: Поиск по ФИО/Логину с датами
   const handleSearch = async () => {
     if (!searchForm.searchValue.trim()) {
-      setError('Введите значение для поиска');
+      toast.error('Введите ФИО или логин для поиска');
       return;
     }
     if (!searchForm.dateFrom || !searchForm.dateTo) {
-      setError('Выберите период');
+      toast.error('Необходимо указать диапазон дат');
       return;
     }
 
     setIsLoading(true);
-    setError(null);
+    setSearchResults([]);
     
     try {
+      // Форматируем даты с учетом времени для API
+      const yearFrom = searchForm.dateFrom.getFullYear();
+      const monthFrom = String(searchForm.dateFrom.getMonth() + 1).padStart(2, '0');
+      const dayFrom = String(searchForm.dateFrom.getDate()).padStart(2, '0');
+      const dateFromStr = `${yearFrom}-${monthFrom}-${dayFrom}`;
+      
+      const yearTo = searchForm.dateTo.getFullYear();
+      const monthTo = String(searchForm.dateTo.getMonth() + 1).padStart(2, '0');
+      const dayTo = String(searchForm.dateTo.getDate()).padStart(2, '0');
+      const dateToStr = `${yearTo}-${monthTo}-${dayTo}`;
+      
+      const dateFrom = `${dateFromStr} ${searchForm.timeFrom}:00`;
+      const dateTo = `${dateToStr} ${searchForm.timeTo}:59`;
+
       const params = new URLSearchParams({
         searchType: searchForm.searchType,
         searchValue: searchForm.searchValue,
-        dateFrom: searchForm.dateFrom,
-        dateTo: searchForm.dateTo
+        dateFrom,
+        dateTo
       });
 
       const response = await fetch(`/api/foreign-students/search?${params}`);
@@ -101,18 +149,30 @@ export function ForeignStudentsReport() {
 
       const data = await response.json();
       setSearchResults(data.results || []);
+      
+      if (data.results.length === 0) {
+        toast.info('Проходы не найдены за указанный период');
+      } else {
+        toast.success(`Найдено записей: ${data.results.length}`);
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Произошла ошибка');
+      toast.error(err instanceof Error ? err.message : 'Произошла ошибка');
       setSearchResults([]);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   // Шаблон 2: Отчет о пропавших студентах (>3 дней)
   const handleMissingReport = async () => {
     setIsLoading(true);
-    setError(null);
+    setMissingResults([]);
     
     try {
       const params = new URLSearchParams({
@@ -128,34 +188,45 @@ export function ForeignStudentsReport() {
 
       const data = await response.json();
       setMissingResults(data.results || []);
+      
+      if (data.results.length === 0) {
+        toast.info('Пропавшие студенты не найдены');
+      } else {
+        toast.success(`Найдено записей: ${data.results.length}`);
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Произошла ошибка');
+      toast.error(err instanceof Error ? err.message : 'Произошла ошибка');
       setMissingResults([]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Экспорт в CSV
-  const exportToCSV = (data: any[], filename: string) => {
-    if (data.length === 0) return;
-    
-    const headers = Object.keys(data[0]);
-    const csv = [
-      headers.join(','),
-      ...data.map(row => headers.map(h => row[h]).join(','))
-    ].join('\n');
-    
-    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    link.click();
+  // Экспорт в Excel (как в PassesReportPage)
+  const handleExportExcel = (data: any[], filename: string) => {
+    if (data.length === 0) {
+      toast.warning('Нет данных для экспорта');
+      return;
+    }
+
+    try {
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Отчет');
+      
+      const dateStr = new Date().toISOString().slice(0, 10);
+      XLSX.writeFile(workbook, `${filename}_${dateStr}.xlsx`);
+      
+      toast.success('Отчет успешно выгружен в Excel');
+    } catch (error) {
+      console.error('Export error:', error);
+      toast.error('Ошибка при экспорте в Excel');
+    }
   };
 
   // Подготовка данных для диаграммы (топ 7 стран)
   const chartData = countryStats
-    .filter(item => item.country !== 'РОССИЯ') // Исключаем Россию
+    .filter(item => item.country !== 'РОССИЯ')
     .sort((a, b) => b.students_count - a.students_count)
     .slice(0, 7)
     .map(item => ({
@@ -165,12 +236,9 @@ export function ForeignStudentsReport() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">Отчет по иностранным студентам</h2>
-          <p className="text-gray-600 mt-2">Статистика и отчеты по иностранным студентам</p>
-        </div>
+        <h2 className="text-2xl font-bold text-gray-900">Отчет по иностранным студентам</h2>
         {/* Connection Status */}
         {isConnected ? (
           <CheckCircle className="w-5 h-5 text-green-600" />
@@ -201,9 +269,11 @@ export function ForeignStudentsReport() {
         />
       )}
 
-      {/* Report Templates */}
-      <Card className="p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Шаблоны отчетов</h3>
+      {/* Report Templates Selector */}
+      <div className="bg-white rounded-xl shadow-md p-6">
+        <h3 className="text-lg font-semibold mb-4" style={{ color: '#00aeef' }}>
+          Шаблоны отчетов
+        </h3>
         
         {/* Template Tabs */}
         <div className="flex gap-2 mb-6 border-b border-gray-200">
@@ -211,9 +281,10 @@ export function ForeignStudentsReport() {
             onClick={() => setActiveTemplate('search')}
             className={`px-4 py-2 font-medium transition-colors border-b-2 ${
               activeTemplate === 'search'
-                ? 'border-blue-500 text-blue-600'
+                ? 'text-gray-900'
                 : 'border-transparent text-gray-600 hover:text-gray-900'
             }`}
+            style={activeTemplate === 'search' ? { borderColor: '#00aeef', color: '#00aeef' } : {}}
           >
             <div className="flex items-center gap-2">
               <Search className="w-4 h-4" />
@@ -224,9 +295,10 @@ export function ForeignStudentsReport() {
             onClick={() => setActiveTemplate('missing')}
             className={`px-4 py-2 font-medium transition-colors border-b-2 ${
               activeTemplate === 'missing'
-                ? 'border-blue-500 text-blue-600'
+                ? 'text-gray-900'
                 : 'border-transparent text-gray-600 hover:text-gray-900'
             }`}
+            style={activeTemplate === 'missing' ? { borderColor: '#00aeef', color: '#00aeef' } : {}}
           >
             <div className="flex items-center gap-2">
               <UserX className="w-4 h-4" />
@@ -238,127 +310,198 @@ export function ForeignStudentsReport() {
         {/* Шаблон 1: Поиск проходов */}
         {activeTemplate === 'search' && (
           <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Тип поиска */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Тип поиска
-                </label>
-                <select
-                  value={searchForm.searchType}
-                  onChange={(e) => setSearchForm(prev => ({ ...prev, searchType: e.target.value as any }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="fio">По ФИО</option>
-                  <option value="upn">По Логину или Почте</option>
-                  <option value="email">По Email</option>
-                </select>
-              </div>
+            {/* Search Type Selector */}
+            <div className="flex gap-4 mb-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="searchType"
+                  value="fio"
+                  checked={searchForm.searchType === 'fio'}
+                  onChange={() => setSearchForm(prev => ({ ...prev, searchType: 'fio' }))}
+                  className="w-4 h-4 accent-[#00aeef]"
+                />
+                <span className="text-sm text-gray-700">По ФИО</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="searchType"
+                  value="upn"
+                  checked={searchForm.searchType === 'upn'}
+                  onChange={() => setSearchForm(prev => ({ ...prev, searchType: 'upn' }))}
+                  className="w-4 h-4 accent-[#00aeef]"
+                />
+                <span className="text-sm text-gray-700">По Логину или Почте</span>
+              </label>
+            </div>
 
-              {/* Значение поиска */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* ФИО or UPN Input */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Значение
+                  {searchForm.searchType === 'fio' ? 'ФИО' : 'Логин или Почта'}
                 </label>
-                <Input
+                <input
+                  type="text"
                   value={searchForm.searchValue}
-                  onChange={(e) => setSearchForm(prev => ({ ...prev, searchValue: e.target.value }))}
-                  placeholder={
-                    searchForm.searchType === 'fio' ? 'Иванов Иван Иванович' :
-                    searchForm.searchType === 'upn' ? 'i.i.ivanov@utmn.ru' :
-                    'ivanov@utmn.ru'
-                  }
+                  onChange={(e) => handleInputChange(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
+                  style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
+                  placeholder={searchForm.searchType === 'fio' ? 'Иванов Иван ��ванович' : 'user@utmn.ru'}
                 />
               </div>
 
-              {/* Дата от */}
+              {/* Date From + Time From Group */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  <Calendar className="w-4 h-4 inline mr-1" />
                   Дата от
                 </label>
-                <Input
-                  type="date"
-                  value={searchForm.dateFrom}
-                  onChange={(e) => setSearchForm(prev => ({ ...prev, dateFrom: e.target.value }))}
-                />
+                <div className="grid grid-cols-2 gap-2">
+                  <DatePicker
+                    selected={searchForm.dateFrom}
+                    onChange={(date) => setSearchForm({ ...searchForm, dateFrom: date })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
+                    placeholderText="Выберите дату"
+                    locale="ru"
+                    dateFormat="dd.MM.yyyy"
+                  />
+                  <input
+                    type="time"
+                    value={searchForm.timeFrom}
+                    onChange={(e) => setSearchForm({ ...searchForm, timeFrom: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
+                    style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
+                  />
+                </div>
               </div>
 
-              {/* Дата до */}
+              {/* Date To + Time To Group */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  <Calendar className="w-4 h-4 inline mr-1" />
                   Дата до
                 </label>
-                <Input
-                  type="date"
-                  value={searchForm.dateTo}
-                  onChange={(e) => setSearchForm(prev => ({ ...prev, dateTo: e.target.value }))}
-                />
+                <div className="grid grid-cols-2 gap-2">
+                  <DatePicker
+                    selected={searchForm.dateTo}
+                    onChange={(date) => setSearchForm({ ...searchForm, dateTo: date })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
+                    placeholderText="Выберите дату"
+                    locale="ru"
+                    dateFormat="dd.MM.yyyy"
+                  />
+                  <input
+                    type="time"
+                    value={searchForm.timeTo}
+                    onChange={(e) => setSearchForm({ ...searchForm, timeTo: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
+                    style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
+                  />
+                </div>
               </div>
             </div>
 
             {/* Search Button */}
-            <div className="flex gap-2">
-              <Button
+            <div className="mt-4 flex items-center gap-3">
+              <button
                 onClick={handleSearch}
                 disabled={isLoading}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="flex items-center gap-2 px-6 py-2 text-white rounded-lg transition-colors font-medium disabled:opacity-50"
+                style={{ backgroundColor: '#00aeef' }}
+                onMouseEnter={(e) => !isLoading && (e.currentTarget.style.backgroundColor = '#0098d1')}
+                onMouseLeave={(e) => !isLoading && (e.currentTarget.style.backgroundColor = '#00aeef')}
               >
-                <Search className="w-4 h-4 mr-2" />
-                {isLoading ? 'Поиск...' : 'Найти'}
-              </Button>
+                <Search size={20} />
+                <span>{isLoading ? 'Поиск...' : 'Найти'}</span>
+              </button>
+              
               {searchResults.length > 0 && (
-                <Button
-                  onClick={() => exportToCSV(searchResults, 'foreign-students-search.csv')}
-                  variant="outline"
+                <button
+                  onClick={() => handleExportExcel(searchResults.map(r => ({
+                    'ФИО': r.fio,
+                    'Логин/Почта': r.upn,
+                    'Страна': r.country,
+                    'Дата/Время': r.lastSeen,
+                    'Место': r.location,
+                    'Направление': r.direction
+                  })), 'foreign_students_search')}
+                  className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700"
                 >
-                  <Download className="w-4 h-4 mr-2" />
-                  Экспорт CSV
-                </Button>
+                  <FileSpreadsheet size={20} style={{ color: '#00aeef' }} />
+                  <span>Выгрузить в Excel</span>
+                </button>
               )}
             </div>
 
+            {/* Total Records */}
+            {searchResults.length > 0 && (
+              <div className="bg-gray-50 rounded-lg p-4 mt-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-700 font-medium">Всего записей:</span>
+                  <span className="text-2xl font-bold" style={{ color: '#00aeef' }}>
+                    {searchResults.length}
+                  </span>
+                </div>
+              </div>
+            )}
+
             {/* Results Table */}
             {searchResults.length > 0 && (
-              <div className="mt-6 overflow-x-auto border border-gray-200 rounded-lg">
+              <div className="mt-4 overflow-x-auto border border-gray-200 rounded-lg">
                 <table className="w-full">
-                  <thead className="bg-gray-50">
+                  <thead style={{ backgroundColor: '#00aeef' }}>
                     <tr>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">ФИО</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Логин/Почта</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Страна</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Дата/Время</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Место</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Направление</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">ФИО</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Логин/Почта</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Страна</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Дата/Время</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Место</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Направление</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {searchResults.map((result) => (
-                      <tr key={result.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 text-sm text-gray-900">{result.fio}</td>
-                        <td className="px-4 py-3 text-sm text-gray-600">{result.upn}</td>
-                        <td className="px-4 py-3 text-sm">
-                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-medium">
+                    {searchResults.map((result, index) => (
+                      <tr 
+                        key={result.id}
+                        className={`hover:bg-gray-50 transition-colors ${
+                          index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                        }`}
+                      >
+                        <td className="px-6 py-4 text-sm text-gray-900">{result.fio}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600">{result.upn}</td>
+                        <td className="px-6 py-4 text-sm">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                             <Globe className="w-3 h-3" />
                             {result.country}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-900">{result.lastSeen}</td>
-                        <td className="px-4 py-3 text-sm text-gray-600">{result.location}</td>
-                        <td className="px-4 py-3 text-sm">
-                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${
-                            result.direction === 'Вход' 
-                              ? 'bg-green-100 text-green-800' 
-                              : 'bg-orange-100 text-orange-800'
-                          }`}>
-                            {result.direction}
-                          </span>
+                        <td className="px-6 py-4 text-sm text-gray-900">{result.lastSeen}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600">{result.location}</td>
+                        <td className="px-6 py-4 text-sm">
+                          {result.direction === 'Вход' ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              Вход
+                            </span>
+                          ) : result.direction === 'Выход' ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                              Выход
+                            </span>
+                          ) : (
+                            <span className="text-gray-400">—</span>
+                          )}
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
+              </div>
+            )}
+
+            {/* No Results Message */}
+            {!isLoading && searchResults.length === 0 && (
+              <div className="mt-4 p-8 text-center text-gray-500 bg-gray-50 rounded-lg">
+                Нет данных. Выполните поиск.
               </div>
             )}
           </div>
@@ -371,13 +514,13 @@ export function ForeignStudentsReport() {
               {/* Выбор страны */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  <Globe className="w-4 h-4 inline mr-1" />
                   Страна
                 </label>
                 <select
                   value={missingForm.country}
                   onChange={(e) => setMissingForm(prev => ({ ...prev, country: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
+                  style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
                 >
                   <option value="all">Все страны (кроме России)</option>
                   {countries
@@ -395,65 +538,95 @@ export function ForeignStudentsReport() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Отсутствие более (дней)
                 </label>
-                <Input
+                <input
                   type="number"
                   min="1"
                   value={missingForm.daysThreshold}
                   onChange={(e) => setMissingForm(prev => ({ ...prev, daysThreshold: parseInt(e.target.value) || 3 }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
+                  style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
                 />
               </div>
             </div>
 
             {/* Search Button */}
-            <div className="flex gap-2">
-              <Button
+            <div className="mt-4 flex items-center gap-3">
+              <button
                 onClick={handleMissingReport}
                 disabled={isLoading}
-                className="bg-orange-600 hover:bg-orange-700"
+                className="flex items-center gap-2 px-6 py-2 text-white rounded-lg transition-colors font-medium disabled:opacity-50"
+                style={{ backgroundColor: '#00aeef' }}
+                onMouseEnter={(e) => !isLoading && (e.currentTarget.style.backgroundColor = '#0098d1')}
+                onMouseLeave={(e) => !isLoading && (e.currentTarget.style.backgroundColor = '#00aeef')}
               >
-                <UserX className="w-4 h-4 mr-2" />
-                {isLoading ? 'Поиск...' : 'Сформировать отчет'}
-              </Button>
+                <UserX size={20} />
+                <span>{isLoading ? 'Поиск...' : 'Сформировать отчет'}</span>
+              </button>
+              
               {missingResults.length > 0 && (
-                <Button
-                  onClick={() => exportToCSV(missingResults, 'foreign-students-missing.csv')}
-                  variant="outline"
+                <button
+                  onClick={() => handleExportExcel(missingResults.map(r => ({
+                    'ФИО': r.fio,
+                    'Логин/Почта': r.upn,
+                    'Страна': r.country,
+                    'Последний визит': r.lastSeen,
+                    'Место': r.lastLocation,
+                    'Дней отсутствия': r.daysMissing
+                  })), 'foreign_students_missing')}
+                  className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700"
                 >
-                  <Download className="w-4 h-4 mr-2" />
-                  Экспорт CSV
-                </Button>
+                  <FileSpreadsheet size={20} style={{ color: '#00aeef' }} />
+                  <span>Выгрузить в Excel</span>
+                </button>
               )}
             </div>
 
+            {/* Total Records */}
+            {missingResults.length > 0 && (
+              <div className="bg-gray-50 rounded-lg p-4 mt-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-700 font-medium">Всего записей:</span>
+                  <span className="text-2xl font-bold" style={{ color: '#00aeef' }}>
+                    {missingResults.length}
+                  </span>
+                </div>
+              </div>
+            )}
+
             {/* Results Table */}
             {missingResults.length > 0 && (
-              <div className="mt-6 overflow-x-auto border border-gray-200 rounded-lg">
+              <div className="mt-4 overflow-x-auto border border-gray-200 rounded-lg">
                 <table className="w-full">
-                  <thead className="bg-gray-50">
+                  <thead style={{ backgroundColor: '#00aeef' }}>
                     <tr>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">ФИО</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Логин/Почта</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Страна</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Последний визит</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Место</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Дней отсутствия</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">ФИО</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Логин/Почта</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Страна</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Последний визит</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Место</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Дней отсутствия</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {missingResults.map((result) => (
-                      <tr key={result.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 text-sm text-gray-900">{result.fio}</td>
-                        <td className="px-4 py-3 text-sm text-gray-600">{result.upn}</td>
-                        <td className="px-4 py-3 text-sm">
-                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-medium">
+                    {missingResults.map((result, index) => (
+                      <tr 
+                        key={result.id}
+                        className={`hover:bg-gray-50 transition-colors ${
+                          index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                        }`}
+                      >
+                        <td className="px-6 py-4 text-sm text-gray-900">{result.fio}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600">{result.upn}</td>
+                        <td className="px-6 py-4 text-sm">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                             <Globe className="w-3 h-3" />
                             {result.country}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-900">{result.lastSeen}</td>
-                        <td className="px-4 py-3 text-sm text-gray-600">{result.lastLocation}</td>
-                        <td className="px-4 py-3 text-sm">
-                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${
+                        <td className="px-6 py-4 text-sm text-gray-900">{result.lastSeen}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600">{result.lastLocation}</td>
+                        <td className="px-6 py-4 text-sm">
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                             result.daysMissing >= 7
                               ? 'bg-red-100 text-red-800'
                               : 'bg-yellow-100 text-yellow-800'
@@ -467,32 +640,16 @@ export function ForeignStudentsReport() {
                 </table>
               </div>
             )}
-          </div>
-        )}
 
-        {/* Error Message */}
-        {error && (
-          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm text-red-700">{error}</p>
-          </div>
-        )}
-
-        {/* No Results Message */}
-        {!isLoading && !error && (
-          <>
-            {activeTemplate === 'search' && searchResults.length === 0 && searchForm.searchValue && (
-              <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
-                <p className="text-sm text-gray-600">Результаты не найдены</p>
+            {/* No Results Message */}
+            {!isLoading && missingResults.length === 0 && (
+              <div className="mt-4 p-8 text-center text-gray-500 bg-gray-50 rounded-lg">
+                Нет данных. Выполните поиск.
               </div>
             )}
-            {activeTemplate === 'missing' && missingResults.length === 0 && (
-              <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
-                <p className="text-sm text-gray-600">Пропавшие студенты не найдены</p>
-              </div>
-            )}
-          </>
+          </div>
         )}
-      </Card>
+      </div>
     </div>
   );
 }

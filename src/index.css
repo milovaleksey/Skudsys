@@ -73,11 +73,8 @@
     --color-red-700: oklch(.505 .213 27.518);
     --color-red-800: oklch(.444 .177 26.899);
     --color-red-900: oklch(.396 .141 25.723);
-    --color-orange-100: oklch(.954 .038 75.164);
     --color-orange-500: oklch(.705 .213 47.604);
-    --color-orange-600: oklch(.646 .222 41.116);
     --color-orange-700: oklch(.553 .195 38.402);
-    --color-orange-800: oklch(.47 .157 37.304);
     --color-yellow-50: oklch(.987 .026 102.212);
     --color-yellow-100: oklch(.973 .071 103.193);
     --color-yellow-200: oklch(.945 .129 101.54);
@@ -1334,10 +1331,6 @@
     border-color: var(--color-blue-300);
   }
 
-  .border-blue-500 {
-    border-color: var(--color-blue-500);
-  }
-
   .border-blue-600 {
     border-color: var(--color-blue-600);
   }
@@ -1496,16 +1489,8 @@
     background-color: var(--input-background);
   }
 
-  .bg-orange-100 {
-    background-color: var(--color-orange-100);
-  }
-
   .bg-orange-500 {
     background-color: var(--color-orange-500);
-  }
-
-  .bg-orange-600 {
-    background-color: var(--color-orange-600);
   }
 
   .bg-orange-700\/20 {
@@ -1934,10 +1919,6 @@
     color: var(--muted-foreground);
   }
 
-  .text-orange-800 {
-    color: var(--color-orange-800);
-  }
-
   .text-primary {
     color: var(--primary);
   }
@@ -2217,12 +2198,6 @@
   }
 
   @media (hover: hover) {
-    .hover\:bg-blue-700:hover {
-      background-color: var(--color-blue-700);
-    }
-  }
-
-  @media (hover: hover) {
     .hover\:bg-destructive\/90:hover {
       background-color: var(--destructive);
     }
@@ -2255,12 +2230,6 @@
   @media (hover: hover) {
     .hover\:bg-green-700:hover {
       background-color: var(--color-green-700);
-    }
-  }
-
-  @media (hover: hover) {
-    .hover\:bg-orange-700:hover {
-      background-color: var(--color-orange-700);
     }
   }
 
@@ -2360,10 +2329,6 @@
       --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, #0000001a), 0 2px 4px -2px var(--tw-shadow-color, #0000001a);
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
     }
-  }
-
-  .focus\:border-blue-500:focus {
-    border-color: var(--color-blue-500);
   }
 
   .focus\:border-transparent:focus {
