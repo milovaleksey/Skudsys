@@ -1,0 +1,257 @@
+api.ts:14 🌐 Using API URL from env: http://10.101.221.207:3000/v1
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /auth/me with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/auth/me
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /roles with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/roles
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /auth/me with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/auth/me
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /roles with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/roles
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI3OTIyMDIsImV4cCI6MTc3Mjg3ODYwMn0.fh-RIgLzQO9VJpk8r0MfjZcmWqLjgYr10aJF7b4T_Lo
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI3OTIyMDIsImV4cCI6MTc3Mjg3ODYwMn0.fh-RIgLzQO9VJpk8r0MfjZcmWqLjgYr10aJF7b4T_Lo
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+useMQTT.ts:199 WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI3OTIyMDIsImV4cCI6MTc3Mjg3ODYwMn0.fh-RIgLzQO9VJpk8r0MfjZcmWqLjgYr10aJF7b4T_Lo' failed: WebSocket is closed before the connection is established.
+(anonymous) @ useMQTT.ts:199
+(anonymous) @ useMQTT.ts:219
+safelyCallDestroy @ chunk-NUMECXU6.js?v=040b1844:16748
+commitHookEffectListUnmount @ chunk-NUMECXU6.js?v=040b1844:16875
+invokePassiveEffectUnmountInDEV @ chunk-NUMECXU6.js?v=040b1844:18363
+invokeEffectsInDev @ chunk-NUMECXU6.js?v=040b1844:19701
+commitDoubleInvokeEffectsInDEV @ chunk-NUMECXU6.js?v=040b1844:19682
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19503
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=040b1844:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=040b1844:19432
+commitRoot @ chunk-NUMECXU6.js?v=040b1844:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=040b1844:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18718
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI3OTIyMDIsImV4cCI6MTc3Mjg3ODYwMn0.fh-RIgLzQO9VJpk8r0MfjZcmWqLjgYr10aJF7b4T_Lo
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI3OTIyMDIsImV4cCI6MTc3Mjg3ODYwMn0.fh-RIgLzQO9VJpk8r0MfjZcmWqLjgYr10aJF7b4T_Lo
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+installHook.js:1 [WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+overrideMethod @ installHook.js:1
+ws.onerror @ useMQTT.ts:165
+useMQTT.ts:170 [WebSocket] Отключено: 1006 
+useMQTT.ts:177 [WebSocket] Переподключение через 2000ms (попытка 1/5)
+api.ts:127  GET http://10.101.221.207:3000/v1/employees/statistics 404 (Not Found)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:413
+loadStats @ MainPage.tsx:67
+(anonymous) @ MainPage.tsx:82
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=040b1844:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=040b1844:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=040b1844:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=040b1844:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=040b1844:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=040b1844:19432
+commitRoot @ chunk-NUMECXU6.js?v=040b1844:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=040b1844:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18718
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+api.ts:132 📡 Response status: 404
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:111 [WebSocket] ✅ Подключено
+useMQTT.ts:120 [WebSocket] Получено: initial
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:127  GET http://10.101.221.207:3000/v1/employees/statistics 404 (Not Found)
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:413
+loadStats @ MainPage.tsx:67
+(anonymous) @ MainPage.tsx:82
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+invokePassiveEffectMountInDEV @ chunk-NUMECXU6.js?v=040b1844:18324
+invokeEffectsInDev @ chunk-NUMECXU6.js?v=040b1844:19701
+commitDoubleInvokeEffectsInDEV @ chunk-NUMECXU6.js?v=040b1844:19686
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19503
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=040b1844:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=040b1844:19432
+commitRoot @ chunk-NUMECXU6.js?v=040b1844:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=040b1844:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18718
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+api.ts:132 📡 Response status: 404
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+installHook.js:1 Failed to load stats TypeError: Cannot read properties of undefined (reading 'total')
+    at loadStats (MainPage.tsx:72:88)
+overrideMethod @ installHook.js:1
+loadStats @ MainPage.tsx:77
+await in loadStats
+(anonymous) @ MainPage.tsx:82
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=040b1844:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=040b1844:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=040b1844:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=040b1844:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=040b1844:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=040b1844:19432
+commitRoot @ chunk-NUMECXU6.js?v=040b1844:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=040b1844:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18718
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+installHook.js:1 Failed to load stats TypeError: Cannot read properties of undefined (reading 'total')
+    at loadStats (MainPage.tsx:72:88)
+overrideMethod @ installHook.js:1
+loadStats @ MainPage.tsx:77
+await in loadStats
+(anonymous) @ MainPage.tsx:82
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+invokePassiveEffectMountInDEV @ chunk-NUMECXU6.js?v=040b1844:18324
+invokeEffectsInDev @ chunk-NUMECXU6.js?v=040b1844:19701
+commitDoubleInvokeEffectsInDEV @ chunk-NUMECXU6.js?v=040b1844:19686
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19503
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=040b1844:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=040b1844:19432
+commitRoot @ chunk-NUMECXU6.js?v=040b1844:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=040b1844:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18718
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+useForeignStudentsMQTT.ts:38 [Foreign Students MQTT] Подключение к: ws://10.101.221.207:3000/ws
+useForeignStudentsMQTT.ts:159 [Foreign Students MQTT] Компонент размонтируется, закрываем WebSocket
+useForeignStudentsMQTT.ts:161 WebSocket connection to 'ws://10.101.221.207:3000/ws' failed: WebSocket is closed before the connection is established.
+(anonymous) @ useForeignStudentsMQTT.ts:161
+safelyCallDestroy @ chunk-NUMECXU6.js?v=040b1844:16748
+commitHookEffectListUnmount @ chunk-NUMECXU6.js?v=040b1844:16875
+invokePassiveEffectUnmountInDEV @ chunk-NUMECXU6.js?v=040b1844:18363
+invokeEffectsInDev @ chunk-NUMECXU6.js?v=040b1844:19701
+commitDoubleInvokeEffectsInDEV @ chunk-NUMECXU6.js?v=040b1844:19682
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19503
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=040b1844:19416
+commitRoot @ chunk-NUMECXU6.js?v=040b1844:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=040b1844:9119
+(anonymous) @ chunk-NUMECXU6.js?v=040b1844:18627
+useForeignStudentsMQTT.ts:38 [Foreign Students MQTT] Подключение к: ws://10.101.221.207:3000/ws
+installHook.js:1 [Foreign Students MQTT] WebSocket error: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+overrideMethod @ installHook.js:1
+ws.onerror @ useForeignStudentsMQTT.ts:126
+useForeignStudentsMQTT.ts:132 [Foreign Students MQTT] WebSocket closed
+useForeignStudentsMQTT.ts:140 [Foreign Students MQTT] Компонент размонтирован, переподключение отменено
+useForeignStudentsMQTT.ts:42 [Foreign Students MQTT] WebSocket connected
+useForeignStudentsMQTT.ts:65 [Foreign Students MQTT] Получено: {topic: 'Skud/foreign-students/config', payload: Array(2)}
+useForeignStudentsMQTT.ts:71 [Foreign Students MQTT] Config loaded: 2 cards
+useForeignStudentsMQTT.ts:65 [Foreign Students MQTT] Получено: {topic: 'Skud/foreign-students/stats', payload: Array(66)}
+useForeignStudentsMQTT.ts:88 [Foreign Students MQTT] Получены данные стран: (66) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+useForeignStudentsMQTT.ts:89 [Foreign Students MQTT] Количество записей: 66
+useForeignStudentsMQTT.ts:96 [Foreign Students MQTT] Общая сумма студентов из данных: 2360
+useForeignStudentsMQTT.ts:103 [Foreign Students MQTT] Записи с null/пустой страной (будут заменены на "Без гражданства"): [{…}]
+useForeignStudentsMQTT.ts:107 [Foreign Students MQTT] Country stats loaded: 66 записей
+useForeignStudentsMQTT.ts:65 [Foreign Students MQTT] Получено: {topic: 'Skud/foreign-students/data/total', payload: '2360'}
+useForeignStudentsMQTT.ts:118 [Foreign Students MQTT] Card value updated: Skud/foreign-students/data/total = 2360
+useForeignStudentsMQTT.ts:65 [Foreign Students MQTT] Получено: {topic: 'Skud/foreign-students/data/countries', payload: '66'}
+useForeignStudentsMQTT.ts:118 [Foreign Students MQTT] Card value updated: Skud/foreign-students/data/countries = 66
+DonutChartCard.tsx:41 [DonutChartCard] Исходные данные: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+DonutChartCard.tsx:42 [DonutChartCard] Количество записей: 10
+DonutChartCard.tsx:61 [DonutChartCard] Обработанные данные: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+DonutChartCard.tsx:62 [DonutChartCard] Количество после обработки: 10
+DonutChartCard.tsx:70 [DonutChartCard] Итоговая сумма: 2109
+installHook.js:1 [DonutChartCard] Исходные данные: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+installHook.js:1 [DonutChartCard] Количество записей: 10
+installHook.js:1 [DonutChartCard] Обработанные данные: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+installHook.js:1 [DonutChartCard] Количество после обработки: 10
+installHook.js:1 [DonutChartCard] Итоговая сумма: 2109
+useMQTT.ts:84 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:85 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:95 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI3OTIyMDIsImV4cCI6MTc3Mjg3ODYwMn0.fh-RIgLzQO9VJpk8r0MfjZcmWqLjgYr10aJF7b4T_Lo
+useMQTT.ts:105 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI3OTIyMDIsImV4cCI6MTc3Mjg3ODYwMn0.fh-RIgLzQO9VJpk8r0MfjZcmWqLjgYr10aJF7b4T_Lo
+useMQTT.ts:111 [WebSocket] ✅ Подключено
+useMQTT.ts:120 [WebSocket] Получено: initial
+DonutChartCard.tsx:41 [DonutChartCard] Исходные данные: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]0: {country: 'КАЗАХСТАН', students_count: 875}1: {country: 'ТУРКМЕНИЯ', students_count: 784}2: {country: 'ТАДЖИКИСТАН', students_count: 162}3: {country: 'УЗБЕКИСТАН', students_count: 122}4: {country: 'БАНГЛАДЕШ', students_count: 36}5: {country: 'СИРИЙСКАЯ АРАБСКАЯ РЕСПУБЛИКА', students_count: 32}6: {country: 'ТОГО', students_count: 27}7: {country: 'ВЬЕТНАМ', students_count: 26}8: {country: 'ЕГИПЕТ', students_count: 24}9: {country: 'АЗЕРБАЙДЖАН', students_count: 21}length: 10[[Prototype]]: Array(0)
+DonutChartCard.tsx:42 [DonutChartCard] Количество записей: 10
+DonutChartCard.tsx:61 [DonutChartCard] Обработанные данные: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+DonutChartCard.tsx:62 [DonutChartCard] Количество после обработки: 10
+DonutChartCard.tsx:70 [DonutChartCard] Итоговая сумма: 2109
+installHook.js:1 [DonutChartCard] Исходные данные: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+installHook.js:1 [DonutChartCard] Количество записей: 10
+installHook.js:1 [DonutChartCard] Обработанные данные: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+installHook.js:1 [DonutChartCard] Количество после обработки: 10
+installHook.js:1 [DonutChartCard] Итоговая сумма: 2109
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: pong
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useForeignStudentsMQTT.ts:65 [Foreign Students MQTT] Получено: {topic: 'Skud/foreign-students/stats', payload: Array(66)}
+useForeignStudentsMQTT.ts:88 [Foreign Students MQTT] Получены данные стран: (66) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+useForeignStudentsMQTT.ts:89 [Foreign Students MQTT] Количество записей: 66
+useForeignStudentsMQTT.ts:96 [Foreign Students MQTT] Общая сумма студентов из данных: 2360
+useForeignStudentsMQTT.ts:103 [Foreign Students MQTT] Записи с null/пустой страной (будут заменены на "Без гражданства"): [{…}]
+useForeignStudentsMQTT.ts:107 [Foreign Students MQTT] Country stats loaded: 66 записей
+DonutChartCard.tsx:41 [DonutChartCard] Исходные данные: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+DonutChartCard.tsx:42 [DonutChartCard] Количество записей: 10
+DonutChartCard.tsx:61 [DonutChartCard] Обработанные данные: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+DonutChartCard.tsx:62 [DonutChartCard] Количество после обработки: 10
+DonutChartCard.tsx:70 [DonutChartCard] Итоговая сумма: 2109
+installHook.js:1 [DonutChartCard] Исходные данные: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+installHook.js:1 [DonutChartCard] Количество записей: 10
+installHook.js:1 [DonutChartCard] Обработанные данные: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+installHook.js:1 [DonutChartCard] Количество после обработки: 10
+installHook.js:1 [DonutChartCard] Итоговая сумма: 2109

@@ -217,22 +217,12 @@ export function ForeignStudentsReport() {
       const dateStr = new Date().toISOString().slice(0, 10);
       XLSX.writeFile(workbook, `${filename}_${dateStr}.xlsx`);
       
-      toast.success('Отчет успешно выгружен в Excel');
+      toast.success('Отч��т успешно выгружен в Excel');
     } catch (error) {
       console.error('Export error:', error);
       toast.error('Ошибка при экспорте в Excel');
     }
   };
-
-  // Подготовка данных для диаграммы (топ 7 стран)
-  const chartData = countryStats
-    .filter(item => item.country !== 'РОССИЯ')
-    .sort((a, b) => b.students_count - a.students_count)
-    .slice(0, 7)
-    .map(item => ({
-      name: item.country,
-      value: item.students_count
-    }));
 
   return (
     <div className="space-y-6">
@@ -266,7 +256,7 @@ export function ForeignStudentsReport() {
       {countryStats.length > 0 && (
         <DonutChartCard 
           title="Распределение иностранных студентов по странам"
-          data={countryStats.filter(item => item.country !== 'РОССИЯ').slice(0, 10)}
+          data={countryStats.filter(item => item.country !== 'РОССИЯ')}
         />
       )}
 

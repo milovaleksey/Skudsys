@@ -121,7 +121,7 @@ mosquitto_pub -h "$MQTT_HOST" -p "$MQTT_PORT" \
 {"country":"ГВИНЕЯ","students_count":1},
 {"country":"ЛИВИЯ","students_count":1},
 {"country":"СЕНТ-ВИНСЕНТ И ГРЕНАДИНЫ","students_count":1},
-{"country":"ЦЕНТРАЛЬНО-АФРИКАНСКАЯ РЕСПУБЛИКА","students_count":1},
+{"country":"ЦЕНТРАЛЬНО-АФР��КАНСКАЯ РЕСПУБЛИКА","students_count":1},
 {"country":"АВСТРАЛИЯ","students_count":1},
 {"country":"ПЕРУ","students_count":1},
 {"country":"БОЛИВИЯ, МНОГОНАЦИОНАЛЬНОЕ ГОСУДАРСТВО","students_count":1},
@@ -155,11 +155,11 @@ mosquitto_pub -h "$MQTT_HOST" -p "$MQTT_PORT" \
   -m "1543"
 echo "  ✓ Активных за сегодня: 1543"
 
-# Стран представлено (включая "Без гражданства")
+# Стран представлено (должно быть 65: 64 + 1 null)
 mosquitto_pub -h "$MQTT_HOST" -p "$MQTT_PORT" \
   -t "Skud/foreign-students/data/countries" \
   -m "65"
-echo "  ✓ Стран/категорий представлено: 65"
+echo "  ✓ Стран/категорий представлено: 65 (64 + 1 null)"
 
 # Новых за месяц
 mosquitto_pub -h "$MQTT_HOST" -p "$MQTT_PORT" \
