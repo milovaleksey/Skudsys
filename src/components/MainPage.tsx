@@ -41,6 +41,7 @@ import { studentsApi, employeesApi, parkingApi } from '../lib/api';
 import { ChangePasswordDialog } from './ChangePasswordDialog';
 import { useMQTTWebSocket } from '../hooks/useMQTT';
 import { Card } from './ui/card';
+import { ForeignStudentsReport } from './ForeignStudentsReport';
 
 export function MainPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -164,7 +165,7 @@ export function MainPage() {
     },
     {
       id: 'users-settings',
-      label: 'Управление пользователями',
+      label: 'Управление пользовате��ями',
       icon: Settings,
       permission: 'users-settings',
     },
@@ -366,7 +367,7 @@ export function MainPage() {
         {activePage === 'parking' && <ParkingPage />}
         {activePage === 'storage' && <StorageSystemsPage />}
         {activePage === 'analytics' && <UnderConstructionPage />}
-        {activePage === 'foreign-students' && <UnderConstructionPage />}
+        {activePage === 'foreign-students' && <ForeignStudentsReport />}
         {activePage === 'users-settings' && <UsersSettingsPage />}
         {activePage === 'roles-settings' && <RolesManagementPage />}
         {activePage === 'user-logs' && <UserLogsPage />}

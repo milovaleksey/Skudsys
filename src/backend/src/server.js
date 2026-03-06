@@ -31,6 +31,7 @@ const analyticsRoutes = require('./routes/analytics.routes');
 const auditRoutes = require('./routes/audit.routes');
 const mqttRoutes = require('./routes/mqtt.routes');
 const skudRoutes = require('./routes/skud');
+const foreignStudentsRoutes = require('./routes/foreignStudents');
 
 const app = express();
 
@@ -87,6 +88,7 @@ app.use(`/${API_VERSION}/analytics`, analyticsRoutes);
 app.use(`/${API_VERSION}/audit-logs`, auditRoutes);
 app.use(`/${API_VERSION}/mqtt`, mqttRoutes);
 app.use(`/${API_VERSION}/skud`, skudRoutes);
+app.use(`/${API_VERSION}/foreign-students`, foreignStudentsRoutes);
 
 // API маршруты (версия с /api для совместимости)
 app.use('/api/auth', authRoutes);
@@ -101,6 +103,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/audit-logs', auditRoutes);
 app.use('/api/mqtt', mqttRoutes);
 app.use('/api/skud', skudRoutes);
+app.use('/api/foreign-students', foreignStudentsRoutes);
 
 // 404 handler
 app.use((req, res) => {
