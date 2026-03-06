@@ -29,9 +29,11 @@ export function useForeignStudentsMQTT() {
       if (!isMounted) return;
 
       try {
-        // Подключение к WebSocket серверу
+        // Подключение к WebSocket серверу через backend
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/v1';
+        const baseUrl = apiUrl.replace('/v1', '').replace('http://', '').replace('https://', '');
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsUrl = `${protocol}//${window.location.host}/ws`;
+        const wsUrl = `${protocol}//${baseUrl}/ws`;
         
         console.log('[Foreign Students MQTT] Подключение к:', wsUrl);
         ws = new WebSocket(wsUrl);

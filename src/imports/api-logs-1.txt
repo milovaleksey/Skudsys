@@ -1,0 +1,187 @@
+ 🌐 Using API URL from env: http://10.101.221.207:3000/v1
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /auth/me with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/auth/me
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /roles with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/roles
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /auth/me with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/auth/me
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /roles with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/roles
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+ [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+ [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI3OTIyMDIsImV4cCI6MTc3Mjg3ODYwMn0.fh-RIgLzQO9VJpk8r0MfjZcmWqLjgYr10aJF7b4T_Lo
+ [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI3OTIyMDIsImV4cCI6MTc3Mjg3ODYwMn0.fh-RIgLzQO9VJpk8r0MfjZcmWqLjgYr10aJF7b4T_Lo
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /students/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /employees/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /parking/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+ WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI3OTIyMDIsImV4cCI6MTc3Mjg3ODYwMn0.fh-RIgLzQO9VJpk8r0MfjZcmWqLjgYr10aJF7b4T_Lo' failed: WebSocket is closed before the connection is established.
+(anonymous) @ useMQTT.ts:131
+ [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+ [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+ [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI3OTIyMDIsImV4cCI6MTc3Mjg3ODYwMn0.fh-RIgLzQO9VJpk8r0MfjZcmWqLjgYr10aJF7b4T_Lo
+ [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI3OTIyMDIsImV4cCI6MTc3Mjg3ODYwMn0.fh-RIgLzQO9VJpk8r0MfjZcmWqLjgYr10aJF7b4T_Lo
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /students/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /employees/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /parking/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+ [WebSocket] Ошибка: Event
+overrideMethod @ installHook.js:1
+ [WebSocket] Отключено: 1006 
+ [WebSocket] Переподключение через 2000ms (попытка 1/5)
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+:3000/v1/employees/statistics:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ 📡 Response status: 404
+ 📡 Response content-type: application/json; charset=utf-8
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+:3000/v1/employees/statistics:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ 📡 Response status: 404
+ 📡 Response content-type: application/json; charset=utf-8
+ [WebSocket] ✅ Подключено
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ [WebSocket] Получено: initial
+ Failed to load stats 
+overrideMethod @ installHook.js:1
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ Failed to load stats 
+overrideMethod @ installHook.js:1
+ [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+ [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+ [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI3OTIyMDIsImV4cCI6MTc3Mjg3ODYwMn0.fh-RIgLzQO9VJpk8r0MfjZcmWqLjgYr10aJF7b4T_Lo
+ [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI3OTIyMDIsImV4cCI6MTc3Mjg3ODYwMn0.fh-RIgLzQO9VJpk8r0MfjZcmWqLjgYr10aJF7b4T_Lo
+ [WebSocket] ✅ Подключено
+ [WebSocket] Получено: initial
+ [Foreign Students MQTT] Подключение к: ws://10.101.221.207:5173/ws
+ [Foreign Students MQTT] Компонент размонтируется, закрываем WebSocket
+WebSocket connection to 'ws:<URL>/ws' failed: WebSocket is closed before the connection is established.
+WebSocket connection to 'ws:<URL>/ws' failed: WebSocket is closed before the connection is established.
+WebSocket connection to 'ws:<URL>/ws' failed: WebSocket is closed before the connection is established.
+WebSocket connection to 'ws:<URL>/ws' failed: WebSocket is closed before the connection is established.
+WebSocket connection to 'ws:<URL>/ws' failed: WebSocket is closed before the connection is established.
+ [Foreign Students MQTT] Подключение к: ws://10.101.221.207:5173/ws
+ [Foreign Students MQTT] WebSocket error: Event
+overrideMethod @ installHook.js:1
+ [Foreign Students MQTT] WebSocket closed
+ [Foreign Students MQTT] Компонент размонтирован, переподключение отменено
+ [WebSocket] Получено: heartbeat
+ [WebSocket] Получено: heartbeat
+ [WebSocket] Получено: pong
+ [WebSocket] Получено: heartbeat
+ [WebSocket] Получено: heartbeat
+ [WebSocket] Получено: pong
+ [WebSocket] Получено: config-updated
+ [WebSocket] Получено: config-updated
+ [WebSocket] Получено: heartbeat
+ [WebSocket] Получено: heartbeat
+ [Foreign Students MQTT] Компонент размонтируется, закрываем WebSocket
+ [Foreign Students MQTT] WebSocket error: Event
+overrideMethod @ installHook.js:1
+useForeignStudentsMQTT.ts:112 [Foreign Students MQTT] WebSocket closed
+useForeignStudentsMQTT.ts:120 [Foreign Students MQTT] Компонент размонтирован, переподключение отменено
+useMQTT.ts:120 [WebSocket] Получено: pong
+useParkingMQTT.ts:128 WebSocket connection to 'ws://10.101.221.207:3000/parking-ws' failed: WebSocket is closed before the connection is established.
+(anonymous) @ useParkingMQTT.ts:128
+installHook.js:1 [Parking WebSocket] Ошибка подключения: Event
+overrideMethod @ installHook.js:1
+useParkingMQTT.ts:98 [Parking WebSocket] Отключено
+useParkingMQTT.ts:106 [Parking WebSocket] Переподключение через 1000ms (попытка 1)
+useParkingMQTT.ts:39 [Parking WebSocket] Подключено
+useParkingMQTT.ts:50 [Parking WebSocket] Получена конфигурация парковок: Array(2)
+useParkingMQTT.ts:61 [Parking WebSocket] Обновление транспорта: parking_k1 0
+useParkingMQTT.ts:61 [Parking WebSocket] Обновление транспорта: parking_k5 0
+useStorageMQTT.ts:160 WebSocket connection to 'ws://10.101.221.207:3000/ws/storage' failed: WebSocket is closed before the connection is established.
+(anonymous) @ useStorageMQTT.ts:160
+installHook.js:1 [Storage WebSocket] Ошибка подключения: Event
+overrideMethod @ installHook.js:1
+useStorageMQTT.ts:130 [Storage WebSocket] Отключено
+useStorageMQTT.ts:138 [Storage WebSocket] Переподключение через 1000ms (попытка 1)
+useStorageMQTT.ts:38 [Storage WebSocket] Подключено
+useStorageMQTT.ts:115 [Storage WebSocket] Сообщение подключения: Connected to storage updates
+useStorageMQTT.ts:59 [Storage WebSocket] Получена конфигурация систем хранения: Array(3)
+useStorageMQTT.ts:38 [Storage WebSocket] Подключено
+useStorageMQTT.ts:45 [Storage WebSocket] Восстановлены данные после переподключения: 3
+useStorageMQTT.ts:115 [Storage WebSocket] Сообщение подключения: Connected to storage updates
+useStorageMQTT.ts:59 [Storage WebSocket] Получена конфигурация систем хранения: Array(3)
+useForeignStudentsMQTT.ts:36 [Foreign Students MQTT] Подключение к: ws://10.101.221.207:5173/ws
+useForeignStudentsMQTT.ts:139 [Foreign Students MQTT] Компонент размонтируется, закрываем WebSocket
+useForeignStudentsMQTT.ts:36 [Foreign Students MQTT] Подключение к: ws://10.101.221.207:5173/ws
+installHook.js:1 [Foreign Students MQTT] WebSocket error: Event
+overrideMethod @ installHook.js:1
+useForeignStudentsMQTT.ts:112 [Foreign Students MQTT] WebSocket closed
+useForeignStudentsMQTT.ts:120 [Foreign Students MQTT] Компонент размонтирован, переподключение отменено
+useStorageMQTT.ts:130 [Storage WebSocket] Отключено
+useStorageMQTT.ts:138 [Storage WebSocket] Переподключение через 1000ms (попытка 1)
+useStorageMQTT.ts:38 [Storage WebSocket] Подключено
+useStorageMQTT.ts:45 [Storage WebSocket] Восстановлены данные после переподключения: 3
+useStorageMQTT.ts:115 [Storage WebSocket] Сообщение подключения: Connected to storage updates
+useStorageMQTT.ts:59 [Storage WebSocket] Получена конфигурация систем хранения: Array(3)
+useForeignStudentsMQTT.ts:139 [Foreign Students MQTT] Компонент размонтируется, закрываем WebSocket
+installHook.js:1 [Foreign Students MQTT] WebSocket error: Event
+overrideMethod @ installHook.js:1
+useForeignStudentsMQTT.ts:112 [Foreign Students MQTT] WebSocket closed
+useForeignStudentsMQTT.ts:120 [Foreign Students MQTT] Компонент размонтирован, переподключение отменено
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: Object
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: Object
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: Object
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: Object
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: Object
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: Object
+useForeignStudentsMQTT.ts:36 [Foreign Students MQTT] Подключение к: ws://10.101.221.207:5173/ws
+useForeignStudentsMQTT.ts:139 [Foreign Students MQTT] Компонент размонтируется, закрываем WebSocket
+useForeignStudentsMQTT.ts:36 [Foreign Students MQTT] Подключение к: ws://10.101.221.207:5173/ws
+installHook.js:1 [Foreign Students MQTT] WebSocket error: Event
+overrideMethod @ installHook.js:1
+useForeignStudentsMQTT.ts:112 [Foreign Students MQTT] WebSocket closed
+useForeignStudentsMQTT.ts:120 [Foreign Students MQTT] Компонент размонтирован, переподключение отменено
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: Object
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: Object
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: Object
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: Object
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: Object
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: Object
+useStorageMQTT.ts:79 [Storage WebSocket] Обновление занятости: Object
+useStorageMQTT.ts:79 [Storage WebSocket] Обновление занятости: Object
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/k1/grbot1/status', status: 'active', systemId: 1, systemName: 'Гардеробот ', timestamp: '2026-03-06T11:09:45.062Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/k1/grbot1/status', status: 'active', systemId: 1, systemName: 'Гардеробот ', timestamp: '2026-03-06T11:09:45.062Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/korpusA/wardrobe2/status', status: 'maintenance', systemId: 2, systemName: 'Локкер 1 тест', timestamp: '2026-03-06T11:09:45.063Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/korpusA/wardrobe2/status', status: 'maintenance', systemId: 2, systemName: 'Локкер 1 тест', timestamp: '2026-03-06T11:09:45.063Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/korpusA/locker1/status', status: 'maintenance', systemId: 3, systemName: 'Камера хранения 1-50 тест', timestamp: '2026-03-06T11:09:45.063Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/korpusA/locker1/status', status: 'maintenance', systemId: 3, systemName: 'Камера хранения 1-50 тест', timestamp: '2026-03-06T11:09:45.063Z'}
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/k1/grbot1/status', status: 'active', systemId: 1, systemName: 'Гардеробот ', timestamp: '2026-03-06T11:09:50.059Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/k1/grbot1/status', status: 'active', systemId: 1, systemName: 'Гардеробот ', timestamp: '2026-03-06T11:09:50.059Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/korpusA/wardrobe2/status', status: 'maintenance', systemId: 2, systemName: 'Локкер 1 тест', timestamp: '2026-03-06T11:09:50.061Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/korpusA/wardrobe2/status', status: 'maintenance', systemId: 2, systemName: 'Локкер 1 тест', timestamp: '2026-03-06T11:09:50.061Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/korpusA/locker1/status', status: 'maintenance', systemId: 3, systemName: 'Камера хранения 1-50 тест', timestamp: '2026-03-06T11:09:50.062Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/korpusA/locker1/status', status: 'maintenance', systemId: 3, systemName: 'Камера хранения 1-50 тест', timestamp: '2026-03-06T11:09:50.062Z'}
