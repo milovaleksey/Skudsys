@@ -305,12 +305,12 @@ export function PassesReportPage() {
             </button>
             <button
               onClick={() => {
-                setSearchQuery('petrova@study.utmn.ru');
+                setSearchQuery('i.i.ivanov@utmn.ru');
                 setSearchType('upn');
               }}
               className="ml-2 px-2 py-1 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
             >
-              petrova@study.utmn.ru
+              i.i.ivanov@utmn.ru
             </button>
           </div>
         </div>
