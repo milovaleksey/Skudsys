@@ -1,0 +1,49 @@
+useForeignStudentsMQTT.ts:129 [Foreign Students MQTT] Компонент размонтируется, закрываем WebSocket
+useForeignStudentsMQTT.ts:131 WebSocket connection to 'ws://10.101.221.207:5173/ws' failed: WebSocket is closed before the connection is established.
+(anonymous) @ useForeignStudentsMQTT.ts:131
+safelyCallDestroy @ chunk-NUMECXU6.js?v=040b1844:16748
+commitHookEffectListUnmount @ chunk-NUMECXU6.js?v=040b1844:16875
+commitPassiveUnmountInsideDeletedTreeOnFiber @ chunk-NUMECXU6.js?v=040b1844:18283
+commitPassiveUnmountEffectsInsideOfDeletedTree_begin @ chunk-NUMECXU6.js?v=040b1844:18245
+commitPassiveUnmountEffects_begin @ chunk-NUMECXU6.js?v=040b1844:18181
+commitPassiveUnmountEffects @ chunk-NUMECXU6.js?v=040b1844:18169
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19489
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=040b1844:19416
+commitRoot @ chunk-NUMECXU6.js?v=040b1844:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=040b1844:9119
+(anonymous) @ chunk-NUMECXU6.js?v=040b1844:18627
+installHook.js:1 [Foreign Students MQTT] WebSocket error: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+overrideMethod @ installHook.js:1
+ws.onerror @ useForeignStudentsMQTT.ts:96
+useForeignStudentsMQTT.ts:102 [Foreign Students MQTT] WebSocket closed
+useForeignStudentsMQTT.ts:110 [Foreign Students MQTT] Компонент размонтирован, переподключение отменено
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/k1/grbot1/status', status: 'active', systemId: 1, systemName: 'Гардеробот ', timestamp: '2026-03-06T10:49:24.598Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/k1/grbot1/status', status: 'active', systemId: 1, systemName: 'Гардеробот ', timestamp: '2026-03-06T10:49:24.598Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/korpusA/wardrobe2/status', status: 'maintenance', systemId: 2, systemName: 'Локкер 1 тест', timestamp: '2026-03-06T10:49:24.599Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/korpusA/wardrobe2/status', status: 'maintenance', systemId: 2, systemName: 'Локкер 1 тест', timestamp: '2026-03-06T10:49:24.599Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/korpusA/locker1/status', status: 'maintenance', systemId: 3, systemName: 'Камера хранения 1-50 тест', timestamp: '2026-03-06T10:49:24.599Z'}
+useStorageMQTT.ts:97 [Storage WebSocket] Обновление статуса: {topic: 'storage/korpusA/locker1/status', status: 'maintenance', systemId: 3, systemName: 'Камера хранения 1-50 тест', timestamp: '2026-03-06T10:49:24.599Z'}
+useForeignStudentsMQTT.ts:129 [Foreign Students MQTT] Компонент размонтируется, закрываем WebSocket
+useForeignStudentsMQTT.ts:131 WebSocket connection to 'ws://10.101.221.207:5173/ws' failed: WebSocket is closed before the connection is established.
+(anonymous) @ useForeignStudentsMQTT.ts:131
+safelyCallDestroy @ chunk-NUMECXU6.js?v=040b1844:16748
+commitHookEffectListUnmount @ chunk-NUMECXU6.js?v=040b1844:16875
+invokePassiveEffectUnmountInDEV @ chunk-NUMECXU6.js?v=040b1844:18363
+invokeEffectsInDev @ chunk-NUMECXU6.js?v=040b1844:19701
+commitDoubleInvokeEffectsInDEV @ chunk-NUMECXU6.js?v=040b1844:19682
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19503
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=040b1844:19416
+commitRoot @ chunk-NUMECXU6.js?v=040b1844:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=040b1844:9119
+(anonymous) @ chunk-NUMECXU6.js?v=040b1844:18627
+installHook.js:1 [Foreign Students MQTT] WebSocket error: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+overrideMethod @ installHook.js:1
+ws.onerror @ useForeignStudentsMQTT.ts:96
+useForeignStudentsMQTT.ts:102 [Foreign Students MQTT] WebSocket closed
+useForeignStudentsMQTT.ts:110 [Foreign Students MQTT] Компонент размонтирован, переподключение отменено
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
+useMQTT.ts:120 [WebSocket] Получено: heartbeat
