@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const foreignStudentsController = require('../controllers/foreignStudentsController');
-const authMiddleware = require('../middleware/authMiddleware');
+const { authenticate } = require('../middleware/auth');
 
 // Все роуты требуют авторизации
-router.use(authMiddleware);
+router.use(authenticate);
 
 /**
  * Шаблон 1: Поиск проходов иностранных студентов
