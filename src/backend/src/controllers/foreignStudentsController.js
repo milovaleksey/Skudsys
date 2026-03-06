@@ -1,4 +1,4 @@
-const db2 = require('../config/db2'); // База СКУД
+const { getSkudPool } = require('../config/skudDatabase');
 
 class ForeignStudentsController {
   /**
@@ -16,8 +16,11 @@ class ForeignStudentsController {
         });
       }
 
+      // Получаем пул подключений к базе СКУД
+      const skudPool = getSkudPool();
+
       // Вызов хранимой процедуры для поиска проходов иностранных студентов
-      const [results] = await db2.query(
+      const [results] = await skudPool.query(
         'CALL sp_foreign_students_search(?, ?, ?, ?)',
         [searchType, searchValue, dateFrom, dateTo]
       );
@@ -64,8 +67,11 @@ class ForeignStudentsController {
         });
       }
 
+      // Получаем пул подключений к базе СКУД
+      const skudPool = getSkudPool();
+
       // Вызов хранимой процедуры для поиска пропавших студентов
-      const [results] = await db2.query(
+      const [results] = await skudPool.query(
         'CALL sp_foreign_students_missing(?, ?)',
         [country, days]
       );
