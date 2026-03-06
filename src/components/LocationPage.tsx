@@ -127,7 +127,7 @@ export function LocationPage() {
               onChange={() => setSearchType('upn')}
               className="w-4 h-4 accent-[#00aeef]"
             />
-            <span className="text-sm text-gray-700">По UPN</span>
+            <span className="text-sm text-gray-700">По Логину или Почте</span>
           </label>
         </div>
 
@@ -170,12 +170,12 @@ export function LocationPage() {
             </button>
             <button
               onClick={() => {
-                setSearchQuery('petrova@study.utmn.ru');
+                setSearchQuery('i.i.ivanov@utmn.ru');
                 setSearchType('upn');
               }}
               className="px-3 py-1 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
             >
-              petrova@study.utmn.ru
+              i.i.ivanov@utmn.ru
             </button>
           </div>
         </div>
