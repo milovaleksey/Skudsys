@@ -33,7 +33,9 @@ export function PassesReportPage() {
   const [searchType, setSearchType] = useState<'fio' | 'upn'>('fio');
   const [filters, setFilters] = useState({
     dateFrom: todayStart as Date | null,
-    dateTo: todayEnd as Date | null
+    dateTo: todayEnd as Date | null,
+    timeFrom: '00:00',
+    timeTo: '23:59'
   });
 
   const [passRecords, setPassRecords] = useState<PassRecord[]>([]);
@@ -72,9 +74,11 @@ export function PassesReportPage() {
     setPassRecords([]);
 
     try {
-      // Форматируем даты для API (YYYY-MM-DD HH:MM:SS)
-      const dateFrom = filters.dateFrom.toISOString().slice(0, 19).replace('T', ' ');
-      const dateTo = filters.dateTo.toISOString().slice(0, 19).replace('T', ' ');
+      // Форматируем даты с учетом времени для API (YYYY-MM-DD HH:MM:SS)
+      const dateFromStr = filters.dateFrom.toISOString().slice(0, 10);
+      const dateToStr = filters.dateTo.toISOString().slice(0, 10);
+      const dateFrom = `${dateFromStr} ${filters.timeFrom}:00`;
+      const dateTo = `${dateToStr} ${filters.timeTo}:59`;
 
       let response;
 
@@ -170,7 +174,7 @@ export function PassesReportPage() {
             className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <FileSpreadsheet size={20} style={{ color: '#00aeef' }} />
-            <span>Excel</span>
+            <span>Выгрузить в Excel</span>
           </button>
         </div>
       </div>
@@ -203,15 +207,15 @@ export function PassesReportPage() {
               onChange={() => setSearchType('upn')}
               className="w-4 h-4 accent-[#00aeef]"
             />
-            <span className="text-sm text-gray-700">По UPN</span>
+            <span className="text-sm text-gray-700">По Логину или Почте</span>
           </label>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           {/* ФИО or UPN Input */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {searchType === 'fio' ? 'ФИО' : 'UPN'}
+              {searchType === 'fio' ? 'ФИО' : 'Логин или Почта'}
             </label>
             <input
               type="text"
@@ -241,6 +245,20 @@ export function PassesReportPage() {
             </div>
           </div>
 
+          {/* Time From */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Время от
+            </label>
+            <input
+              type="time"
+              value={filters.timeFrom}
+              onChange={(e) => setFilters({ ...filters, timeFrom: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
+              style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
+            />
+          </div>
+
           {/* Date To */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -256,6 +274,20 @@ export function PassesReportPage() {
                 dateFormat="dd.MM.yyyy"
               />
             </div>
+          </div>
+
+          {/* Time To */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Время до
+            </label>
+            <input
+              type="time"
+              value={filters.timeTo}
+              onChange={(e) => setFilters({ ...filters, timeTo: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
+              style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
+            />
           </div>
         </div>
 
