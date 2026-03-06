@@ -16,9 +16,10 @@ import {
   Layout,
   ScrollText,
   Search,
+  CheckCircle,
+  XCircle,
   Wifi,
-  WifiOff,
-  RefreshCw
+  WifiOff
 } from 'lucide-react';
 import { PassesReportPage } from './PassesReportPage';
 import { LocationPage } from './LocationPage';
@@ -35,7 +36,6 @@ import { IdentifierSearchPage } from './IdentifierSearchPage';
 import { DynamicStatCard } from './DynamicStatCard';
 import { useAuth } from '../contexts/AuthContext';
 import { Badge } from './ui/badge';
-import { Button } from './ui/button';
 import { Logo } from './Logo';
 import { studentsApi, employeesApi, parkingApi } from '../lib/api';
 import { ChangePasswordDialog } from './ChangePasswordDialog';
@@ -290,34 +290,15 @@ export function MainPage() {
         {/* Page Content */}
         {activePage === 'dashboard' && (
           <div>
-            {/* MQTT Connection Status */}
+            {/* MQTT Connection Status - простой значок без текста */}
             <div className="mb-6 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                {wsConnected ? (
-                  <>
-                    <Wifi className="w-5 h-5 text-green-600" />
-                    <span className="text-sm text-green-700 font-medium">Сервер статистики подключен</span>
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  </>
-                ) : (
-                  <>
-                    <WifiOff className="w-5 h-5 text-gray-400" />
-                    <span className="text-sm text-gray-600">MQTT отключен (используются API данные)</span>
-                  </>
-                )}
-              </div>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={reconnect}
-                className="flex items-center gap-2"
-              >
-                <RefreshCw className="w-4 h-4" />
-                Переподключиться
-              </Button>
+              <h2 className="text-2xl font-semibold text-gray-900">Статистика</h2>
+              {wsConnected ? (
+                <CheckCircle className="w-5 h-5 text-green-600" />
+              ) : (
+                <XCircle className="w-5 h-5 text-gray-400" />
+              )}
             </div>
-
-            <h2 className="text-2xl font-semibold text-gray-900 mb-6">Статистика</h2>
             
             {/* Динамические карточки из MQTT или статичные из API */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
