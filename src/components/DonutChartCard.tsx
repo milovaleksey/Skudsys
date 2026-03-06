@@ -73,17 +73,17 @@ export function DonutChartCard({ title, data }: DonutChartCardProps) {
   const renderCustomLabel = (entry: any) => {
     const percent = (entry.value / total) * 100;
     
-    // Показываем метку только если процент >= 3%
-    if (percent >= 3) {
+    // Показываем метку только если процент >= 5% (название + процент)
+    if (percent >= 5) {
       return `${entry.name} ${percent.toFixed(0)}%`;
     }
     
-    // Для маленьких значений показываем только процент
-    if (percent >= 1) {
+    // Для средних значений (2-5%) показываем только процент
+    if (percent >= 2) {
       return `${percent.toFixed(0)}%`;
     }
     
-    // Для очень маленьких не показываем ничего
+    // Для сегментов менее 2% не показываем метку вообще
     return '';
   };
 
