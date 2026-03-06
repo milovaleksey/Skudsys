@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Car, Clock, Search, ChevronDown, ChevronUp, Wifi, WifiOff, RefreshCw, MapPin } from 'lucide-react';
+import { Car, Clock, Search, ChevronDown, ChevronUp, Wifi, WifiOff, RefreshCw, MapPin, CheckCircle, XCircle } from 'lucide-react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { useParkingMQTT, ParkingVehicle } from '../hooks/useParkingMQTT';
@@ -193,31 +193,15 @@ export function ParkingPage() {
         <p className="text-gray-600 mt-2">Мониторинг загрузки и управление парковками университета</p>
       </div>
 
-      {/* Connection Status */}
+      {/* Connection Status - простой значок без текста */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           {isConnected ? (
-            <>
-              <Wifi className="w-5 h-5 text-green-600" />
-              <span className="text-sm text-green-700 font-medium">Система парковок подключена</span>
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            </>
+            <CheckCircle className="w-5 h-5 text-green-600" />
           ) : (
-            <>
-              <WifiOff className="w-5 h-5 text-gray-400" />
-              <span className="text-sm text-gray-600">Отключено</span>
-            </>
+            <XCircle className="w-5 h-5 text-gray-400" />
           )}
         </div>
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={reconnect}
-          className="flex items-center gap-2"
-        >
-          <RefreshCw className="w-4 h-4" />
-          Переподключиться
-        </Button>
       </div>
 
       {/* Error Message */}
