@@ -7,6 +7,7 @@ import {
   TrendingDown,
   AlertCircle,
   CheckCircle,
+  XCircle,
   Clock,
   Database,
   Server,
@@ -30,6 +31,7 @@ const iconMap: Record<string, React.ComponentType<{ size?: number; className?: s
   'trending-down': TrendingDown,
   'alert-circle': AlertCircle,
   'check-circle': CheckCircle,
+  'x-circle': XCircle,
   clock: Clock,
   database: Database,
   server: Server,
@@ -72,12 +74,14 @@ export function DynamicStatCard({ card, value }: DynamicStatCardProps) {
           )}
         </div>
 
-        {/* Live indicator - значок галочки */}
-        {value !== undefined && (
-          <div className="flex items-center gap-1 mt-3">
+        {/* Индикатор статуса данных */}
+        <div className="flex items-center gap-1 mt-3">
+          {value !== undefined ? (
             <CheckCircle className="w-4 h-4 text-green-600" />
-          </div>
-        )}
+          ) : (
+            <XCircle className="w-4 h-4 text-gray-400" />
+          )}
+        </div>
       </div>
     </div>
   );
