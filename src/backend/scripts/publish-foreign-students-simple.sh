@@ -74,7 +74,11 @@ mosquitto_pub -h "$MQTT_HOST" -p "$MQTT_PORT" \
   {"country": "Индия", "students_count": 15},
   {"country": "Вьетнам", "students_count": 12},
   {"country": "Монголия", "students_count": 8},
-  {"country": "Азербайджан", "students_count": 7}
+  {"country": "Азербайджан", "students_count": 7},
+  {"country": "Армения", "students_count": 4},
+  {"country": "Беларусь", "students_count": 3},
+  {"country": "Молдова", "students_count": 2},
+  {"country": "Грузия", "students_count": 1}
 ]'
 
 if [ $? -eq 0 ]; then
@@ -87,11 +91,11 @@ sleep 0.5
 
 echo "💾 Публикация значений карточек..."
 
-# Всего иностранных студентов
+# Всего иностранных студентов (сумма всех стран в диаграмме)
 mosquitto_pub -h "$MQTT_HOST" -p "$MQTT_PORT" \
   -t "Skud/foreign-students/data/total" \
-  -m "434"
-echo "  ✓ Всего студентов: 434"
+  -m "444"
+echo "  ✓ Всего студентов: 444"
 
 # Активных за сегодня
 mosquitto_pub -h "$MQTT_HOST" -p "$MQTT_PORT" \

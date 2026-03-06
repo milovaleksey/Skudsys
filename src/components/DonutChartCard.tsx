@@ -46,13 +46,31 @@ export function DonutChartCard({ title, data }: DonutChartCardProps) {
   // Вычисляем общее количество
   const total = chartData.reduce((sum, item) => sum + item.value, 0);
 
+  // Кастомная метка для сегментов
+  const renderCustomLabel = (entry: any) => {
+    const percent = (entry.value / total) * 100;
+    
+    // Показываем метку только если процент >= 3%
+    if (percent >= 3) {
+      return `${entry.name} ${percent.toFixed(0)}%`;
+    }
+    
+    // Для маленьких значений показываем только процент
+    if (percent >= 1) {
+      return `${percent.toFixed(0)}%`;
+    }
+    
+    // Для очень маленьких не показываем ничего
+    return '';
+  };
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-4">{title}</h3>
       
       <div className="flex flex-col lg:flex-row items-center gap-6">
         {/* Диаграмма */}
-        <div className="w-full lg:w-1/2">
+        <div className="w-full lg:w-1/2 relative">
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -61,9 +79,9 @@ export function DonutChartCard({ title, data }: DonutChartCardProps) {
                 cy="50%"
                 innerRadius={60}
                 outerRadius={100}
-                paddingAngle={2}
+                paddingAngle={1}
                 dataKey="value"
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                label={renderCustomLabel}
                 labelLine={false}
               >
                 {chartData.map((_, index) => (
@@ -83,7 +101,7 @@ export function DonutChartCard({ title, data }: DonutChartCardProps) {
           </ResponsiveContainer>
           
           {/* Общее количество в центре */}
-          <div className="text-center -mt-48 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
             <div className="text-3xl font-bold text-gray-900">{total}</div>
             <div className="text-sm text-gray-500">Всего</div>
           </div>
@@ -91,24 +109,27 @@ export function DonutChartCard({ title, data }: DonutChartCardProps) {
 
         {/* Легенда */}
         <div className="w-full lg:w-1/2">
-          <div className="space-y-2">
-            {chartData.map((item, index) => (
-              <div key={index} className="flex items-center justify-between py-2 px-3 hover:bg-gray-50 rounded-lg transition-colors">
-                <div className="flex items-center gap-3">
-                  <div 
-                    className="w-4 h-4 rounded-full"
-                    style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                  />
-                  <span className="text-sm text-gray-700">{item.name}</span>
+          <div className="space-y-2 max-h-[300px] overflow-y-auto">
+            {chartData.map((item, index) => {
+              const percent = (item.value / total) * 100;
+              return (
+                <div key={index} className="flex items-center justify-between py-2 px-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div 
+                      className="w-4 h-4 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                    />
+                    <span className="text-sm text-gray-700">{item.name}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-semibold text-gray-900">{item.value}</span>
+                    <span className="text-xs text-gray-500 w-12 text-right">
+                      {percent.toFixed(1)}%
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-semibold text-gray-900">{item.value}</span>
-                  <span className="text-xs text-gray-500 w-12 text-right">
-                    {((item.value / total) * 100).toFixed(1)}%
-                  </span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
