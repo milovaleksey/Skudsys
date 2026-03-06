@@ -21,8 +21,13 @@ export function useForeignStudentsMQTT() {
 
   useEffect(() => {
     let ws: WebSocket | null = null;
+    let reconnectTimeout: NodeJS.Timeout | null = null;
+    let isMounted = true;
 
     const connect = () => {
+      // Не переподключаться, если компонент размонтирован
+      if (!isMounted) return;
+
       try {
         // Подключение к WebSocket серверу
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -98,7 +103,12 @@ export function useForeignStudentsMQTT() {
           setIsConnected(false);
           
           // Переподключение через 3 секунды
-          setTimeout(connect, 3000);
+          if (isMounted) {
+            console.log('[Foreign Students MQTT] Планирую переподключение через 3 секунды');
+            reconnectTimeout = setTimeout(connect, 3000);
+          } else {
+            console.log('[Foreign Students MQTT] Компонент размонтирован, переподключение отменено');
+          }
         };
       } catch (err) {
         console.error('[Foreign Students MQTT] Connection error:', err);
@@ -106,15 +116,22 @@ export function useForeignStudentsMQTT() {
         setIsConnected(false);
         
         // Переподключение через 3 секунды
-        setTimeout(connect, 3000);
+        if (isMounted) {
+          reconnectTimeout = setTimeout(connect, 3000);
+        }
       }
     };
 
     connect();
 
     return () => {
+      isMounted = false;
+      console.log('[Foreign Students MQTT] Компонент размонтируется, закрываем WebSocket');
       if (ws) {
         ws.close();
+      }
+      if (reconnectTimeout) {
+        clearTimeout(reconnectTimeout);
       }
     };
   }, []);
