@@ -349,7 +349,7 @@ export function ForeignStudentsReport() {
                   onKeyPress={handleKeyPress}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
                   style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
-                  placeholder={searchForm.searchType === 'fio' ? 'Иванов Иван ��ванович' : 'user@utmn.ru'}
+                  placeholder={searchForm.searchType === 'fio' ? 'Иванов Иван Иванович' : 'user@utmn.ru'}
                 />
               </div>
 
