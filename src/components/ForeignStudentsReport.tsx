@@ -346,6 +346,16 @@ export function ForeignStudentsReport() {
                   style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
                   placeholder={searchForm.searchType === 'fio' ? 'Иванов Иван Иванович' : 'user@utmn.ru'}
                 />
+                {searchForm.searchType === 'fio' && (
+                  <div className="mt-2 p-2 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-xs text-blue-800">
+                      <span className="font-semibold">💡 Подсказка:</span> Для иностранных студентов используйте первые два слова.
+                      <br />
+                      <span className="font-medium">Пример:</span> "Абдалла Алаиддин Саед Хафез" → 
+                      <span className="font-semibold"> Фамилия: Абдалла, Имя: Алаиддин</span>
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Date From + Time From Group */}
