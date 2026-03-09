@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -44,27 +44,6 @@ registerLocale('ru', ru);
 
 const COLORS = ['#00aeef', '#0088cc', '#0066aa', '#004488', '#002266', '#00d4ff', '#00b8d4', '#0097a7'];
 
-// Список корпусов для фильтра
-const BUILDINGS = [
-  'Все корпуса',
-  'Корпус №1',
-  'Корпус №2',
-  'Корпус №3',
-  'Корпус №4',
-  'Корпус №5',
-  'Корпус №6',
-  'Корпус №7',
-  'Корпус №8',
-  'Корпус №9',
-  'Общежитие №1',
-  'Общежитие №2',
-  'Общежитие №3',
-  'Общежитие №4',
-  'Общежитие №5',
-  'Библиотека',
-  'Спорткомплекс',
-];
-
 export function AnalyticsPage() {
   // Получаем данные из MQTT через WebSocket
   const analyticsData = useAnalyticsMQTT();
@@ -93,6 +72,44 @@ export function AnalyticsPage() {
   const hourlyDistribution = allData.hourly_distribution;
   const dormitories = allData.dormitory_analysis;
 
+  // Динамически извлекаем уникальные здания из топ зон
+  const buildings = useMemo(() => {
+    const uniqueBuildings = new Set<string>();
+    
+    // Добавляем "Все корпуса" как первую опцию
+    const buildingsList = ['Все корпуса'];
+    
+    // Извлекаем уникальные здания из топ локаций
+    if (topLocations && topLocations.length > 0) {
+      topLocations.forEach((location: any) => {
+        if (location.name) {
+          // Пытаемся извлечь название здания из полного названия зоны
+          // Например: "Корпус №5 - Главный вход" → "Корпус №5"
+          const buildingMatch = location.name.match(/^([^-]+)/);
+          if (buildingMatch) {
+            const building = buildingMatch[1].trim();
+            uniqueBuildings.add(building);
+          }
+        }
+      });
+    }
+    
+    // Добавляем отсортированные здания
+    const sortedBuildings = Array.from(uniqueBuildings).sort((a, b) => {
+      // Сортируем по номеру, если есть
+      const numA = a.match(/№(\d+)/)?.[1];
+      const numB = b.match(/№(\d+)/)?.[1];
+      if (numA && numB) {
+        return parseInt(numA) - parseInt(numB);
+      }
+      return a.localeCompare(b, 'ru');
+    });
+    
+    buildingsList.push(...sortedBuildings);
+    
+    return buildingsList;
+  }, [topLocations]);
+
   // Применение фильтров
   const [filteredData, setFilteredData] = useState<any>({
     statistics: null,
@@ -102,9 +119,20 @@ export function AnalyticsPage() {
     locationsComparison: [],
   });
 
+  // Применяем фильтры когда меняются фильтры или приходят новые данные
   useEffect(() => {
     applyFilters();
-  }, [filters, allData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    filters.yearFrom, 
+    filters.yearTo, 
+    filters.building,
+    statistics,
+    timeSeries,
+    topLocations,
+    weekdayPattern,
+    locationsComparison
+  ]);
 
   const applyFilters = () => {
     if (!statistics) {
@@ -372,7 +400,7 @@ export function AnalyticsPage() {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
               style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
             >
-              {BUILDINGS.map(building => (
+              {buildings.map(building => (
                 <option key={building} value={building}>{building}</option>
               ))}
             </select>
@@ -386,6 +414,19 @@ export function AnalyticsPage() {
             {filters.building !== 'Все корпуса' && ` • ${filters.building}`}
           </span>
         </div>
+
+        {/* Информация о доступных зданиях */}
+        {buildings.length > 1 && (
+          <div className="mt-2 flex items-center gap-2 text-xs text-gray-500">
+            <Building2 size={14} />
+            <span>
+              Доступно зданий в базе: <strong>{buildings.length - 1}</strong>
+              {topLocations && topLocations.length > 0 && (
+                <> • Всего зон: <strong>{topLocations.length}</strong></>
+              )}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Карточки статистики */}
