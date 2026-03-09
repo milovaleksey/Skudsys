@@ -91,29 +91,39 @@ export function AnalyticsPage() {
     if (topLocations && topLocations.length > 0) {
       topLocations.forEach((location: any) => {
         if (location.name) {
-          // Пытаемся извлечь название здания из полного названия зоны
-          // Например: "Корпус №5 - Главный вход" → "Корпус №5"
-          const buildingMatch = location.name.match(/^([^-]+)/);
-          if (buildingMatch) {
-            const rawBuilding = buildingMatch[1].trim();
-            rawBuildings.push(rawBuilding);
+          let buildingName = '';
+          
+          // Если есть дефис - берем часть до дефиса
+          if (location.name.includes('-')) {
+            const buildingMatch = location.name.match(/^([^-]+)/);
+            if (buildingMatch) {
+              buildingName = buildingMatch[1].trim();
+            }
+          } else {
+            // Если нет дефиса - берем всё название как здание
+            buildingName = location.name.trim();
+          }
+          
+          if (buildingName) {
+            rawBuildings.push(buildingName);
             
             // Нормализуем название здания
-            const building = rawBuilding
+            const normalizedBuilding = buildingName
               .replace(/\s+/g, ' ') // Множественные пробелы → один пробел
               .replace(/№\s+/g, '№') // "№ 5" → "№5"
               .replace(/\s+№/g, ' №'); // "Корпус№5" → "Корпус №5"
-            uniqueBuildings.add(building);
+            
+            uniqueBuildings.add(normalizedBuilding);
           }
         }
       });
       
       // Отладка: показываем если были различия
-      if (rawBuildings.length > uniqueBuildings.size) {
+      if (rawBuildings.length !== uniqueBuildings.size) {
         console.log('🔍 Нормализация названий зданий:', {
           исходных_записей: rawBuildings.length,
           уникальных_после_нормализации: uniqueBuildings.size,
-          примеры_дубликатов: rawBuildings.filter((b, i, arr) => arr.indexOf(b) !== i).slice(0, 5)
+          все_здания: Array.from(uniqueBuildings).sort()
         });
       }
     }
@@ -160,14 +170,27 @@ export function AnalyticsPage() {
     if (topLocations && filters.building !== 'Все корпуса') {
       filteredTopLocations = topLocations.filter((item: any) => {
         if (!item.name) return false;
-        const buildingMatch = item.name.match(/^([^-]+)/);
-        if (buildingMatch) {
-          const building = buildingMatch[1]
-            .trim()
+        
+        let buildingName = '';
+        
+        // Если есть дефис - берем часть до дефиса
+        if (item.name.includes('-')) {
+          const buildingMatch = item.name.match(/^([^-]+)/);
+          if (buildingMatch) {
+            buildingName = buildingMatch[1].trim();
+          }
+        } else {
+          // Если нет дефиса - берем всё название как здание
+          buildingName = item.name.trim();
+        }
+        
+        if (buildingName) {
+          // Нормализуем название
+          const normalizedBuilding = buildingName
             .replace(/\s+/g, ' ')
             .replace(/№\s+/g, '№')
             .replace(/\s+№/g, ' №');
-          return building === filters.building;
+          return normalizedBuilding === filters.building;
         }
         return false;
       });
@@ -462,7 +485,7 @@ export function AnalyticsPage() {
               💡 Каждый корпус может содержать несколько точек доступа (входы, турникеты, двери и т.д.)
             </div>
             <div className="mt-1 text-xs text-gray-400 italic">
-              Названия зданий автоматически нормализуются (пробелы, форматы номеров)
+              📌 Названия автоматически нормализуются: пробелы, форматы номеров, объединение вариантов написания
             </div>
           </div>
         )}
@@ -947,12 +970,22 @@ export function AnalyticsPage() {
 
         topLocations.forEach((location: any) => {
           if (location.name) {
-            // Извлекаем название корпуса
-            const buildingMatch = location.name.match(/^([^-]+)/);
-            if (buildingMatch) {
+            let buildingName = '';
+            
+            // Если есть дефис - берем часть до дефиса
+            if (location.name.includes('-')) {
+              const buildingMatch = location.name.match(/^([^-]+)/);
+              if (buildingMatch) {
+                buildingName = buildingMatch[1].trim();
+              }
+            } else {
+              // Если нет дефиса - берем всё название как здание
+              buildingName = location.name.trim();
+            }
+            
+            if (buildingName) {
               // Нормализуем название здания
-              const building = buildingMatch[1]
-                .trim()
+              const building = buildingName
                 .replace(/\s+/g, ' ')
                 .replace(/№\s+/g, '№')
                 .replace(/\s+№/g, ' №');
