@@ -63,6 +63,13 @@ export function AnalyticsPage() {
     building: 'Все корпуса',
   });
 
+  // Фильтры для детального отчета
+  const [reportFilters, setReportFilters] = useState({
+    periodType: 'all', // 'all', 'day', 'week', 'month', 'custom'
+    startDate: new Date(new Date().getFullYear(), 0, 1), // Начало года
+    endDate: new Date(), // Сегодня
+  });
+
   // Извлекаем данные из конфигурации
   const statistics = allData.total_stats;
   const timeSeries = allData.time_series;
@@ -75,6 +82,7 @@ export function AnalyticsPage() {
   // Динамически извлекаем уникальные здания из топ зон
   const buildings = useMemo(() => {
     const uniqueBuildings = new Set<string>();
+    const rawBuildings: string[] = []; // Для отладки
     
     // Добавляем "Все корпуса" как первую опцию
     const buildingsList = ['Все корпуса'];
@@ -87,11 +95,27 @@ export function AnalyticsPage() {
           // Например: "Корпус №5 - Главный вход" → "Корпус №5"
           const buildingMatch = location.name.match(/^([^-]+)/);
           if (buildingMatch) {
-            const building = buildingMatch[1].trim();
+            const rawBuilding = buildingMatch[1].trim();
+            rawBuildings.push(rawBuilding);
+            
+            // Нормализуем название здания
+            const building = rawBuilding
+              .replace(/\s+/g, ' ') // Множественные пробелы → один пробел
+              .replace(/№\s+/g, '№') // "№ 5" → "№5"
+              .replace(/\s+№/g, ' №'); // "Корпус№5" → "Корпус №5"
             uniqueBuildings.add(building);
           }
         }
       });
+      
+      // Отладка: показываем если были различия
+      if (rawBuildings.length > uniqueBuildings.size) {
+        console.log('🔍 Нормализация названий зданий:', {
+          исходных_записей: rawBuildings.length,
+          уникальных_после_нормализации: uniqueBuildings.size,
+          примеры_дубликатов: rawBuildings.filter((b, i, arr) => arr.indexOf(b) !== i).slice(0, 5)
+        });
+      }
     }
     
     // Добавляем отсортированные здания
@@ -134,9 +158,19 @@ export function AnalyticsPage() {
     // Фильтруем топ локаций по корпусу
     let filteredTopLocations = topLocations || [];
     if (topLocations && filters.building !== 'Все корпуса') {
-      filteredTopLocations = topLocations.filter((item: any) => 
-        item.name && item.name.includes(filters.building)
-      );
+      filteredTopLocations = topLocations.filter((item: any) => {
+        if (!item.name) return false;
+        const buildingMatch = item.name.match(/^([^-]+)/);
+        if (buildingMatch) {
+          const building = buildingMatch[1]
+            .trim()
+            .replace(/\s+/g, ' ')
+            .replace(/№\s+/g, '№')
+            .replace(/\s+№/g, ' №');
+          return building === filters.building;
+        }
+        return false;
+      });
     }
 
     // Пересчитываем статистику для отфильтрованных данных
@@ -402,14 +436,34 @@ export function AnalyticsPage() {
 
         {/* Информация о доступных зданиях */}
         {buildings.length > 1 && (
-          <div className="mt-2 flex items-center gap-2 text-xs text-gray-500">
-            <Building2 size={14} />
-            <span>
-              Доступно зданий в базе: <strong>{buildings.length - 1}</strong>
+          <div className="mt-2 p-3 bg-blue-50 rounded-lg border border-blue-200">
+            <div className="flex flex-wrap items-center gap-4 text-xs">
+              <div className="flex items-center gap-2 text-gray-700">
+                <Building2 size={14} style={{ color: '#00aeef' }} />
+                <span>Корпусов/зданий:</span>
+                <span className="font-bold text-gray-900">{buildings.length - 1}</span>
+              </div>
               {topLocations && topLocations.length > 0 && (
-                <> • Всего зон: <strong>{topLocations.length}</strong></>
+                <div className="flex items-center gap-2 text-gray-700">
+                  <MapPin size={14} style={{ color: '#00aeef' }} />
+                  <span>Точек доступа (зон СКУД):</span>
+                  <span className="font-bold text-gray-900">{topLocations.length}</span>
+                </div>
               )}
-            </span>
+              {filteredData.statistics && (
+                <div className="flex items-center gap-2 text-gray-700">
+                  <Activity size={14} style={{ color: '#00aeef' }} />
+                  <span>Активных зон:</span>
+                  <span className="font-bold text-gray-900">{filteredData.statistics.uniqueZones || 0}</span>
+                </div>
+              )}
+            </div>
+            <div className="mt-2 text-xs text-gray-500">
+              💡 Каждый корпус может содержать несколько точек доступа (входы, турникеты, двери и т.д.)
+            </div>
+            <div className="mt-1 text-xs text-gray-400 italic">
+              Названия зданий автоматически нормализуются (пробелы, форматы номеров)
+            </div>
           </div>
         )}
       </div>
@@ -417,13 +471,14 @@ export function AnalyticsPage() {
       {/* Карточки статистики */}
       {filteredData.statistics && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-xl shadow-md p-6">
+          <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600 mb-1">Всего проходов</p>
                 <p className="text-2xl font-bold text-gray-900">
                   {formatNumber(filteredData.statistics.totalPasses || 0)}
                 </p>
+                <p className="text-xs text-gray-500 mt-1">за выбранный период</p>
               </div>
               <div className="p-3 rounded-lg" style={{ backgroundColor: '#e6f7ff' }}>
                 <TrendingUp className="w-6 h-6" style={{ color: '#00aeef' }} />
@@ -431,13 +486,14 @@ export function AnalyticsPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6">
+          <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Уникальных зон</p>
+                <p className="text-sm text-gray-600 mb-1">Активных зон СКУД</p>
                 <p className="text-2xl font-bold text-gray-900">
                   {formatNumber(filteredData.statistics.uniqueZones || 0)}
                 </p>
+                <p className="text-xs text-gray-500 mt-1">точек доступа</p>
               </div>
               <div className="p-3 rounded-lg" style={{ backgroundColor: '#e6f7ff' }}>
                 <Building2 className="w-6 h-6" style={{ color: '#00aeef' }} />
@@ -445,13 +501,14 @@ export function AnalyticsPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6">
+          <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600 mb-1">Среднее в день</p>
                 <p className="text-2xl font-bold text-gray-900">
                   {formatNumber(filteredData.statistics.avgDailyPasses || 0)}
                 </p>
+                <p className="text-xs text-gray-500 mt-1">проходов ежедневно</p>
               </div>
               <div className="p-3 rounded-lg" style={{ backgroundColor: '#e6f7ff' }}>
                 <Calendar className="w-6 h-6" style={{ color: '#00aeef' }} />
@@ -459,7 +516,7 @@ export function AnalyticsPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6">
+          <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600 mb-1">Пиковый день</p>
@@ -868,6 +925,19 @@ export function AnalyticsPage() {
 
       {/* Детальный отчет по корпусам */}
       {filteredData.topLocations && filteredData.topLocations.length > 0 && (() => {
+        // Фильтруем timeSeries по выбранному периоду для отчета
+        let reportTimeSeries = timeSeries || [];
+        if (reportFilters.periodType !== 'all' && timeSeries && timeSeries.length > 0) {
+          const start = new Date(reportFilters.startDate);
+          const end = new Date(reportFilters.endDate);
+          end.setHours(23, 59, 59, 999);
+          
+          reportTimeSeries = timeSeries.filter((item: any) => {
+            const itemDate = new Date(item.date);
+            return itemDate >= start && itemDate <= end;
+          });
+        }
+
         // Группируем данные по корпусам
         const buildingReport: Record<string, {
           totalPasses: number;
@@ -880,7 +950,12 @@ export function AnalyticsPage() {
             // Извлекаем название корпуса
             const buildingMatch = location.name.match(/^([^-]+)/);
             if (buildingMatch) {
-              const building = buildingMatch[1].trim();
+              // Нормализуем название здания
+              const building = buildingMatch[1]
+                .trim()
+                .replace(/\s+/g, ' ')
+                .replace(/№\s+/g, '№')
+                .replace(/\s+№/g, ' №');
               
               if (!buildingReport[building]) {
                 buildingReport[building] = {
@@ -890,10 +965,20 @@ export function AnalyticsPage() {
                 };
               }
               
-              buildingReport[building].totalPasses += location.count || 0;
+              // Если выбран конкретный период, пересчитываем проходы
+              let zonePasses = location.count || 0;
+              if (reportFilters.periodType !== 'all' && reportTimeSeries.length > 0 && timeSeries) {
+                const totalDays = timeSeries.length;
+                const filteredDays = reportTimeSeries.length;
+                if (totalDays > 0) {
+                  zonePasses = Math.round((location.count || 0) * (filteredDays / totalDays));
+                }
+              }
+              
+              buildingReport[building].totalPasses += zonePasses;
               buildingReport[building].zones.push({
                 name: location.name,
-                count: location.count || 0
+                count: zonePasses
               });
             }
           }
@@ -912,10 +997,67 @@ export function AnalyticsPage() {
           buildingReport[b].totalPasses - buildingReport[a].totalPasses
         );
 
+        // Функция применения быстрых фильтров
+        const handleQuickFilter = (type: string) => {
+          const now = new Date();
+          let startDate = new Date();
+          let endDate = new Date();
+
+          switch (type) {
+            case 'today':
+              startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+              break;
+            case 'yesterday':
+              startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+              endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 23, 59, 59);
+              break;
+            case 'week':
+              const dayOfWeek = now.getDay();
+              const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+              startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - daysToMonday);
+              break;
+            case 'lastWeek':
+              const lastWeekEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+              startDate = new Date(lastWeekEnd);
+              startDate.setDate(lastWeekEnd.getDate() - 6);
+              endDate = lastWeekEnd;
+              break;
+            case 'month':
+              startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+              break;
+            case 'lastMonth':
+              startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+              endDate = new Date(now.getFullYear(), now.getMonth(), 0);
+              break;
+            case 'year':
+              startDate = new Date(now.getFullYear(), 0, 1);
+              break;
+            case 'all':
+            default:
+              setReportFilters({ ...reportFilters, periodType: 'all' });
+              return;
+          }
+
+          setReportFilters({ periodType: type, startDate, endDate });
+        };
+
+        // Форматирование периода для отображения
+        const formatPeriodDisplay = () => {
+          if (reportFilters.periodType === 'all') {
+            return `${filters.yearFrom} - ${filters.yearTo}`;
+          }
+          const startStr = reportFilters.startDate.toLocaleDateString('ru-RU');
+          const endStr = reportFilters.endDate.toLocaleDateString('ru-RU');
+          return `${startStr} - ${endStr}`;
+        };
+
         // Функция экспорта детального отчета
         const handleExportDetailedReport = () => {
           try {
             const wb = XLSX.utils.book_new();
+
+            // Формируем название периода для отчета
+            const periodText = formatPeriodDisplay();
 
             // Лист 1: Сводка по корпусам
             const summaryData = sortedBuildings.map(building => ({
@@ -923,7 +1065,7 @@ export function AnalyticsPage() {
               'Всего проходов': buildingReport[building].totalPasses,
               'Количество зон': buildingReport[building].zones.length,
               'Среднее на зону': buildingReport[building].avgPerZone,
-              'Период': `${filters.yearFrom} - ${filters.yearTo}`
+              'Период': periodText
             }));
             const ws1 = XLSX.utils.json_to_sheet(summaryData);
             XLSX.utils.book_append_sheet(wb, ws1, 'Сводка по корпусам');
@@ -943,21 +1085,36 @@ export function AnalyticsPage() {
             const ws2 = XLSX.utils.json_to_sheet(detailData);
             XLSX.utils.book_append_sheet(wb, ws2, 'Детализация по зонам');
 
-            // Лист 3: ТОП-10 самых активных зон
-            const top10Zones = [...topLocations]
-              .sort((a: any, b: any) => (b.count || 0) - (a.count || 0))
-              .slice(0, 10)
-              .map((zone: any, index: number) => ({
-                'Место': index + 1,
-                'Зона': zone.name,
-                'Количество проходов': zone.count || 0
-              }));
+            // Лист 3: ТОП-10 самых активных зон с учетом периода
+            const sortedZones = Object.keys(buildingReport)
+              .flatMap(building => buildingReport[building].zones)
+              .sort((a, b) => b.count - a.count)
+              .slice(0, 10);
+            
+            const top10Zones = sortedZones.map((zone, index) => ({
+              'Место': index + 1,
+              'Зона': zone.name,
+              'Количество проходов': zone.count
+            }));
             const ws3 = XLSX.utils.json_to_sheet(top10Zones);
             XLSX.utils.book_append_sheet(wb, ws3, 'ТОП-10 зон');
 
+            // Лист 4: Динамика по дням (если выбран период)
+            if (reportFilters.periodType !== 'all' && reportTimeSeries.length > 0) {
+              const dynamicsData = reportTimeSeries.map((item: any) => ({
+                'Дата': new Date(item.date).toLocaleDateString('ru-RU'),
+                'Количество проходов': item.count || 0
+              }));
+              const ws4 = XLSX.utils.json_to_sheet(dynamicsData);
+              XLSX.utils.book_append_sheet(wb, ws4, 'Динамика по дням');
+            }
+
             // Сохранение
             const date = new Date().toISOString().split('T')[0];
-            const fileName = `Отчет_по_корпусам_${filters.yearFrom}-${filters.yearTo}_${date}.xlsx`;
+            const periodSuffix = reportFilters.periodType !== 'all' 
+              ? `_${reportFilters.periodType}` 
+              : `_${filters.yearFrom}-${filters.yearTo}`;
+            const fileName = `Отчет_по_корпусам${periodSuffix}_${date}.xlsx`;
             XLSX.writeFile(wb, fileName);
             toast.success('Детальный отчет успешно выгружен');
           } catch (error) {
@@ -983,13 +1140,169 @@ export function AnalyticsPage() {
               </button>
             </div>
 
+            {/* Фильтры по периоду */}
+            <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-200">
+              <div className="flex items-center gap-2 mb-3">
+                <Calendar size={18} style={{ color: '#00aeef' }} />
+                <h4 className="font-semibold text-gray-900">Фильтр по периоду</h4>
+              </div>
+
+              {/* Быстрые фильтры */}
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 mb-4">
+                <button
+                  onClick={() => handleQuickFilter('today')}
+                  className={`px-3 py-2 text-sm rounded-lg border transition-all ${
+                    reportFilters.periodType === 'today'
+                      ? 'bg-[#00aeef] text-white border-[#00aeef] shadow-md'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-[#00aeef]'
+                  }`}
+                >
+                  Сегодня
+                </button>
+                <button
+                  onClick={() => handleQuickFilter('yesterday')}
+                  className={`px-3 py-2 text-sm rounded-lg border transition-all ${
+                    reportFilters.periodType === 'yesterday'
+                      ? 'bg-[#00aeef] text-white border-[#00aeef] shadow-md'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-[#00aeef]'
+                  }`}
+                >
+                  Вчера
+                </button>
+                <button
+                  onClick={() => handleQuickFilter('week')}
+                  className={`px-3 py-2 text-sm rounded-lg border transition-all ${
+                    reportFilters.periodType === 'week'
+                      ? 'bg-[#00aeef] text-white border-[#00aeef] shadow-md'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-[#00aeef]'
+                  }`}
+                >
+                  Эта неделя
+                </button>
+                <button
+                  onClick={() => handleQuickFilter('lastWeek')}
+                  className={`px-3 py-2 text-sm rounded-lg border transition-all ${
+                    reportFilters.periodType === 'lastWeek'
+                      ? 'bg-[#00aeef] text-white border-[#00aeef] shadow-md'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-[#00aeef]'
+                  }`}
+                >
+                  Прошлая неделя
+                </button>
+                <button
+                  onClick={() => handleQuickFilter('month')}
+                  className={`px-3 py-2 text-sm rounded-lg border transition-all ${
+                    reportFilters.periodType === 'month'
+                      ? 'bg-[#00aeef] text-white border-[#00aeef] shadow-md'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-[#00aeef]'
+                  }`}
+                >
+                  Этот месяц
+                </button>
+                <button
+                  onClick={() => handleQuickFilter('lastMonth')}
+                  className={`px-3 py-2 text-sm rounded-lg border transition-all ${
+                    reportFilters.periodType === 'lastMonth'
+                      ? 'bg-[#00aeef] text-white border-[#00aeef] shadow-md'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-[#00aeef]'
+                  }`}
+                >
+                  Прошлый месяц
+                </button>
+                <button
+                  onClick={() => handleQuickFilter('year')}
+                  className={`px-3 py-2 text-sm rounded-lg border transition-all ${
+                    reportFilters.periodType === 'year'
+                      ? 'bg-[#00aeef] text-white border-[#00aeef] shadow-md'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-[#00aeef]'
+                  }`}
+                >
+                  Этот год
+                </button>
+                <button
+                  onClick={() => handleQuickFilter('all')}
+                  className={`px-3 py-2 text-sm rounded-lg border transition-all ${
+                    reportFilters.periodType === 'all'
+                      ? 'bg-[#00aeef] text-white border-[#00aeef] shadow-md'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-[#00aeef]'
+                  }`}
+                >
+                  Весь период
+                </button>
+              </div>
+
+              {/* Произвольный период */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Дата начала
+                  </label>
+                  <DatePicker
+                    selected={reportFilters.startDate}
+                    onChange={(date: Date | null) => {
+                      if (date) {
+                        setReportFilters({ 
+                          ...reportFilters, 
+                          startDate: date,
+                          periodType: 'custom'
+                        });
+                      }
+                    }}
+                    dateFormat="dd.MM.yyyy"
+                    locale="ru"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent text-sm"
+                    style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
+                    maxDate={reportFilters.endDate}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Дата окончания
+                  </label>
+                  <DatePicker
+                    selected={reportFilters.endDate}
+                    onChange={(date: Date | null) => {
+                      if (date) {
+                        setReportFilters({ 
+                          ...reportFilters, 
+                          endDate: date,
+                          periodType: 'custom'
+                        });
+                      }
+                    }}
+                    dateFormat="dd.MM.yyyy"
+                    locale="ru"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent text-sm"
+                    style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
+                    minDate={reportFilters.startDate}
+                    maxDate={new Date()}
+                  />
+                </div>
+              </div>
+
+              {/* Информация о фильтре */}
+              {reportFilters.periodType !== 'all' && (
+                <div className="mt-3 flex items-center justify-between p-2 bg-white rounded-lg">
+                  <span className="text-xs text-gray-600">
+                    Применен фильтр: <strong>{formatPeriodDisplay()}</strong>
+                  </span>
+                  <button
+                    onClick={() => handleQuickFilter('all')}
+                    className="text-xs text-[#00aeef] hover:underline font-medium"
+                  >
+                    Сбросить фильтр
+                  </button>
+                </div>
+              )}
+            </div>
+
             {/* Период отчета */}
             <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
               <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-2 text-gray-700">
                   <Calendar size={16} style={{ color: '#00aeef' }} />
                   <span className="font-medium">Период отчета:</span>
-                  <span>{filters.yearFrom} - {filters.yearTo}</span>
+                  <span>{formatPeriodDisplay()}</span>
                 </div>
                 {filters.building !== 'Все корпуса' && (
                   <div className="flex items-center gap-2 text-gray-700">
