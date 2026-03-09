@@ -610,7 +610,7 @@ export function ForeignStudentsReport() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
                   style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
                 >
-                  <option value="all">Все страны (кроме Рссии)</option>
+                  <option value="all">Все страны (кроме России)</option>
                   {countryStats
                     .filter(c => c.country !== 'РОССИЯ')
                     .map(country => (
