@@ -9,7 +9,10 @@
     "db:migrate": "node src/database/migrate.js",
     "db:seed": "node src/database/seed.js",
     "test": "jest",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "analytics:config": "node scripts/publish-analytics-config.js",
+    "analytics:data": "node scripts/publish-analytics-data.js",
+    "analytics:setup": "npm run analytics:config && npm run analytics:data ../imports/rez.csv"
   },
   "keywords": [
     "utmn",

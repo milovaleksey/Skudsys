@@ -371,6 +371,37 @@ export function AnalyticsPage() {
         </div>
       </div>
 
+      {/* Информация если нет данных или мало зон */}
+      {(!filteredData.statistics || (topLocations && topLocations.length <= 10)) && (
+        <div className="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 mt-0.5">
+              <Activity size={20} className="text-amber-600" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-amber-900 mb-1">
+                {!filteredData.statistics ? 'Нет данных аналитики' : 'Показывается только 10 зон'}
+              </h3>
+              <p className="text-sm text-amber-800 mb-3">
+                {!filteredData.statistics 
+                  ? 'MQTT топики не настроены. Для отображения аналитики необходимо отправить конфигурацию и данные в MQTT.'
+                  : 'Возможно не отправлена конфигурация или установлен лимит 10 зон. Для отображения всех зон (~22+) нужно настроить MQTT.'
+                }
+              </p>
+              <div className="text-xs text-amber-700 space-y-1 bg-amber-100/50 rounded p-3 font-mono">
+                <div className="font-semibold text-amber-900 mb-2">📋 Инструкция:</div>
+                <div>1. cd backend</div>
+                <div>2. npm run analytics:setup</div>
+                <div>3. npm start (перезапустить backend)</div>
+                <div className="pt-2 text-amber-600">
+                  📚 Подробнее: /QUICK_START_ANALYTICS.md
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Ошибка подключения MQTT */}
       {mqttError && (
         <div className="bg-red-50 border border-red-200 rounded-xl p-4">
