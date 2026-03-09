@@ -41,6 +41,8 @@ interface MissingFormData {
   daysThreshold: number;
 }
 
+type DaysFilter = 'all' | 'undefined' | 'up10' | 'up30' | 'up100' | 'over100';
+
 interface PassRecord {
   id: number;
   time: string;
@@ -81,6 +83,7 @@ export function ForeignStudentsReport() {
   const [searchResults, setSearchResults] = useState<PassRecord[]>([]);
   const [missingResults, setMissingResults] = useState<PassRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [daysFilter, setDaysFilter] = useState<DaysFilter>('all');
 
   // Функция форматирования даты
   const formatDateTime = (dateString: string | null): string => {
@@ -257,6 +260,35 @@ export function ForeignStudentsReport() {
       toast.error('Ошибка при экспорте в Excel');
     }
   };
+
+  // Фильтрация результатов по дням отсутствия
+  const filterMissingResultsByDays = (results: PassRecord[]): PassRecord[] => {
+    if (daysFilter === 'all') {
+      return results;
+    }
+
+    return results.filter(result => {
+      const days = result.daysMissing;
+      
+      switch (daysFilter) {
+        case 'undefined':
+          return days === null || days === undefined;
+        case 'up10':
+          return days !== null && days !== undefined && days <= 10;
+        case 'up30':
+          return days !== null && days !== undefined && days <= 30;
+        case 'up100':
+          return days !== null && days !== undefined && days <= 100;
+        case 'over100':
+          return days !== null && days !== undefined && days > 100;
+        default:
+          return true;
+      }
+    });
+  };
+
+  // Получаем отфильтрованные результаты
+  const filteredMissingResults = filterMissingResultsByDays(missingResults);
 
   return (
     <div className="space-y-6">
@@ -600,7 +632,7 @@ export function ForeignStudentsReport() {
               
               {missingResults.length > 0 && (
                 <button
-                  onClick={() => handleExportExcel(missingResults.map(r => ({
+                  onClick={() => handleExportExcel(filteredMissingResults.map(r => ({
                     'ФИО': r.fullName,
                     'Логин/Почта': r.upn,
                     'Страна': r.country || '—',
@@ -617,13 +649,95 @@ export function ForeignStudentsReport() {
               )}
             </div>
 
+            {/* Days Filter */}
+            {missingResults.length > 0 && (
+              <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Фильтр по дням отсутствия
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setDaysFilter('all')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      daysFilter === 'all'
+                        ? 'text-white'
+                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                    }`}
+                    style={daysFilter === 'all' ? { backgroundColor: '#00aeef' } : {}}
+                  >
+                    Показать все
+                  </button>
+                  <button
+                    onClick={() => setDaysFilter('up10')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      daysFilter === 'up10'
+                        ? 'text-white'
+                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                    }`}
+                    style={daysFilter === 'up10' ? { backgroundColor: '#00aeef' } : {}}
+                  >
+                    До 10 дней
+                  </button>
+                  <button
+                    onClick={() => setDaysFilter('up30')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      daysFilter === 'up30'
+                        ? 'text-white'
+                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                    }`}
+                    style={daysFilter === 'up30' ? { backgroundColor: '#00aeef' } : {}}
+                  >
+                    До 30 дней
+                  </button>
+                  <button
+                    onClick={() => setDaysFilter('up100')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      daysFilter === 'up100'
+                        ? 'text-white'
+                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                    }`}
+                    style={daysFilter === 'up100' ? { backgroundColor: '#00aeef' } : {}}
+                  >
+                    До 100 дней
+                  </button>
+                  <button
+                    onClick={() => setDaysFilter('over100')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      daysFilter === 'over100'
+                        ? 'text-white'
+                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                    }`}
+                    style={daysFilter === 'over100' ? { backgroundColor: '#00aeef' } : {}}
+                  >
+                    Более 100 дней
+                  </button>
+                  <button
+                    onClick={() => setDaysFilter('undefined')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      daysFilter === 'undefined'
+                        ? 'text-white'
+                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                    }`}
+                    style={daysFilter === 'undefined' ? { backgroundColor: '#00aeef' } : {}}
+                  >
+                    Не определено
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Total Records */}
             {missingResults.length > 0 && (
               <div className="bg-gray-50 rounded-lg p-4 mt-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-700 font-medium">Всего записей:</span>
+                  <span className="text-gray-700 font-medium">
+                    {daysFilter === 'all' ? 'Всего записей:' : 'Отфильтровано записей:'}
+                  </span>
                   <span className="text-2xl font-bold" style={{ color: '#00aeef' }}>
-                    {missingResults.length}
+                    {filteredMissingResults.length}
+                    {daysFilter !== 'all' && (
+                      <span className="text-sm text-gray-500 ml-2">из {missingResults.length}</span>
+                    )}
                   </span>
                 </div>
               </div>
@@ -645,7 +759,7 @@ export function ForeignStudentsReport() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {missingResults.map((result, index) => (
+                    {filteredMissingResults.map((result, index) => (
                       <tr 
                         key={result.id}
                         className={`hover:bg-gray-50 transition-colors ${
