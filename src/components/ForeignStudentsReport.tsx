@@ -183,20 +183,38 @@ export function ForeignStudentsReport() {
     try {
       const response = await skudApi.getForeignStudentsMissing(missingForm.country, missingForm.daysThreshold);
       
+      console.log('Missing students response:', response);
+      
       if (response.success && response.data) {
-        const results = response.data as any;
-        setMissingResults(results.results || []);
+        // Проверяем различные возможные структуры данных
+        let results: PassRecord[] = [];
         
-        if ((results.results || []).length === 0) {
+        if (Array.isArray(response.data)) {
+          // Если data - это массив напрямую
+          results = response.data;
+        } else if (response.data.results && Array.isArray(response.data.results)) {
+          // Если data содержит поле results
+          results = response.data.results;
+        } else if (response.data.data && Array.isArray(response.data.data)) {
+          // Если data содержит поле data
+          results = response.data.data;
+        }
+        
+        console.log('Parsed results:', results);
+        setMissingResults(results);
+        
+        if (results.length === 0) {
           toast.info('Пропавшие студенты не найдены');
         } else {
-          toast.success(`Найдено записей: ${(results.results || []).length}`);
+          toast.success(`Найдено записей: ${results.length}`);
         }
       } else {
+        console.error('API error:', response.error);
         toast.error(response.error?.message || 'Ошибка при получении данных');
         setMissingResults([]);
       }
     } catch (err) {
+      console.error('Exception:', err);
       toast.error(err instanceof Error ? err.message : 'Произошла ошибка');
       setMissingResults([]);
     } finally {
@@ -230,7 +248,7 @@ export function ForeignStudentsReport() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">��тчет по иностранным студентам</h2>
+        <h2 className="text-2xl font-bold text-gray-900">тчет по иностранным студентам</h2>
         {/* Connection Status */}
         {isConnected ? (
           <CheckCircle className="w-5 h-5 text-green-600" />
