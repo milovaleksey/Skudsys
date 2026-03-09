@@ -185,20 +185,9 @@ export function ForeignStudentsReport() {
       
       console.log('Missing students response:', response);
       
-      if (response.success && response.data) {
-        // Проверяем различные возможные структуры данных
-        let results: PassRecord[] = [];
-        
-        if (Array.isArray(response.data)) {
-          // Если data - это массив напрямую
-          results = response.data;
-        } else if (response.data.results && Array.isArray(response.data.results)) {
-          // Если data содержит поле results
-          results = response.data.results;
-        } else if (response.data.data && Array.isArray(response.data.data)) {
-          // Если data содержит поле data
-          results = response.data.data;
-        }
+      if (response.success) {
+        // Данные приходят напрямую в response.results, а не в response.data
+        const results = response.results || [];
         
         console.log('Parsed results:', results);
         setMissingResults(results);
