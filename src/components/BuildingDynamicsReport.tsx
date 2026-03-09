@@ -1,6 +1,8 @@
-import { TrendingUp, Download, AlertCircle, Calendar } from 'lucide-react';
+import { TrendingUp, Download, AlertCircle, Calendar, ChevronDown, ChevronUp, BarChart3 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useState } from 'react';
 
 interface BuildingDynamicsReportProps {
   topLocations: any[];
@@ -174,6 +176,29 @@ export function BuildingDynamicsReport({
     }
   };
 
+  // Состояние для управления раскрытыми корпусами
+  const [expandedBuildings, setExpandedBuildings] = useState<Set<string>>(new Set());
+  const [expandAll, setExpandAll] = useState(false);
+
+  const toggleBuilding = (building: string) => {
+    const newExpanded = new Set(expandedBuildings);
+    if (newExpanded.has(building)) {
+      newExpanded.delete(building);
+    } else {
+      newExpanded.add(building);
+    }
+    setExpandedBuildings(newExpanded);
+  };
+
+  const toggleAll = () => {
+    if (expandAll) {
+      setExpandedBuildings(new Set());
+    } else {
+      setExpandedBuildings(new Set(buildingsList));
+    }
+    setExpandAll(!expandAll);
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-md p-6">
       <div className="flex items-center justify-between mb-6">
@@ -226,104 +251,146 @@ export function BuildingDynamicsReport({
         </div>
       </div>
 
-      {/* Таблица с прокруткой */}
-      <div className="overflow-x-auto">
-        <div className="max-h-[600px] overflow-y-auto border rounded-lg">
-          <table className="w-full border-collapse">
-            <thead className="sticky top-0 bg-white z-10">
-              <tr className="border-b-2" style={{ borderColor: '#00aeef' }}>
-                <th className="text-left py-3 px-4 font-semibold text-gray-900 bg-gray-50 sticky left-0 z-20">
-                  Корпус
-                </th>
-                {dynamicTimeSeries.map((day: any, idx: number) => (
-                  <th key={idx} className="text-center py-3 px-3 font-semibold text-gray-900 min-w-[80px]">
-                    <div className="text-xs">
-                      {new Date(day.date).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' })}
-                    </div>
-                    <div className="text-xs text-gray-500 font-normal">
-                      {new Date(day.date).toLocaleDateString('ru-RU', { weekday: 'short' })}
-                    </div>
-                  </th>
-                ))}
-                <th className="text-center py-3 px-4 font-semibold text-gray-900 bg-gray-50 sticky right-0 z-20">
-                  ИТОГО
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {buildingsList.map((building, buildingIdx) => {
-                const total = buildingDynamics[building].reduce((sum, d) => sum + d.count, 0);
-                const avg = Math.round(total / buildingDynamics[building].length);
-                
-                return (
-                  <tr 
-                    key={buildingIdx}
-                    className="border-b hover:bg-blue-50 transition-colors"
-                  >
-                    <td className="py-3 px-4 font-medium text-gray-900 bg-gray-50 sticky left-0 z-10">
-                      {building}
-                    </td>
-                    {buildingDynamics[building].map((day, dayIdx) => {
-                      // Цветовая индикация
-                      let bgColor = 'transparent';
-                      if (day.count > avg * 1.5) {
-                        bgColor = 'rgb(220, 252, 231)'; // green-100
-                      } else if (day.count < avg * 0.5 && day.count > 0) {
-                        bgColor = 'rgb(254, 243, 199)'; // yellow-100
-                      } else if (day.count === 0) {
-                        bgColor = 'rgb(254, 226, 226)'; // red-100
-                      }
-                      
-                      return (
-                        <td 
-                          key={dayIdx}
-                          className="py-3 px-3 text-center text-sm text-gray-700"
-                          style={{ backgroundColor: bgColor }}
-                        >
-                          {formatNumber(day.count)}
-                        </td>
-                      );
-                    })}
-                    <td className="py-3 px-4 text-center font-bold text-gray-900 bg-blue-50 sticky right-0 z-10">
-                      {formatNumber(total)}
-                    </td>
-                  </tr>
-                );
-              })}
-              
-              {/* Строка ИТОГО */}
-              <tr className="border-t-2 font-bold bg-gray-100" style={{ borderColor: '#00aeef' }}>
-                <td className="py-3 px-4 text-gray-900 sticky left-0 z-10 bg-gray-100">
-                  ИТОГО
-                </td>
-                {dynamicTimeSeries.map((day: any, idx: number) => (
-                  <td key={idx} className="py-3 px-3 text-center text-gray-900">
-                    {formatNumber(day.count || 0)}
-                  </td>
-                ))}
-                <td className="py-3 px-4 text-center text-gray-900 sticky right-0 z-10 bg-gray-100">
-                  {formatNumber(dynamicTimeSeries.reduce((sum: number, d: any) => sum + (d.count || 0), 0))}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      {/* Кнопка развернуть/свернуть все */}
+      <div className="mb-4 flex justify-end">
+        <button
+          onClick={toggleAll}
+          className="flex items-center gap-2 px-3 py-2 text-sm border rounded-lg hover:bg-gray-50 transition-colors"
+          style={{ borderColor: '#00aeef', color: '#00aeef' }}
+        >
+          {expandAll ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          <span>{expandAll ? 'Свернуть все' : 'Развернуть все'}</span>
+        </button>
       </div>
 
-      {/* Легенда */}
-      <div className="mt-4 flex items-center justify-center gap-6 text-xs">
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-green-100 border border-green-300"></div>
-          <span className="text-gray-600">Выше среднего (&gt;150%)</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-yellow-100 border border-yellow-300"></div>
-          <span className="text-gray-600">Ниже среднего (&lt;50%)</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-red-100 border border-red-300"></div>
-          <span className="text-gray-600">Нет проходов</span>
-        </div>
+      {/* Аккордеон с корпусами */}
+      <div className="space-y-3">
+        {buildingsList.map((building, buildingIdx) => {
+          const total = buildingDynamics[building].reduce((sum, d) => sum + d.count, 0);
+          const avg = Math.round(total / buildingDynamics[building].length);
+          const max = Math.max(...buildingDynamics[building].map(d => d.count));
+          const min = Math.min(...buildingDynamics[building].map(d => d.count));
+          const isExpanded = expandedBuildings.has(building);
+          
+          // Подготовка данных для графика
+          const chartData = buildingDynamics[building].map(day => ({
+            date: new Date(day.date).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' }),
+            count: day.count
+          }));
+
+          return (
+            <div key={buildingIdx} className="border rounded-lg overflow-hidden" style={{ borderColor: '#e5e7eb' }}>
+              {/* Заголовок корпуса */}
+              <button
+                onClick={() => toggleBuilding(building)}
+                className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-center w-8 h-8 rounded-lg" style={{ backgroundColor: '#00aeef20' }}>
+                    <BarChart3 size={18} style={{ color: '#00aeef' }} />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-semibold text-gray-900">{building}</div>
+                    <div className="text-xs text-gray-500 mt-0.5">
+                      {dynamicTimeSeries.length} {(() => {
+                        const n = dynamicTimeSeries.length % 100;
+                        const n1 = n % 10;
+                        if (n > 10 && n < 20) return 'дней';
+                        if (n1 > 1 && n1 < 5) return 'дня';
+                        if (n1 === 1) return 'день';
+                        return 'дней';
+                      })()} • {formatNumber(total)} проходов
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  {/* Мини-статистика */}
+                  <div className="hidden md:flex items-center gap-4 text-xs text-gray-600">
+                    <div>
+                      <span className="text-gray-500">Среднее:</span>
+                      <span className="ml-1 font-semibold">{formatNumber(avg)}</span>
+                    </div>
+                    <div>
+                      <span className="text-gray-500">Макс:</span>
+                      <span className="ml-1 font-semibold text-green-600">{formatNumber(max)}</span>
+                    </div>
+                    <div>
+                      <span className="text-gray-500">Мин:</span>
+                      <span className="ml-1 font-semibold text-orange-600">{formatNumber(min)}</span>
+                    </div>
+                  </div>
+                  {isExpanded ? (
+                    <ChevronUp size={20} style={{ color: '#00aeef' }} />
+                  ) : (
+                    <ChevronDown size={20} className="text-gray-400" />
+                  )}
+                </div>
+              </button>
+
+              {/* Раскрывающийся контент */}
+              {isExpanded && (
+                <div className="border-t" style={{ borderColor: '#e5e7eb' }}>
+                  <div className="p-4 bg-gray-50">
+                    {/* График */}
+                    <div className="mb-4 bg-white rounded-lg p-4 border" style={{ borderColor: '#e5e7eb' }}>
+                      <div className="text-sm font-medium text-gray-700 mb-3">График проходов</div>
+                      <ResponsiveContainer width="100%" height={200}>
+                        <LineChart data={chartData}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                          <XAxis 
+                            dataKey="date" 
+                            tick={{ fontSize: 11, fill: '#6b7280' }}
+                            angle={-45}
+                            textAnchor="end"
+                            height={60}
+                          />
+                          <YAxis tick={{ fontSize: 11, fill: '#6b7280' }} />
+                          <Tooltip 
+                            contentStyle={{ 
+                              backgroundColor: 'white', 
+                              border: '1px solid #00aeef',
+                              borderRadius: '8px',
+                              fontSize: '12px'
+                            }}
+                            formatter={(value: any) => [formatNumber(value), 'Проходов']}
+                          />
+                          <Line 
+                            type="monotone" 
+                            dataKey="count" 
+                            stroke="#00aeef" 
+                            strokeWidth={2}
+                            dot={{ fill: '#00aeef', r: 3 }}
+                            activeDot={{ r: 5 }}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+
+                    {/* Детальная статистика */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white rounded-lg p-3 border" style={{ borderColor: '#e5e7eb' }}>
+                        <div className="text-xs text-gray-500 mb-1">Всего проходов</div>
+                        <div className="text-lg font-bold text-gray-900">{formatNumber(total)}</div>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 border" style={{ borderColor: '#e5e7eb' }}>
+                        <div className="text-xs text-gray-500 mb-1">Среднее в день</div>
+                        <div className="text-lg font-bold" style={{ color: '#00aeef' }}>{formatNumber(avg)}</div>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 border" style={{ borderColor: '#e5e7eb' }}>
+                        <div className="text-xs text-gray-500 mb-1">Максимум</div>
+                        <div className="text-lg font-bold text-green-600">{formatNumber(max)}</div>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 border" style={{ borderColor: '#e5e7eb' }}>
+                        <div className="text-xs text-gray-500 mb-1">Минимум</div>
+                        <div className="text-lg font-bold text-orange-600">{formatNumber(min)}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* Статистика топ-3 корпусов */}
