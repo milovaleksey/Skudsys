@@ -1,0 +1,459 @@
+chunk-NUMECXU6.js?v=040b1844:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+api.ts:14 🌐 Using API URL from env: http://10.101.221.207:3000/v1
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /auth/me with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/auth/me
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /roles with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/roles
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /auth/me with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/auth/me
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /roles with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/roles
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:93 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:94 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:104 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk
+useMQTT.ts:114 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+useMQTT.ts:208 WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk' failed: WebSocket is closed before the connection is established.
+(anonymous) @ useMQTT.ts:208
+(anonymous) @ useMQTT.ts:228
+safelyCallDestroy @ chunk-NUMECXU6.js?v=040b1844:16748
+commitHookEffectListUnmount @ chunk-NUMECXU6.js?v=040b1844:16875
+invokePassiveEffectUnmountInDEV @ chunk-NUMECXU6.js?v=040b1844:18363
+invokeEffectsInDev @ chunk-NUMECXU6.js?v=040b1844:19701
+commitDoubleInvokeEffectsInDEV @ chunk-NUMECXU6.js?v=040b1844:19682
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19503
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=040b1844:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=040b1844:19432
+commitRoot @ chunk-NUMECXU6.js?v=040b1844:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=040b1844:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18718
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+useMQTT.ts:93 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:94 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:104 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk
+useMQTT.ts:114 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+useMQTT.ts:174 [WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+ws.onerror @ useMQTT.ts:174
+useMQTT.ts:179 [WebSocket] Отключено: 1006 
+useMQTT.ts:186 [WebSocket] Переподключение через 2000ms (попытка 1/5)
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+main.js?attr=0-Ocv7Ee7NSIyMpZ40CjT4GXDAk-6ordCE-XgaVMzuVD8mRZ8me7d2HLwK4ygcRV:4954  GET http://10.101.221.207:3000/v1/employees/statistics 404 (Not Found)
+fetchCallImpl @ main.js?attr=0-Ocv7Ee7NSIyMpZ40CjT4GXDAk-6ordCE-XgaVMzuVD8mRZ8me7d2HLwK4ygcRV:4954
+fetch @ main.js?attr=0-Ocv7Ee7NSIyMpZ40CjT4GXDAk-6ordCE-XgaVMzuVD8mRZ8me7d2HLwK4ygcRV:4960
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:413
+loadStats @ MainPage.tsx:67
+(anonymous) @ MainPage.tsx:82
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=040b1844:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=040b1844:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=040b1844:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=040b1844:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=040b1844:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=040b1844:19432
+commitRoot @ chunk-NUMECXU6.js?v=040b1844:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=040b1844:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18718
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+api.ts:132 📡 Response status: 404
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:120 [WebSocket] ✅ Подключено
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+main.js?attr=0-Ocv7Ee7NSIyMpZ40CjT4GXDAk-6ordCE-XgaVMzuVD8mRZ8me7d2HLwK4ygcRV:4954  GET http://10.101.221.207:3000/v1/employees/statistics 404 (Not Found)
+fetchCallImpl @ main.js?attr=0-Ocv7Ee7NSIyMpZ40CjT4GXDAk-6ordCE-XgaVMzuVD8mRZ8me7d2HLwK4ygcRV:4954
+fetch @ main.js?attr=0-Ocv7Ee7NSIyMpZ40CjT4GXDAk-6ordCE-XgaVMzuVD8mRZ8me7d2HLwK4ygcRV:4960
+request @ api.ts:127
+get @ api.ts:224
+getStatistics @ api.ts:413
+loadStats @ MainPage.tsx:67
+(anonymous) @ MainPage.tsx:82
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+invokePassiveEffectMountInDEV @ chunk-NUMECXU6.js?v=040b1844:18324
+invokeEffectsInDev @ chunk-NUMECXU6.js?v=040b1844:19701
+commitDoubleInvokeEffectsInDEV @ chunk-NUMECXU6.js?v=040b1844:19686
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19503
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=040b1844:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=040b1844:19432
+commitRoot @ chunk-NUMECXU6.js?v=040b1844:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=040b1844:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18718
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+api.ts:132 📡 Response status: 404
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+MainPage.tsx:77 Failed to load stats TypeError: Cannot read properties of undefined (reading 'total')
+    at loadStats (MainPage.tsx:72:88)
+loadStats @ MainPage.tsx:77
+await in loadStats
+(anonymous) @ MainPage.tsx:82
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=040b1844:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=040b1844:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=040b1844:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=040b1844:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=040b1844:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=040b1844:19432
+commitRoot @ chunk-NUMECXU6.js?v=040b1844:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=040b1844:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18718
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+useMQTT.ts:129 [WebSocket] Получено: initial
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+MainPage.tsx:77 Failed to load stats TypeError: Cannot read properties of undefined (reading 'total')
+    at loadStats (MainPage.tsx:72:88)
+loadStats @ MainPage.tsx:77
+await in loadStats
+(anonymous) @ MainPage.tsx:82
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+invokePassiveEffectMountInDEV @ chunk-NUMECXU6.js?v=040b1844:18324
+invokeEffectsInDev @ chunk-NUMECXU6.js?v=040b1844:19701
+commitDoubleInvokeEffectsInDEV @ chunk-NUMECXU6.js?v=040b1844:19686
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19503
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18868
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=040b1844:9119
+commitRootImpl @ chunk-NUMECXU6.js?v=040b1844:19432
+commitRoot @ chunk-NUMECXU6.js?v=040b1844:19277
+finishConcurrentRender @ chunk-NUMECXU6.js?v=040b1844:18805
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18718
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+useMQTT.ts:93 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:94 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:104 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk
+useMQTT.ts:114 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk
+useMQTT.ts:120 [WebSocket] ✅ Подключено
+useMQTT.ts:129 [WebSocket] Получено: initial
+useAnalyticsMQTT.ts:39 [Analytics WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk
+useAnalyticsMQTT.ts:49 [Analytics WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk
+useAnalyticsMQTT.ts:135 WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk' failed: WebSocket is closed before the connection is established.
+(anonymous) @ useAnalyticsMQTT.ts:135
+(anonymous) @ useAnalyticsMQTT.ts:155
+safelyCallDestroy @ chunk-NUMECXU6.js?v=040b1844:16748
+commitHookEffectListUnmount @ chunk-NUMECXU6.js?v=040b1844:16875
+invokePassiveEffectUnmountInDEV @ chunk-NUMECXU6.js?v=040b1844:18363
+invokeEffectsInDev @ chunk-NUMECXU6.js?v=040b1844:19701
+commitDoubleInvokeEffectsInDEV @ chunk-NUMECXU6.js?v=040b1844:19682
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19503
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+commitRootImpl @ chunk-NUMECXU6.js?v=040b1844:19416
+commitRoot @ chunk-NUMECXU6.js?v=040b1844:19277
+performSyncWorkOnRoot @ chunk-NUMECXU6.js?v=040b1844:18895
+flushSyncCallbacks @ chunk-NUMECXU6.js?v=040b1844:9119
+(anonymous) @ chunk-NUMECXU6.js?v=040b1844:18627
+useAnalyticsMQTT.ts:39 [Analytics WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk
+useAnalyticsMQTT.ts:49 [Analytics WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk
+useAnalyticsMQTT.ts:101 [Analytics WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+ws.onerror @ useAnalyticsMQTT.ts:101
+useAnalyticsMQTT.ts:106 [Analytics WebSocket] Отключено: 1006 
+useAnalyticsMQTT.ts:113 [Analytics WebSocket] Переподключение через 2000ms (попытка 1/5)
+AnalyticsPage.tsx:111 Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+    at AnalyticsPage (http://10.101.221.207:5173/components/AnalyticsPage.tsx:76:25)
+    at main
+    at div
+    at MainPage (http://10.101.221.207:5173/components/MainPage.tsx:64:45)
+    at AppContent (http://10.101.221.207:5173/App.tsx:25:20)
+    at AuthProvider (http://10.101.221.207:5173/contexts/AuthContext.tsx:38:32)
+    at App
+printWarning @ chunk-NUMECXU6.js?v=040b1844:521
+error @ chunk-NUMECXU6.js?v=040b1844:505
+checkForNestedUpdates @ chunk-NUMECXU6.js?v=040b1844:19665
+scheduleUpdateOnFiber @ chunk-NUMECXU6.js?v=040b1844:18533
+dispatchSetState @ chunk-NUMECXU6.js?v=040b1844:12403
+applyFilters @ AnalyticsPage.tsx:111
+(anonymous) @ AnalyticsPage.tsx:106
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=040b1844:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=040b1844:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=040b1844:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=040b1844:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+(anonymous) @ chunk-NUMECXU6.js?v=040b1844:19328
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+useAnalyticsMQTT.ts:55 [Analytics WebSocket] ✅ Подключено
+AnalyticsPage.tsx:111 Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+    at AnalyticsPage (http://10.101.221.207:5173/components/AnalyticsPage.tsx:76:25)
+    at main
+    at div
+    at MainPage (http://10.101.221.207:5173/components/MainPage.tsx:64:45)
+    at AppContent (http://10.101.221.207:5173/App.tsx:25:20)
+    at AuthProvider (http://10.101.221.207:5173/contexts/AuthContext.tsx:38:32)
+    at App
+printWarning @ chunk-NUMECXU6.js?v=040b1844:521
+error @ chunk-NUMECXU6.js?v=040b1844:505
+checkForNestedUpdates @ chunk-NUMECXU6.js?v=040b1844:19665
+scheduleUpdateOnFiber @ chunk-NUMECXU6.js?v=040b1844:18533
+dispatchSetState @ chunk-NUMECXU6.js?v=040b1844:12403
+applyFilters @ AnalyticsPage.tsx:111
+(anonymous) @ AnalyticsPage.tsx:106
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=040b1844:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=040b1844:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=040b1844:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=040b1844:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+(anonymous) @ chunk-NUMECXU6.js?v=040b1844:19328
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: initial
+useAnalyticsMQTT.ts:70 [Analytics WebSocket] Получены начальные данные аналитики
+AnalyticsPage.tsx:147 Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+    at AnalyticsPage (http://10.101.221.207:5173/components/AnalyticsPage.tsx:76:25)
+    at main
+    at div
+    at MainPage (http://10.101.221.207:5173/components/MainPage.tsx:64:45)
+    at AppContent (http://10.101.221.207:5173/App.tsx:25:20)
+    at AuthProvider (http://10.101.221.207:5173/contexts/AuthContext.tsx:38:32)
+    at App
+printWarning @ chunk-NUMECXU6.js?v=040b1844:521
+error @ chunk-NUMECXU6.js?v=040b1844:505
+checkForNestedUpdates @ chunk-NUMECXU6.js?v=040b1844:19665
+scheduleUpdateOnFiber @ chunk-NUMECXU6.js?v=040b1844:18533
+dispatchSetState @ chunk-NUMECXU6.js?v=040b1844:12403
+applyFilters @ AnalyticsPage.tsx:147
+(anonymous) @ AnalyticsPage.tsx:106
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=040b1844:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=040b1844:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=040b1844:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=040b1844:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+(anonymous) @ chunk-NUMECXU6.js?v=040b1844:19328
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+useAnalyticsMQTT.ts:39 [Analytics WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk
+useAnalyticsMQTT.ts:49 [Analytics WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk
+useAnalyticsMQTT.ts:55 [Analytics WebSocket] ✅ Подключено
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: initial
+useAnalyticsMQTT.ts:70 [Analytics WebSocket] Получены начальные данные аналитики
+AnalyticsPage.tsx:147 Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+    at AnalyticsPage (http://10.101.221.207:5173/components/AnalyticsPage.tsx:76:25)
+    at main
+    at div
+    at MainPage (http://10.101.221.207:5173/components/MainPage.tsx:64:45)
+    at AppContent (http://10.101.221.207:5173/App.tsx:25:20)
+    at AuthProvider (http://10.101.221.207:5173/contexts/AuthContext.tsx:38:32)
+    at App
+printWarning @ chunk-NUMECXU6.js?v=040b1844:521
+error @ chunk-NUMECXU6.js?v=040b1844:505
+checkForNestedUpdates @ chunk-NUMECXU6.js?v=040b1844:19665
+scheduleUpdateOnFiber @ chunk-NUMECXU6.js?v=040b1844:18533
+dispatchSetState @ chunk-NUMECXU6.js?v=040b1844:12403
+applyFilters @ AnalyticsPage.tsx:147
+(anonymous) @ AnalyticsPage.tsx:106
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=040b1844:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=040b1844:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=040b1844:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=040b1844:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+(anonymous) @ chunk-NUMECXU6.js?v=040b1844:19328
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+useMQTT.ts:129 [WebSocket] Получено: heartbeat
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: heartbeat
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: heartbeat
+useMQTT.ts:129 [WebSocket] Получено: heartbeat
+AnalyticsPage.tsx:147 Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+    at AnalyticsPage (http://10.101.221.207:5173/components/AnalyticsPage.tsx:76:25)
+    at main
+    at div
+    at MainPage (http://10.101.221.207:5173/components/MainPage.tsx:64:45)
+    at AppContent (http://10.101.221.207:5173/App.tsx:25:20)
+    at AuthProvider (http://10.101.221.207:5173/contexts/AuthContext.tsx:38:32)
+    at App
+printWarning @ chunk-NUMECXU6.js?v=040b1844:521
+error @ chunk-NUMECXU6.js?v=040b1844:505
+checkForNestedUpdates @ chunk-NUMECXU6.js?v=040b1844:19665
+scheduleUpdateOnFiber @ chunk-NUMECXU6.js?v=040b1844:18533
+dispatchSetState @ chunk-NUMECXU6.js?v=040b1844:12403
+applyFilters @ AnalyticsPage.tsx:147
+(anonymous) @ AnalyticsPage.tsx:106
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=040b1844:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=040b1844:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=040b1844:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=040b1844:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+(anonymous) @ chunk-NUMECXU6.js?v=040b1844:19328
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+useMQTT.ts:129 [WebSocket] Получено: pong
+AnalyticsPage.tsx:147 Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+    at AnalyticsPage (http://10.101.221.207:5173/components/AnalyticsPage.tsx:76:25)
+    at main
+    at div
+    at MainPage (http://10.101.221.207:5173/components/MainPage.tsx:64:45)
+    at AppContent (http://10.101.221.207:5173/App.tsx:25:20)
+    at AuthProvider (http://10.101.221.207:5173/contexts/AuthContext.tsx:38:32)
+    at App
+printWarning @ chunk-NUMECXU6.js?v=040b1844:521
+error @ chunk-NUMECXU6.js?v=040b1844:505
+checkForNestedUpdates @ chunk-NUMECXU6.js?v=040b1844:19665
+scheduleUpdateOnFiber @ chunk-NUMECXU6.js?v=040b1844:18533
+dispatchSetState @ chunk-NUMECXU6.js?v=040b1844:12403
+applyFilters @ AnalyticsPage.tsx:147
+(anonymous) @ AnalyticsPage.tsx:106
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=040b1844:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=040b1844:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=040b1844:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=040b1844:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+(anonymous) @ chunk-NUMECXU6.js?v=040b1844:19328
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+useAnalyticsMQTT.ts:39 [Analytics WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk
+useAnalyticsMQTT.ts:49 [Analytics WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNTE2MjIsImV4cCI6MTc3MzEzODAyMn0.-Frq36e82OLi4GrzFV1UaqowRWSLGU8T3SUJ39Xwnbk
+useAnalyticsMQTT.ts:55 [Analytics WebSocket] ✅ Подключено
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: initial
+useAnalyticsMQTT.ts:70 [Analytics WebSocket] Получены начальные данные аналитики
+AnalyticsPage.tsx:147 Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+    at AnalyticsPage (http://10.101.221.207:5173/components/AnalyticsPage.tsx:76:25)
+    at main
+    at div
+    at MainPage (http://10.101.221.207:5173/components/MainPage.tsx:64:45)
+    at AppContent (http://10.101.221.207:5173/App.tsx:25:20)
+    at AuthProvider (http://10.101.221.207:5173/contexts/AuthContext.tsx:38:32)
+    at App
+printWarning @ chunk-NUMECXU6.js?v=040b1844:521
+error @ chunk-NUMECXU6.js?v=040b1844:505
+checkForNestedUpdates @ chunk-NUMECXU6.js?v=040b1844:19665
+scheduleUpdateOnFiber @ chunk-NUMECXU6.js?v=040b1844:18533
+dispatchSetState @ chunk-NUMECXU6.js?v=040b1844:12403
+applyFilters @ AnalyticsPage.tsx:147
+(anonymous) @ AnalyticsPage.tsx:106
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=040b1844:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=040b1844:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=040b1844:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=040b1844:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+(anonymous) @ chunk-NUMECXU6.js?v=040b1844:19328
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: pong
+AnalyticsPage.tsx:147 Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+    at AnalyticsPage (http://10.101.221.207:5173/components/AnalyticsPage.tsx:76:25)
+    at main
+    at div
+    at MainPage (http://10.101.221.207:5173/components/MainPage.tsx:64:45)
+    at AppContent (http://10.101.221.207:5173/App.tsx:25:20)
+    at AuthProvider (http://10.101.221.207:5173/contexts/AuthContext.tsx:38:32)
+    at App
+printWarning @ chunk-NUMECXU6.js?v=040b1844:521
+error @ chunk-NUMECXU6.js?v=040b1844:505
+checkForNestedUpdates @ chunk-NUMECXU6.js?v=040b1844:19665
+scheduleUpdateOnFiber @ chunk-NUMECXU6.js?v=040b1844:18533
+dispatchSetState @ chunk-NUMECXU6.js?v=040b1844:12403
+applyFilters @ AnalyticsPage.tsx:147
+(anonymous) @ AnalyticsPage.tsx:106
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=040b1844:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=040b1844:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=040b1844:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=040b1844:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+(anonymous) @ chunk-NUMECXU6.js?v=040b1844:19328
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
+AnalyticsPage.tsx:147 Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+    at AnalyticsPage (http://10.101.221.207:5173/components/AnalyticsPage.tsx:76:25)
+    at main
+    at div
+    at MainPage (http://10.101.221.207:5173/components/MainPage.tsx:64:45)
+    at AppContent (http://10.101.221.207:5173/App.tsx:25:20)
+    at AuthProvider (http://10.101.221.207:5173/contexts/AuthContext.tsx:38:32)
+    at App
+printWarning @ chunk-NUMECXU6.js?v=040b1844:521
+error @ chunk-NUMECXU6.js?v=040b1844:505
+checkForNestedUpdates @ chunk-NUMECXU6.js?v=040b1844:19665
+scheduleUpdateOnFiber @ chunk-NUMECXU6.js?v=040b1844:18533
+dispatchSetState @ chunk-NUMECXU6.js?v=040b1844:12403
+applyFilters @ AnalyticsPage.tsx:147
+(anonymous) @ AnalyticsPage.tsx:106
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=040b1844:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=040b1844:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=040b1844:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=040b1844:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=040b1844:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=040b1844:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=040b1844:19447
+(anonymous) @ chunk-NUMECXU6.js?v=040b1844:19328
+workLoop @ chunk-NUMECXU6.js?v=040b1844:197
+flushWork @ chunk-NUMECXU6.js?v=040b1844:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=040b1844:384
