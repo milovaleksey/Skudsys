@@ -739,7 +739,7 @@ const getPassesByUpn = async (req, res) => {
     } catch (procError) {
       console.error(`[getPassesByUpn] Error calling sp_get_passes_by_upn:`, procError.message);
       
-      // Если процедура не су��ествует, возвращаем дружественное сообщение
+      // Если процедура не суествует, возвращаем дружественное сообщение
       if (procError.message.includes('does not exist')) {
         return res.status(500).json({
           success: false,
@@ -950,7 +950,7 @@ const getStudentsPassesByUpn = async (req, res) => {
           success: false,
           message: 'Хранимая процедура sp_get_students_passes_by_upn не найдена в базе данных',
           error: {
-            message: 'Необходимо создат�� процедуру sp_get_students_passes_by_upn в базе данных СКУД',
+            message: 'Необходимо создат процедуру sp_get_students_passes_by_upn в базе данных СКУД',
             code: 'PROCEDURE_NOT_FOUND'
           }
         });
@@ -1164,6 +1164,201 @@ const getEmployeesPassesByUpn = async (req, res) => {
   }
 };
 
+/**
+ * Получение журнала проходов ИНОСТРАННЫХ СТУДЕНТОВ по ФИО с диапазоном дат
+ * Использует хранимую процедуру sp_get_foreign_students_passes_by_fio
+ * @route GET /api/v1/skud/foreign-students-passes/by-fio
+ */
+const getForeignStudentsPassesByFio = async (req, res) => {
+  try {
+    const { lastName, firstName, middleName, dateFrom, dateTo } = req.query;
+
+    // Проверка обязательных полей
+    if (!lastName || !firstName || !dateFrom || !dateTo) {
+      return res.status(400).json({
+        success: false,
+        message: 'Необходимо указать lastName, firstName, dateFrom и dateTo',
+      });
+    }
+
+    const pool = getSkudPool();
+
+    console.log(`[getForeignStudentsPassesByFio] Calling sp_get_foreign_students_passes_by_fio('${lastName}', '${firstName}', '${middleName || ''}', '${dateFrom}', '${dateTo}')`);
+
+    try {
+      // Вызываем хранимую процедуру sp_get_foreign_students_passes_by_fio
+      const [rows] = await pool.execute(
+        'CALL sp_get_foreign_students_passes_by_fio(?, ?, ?, ?, ?)', 
+        [
+          lastName,
+          firstName,
+          middleName || '',
+          dateFrom,
+          dateTo
+        ]
+      );
+      
+      // CALL возвращает массив массивов, первый элемент - это результат SELECT
+      const results = rows[0];
+      
+      console.log(`[getForeignStudentsPassesByFio] Procedure returned ${results?.length || 0} results`);
+      
+      if (!results || !Array.isArray(results)) {
+        return res.json({
+          success: true,
+          data: [],
+          total: 0,
+          message: 'Нет данных о проходах иностранных студентов за указанный период'
+        });
+      }
+
+      // Форматируем результаты (добавляем поле country)
+      const formattedResults = results.map(result => ({
+        id: result.id || result.pass_id,
+        time: formatDateTime(result.event_time || result.access_time || result.time),
+        fullName: result.full_name || result.fullName || result.person_name,
+        upn: result.upn || result.email || null,
+        cardNumber: result.card_number || result.cardNumber || null,
+        checkpoint: result.checkpoint_name || result.checkpoint || result.access_point_name || 'Неизвестно',
+        country: result.country || result.citizenship || null,
+        eventName: result.event_name || result.eventName || result.event_type || null,
+        direction: result.direction || null,
+        building: result.building || null
+      }));
+
+      console.log(`[getForeignStudentsPassesByFio] Formatted ${formattedResults.length} results`);
+
+      return res.json({
+        success: true,
+        data: formattedResults,
+        total: formattedResults.length
+      });
+
+    } catch (procError) {
+      console.error(`[getForeignStudentsPassesByFio] Error calling sp_get_foreign_students_passes_by_fio:`, procError.message);
+      
+      // Если процедура не существует, возвращаем дружественное сообщение
+      if (procError.message.includes('does not exist')) {
+        return res.status(500).json({
+          success: false,
+          message: 'Хранимая процедура sp_get_foreign_students_passes_by_fio не найдена в базе данных',
+          error: {
+            message: 'Необходимо создать процедуру sp_get_foreign_students_passes_by_fio в базе данных СКУД',
+            code: 'PROCEDURE_NOT_FOUND'
+          }
+        });
+      }
+      
+      throw procError;
+    }
+
+  } catch (error) {
+    console.error('[getForeignStudentsPassesByFio] Error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Ошибка при получении журнала проходов иностранных студентов',
+      error: {
+        message: error.message,
+        code: error.code
+      }
+    });
+  }
+};
+
+/**
+ * Получение журнала проходов ИНОСТРАННЫХ СТУДЕНТОВ по UPN с диапазоном дат
+ * Использует хранимую процедуру sp_get_foreign_students_passes_by_upn
+ * @route GET /api/v1/skud/foreign-students-passes/by-upn
+ */
+const getForeignStudentsPassesByUpn = async (req, res) => {
+  try {
+    const { upn, dateFrom, dateTo } = req.query;
+
+    // Проверка обязательных полей
+    if (!upn || !dateFrom || !dateTo) {
+      return res.status(400).json({
+        success: false,
+        message: 'Необходимо указать upn, dateFrom и dateTo',
+      });
+    }
+
+    const pool = getSkudPool();
+
+    console.log(`[getForeignStudentsPassesByUpn] Calling sp_get_foreign_students_passes_by_upn('${upn}', '${dateFrom}', '${dateTo}')`);
+
+    try {
+      // Вызываем хранимую процедуру sp_get_foreign_students_passes_by_upn
+      const [rows] = await pool.execute(
+        'CALL sp_get_foreign_students_passes_by_upn(?, ?, ?)', 
+        [upn, dateFrom, dateTo]
+      );
+      
+      // CALL возвращает массив массивов, первый элемент - это результат SELECT
+      const results = rows[0];
+      
+      console.log(`[getForeignStudentsPassesByUpn] Procedure returned ${results?.length || 0} results`);
+      
+      if (!results || !Array.isArray(results)) {
+        return res.json({
+          success: true,
+          data: [],
+          total: 0,
+          message: 'Нет данных о проходах иностранного студента за указанный период'
+        });
+      }
+
+      // Форматируем результаты (добавляем поле country)
+      const formattedResults = results.map(result => ({
+        id: result.id || result.pass_id,
+        time: formatDateTime(result.event_time || result.access_time || result.time),
+        fullName: result.full_name || result.fullName || result.person_name,
+        upn: result.upn || result.email || null,
+        cardNumber: result.card_number || result.cardNumber || null,
+        checkpoint: result.checkpoint_name || result.checkpoint || result.access_point_name || 'Неизвестно',
+        country: result.country || result.citizenship || null,
+        eventName: result.event_name || result.eventName || result.event_type || null,
+        direction: result.direction || null,
+        building: result.building || null
+      }));
+
+      console.log(`[getForeignStudentsPassesByUpn] Formatted ${formattedResults.length} results`);
+
+      return res.json({
+        success: true,
+        data: formattedResults,
+        total: formattedResults.length
+      });
+
+    } catch (procError) {
+      console.error(`[getForeignStudentsPassesByUpn] Error calling sp_get_foreign_students_passes_by_upn:`, procError.message);
+      
+      if (procError.message.includes('does not exist')) {
+        return res.status(500).json({
+          success: false,
+          message: 'Хранимая процедура sp_get_foreign_students_passes_by_upn не найдена в базе данных',
+          error: {
+            message: 'Необходимо создать процедуру sp_get_foreign_students_passes_by_upn в базе данных СКУД',
+            code: 'PROCEDURE_NOT_FOUND'
+          }
+        });
+      }
+      
+      throw procError;
+    }
+
+  } catch (error) {
+    console.error('[getForeignStudentsPassesByUpn] Error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Ошибка при получении журнала проходов иностранного студента',
+      error: {
+        message: error.message,
+        code: error.code
+      }
+    });
+  }
+};
+
 module.exports = {
   searchByIdentifier,
   getPassesReport,
@@ -1176,5 +1371,7 @@ module.exports = {
   getStudentsPassesByFio,
   getStudentsPassesByUpn,
   getEmployeesPassesByFio,
-  getEmployeesPassesByUpn
+  getEmployeesPassesByUpn,
+  getForeignStudentsPassesByFio,
+  getForeignStudentsPassesByUpn
 };

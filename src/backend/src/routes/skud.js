@@ -109,4 +109,22 @@ router.get(
   skudController.getEmployeesPassesByUpn
 );
 
+// ===== ОТЧЕТЫ ПО ИНОСТРАННЫМ СТУДЕНТАМ =====
+
+// Журнал проходов ИНОСТРАННЫХ СТУДЕНТОВ по ФИО (хранимая процедура sp_get_foreign_students_passes_by_fio)
+router.get(
+  '/foreign-students-passes/by-fio',
+  authenticate,
+  checkPermission('passes'),
+  skudController.getForeignStudentsPassesByFio
+);
+
+// Журнал проходов ИНОСТРАННЫХ СТУДЕНТОВ по UPN (хранимая процедура sp_get_foreign_students_passes_by_upn)
+router.get(
+  '/foreign-students-passes/by-upn',
+  authenticate,
+  checkPermission('passes'),
+  skudController.getForeignStudentsPassesByUpn
+);
+
 module.exports = router;
