@@ -356,15 +356,9 @@ export function AnalyticsPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {isConnected ? (
-              <>
-                <Wifi size={20} className="text-green-600" />
-                <span className="text-sm font-medium text-green-600">MQTT подключен</span>
-              </>
+              <Wifi size={20} className="text-green-600" />
             ) : (
-              <>
-                <WifiOff size={20} className="text-gray-400" />
-                <span className="text-sm font-medium text-gray-500">MQTT отключен</span>
-              </>
+              <WifiOff size={20} className="text-gray-400" />
             )}
           </div>
           <div className="text-xs text-gray-500">
@@ -516,9 +510,6 @@ export function AnalyticsPage() {
             </div>
             <div className="mt-2 text-xs text-gray-500">
               💡 Каждый корпус может содержать несколько точек доступа (входы, турникеты, двери и т.д.)
-            </div>
-            <div className="mt-1 text-xs text-gray-400 italic">
-              📌 Названия автоматически нормализуются: пробелы, форматы номеров, объединение вариантов написания
             </div>
           </div>
         )}
