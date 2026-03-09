@@ -234,9 +234,7 @@ export function LocationPage() {
               <div className="flex items-start gap-3">
                 <Building2 size={20} className="text-gray-400 mt-0.5" />
                 <div className="flex-1">
-                  <div className="text-sm text-gray-600">
-                    {personInfo.type === 'employee' ? 'Отдел' : 'Институт/Курс'}
-                  </div>
+                  <div className="text-sm text-gray-600">Устройство фиксации</div>
                   <div className="text-gray-900 font-medium">{personInfo.department}</div>
                 </div>
               </div>
@@ -244,7 +242,7 @@ export function LocationPage() {
               <div className="flex items-start gap-3">
                 <Users size={20} className="text-gray-400 mt-0.5" />
                 <div className="flex-1">
-                  <div className="text-sm text-gray-600">UPN</div>
+                  <div className="text-sm text-gray-600">Логин</div>
                   <div className="text-gray-900 font-medium">{personInfo.upn}</div>
                 </div>
               </div>
