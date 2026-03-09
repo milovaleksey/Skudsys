@@ -44,7 +44,7 @@
     "react-hook-form": "*",
     "react-resizable-panels": "*",
     "recharts": "*",
-    "sonner": "^2.0.3",
+    "sonner": "*",
     "tailwind-merge": "*",
     "url": "*",
     "vaul": "*",

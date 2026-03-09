@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { TrendingUp, Download, AlertCircle, Calendar } from 'lucide-react';
 import * as XLSX from 'xlsx';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface BuildingDynamicsReportProps {
   topLocations: any[];
