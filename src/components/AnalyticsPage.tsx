@@ -12,7 +12,8 @@ import {
   Activity,
   FileSpreadsheet,
   Clock,
-  MapPin
+  MapPin,
+  AlertCircle
 } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 import { registerLocale } from 'react-datepicker';
@@ -986,9 +987,24 @@ export function AnalyticsPage() {
           const end = new Date(reportFilters.endDate);
           end.setHours(23, 59, 59, 999);
           
+          // 🔍 Отладка
+          console.log('🔍 Фильтр детального отчета:', {
+            periodType: reportFilters.periodType,
+            startDate: start.toISOString(),
+            endDate: end.toISOString(),
+            timeSeriesTotal: timeSeries.length,
+            firstDate: timeSeries[0]?.date,
+            lastDate: timeSeries[timeSeries.length - 1]?.date
+          });
+          
           reportTimeSeries = timeSeries.filter((item: any) => {
             const itemDate = new Date(item.date);
             return itemDate >= start && itemDate <= end;
+          });
+          
+          console.log('🔍 Результат фильтрации:', {
+            filtered: reportTimeSeries.length,
+            dates: reportTimeSeries.map((i: any) => i.date)
           });
         }
 
@@ -1031,11 +1047,19 @@ export function AnalyticsPage() {
               
               // Если выбран конкретный период, пересчитываем проходы
               let zonePasses = location.count || 0;
-              if (reportFilters.periodType !== 'all' && reportTimeSeries.length > 0 && timeSeries) {
-                const totalDays = timeSeries.length;
-                const filteredDays = reportTimeSeries.length;
-                if (totalDays > 0) {
-                  zonePasses = Math.round((location.count || 0) * (filteredDays / totalDays));
+              
+              // ✅ ИСПРАВЛЕНИЕ: если выбран фильтр но нет данных - показываем 0
+              if (reportFilters.periodType !== 'all') {
+                if (reportTimeSeries.length === 0) {
+                  // Нет данных за выбранный период
+                  zonePasses = 0;
+                } else if (timeSeries && timeSeries.length > 0) {
+                  // Есть данные - пересчитываем пропорционально
+                  const totalDays = timeSeries.length;
+                  const filteredDays = reportTimeSeries.length;
+                  if (totalDays > 0) {
+                    zonePasses = Math.round((location.count || 0) * (filteredDays / totalDays));
+                  }
                 }
               }
               
@@ -1070,6 +1094,7 @@ export function AnalyticsPage() {
           switch (type) {
             case 'today':
               startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+              endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
               break;
             case 'yesterday':
               startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
@@ -1079,22 +1104,26 @@ export function AnalyticsPage() {
               const dayOfWeek = now.getDay();
               const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
               startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - daysToMonday);
+              endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
               break;
             case 'lastWeek':
               const lastWeekEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
               startDate = new Date(lastWeekEnd);
               startDate.setDate(lastWeekEnd.getDate() - 6);
-              endDate = lastWeekEnd;
+              endDate = new Date(lastWeekEnd);
+              endDate.setHours(23, 59, 59, 999);
               break;
             case 'month':
               startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+              endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
               break;
             case 'lastMonth':
               startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-              endDate = new Date(now.getFullYear(), now.getMonth(), 0);
+              endDate = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
               break;
             case 'year':
               startDate = new Date(now.getFullYear(), 0, 1);
+              endDate = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
               break;
             case 'all':
             default:
@@ -1358,6 +1387,16 @@ export function AnalyticsPage() {
                   </button>
                 </div>
               )}
+              
+              {/* ⚠️ Предупреждение о приближенных данных */}
+              {reportFilters.periodType !== 'all' && (
+                <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-2">
+                  <AlertCircle size={18} className="text-amber-600 flex-shrink-0 mt-0.5" />
+                  <div className="text-xs text-amber-800">
+                    <strong>Внимание:</strong> Данные по зонам рассчитываются пропорционально выбранному периоду, так как детальная статистика хранится агрегированно. Для точных данных используйте весь период.
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Период отчета */}
@@ -1383,6 +1422,16 @@ export function AnalyticsPage() {
                 </div>
               </div>
             </div>
+
+            {/* ⚠️ Сообщение если нет данных за период */}
+            {reportFilters.periodType !== 'all' && reportTimeSeries.length === 0 && (
+              <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center gap-3">
+                <AlertCircle size={20} className="text-blue-600 flex-shrink-0" />
+                <div className="text-sm text-blue-800">
+                  <strong>Информация:</strong> За выбранный период ({formatPeriodDisplay()}) нет данных в системе. Выберите другой период или используйте "Весь период".
+                </div>
+              </div>
+            )}
 
             {/* Таблица отчета */}
             <div className="overflow-x-auto">

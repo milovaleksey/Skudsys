@@ -76,6 +76,7 @@
     --color-orange-500: oklch(.705 .213 47.604);
     --color-amber-50: oklch(.987 .022 95.277);
     --color-amber-100: oklch(.962 .059 95.617);
+    --color-amber-200: oklch(.924 .12 95.746);
     --color-amber-500: oklch(.769 .188 70.08);
     --color-amber-600: oklch(.666 .179 58.318);
     --color-amber-700: oklch(.555 .163 48.998);
@@ -1370,6 +1371,10 @@
 
   .border-\[\#00aeef\] {
     border-color: #00aeef;
+  }
+
+  .border-amber-200 {
+    border-color: var(--color-amber-200);
   }
 
   .border-amber-500 {

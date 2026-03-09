@@ -10,6 +10,7 @@
     "db:seed": "node src/database/seed.js",
     "test": "jest",
     "lint": "eslint src/",
+    "analytics:clear": "node scripts/clear-analytics-config.js",
     "analytics:config": "node scripts/publish-analytics-config.js",
     "analytics:data": "node scripts/publish-analytics-data.js",
     "analytics:setup": "npm run analytics:config && npm run analytics:data ../imports/rez.csv"
