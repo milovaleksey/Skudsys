@@ -83,11 +83,14 @@ export function ForeignStudentsReport() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Функция форматирования даты
-  const formatDateTime = (dateString: string): string => {
+  const formatDateTime = (dateString: string | null): string => {
     if (!dateString) return '—';
     
     try {
       const date = new Date(dateString);
+      
+      // Проверка на невалидную дату
+      if (isNaN(date.getTime())) return '—';
       
       // Форматируем дату: ДД.ММ.ГГГГ ЧЧ:ММ:СС
       const day = String(date.getDate()).padStart(2, '0');
@@ -100,7 +103,7 @@ export function ForeignStudentsReport() {
       return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
     } catch (error) {
       console.error('Error formatting date:', error);
-      return dateString;
+      return '—';
     }
   };
 
@@ -554,7 +557,7 @@ export function ForeignStudentsReport() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
                   style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
                 >
-                  <option value="all">Все страны (кроме России)</option>
+                  <option value="all">Все страны (кроме Р��ссии)</option>
                   {countryStats
                     .filter(c => c.country !== 'РОССИЯ')
                     .map(country => (
@@ -658,16 +661,22 @@ export function ForeignStudentsReport() {
                           </span>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">{formatDateTime(result.time)}</td>
-                        <td className="px-6 py-4 text-sm text-gray-600">{result.checkpoint}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600">{result.checkpoint || '—'}</td>
                         <td className="px-6 py-4 text-sm text-gray-500">{result.deviceName || '—'}</td>
                         <td className="px-6 py-4 text-sm">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            result.daysMissing >= 7
-                              ? 'bg-red-100 text-red-800'
-                              : 'bg-yellow-100 text-yellow-800'
-                          }`}>
-                            {result.daysMissing} дней
-                          </span>
+                          {!result.time || result.daysMissing === null || result.daysMissing === undefined ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                              Не определено
+                            </span>
+                          ) : (
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              result.daysMissing >= 7
+                                ? 'bg-red-100 text-red-800'
+                                : 'bg-yellow-100 text-yellow-800'
+                            }`}>
+                              {result.daysMissing} дней
+                            </span>
+                          )}
                         </td>
                       </tr>
                     ))}
