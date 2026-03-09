@@ -237,13 +237,17 @@ class MQTTService extends EventEmitter {
       try {
         this.analyticsConfig = JSON.parse(messageStr);
         console.log('[MQTT] 📊 Получена конфигурация аналитики');
+        console.log(`[MQTT] 📊 Конфигурация содержит ${this.analyticsConfig.analytics.length} типов аналитики`);
         
         // Устанавливаем конфигурацию в процессор
         analyticsProcessor.setConfig(this.analyticsConfig);
         
         // Если есть данные, обрабатываем заново
         if (this.analyticsRawData) {
+          console.log(`[MQTT] 📊 Данные уже есть (${this.analyticsRawData.length} записей), обрабатываем...`);
           this.processAnalyticsData();
+        } else {
+          console.log('[MQTT] ⏳ Ожидание данных аналитики...');
         }
       } catch (error) {
         console.error('[MQTT] ❌ Ошибка парсинга конфигурации аналитики:', error.message);
@@ -258,7 +262,10 @@ class MQTTService extends EventEmitter {
         
         // Если есть конфигурация, обрабатываем
         if (this.analyticsConfig) {
+          console.log('[MQTT] 📊 Конфигурация есть, обрабатываем данные...');
           this.processAnalyticsData();
+        } else {
+          console.log('[MQTT] ⚠️ Конфигурация аналитики НЕ загружена! Публикуйте конфигурацию в Skud/analytics/config');
         }
       } catch (error) {
         console.error('[MQTT] ❌ Ошибка парсинга сырых данных аналитики:', error.message);
