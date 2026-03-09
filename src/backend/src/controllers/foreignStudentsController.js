@@ -83,13 +83,17 @@ class ForeignStudentsController {
         success: true,
         results: records.map(row => ({
           id: row.id,
-          fio: row.fio,
+          fullName: row.fio,
           upn: row.upn,
-          email: row.email || row.upn, // fallback
+          cardNumber: row.card_number || null,
           country: row.country,
-          lastSeen: row.last_seen,
-          lastLocation: row.last_location,
-          daysMissing: row.days_missing
+          time: row.last_seen,
+          checkpoint: row.last_location,
+          deviceName: row.device_name || null,
+          daysMissing: row.days_missing,
+          eventName: null,
+          direction: null,
+          building: null
         })),
         total: records.length
       });

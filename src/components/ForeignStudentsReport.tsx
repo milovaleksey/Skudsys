@@ -21,6 +21,7 @@ import { DonutChartCard } from './DonutChartCard';
 import { useForeignStudentsMQTT } from '../hooks/useForeignStudentsMQTT';
 import { skudApi } from '../lib/api';
 import { toast } from 'sonner';
+import { LoadingCatWidget } from './LoadingCatWidget';
 
 registerLocale('ru', ru);
 
@@ -47,6 +48,7 @@ interface PassRecord {
   upn: string | null;
   cardNumber: string | null;
   checkpoint: string;
+  deviceName?: string | null;
   country?: string | null;
   eventName?: string | null;
   direction?: string | null;
@@ -179,24 +181,20 @@ export function ForeignStudentsReport() {
     setMissingResults([]);
     
     try {
-      const params = new URLSearchParams({
-        country: missingForm.country,
-        daysThreshold: missingForm.daysThreshold.toString()
-      });
-
-      const response = await skudApi.get(`/api/foreign-students/missing?${params}`);
+      const response = await skudApi.getForeignStudentsMissing(missingForm.country, missingForm.daysThreshold);
       
-      if (!response.ok) {
-        throw new Error('Ошибка при получении данных');
-      }
-
-      const data = await response.json();
-      setMissingResults(data.results || []);
-      
-      if (data.results.length === 0) {
-        toast.info('Пропавшие студенты не найдены');
+      if (response.success && response.data) {
+        const results = response.data as any;
+        setMissingResults(results.results || []);
+        
+        if ((results.results || []).length === 0) {
+          toast.info('Пропавшие студенты не найдены');
+        } else {
+          toast.success(`Найдено записей: ${(results.results || []).length}`);
+        }
       } else {
-        toast.success(`Найдено записей: ${data.results.length}`);
+        toast.error(response.error?.message || 'Ошибка при получении данных');
+        setMissingResults([]);
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Произошла ошибка');
@@ -232,7 +230,7 @@ export function ForeignStudentsReport() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">Отчет по иностранным студентам</h2>
+        <h2 className="text-2xl font-bold text-gray-900">��тчет по иностранным студентам</h2>
         {/* Connection Status */}
         {isConnected ? (
           <CheckCircle className="w-5 h-5 text-green-600" />
@@ -576,6 +574,7 @@ export function ForeignStudentsReport() {
                     'Страна': r.country || '—',
                     'Последний визит': r.time,
                     'Место': r.checkpoint,
+                    'Точка прохода': r.deviceName || '—',
                     'Дней отсутствия': r.daysMissing
                   })), 'foreign_students_missing')}
                   className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700"
@@ -609,6 +608,7 @@ export function ForeignStudentsReport() {
                       <th className="px-6 py-4 text-left text-sm font-semibold text-white">Страна</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-white">Последний визит</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-white">Место</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Точка прохода</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-white">Дней отсутствия</th>
                     </tr>
                   </thead>
@@ -630,6 +630,7 @@ export function ForeignStudentsReport() {
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">{result.time}</td>
                         <td className="px-6 py-4 text-sm text-gray-600">{result.checkpoint}</td>
+                        <td className="px-6 py-4 text-sm text-gray-500">{result.deviceName || '—'}</td>
                         <td className="px-6 py-4 text-sm">
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                             result.daysMissing >= 7
@@ -655,6 +656,14 @@ export function ForeignStudentsReport() {
           </div>
         )}
       </div>
+
+      {/* Loading Cat Widget */}
+      <LoadingCatWidget 
+        isVisible={isLoading} 
+        message={activeTemplate === 'search' 
+          ? 'Котик ищет проходы в базе данных СКУД...' 
+          : 'Котик ищет пропавших студентов...'} 
+      />
     </div>
   );
 }

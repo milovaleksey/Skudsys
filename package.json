@@ -37,6 +37,7 @@
     "embla-carousel-react": "*",
     "input-otp": "*",
     "lucide-react": "*",
+    "motion": "*",
     "path": "*",
     "react": "^18.3.1",
     "react-datepicker": "*",

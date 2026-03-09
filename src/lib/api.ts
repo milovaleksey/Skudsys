@@ -645,6 +645,13 @@ export const skudApi = {
     });
   },
 
+  async getForeignStudentsMissing(country: string, daysThreshold: number) {
+    return apiClient.get('/foreign-students/missing', {
+      country,
+      daysThreshold: daysThreshold.toString()
+    });
+  },
+
   async getAccessPoints() {
     return apiClient.get('/skud/access-points');
   },
