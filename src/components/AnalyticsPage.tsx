@@ -20,6 +20,7 @@ import { registerLocale } from 'react-datepicker';
 import { ru } from 'date-fns/locale/ru';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/datepicker-custom.css';
+import { BuildingDynamicsReport } from './BuildingDynamicsReport';
 import { 
   LineChart, 
   Line, 
@@ -1554,6 +1555,7 @@ export function AnalyticsPage() {
                     <li>Лист 1: Сводка по корпусам (всего проходов, количество зон, средние)</li>
                     <li>Лист 2: Детализация по зонам (каждая зона с процентом от корпуса)</li>
                     <li>Лист 3: ТОП-10 самых активных зон за период</li>
+                    <li>Лист 4: Динамика по дням (если выбран конкретный период)</li>
                   </ul>
                 </div>
               </div>
@@ -1561,6 +1563,17 @@ export function AnalyticsPage() {
           </div>
         );
       })()}
+
+      {/* Динамика проходов по корпусам по дням */}
+      {filteredData.topLocations && filteredData.topLocations.length > 0 && timeSeries && timeSeries.length > 0 && (
+        <BuildingDynamicsReport
+          topLocations={topLocations}
+          timeSeries={timeSeries}
+          reportFilters={reportFilters}
+          filters={filters}
+          formatNumber={formatNumber}
+        />
+      )}
 
       {/* Загрузка / Нет данных */}
       {!filteredData.statistics && !mqttError && (
