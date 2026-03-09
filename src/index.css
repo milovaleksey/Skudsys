@@ -888,10 +888,6 @@
     height: calc(var(--spacing) * 64);
   }
 
-  .h-96 {
-    height: calc(var(--spacing) * 96);
-  }
-
   .h-\[1\.15rem\] {
     height: 1.15rem;
   }
@@ -2002,6 +1998,10 @@
     text-transform: uppercase;
   }
 
+  .underline {
+    text-decoration-line: underline;
+  }
+
   .underline-offset-4 {
     text-underline-offset: 4px;
   }
@@ -2356,14 +2356,14 @@
   }
 
   @media (hover: hover) {
-    .hover\:underline:hover {
-      text-decoration-line: underline;
+    .hover\:text-red-900:hover {
+      color: var(--color-red-900);
     }
   }
 
   @media (hover: hover) {
-    .hover\:opacity-90:hover {
-      opacity: .9;
+    .hover\:underline:hover {
+      text-decoration-line: underline;
     }
   }
 

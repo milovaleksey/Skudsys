@@ -18,6 +18,15 @@ interface MQTTStatus {
   valuesCount: number;
 }
 
+interface AnalyticsData {
+  statistics: any;
+  timeSeries: any[];
+  topLocations: any[];
+  weekdayPattern: any[];
+  locationsComparison: any[];
+  hourlyDistribution: any[];
+}
+
 /**
  * Хук для получения карточек через API
  */
@@ -246,7 +255,7 @@ export function useMQTTPublish() {
         return { success: false, error: response.message };
       }
     } catch (err) {
-      console.error('шибка публикации:', err);
+      console.error('Ошибка публикации:', err);
       return { 
         success: false, 
         error: err instanceof Error ? err.message : 'Ошибка публикации' 

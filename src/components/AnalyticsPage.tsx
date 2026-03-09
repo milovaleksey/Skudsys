@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -7,7 +7,9 @@ import {
   Calendar,
   Download,
   RefreshCw,
-  Loader2
+  Loader2,
+  Wifi,
+  WifiOff
 } from 'lucide-react';
 import { Card } from './ui/card';
 import { 
@@ -22,108 +24,37 @@ import {
   CartesianGrid, 
   Tooltip, 
   Legend, 
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell
+  ResponsiveContainer
 } from 'recharts';
 import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
-import { analyticsApi } from '../lib/api';
+import { useAnalyticsMQTT } from '../hooks/useAnalyticsMQTT';
 
 const COLORS = ['#00aeef', '#0088cc', '#0066aa', '#004488', '#002266'];
 
 export function AnalyticsPage() {
-  const [isLoading, setIsLoading] = useState(true);
+  // Получаем данные из MQTT через WebSocket
+  const {
+    statistics,
+    timeSeries,
+    topLocations,
+    weekdayPattern,
+    locationsComparison,
+    isConnected,
+    error: mqttError,
+    reconnect,
+  } = useAnalyticsMQTT();
+
   const [isRefreshing, setIsRefreshing] = useState(false);
-  
-  // Состояния для данных
-  const [statistics, setStatistics] = useState<any>(null);
-  const [timeSeries, setTimeSeries] = useState<any[]>([]);
-  const [topLocations, setTopLocations] = useState<any[]>([]);
-  const [weekdayPattern, setWeekdayPattern] = useState<any[]>([]);
-  const [locationsComparison, setLocationsComparison] = useState<any[]>([]);
-
-  // Фильтры по датам (последние 30 дней по умолчанию)
-  const [dateFrom, setDateFrom] = useState(() => {
-    const date = new Date();
-    date.setDate(date.getDate() - 30);
-    return date.toISOString().split('T')[0];
-  });
-  
-  const [dateTo, setDateTo] = useState(() => {
-    return new Date().toISOString().split('T')[0];
-  });
-
-  /**
-   * Загрузка всех данных аналитики
-   */
-  const loadAnalyticsData = async () => {
-    try {
-      setIsLoading(true);
-
-      // Запрашиваем все данные параллельно
-      const [statsRes, timeSeriesRes, topLocsRes, weekdayRes, comparisonRes] = await Promise.all([
-        analyticsApi.getStatistics(dateFrom, dateTo),
-        analyticsApi.getTimeSeries(dateFrom, dateTo),
-        analyticsApi.getTopLocations(dateFrom, dateTo, 10),
-        analyticsApi.getWeekdayPattern(dateFrom, dateTo),
-        analyticsApi.getLocationsComparison(dateFrom, dateTo, 5),
-      ]);
-
-      if (statsRes.success && statsRes.data) {
-        setStatistics(statsRes.data);
-      }
-
-      if (timeSeriesRes.success && timeSeriesRes.data) {
-        setTimeSeries(timeSeriesRes.data);
-      }
-
-      if (topLocsRes.success && topLocsRes.data) {
-        setTopLocations(topLocsRes.data);
-      }
-
-      if (weekdayRes.success && weekdayRes.data) {
-        setWeekdayPattern(weekdayRes.data);
-      }
-
-      if (comparisonRes.success && comparisonRes.data) {
-        setLocationsComparison(comparisonRes.data);
-      }
-
-    } catch (error) {
-      console.error('Failed to load analytics:', error);
-      toast.error('Ошибка загрузки аналитики');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   /**
    * Обновление данных
    */
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    await loadAnalyticsData();
+    await reconnect();
     setIsRefreshing(false);
-    toast.success('Данные обновлены');
-  };
-
-  /**
-   * Применение фильтров
-   */
-  const handleApplyFilters = () => {
-    if (!dateFrom || !dateTo) {
-      toast.error('Укажите период');
-      return;
-    }
-
-    if (new Date(dateFrom) > new Date(dateTo)) {
-      toast.error('Дата начала не может быть позже даты окончания');
-      return;
-    }
-
-    loadAnalyticsData();
+    toast.success('Переподключение к MQTT');
   };
 
   /**
@@ -141,33 +72,34 @@ export function AnalyticsPage() {
           ['Уникальных людей', statistics.uniquePeople],
           ['Уникальных локаций', statistics.uniqueLocations],
           ['Средняя активность в день', statistics.avgDailyPasses],
-          ['Период с', statistics.dateRange.from],
-          ['Период по', statistics.dateRange.to],
+          ['Период с', statistics.dateRange?.from || ''],
+          ['Период по', statistics.dateRange?.to || ''],
         ];
         const ws1 = XLSX.utils.aoa_to_sheet(statsData);
         XLSX.utils.book_append_sheet(wb, ws1, 'Статистика');
       }
 
       // Лист 2: Временные ряды
-      if (timeSeries.length > 0) {
+      if (timeSeries && timeSeries.length > 0) {
         const ws2 = XLSX.utils.json_to_sheet(timeSeries);
         XLSX.utils.book_append_sheet(wb, ws2, 'Динамика по дням');
       }
 
       // Лист 3: Топ локаций
-      if (topLocations.length > 0) {
+      if (topLocations && topLocations.length > 0) {
         const ws3 = XLSX.utils.json_to_sheet(topLocations);
         XLSX.utils.book_append_sheet(wb, ws3, 'Топ локаций');
       }
 
       // Лист 4: По дням недели
-      if (weekdayPattern.length > 0) {
+      if (weekdayPattern && weekdayPattern.length > 0) {
         const ws4 = XLSX.utils.json_to_sheet(weekdayPattern);
         XLSX.utils.book_append_sheet(wb, ws4, 'По дням недели');
       }
 
       // Сохранение файла
-      const fileName = `Аналитика_${dateFrom}_${dateTo}.xlsx`;
+      const date = new Date().toISOString().split('T')[0];
+      const fileName = `Аналитика_${date}.xlsx`;
       XLSX.writeFile(wb, fileName);
       toast.success('Отчет экспортирован');
     } catch (error) {
@@ -197,26 +129,28 @@ export function AnalyticsPage() {
     return num.toLocaleString('ru-RU');
   };
 
-  // Загрузка данных при монтировании
-  useEffect(() => {
-    loadAnalyticsData();
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#00aeef' }} />
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <BarChart3 size={32} style={{ color: '#00aeef' }} />
-          <h2 className="text-2xl font-bold text-gray-900">Аналитика СКУД</h2>
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Аналитика СКУД</h2>
+            <div className="flex items-center gap-2 mt-1">
+              {isConnected ? (
+                <>
+                  <Wifi size={16} className="text-green-600" />
+                  <span className="text-sm text-green-600">MQTT подключен</span>
+                </>
+              ) : (
+                <>
+                  <WifiOff size={16} className="text-gray-400" />
+                  <span className="text-sm text-gray-500">MQTT отключен</span>
+                </>
+              )}
+            </div>
+          </div>
         </div>
         <div className="flex items-center gap-3">
           <button
@@ -229,7 +163,8 @@ export function AnalyticsPage() {
           </button>
           <button
             onClick={handleExport}
-            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700"
+            disabled={!statistics}
+            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Download size={20} style={{ color: '#00aeef' }} />
             <span>Экспорт</span>
@@ -237,42 +172,24 @@ export function AnalyticsPage() {
         </div>
       </div>
 
-      {/* Фильтры */}
-      <Card className="p-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Дата с
-            </label>
-            <input
-              type="date"
-              value={dateFrom}
-              onChange={(e) => setDateFrom(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+      {/* Ошибка подключения MQTT */}
+      {mqttError && (
+        <Card className="p-4 bg-red-50 border-red-200">
+          <div className="flex items-start gap-3">
+            <WifiOff className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="text-sm text-red-900">
+              <p className="font-medium mb-1">Ошибка подключения к MQTT</p>
+              <p className="text-xs text-red-700">{mqttError}</p>
+              <button
+                onClick={handleRefresh}
+                className="mt-2 text-xs text-red-700 underline hover:text-red-900"
+              >
+                Попробовать переподключиться
+              </button>
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Дата по
-            </label>
-            <input
-              type="date"
-              value={dateTo}
-              onChange={(e) => setDateTo(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div className="col-span-2">
-            <button
-              onClick={handleApplyFilters}
-              className="w-full px-4 py-2 text-white rounded-lg hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: '#00aeef' }}
-            >
-              Применить фильтр
-            </button>
-          </div>
-        </div>
-      </Card>
+        </Card>
+      )}
 
       {/* Карточки статистики */}
       {statistics && (
@@ -336,7 +253,7 @@ export function AnalyticsPage() {
       )}
 
       {/* Временные ряды - Area Chart */}
-      {timeSeries.length > 0 && (
+      {timeSeries && timeSeries.length > 0 && (
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4" style={{ color: '#00aeef' }}>
             Динамика проходов по дням
@@ -370,13 +287,13 @@ export function AnalyticsPage() {
       {/* Топ локаций и Дни недели */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Топ локаций */}
-        {topLocations.length > 0 && (
+        {topLocations && topLocations.length > 0 && (
           <Card className="p-6">
             <h3 className="text-lg font-semibold mb-4" style={{ color: '#00aeef' }}>
               Топ-10 зданий по активности
             </h3>
             <div className="space-y-3">
-              {topLocations.map((loc, index) => (
+              {topLocations.map((loc: any, index: number) => (
                 <div key={index} className="flex items-center gap-3">
                   <div className="w-8 text-center font-semibold text-gray-500">
                     {index + 1}
@@ -407,7 +324,7 @@ export function AnalyticsPage() {
         )}
 
         {/* Дни недели */}
-        {weekdayPattern.length > 0 && (
+        {weekdayPattern && weekdayPattern.length > 0 && (
           <Card className="p-6">
             <h3 className="text-lg font-semibold mb-4" style={{ color: '#00aeef' }}>
               Активность по дням недели
@@ -426,7 +343,7 @@ export function AnalyticsPage() {
       </div>
 
       {/* Сравнение локаций */}
-      {locationsComparison.length > 0 && (
+      {locationsComparison && locationsComparison.length > 0 && (
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4" style={{ color: '#00aeef' }}>
             Сравнение топ-5 локаций по дням
@@ -463,31 +380,50 @@ export function AnalyticsPage() {
       )}
 
       {/* Если нет данных */}
-      {!statistics && !isLoading && (
+      {!statistics && isConnected && (
         <Card className="p-12 text-center">
           <BarChart3 className="w-16 h-16 mx-auto mb-4 text-gray-400" />
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Нет данных за выбранный период
+            Нет данных
           </h3>
           <p className="text-gray-600 mb-4">
-            Попробуйте изменить диапазон дат
+            Данные аналитики еще не опубликованы в MQTT
           </p>
-          <button
-            onClick={() => {
-              const today = new Date();
-              const monthAgo = new Date();
-              monthAgo.setDate(monthAgo.getDate() - 30);
-              setDateFrom(monthAgo.toISOString().split('T')[0]);
-              setDateTo(today.toISOString().split('T')[0]);
-              loadAnalyticsData();
-            }}
-            className="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: '#00aeef' }}
-          >
-            Показать последние 30 дней
-          </button>
         </Card>
       )}
+
+      {/* Если MQTT не подключен */}
+      {!isConnected && !mqttError && (
+        <Card className="p-12 text-center">
+          <Loader2 className="w-16 h-16 mx-auto mb-4 animate-spin text-gray-400" />
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            Подключение к MQTT...
+          </h3>
+          <p className="text-gray-600">
+            Ожидание данных аналитики из брокера
+          </p>
+        </Card>
+      )}
+
+      {/* Информация о топиках MQTT */}
+      <Card className="p-4 bg-blue-50 border-blue-200">
+        <div className="flex items-start gap-3">
+          <Wifi className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+          <div className="text-sm text-blue-900">
+            <p className="font-medium mb-1">Источник данных: MQTT</p>
+            <p className="text-xs text-blue-700 mb-2">
+              Данные аналитики загружаются из MQTT топиков в реальном времени:
+            </p>
+            <ul className="text-xs text-blue-700 space-y-1">
+              <li>• <code className="bg-blue-100 px-1 rounded">Skud/analytics/statistics</code> - общая статистика</li>
+              <li>• <code className="bg-blue-100 px-1 rounded">Skud/analytics/timeSeries</code> - временные ряды</li>
+              <li>• <code className="bg-blue-100 px-1 rounded">Skud/analytics/topLocations</code> - топ локаций</li>
+              <li>• <code className="bg-blue-100 px-1 rounded">Skud/analytics/weekdayPattern</code> - по дням недели</li>
+              <li>• <code className="bg-blue-100 px-1 rounded">Skud/analytics/locationsComparison</code> - сравнение локаций</li>
+            </ul>
+          </div>
+        </div>
+      </Card>
     </div>
   );
 }

@@ -42,6 +42,7 @@ function initMQTTWebSocket(server) {
       const initialData = {
         type: 'initial',
         cards: mqttService.getCardsWithValues(),
+        analytics: mqttService.getAnalyticsData(),
         status: mqttService.getStatus(),
       };
       ws.send(JSON.stringify(initialData));
@@ -101,6 +102,21 @@ function initMQTTWebSocket(server) {
       type: 'value-updated',
       cardId,
       value,
+    });
+
+    clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
+  });
+
+  // Отправка обновлений аналитики
+  mqttService.on('analytics-updated', (analyticsData) => {
+    console.log('[WebSocket] 📊 Рассылка обновления аналитики клиентам');
+    const message = JSON.stringify({
+      type: 'analytics-updated',
+      analytics: analyticsData,
     });
 
     clients.forEach(client => {

@@ -1,0 +1,264 @@
+{
+  "version": "1.0",
+  "updated": "2025-03-09T12:00:00Z",
+  "dataSource": {
+    "topic": "Skud/analytics/events/aggregated",
+    "format": "json",
+    "schema": {
+      "event_date": "ISO8601 datetime",
+      "root_zone_name": "string",
+      "total_events": "number"
+    }
+  },
+  "analytics": [
+    {
+      "id": "total_stats",
+      "type": "statistics",
+      "title": "Общая статистика",
+      "description": "Агрегированные показатели за период",
+      "enabled": true,
+      "calculations": [
+        {
+          "metric": "totalPasses",
+          "label": "Всего проходов",
+          "operation": "sum",
+          "field": "total_events",
+          "icon": "TrendingUp",
+          "color": "#00aeef"
+        },
+        {
+          "metric": "uniqueZones",
+          "label": "Уникальных зон",
+          "operation": "count_distinct",
+          "field": "root_zone_name",
+          "icon": "Building2",
+          "color": "#0088cc"
+        },
+        {
+          "metric": "avgDailyPasses",
+          "label": "Среднее в день",
+          "operation": "avg_daily",
+          "field": "total_events",
+          "icon": "Calendar",
+          "color": "#0066aa"
+        },
+        {
+          "metric": "peakDay",
+          "label": "Пиковый день",
+          "operation": "max_day",
+          "field": "total_events",
+          "icon": "BarChart3",
+          "color": "#004488"
+        }
+      ]
+    },
+    {
+      "id": "time_series",
+      "type": "timeSeries",
+      "title": "Динамика проходов по дням",
+      "description": "Временной ряд активности",
+      "enabled": true,
+      "chartType": "area",
+      "config": {
+        "groupBy": "event_date",
+        "aggregation": "sum",
+        "field": "total_events",
+        "xAxisLabel": "Дата",
+        "yAxisLabel": "Количество проходов",
+        "color": "#00aeef",
+        "fillOpacity": 0.3,
+        "dateFormat": "DD.MM"
+      }
+    },
+    {
+      "id": "top_zones",
+      "type": "ranking",
+      "title": "Топ-10 зон по активности",
+      "description": "Самые посещаемые зоны кампуса",
+      "enabled": true,
+      "chartType": "horizontal-bar",
+      "config": {
+        "groupBy": "root_zone_name",
+        "aggregation": "sum",
+        "field": "total_events",
+        "limit": 10,
+        "orderBy": "desc",
+        "showPercentage": true,
+        "colorGradient": ["#00aeef", "#0066aa"]
+      }
+    },
+    {
+      "id": "weekday_pattern",
+      "type": "weekdayPattern",
+      "title": "Распределение по дням недели",
+      "description": "Активность в разные дни недели",
+      "enabled": true,
+      "chartType": "bar",
+      "config": {
+        "groupBy": "weekday",
+        "aggregation": "avg",
+        "field": "total_events",
+        "xAxisLabel": "День недели",
+        "yAxisLabel": "Среднее количество проходов",
+        "color": "#00aeef",
+        "weekdayLabels": {
+          "1": "Вс",
+          "2": "Пн",
+          "3": "Вт",
+          "4": "Ср",
+          "5": "Чт",
+          "6": "Пт",
+          "7": "Сб"
+        }
+      }
+    },
+    {
+      "id": "zone_comparison",
+      "type": "multiSeries",
+      "title": "Сравнение топ-5 зон по дням",
+      "description": "Динамика активности в разных зонах",
+      "enabled": true,
+      "chartType": "line",
+      "config": {
+        "groupBy": ["event_date", "root_zone_name"],
+        "aggregation": "sum",
+        "field": "total_events",
+        "topN": 5,
+        "xAxisLabel": "Дата",
+        "yAxisLabel": "Количество проходов",
+        "colors": ["#00aeef", "#0088cc", "#0066aa", "#004488", "#002266"],
+        "dateFormat": "DD.MM"
+      }
+    },
+    {
+      "id": "zone_categories",
+      "type": "categorization",
+      "title": "Распределение по типам зон",
+      "description": "Корпуса vs Общежития vs Прочие",
+      "enabled": true,
+      "chartType": "pie",
+      "config": {
+        "categories": [
+          {
+            "name": "Учебные корпуса",
+            "filter": "root_zone_name LIKE 'Корпус №%'",
+            "color": "#00aeef"
+          },
+          {
+            "name": "Общежития",
+            "filter": "root_zone_name LIKE 'Общежитие%'",
+            "color": "#0088cc"
+          },
+          {
+            "name": "Приемная комиссия",
+            "filter": "root_zone_name LIKE '%Приемная комиссия%'",
+            "color": "#ff9800"
+          }
+        ],
+        "aggregation": "sum",
+        "field": "total_events",
+        "showPercentage": true
+      }
+    },
+    {
+      "id": "growth_rate",
+      "type": "trend",
+      "title": "Темп роста активности",
+      "description": "Изменение активности по неделям",
+      "enabled": true,
+      "chartType": "line-with-trend",
+      "config": {
+        "groupBy": "week",
+        "aggregation": "sum",
+        "field": "total_events",
+        "calculateGrowth": true,
+        "showTrendLine": true,
+        "color": "#00aeef",
+        "trendColor": "#ff5722"
+      }
+    },
+    {
+      "id": "dormitory_analysis",
+      "type": "filtered",
+      "title": "Аналитика общежитий",
+      "description": "Активность в общежитиях",
+      "enabled": true,
+      "chartType": "bar",
+      "config": {
+        "filter": "root_zone_name LIKE 'Общежитие%'",
+        "groupBy": "root_zone_name",
+        "aggregation": "sum",
+        "field": "total_events",
+        "orderBy": "desc",
+        "color": "#0088cc"
+      }
+    },
+    {
+      "id": "weekend_activity",
+      "type": "comparison",
+      "title": "Будни vs Выходные",
+      "description": "Сравнение активности в будни и выходные",
+      "enabled": true,
+      "chartType": "comparison-bar",
+      "config": {
+        "groups": [
+          {
+            "name": "Будни",
+            "filter": "weekday IN (2,3,4,5,6)",
+            "color": "#00aeef"
+          },
+          {
+            "name": "Выходные",
+            "filter": "weekday IN (1,7)",
+            "color": "#0088cc"
+          }
+        ],
+        "aggregation": "avg",
+        "field": "total_events"
+      }
+    },
+    {
+      "id": "monthly_heatmap",
+      "type": "heatmap",
+      "title": "Тепловая карта активности",
+      "description": "Активность по дням и неделям",
+      "enabled": true,
+      "chartType": "calendar-heatmap",
+      "config": {
+        "groupBy": "event_date",
+        "aggregation": "sum",
+        "field": "total_events",
+        "colorScale": ["#e6f7ff", "#00aeef", "#004488"],
+        "cellSize": 15,
+        "showValues": false
+      }
+    }
+  ],
+  "filters": {
+    "dateRange": {
+      "enabled": true,
+      "default": "last_30_days",
+      "quickFilters": ["today", "last_7_days", "last_30_days", "current_month", "custom"]
+    },
+    "zones": {
+      "enabled": true,
+      "multiSelect": true,
+      "options": "auto_from_data"
+    },
+    "weekdays": {
+      "enabled": true,
+      "multiSelect": true,
+      "options": [1, 2, 3, 4, 5, 6, 7]
+    }
+  },
+  "export": {
+    "enabled": true,
+    "formats": ["xlsx", "csv", "json", "pdf"],
+    "includeCharts": true
+  },
+  "refresh": {
+    "autoRefresh": true,
+    "intervalSeconds": 300,
+    "showLastUpdated": true
+  }
+}

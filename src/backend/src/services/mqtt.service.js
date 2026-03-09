@@ -1,5 +1,6 @@
 const mqtt = require('mqtt');
 const EventEmitter = require('events');
+const analyticsProcessor = require('./analytics.processor');
 
 /**
  * MQTT сервис для работы с брокером
@@ -12,12 +13,21 @@ class MQTTService extends EventEmitter {
     this.isConnected = false;
     this.cards = []; // Конфигурация карточек
     this.cardValues = {}; // Значения карточек
+    
+    // Данные аналитики из MQTT
+    this.analyticsConfig = null; // Конфигурация аналитики
+    this.analyticsRawData = null; // Сырые данные из MQTT
+    this.analyticsProcessed = {}; // Обработанные данные по каждому типу аналитики
+    
     this.config = {
       broker: process.env.MQTT_BROKER || 'localhost',
       port: parseInt(process.env.MQTT_PORT) || 1883,
       username: process.env.MQTT_USERNAME || undefined,
       password: process.env.MQTT_PASSWORD || undefined,
       configTopic: process.env.MQTT_CONFIG_TOPIC || 'Skud/main/stat',
+      // Топики аналитики
+      analyticsConfigTopic: 'Skud/analytics/config',
+      analyticsDataTopic: 'Skud/analytics/events/aggregated'
     };
     this.reconnectAttempts = 0;
     this.maxReconnectAttempts = 10;
@@ -52,6 +62,9 @@ class MQTTService extends EventEmitter {
         
         // Подписываемся на топик конфигурации
         this.subscribeToConfigTopic();
+        
+        // Подписываемся на топики аналитики
+        this.subscribeToAnalyticsTopics();
       });
 
       this.client.on('error', (error) => {
@@ -138,6 +151,29 @@ class MQTTService extends EventEmitter {
   }
 
   /**
+   * Подписка на топики аналитики
+   */
+  subscribeToAnalyticsTopics() {
+    const { analyticsConfigTopic, analyticsDataTopic } = this.config;
+    
+    this.client.subscribe(analyticsConfigTopic, (err) => {
+      if (err) {
+        console.error(`[MQTT] ❌ Ошибка подписки на ${analyticsConfigTopic}:`, err.message);
+      } else {
+        console.log(`[MQTT] ✅ Подписка на топик конфигурации аналитики: ${analyticsConfigTopic}`);
+      }
+    });
+    
+    this.client.subscribe(analyticsDataTopic, (err) => {
+      if (err) {
+        console.error(`[MQTT] ❌ Ошибка подписки на ${analyticsDataTopic}:`, err.message);
+      } else {
+        console.log(`[MQTT] ✅ Подписка на топик данных аналитики: ${analyticsDataTopic}`);
+      }
+    });
+  }
+
+  /**
    * Обработка входящих сообщений
    */
   handleMessage(topic, message) {
@@ -158,7 +194,7 @@ class MQTTService extends EventEmitter {
         // Сохраняем старые топики для отписки
         const oldTopics = this.cards.map(card => card.valueTopic);
         
-        // Обновляем конфигура��ию
+        // Обновляем конфигураию
         this.cards = newCards;
         
         // Получаем новые топики
@@ -194,6 +230,50 @@ class MQTTService extends EventEmitter {
       console.log(`[MQTT] 📨 Обновление значения [${card.id}]: ${messageStr}`);
       this.emit('value-updated', { cardId: card.id, value: messageStr });
     }
+
+    // Если это топик аналитики
+    const { analyticsConfigTopic, analyticsDataTopic } = this.config;
+    if (topic === analyticsConfigTopic) {
+      try {
+        this.analyticsConfig = JSON.parse(messageStr);
+        console.log('[MQTT] 📊 Получена конфигурация аналитики');
+        
+        // Устанавливаем конфигурацию в процессор
+        analyticsProcessor.setConfig(this.analyticsConfig);
+        
+        // Если есть данные, обрабатываем заново
+        if (this.analyticsRawData) {
+          this.processAnalyticsData();
+        }
+      } catch (error) {
+        console.error('[MQTT] ❌ Ошибка парсинга конфигурации аналитики:', error.message);
+      }
+    } else if (topic === analyticsDataTopic) {
+      try {
+        this.analyticsRawData = JSON.parse(messageStr);
+        console.log(`[MQTT] 📊 Получено ${this.analyticsRawData.length} записей данных аналитики`);
+        
+        // Устанавливаем данные в процессор
+        analyticsProcessor.setRawData(this.analyticsRawData);
+        
+        // Если есть конфигурация, обрабатываем
+        if (this.analyticsConfig) {
+          this.processAnalyticsData();
+        }
+      } catch (error) {
+        console.error('[MQTT] ❌ Ошибка парсинга сырых данных аналитики:', error.message);
+      }
+    }
+  }
+
+  /**
+   * Обработка данных аналитики согласно конфигурации
+   */
+  processAnalyticsData() {
+    console.log('[MQTT] 📊 Обработка данных аналитики...');
+    this.analyticsProcessed = analyticsProcessor.processAll();
+    console.log(`[MQTT] ✅ Обработано ${Object.keys(this.analyticsProcessed).length} типов аналитики`);
+    this.emit('analytics-updated', this.analyticsProcessed);
   }
 
   /**
@@ -230,6 +310,13 @@ class MQTTService extends EventEmitter {
       cardsCount: this.cards.length,
       valuesCount: Object.keys(this.cardValues).length,
     };
+  }
+
+  /**
+   * Получить данные аналитики
+   */
+  getAnalyticsData() {
+    return this.analyticsProcessed;
   }
 
   /**
