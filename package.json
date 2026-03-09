@@ -35,7 +35,6 @@
     "cmdk": "*",
     "date-fns": "*",
     "embla-carousel-react": "*",
-    "framer-motion": "*",
     "input-otp": "*",
     "lucide-react": "*",
     "path": "*",
