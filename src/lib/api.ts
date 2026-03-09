@@ -493,6 +493,31 @@ export const analyticsApi = {
   async getCustomReport(params: any) {
     return apiClient.post('/analytics/custom-report', params);
   },
+
+  // СКУД Аналитика
+  async getTimeSeries(dateFrom: string, dateTo: string) {
+    return apiClient.get('/skud/analytics/time-series', { dateFrom, dateTo });
+  },
+
+  async getHourly(dateFrom: string, dateTo: string) {
+    return apiClient.get('/skud/analytics/hourly', { dateFrom, dateTo });
+  },
+
+  async getTopLocations(dateFrom: string, dateTo: string, limit?: number) {
+    return apiClient.get('/skud/analytics/top-locations', { dateFrom, dateTo, limit });
+  },
+
+  async getStatistics(dateFrom: string, dateTo: string) {
+    return apiClient.get('/skud/analytics/statistics', { dateFrom, dateTo });
+  },
+
+  async getWeekdayPattern(dateFrom: string, dateTo: string) {
+    return apiClient.get('/skud/analytics/weekday-pattern', { dateFrom, dateTo });
+  },
+
+  async getLocationsComparison(dateFrom: string, dateTo: string, limit?: number) {
+    return apiClient.get('/skud/analytics/locations-comparison', { dateFrom, dateTo, limit });
+  },
 };
 
 // API методы для журнала аудита

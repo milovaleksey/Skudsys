@@ -1468,16 +1468,19 @@ const getTopLocations = async (req, res) => {
 
     const pool = getSkudPool();
 
-    // SQL запрос для получения топ локаций
     const query = `
       SELECT 
-        ap.Name as checkpoint,
-        ap.Building as building,
-        COUNT(*) as count
-      FROM AcessEvent ae
-      LEFT JOIN AcessPoint ap ON ae.AcessPointId = ap.ID
-      WHERE ae.Time BETWEEN ? AND ?
-      GROUP BY ap.ID, ap.Name, ap.Building
+        PointFullName AS name,
+        COUNT(*) AS count,
+        ROUND(COUNT(*) * 100.0 / (
+          SELECT COUNT(*) 
+          FROM AcessEvent 
+          WHERE CAST(EventTime AS DATE) BETWEEN ? AND ?
+        ), 2) AS percentage
+      FROM AcessEvent
+      WHERE CAST(EventTime AS DATE) BETWEEN ? AND ?
+        AND PointFullName IS NOT NULL
+      GROUP BY PointFullName
       ORDER BY count DESC
       LIMIT ?
     `;
@@ -1498,12 +1501,219 @@ const getTopLocations = async (req, res) => {
   }
 };
 
+/**
+ * Получить общую статистику по проходам
+ * @route GET /api/v1/skud/analytics/statistics
+ */
+const getAnalyticsStatistics = async (req, res) => {
+  try {
+    const { dateFrom, dateTo } = req.query;
+
+    if (!dateFrom || !dateTo) {
+      return res.status(400).json({
+        success: false,
+        message: 'Необходимо указать dateFrom и dateTo'
+      });
+    }
+
+    const pool = getSkudPool();
+
+    // Общее количество проходов
+    const [totalPasses] = await pool.query(
+      `SELECT COUNT(*) AS total FROM AcessEvent WHERE CAST(EventTime AS DATE) BETWEEN ? AND ?`,
+      [dateFrom, dateTo]
+    );
+
+    // Количество уникальных людей
+    const [uniquePeople] = await pool.query(
+      `SELECT COUNT(DISTINCT DisplayName) AS total FROM AcessEvent WHERE CAST(EventTime AS DATE) BETWEEN ? AND ? AND DisplayName IS NOT NULL`,
+      [dateFrom, dateTo]
+    );
+
+    // Количество уникальных локаций
+    const [uniqueLocations] = await pool.query(
+      `SELECT COUNT(DISTINCT PointFullName) AS total FROM AcessEvent WHERE CAST(EventTime AS DATE) BETWEEN ? AND ? AND PointFullName IS NOT NULL`,
+      [dateFrom, dateTo]
+    );
+
+    // Средняя активность в день
+    const [avgDaily] = await pool.query(
+      `
+      SELECT 
+        ROUND(AVG(daily_count), 0) AS average
+      FROM (
+        SELECT CAST(EventTime AS DATE) AS date, COUNT(*) AS daily_count
+        FROM AcessEvent
+        WHERE CAST(EventTime AS DATE) BETWEEN ? AND ?
+        GROUP BY CAST(EventTime AS DATE)
+      ) AS daily_stats
+      `,
+      [dateFrom, dateTo]
+    );
+
+    res.json({
+      success: true,
+      data: {
+        totalPasses: totalPasses[0].total,
+        uniquePeople: uniquePeople[0].total,
+        uniqueLocations: uniqueLocations[0].total,
+        avgDailyPasses: avgDaily[0].average || 0,
+        dateRange: {
+          from: dateFrom,
+          to: dateTo
+        }
+      }
+    });
+  } catch (error) {
+    console.error('[getAnalyticsStatistics] Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Ошибка получения статистики',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Получить распределение по дням недели
+ * @route GET /api/v1/skud/analytics/weekday-pattern
+ */
+const getWeekdayPattern = async (req, res) => {
+  try {
+    const { dateFrom, dateTo } = req.query;
+
+    if (!dateFrom || !dateTo) {
+      return res.status(400).json({
+        success: false,
+        message: 'Необходимо указать dateFrom и dateTo'
+      });
+    }
+
+    const pool = getSkudPool();
+
+    const query = `
+      SELECT 
+        CASE DAYOFWEEK(EventTime)
+          WHEN 1 THEN 'Вс'
+          WHEN 2 THEN 'Пн'
+          WHEN 3 THEN 'Вт'
+          WHEN 4 THEN 'Ср'
+          WHEN 5 THEN 'Чт'
+          WHEN 6 THEN 'Пт'
+          WHEN 7 THEN 'Сб'
+        END AS day,
+        DAYOFWEEK(EventTime) AS dayIndex,
+        COUNT(*) AS count
+      FROM AcessEvent
+      WHERE CAST(EventTime AS DATE) BETWEEN ? AND ?
+      GROUP BY dayIndex, day
+      ORDER BY dayIndex
+    `;
+
+    const [rows] = await pool.query(query, [dateFrom, dateTo]);
+
+    res.json({
+      success: true,
+      data: rows
+    });
+  } catch (error) {
+    console.error('[getWeekdayPattern] Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Ошибка получения паттерна по дням недели',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Получить сравнение нескольких локаций по дням
+ * @route GET /api/v1/skud/analytics/locations-comparison
+ */
+const getLocationsComparison = async (req, res) => {
+  try {
+    const { dateFrom, dateTo, limit = 5 } = req.query;
+
+    if (!dateFrom || !dateTo) {
+      return res.status(400).json({
+        success: false,
+        message: 'Необходимо указать dateFrom и dateTo'
+      });
+    }
+
+    const pool = getSkudPool();
+
+    // Сначала получим топ локаций за период
+    const [topLocations] = await pool.query(
+      `
+      SELECT PointFullName
+      FROM AcessEvent
+      WHERE CAST(EventTime AS DATE) BETWEEN ? AND ?
+        AND PointFullName IS NOT NULL
+      GROUP BY PointFullName
+      ORDER BY COUNT(*) DESC
+      LIMIT ?
+      `,
+      [dateFrom, dateTo, parseInt(limit)]
+    );
+
+    if (topLocations.length === 0) {
+      return res.json({
+        success: true,
+        data: []
+      });
+    }
+
+    const locationNames = topLocations.map(loc => loc.PointFullName);
+
+    // Теперь получим данные по дням для этих локаций
+    const placeholders = locationNames.map(() => '?').join(',');
+    const query = `
+      SELECT 
+        CAST(EventTime AS DATE) AS date,
+        PointFullName AS location,
+        COUNT(*) AS count
+      FROM AcessEvent
+      WHERE CAST(EventTime AS DATE) BETWEEN ? AND ?
+        AND PointFullName IN (${placeholders})
+      GROUP BY date, location
+      ORDER BY date ASC
+    `;
+
+    const [rows] = await pool.query(query, [dateFrom, dateTo, ...locationNames]);
+
+    // Преобразуем в формат для Recharts
+    const dateMap = {};
+    rows.forEach(row => {
+      if (!dateMap[row.date]) {
+        dateMap[row.date] = { date: row.date };
+      }
+      dateMap[row.date][row.location] = row.count;
+    });
+
+    const result = Object.values(dateMap);
+
+    res.json({
+      success: true,
+      data: result,
+      locations: locationNames
+    });
+  } catch (error) {
+    console.error('[getLocationsComparison] Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Ошибка получения сравнения локаций',
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   searchByIdentifier,
-  getPassesReport,
   getPersonLocation,
   getLocationByFio,
   getLocationByUpn,
+  getPassesReport,
   getAccessPoints,
   getPassesByFio,
   getPassesByUpn,
@@ -1516,5 +1726,8 @@ module.exports = {
   // Аналитика
   getPassesTimeSeries,
   getPassesHourly,
-  getTopLocations
+  getTopLocations,
+  getAnalyticsStatistics,
+  getWeekdayPattern,
+  getLocationsComparison
 };

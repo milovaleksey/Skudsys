@@ -158,11 +158,6 @@ const startServer = async () => {
     // Инициализация Foreign Students WebSocket
     const foreignStudentsWS = initForeignStudentsWebSocket(server);
 
-    // Инициализация Analytics WebSocket
-    const analyticsWSServer = getAnalyticsWebSocketServer();
-    analyticsWSServer.initialize(server);
-    console.log('✅ Analytics WebSocket initialized');
-
     // Обработка WebSocket upgrade для разных путей
     server.on('upgrade', (request, socket, head) => {
       const pathname = new URL(request.url, `http://${request.headers.host}`).pathname;
@@ -183,8 +178,6 @@ const startServer = async () => {
         foreignStudentsWS.wss.handleUpgrade(request, socket, head, (ws) => {
           foreignStudentsWS.wss.emit('connection', ws, request);
         });
-      } else if (pathname === '/ws/analytics') {
-        // Analytics WebSocket обрабатывается внутри
       } else {
         console.warn(`[WebSocket] Неизвестный путь: ${pathname}`);
         socket.destroy();

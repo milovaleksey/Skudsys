@@ -153,4 +153,28 @@ router.get(
   skudController.getTopLocations
 );
 
+// Общая статистика по проходам
+router.get(
+  '/analytics/statistics',
+  authenticate,
+  checkPermission('analytics'),
+  skudController.getAnalyticsStatistics
+);
+
+// Распределение по дням недели
+router.get(
+  '/analytics/weekday-pattern',
+  authenticate,
+  checkPermission('analytics'),
+  skudController.getWeekdayPattern
+);
+
+// Сравнение нескольких локаций
+router.get(
+  '/analytics/locations-comparison',
+  authenticate,
+  checkPermission('analytics'),
+  skudController.getLocationsComparison
+);
+
 module.exports = router;

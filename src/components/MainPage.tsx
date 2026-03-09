@@ -1,26 +1,3 @@
-import { useState, useEffect } from 'react';
-import { 
-  Users, 
-  BarChart3, 
-  Car, 
-  Package, 
-  FileText, 
-  UserCheck, 
-  Briefcase,
-  MapPin,
-  LogOut,
-  Menu,
-  X,
-  Home,
-  Settings,
-  Layout,
-  ScrollText,
-  Search,
-  CheckCircle,
-  XCircle,
-  Wifi,
-  WifiOff
-} from 'lucide-react';
 import { UsersSettingsPage } from './UsersSettingsPage';
 import { RolesManagementPage } from './RolesManagementPage';
 import { DashboardBuilder } from './DashboardBuilder';
@@ -36,6 +13,12 @@ import { useMQTTWebSocket } from '../hooks/useMQTT';
 import { Card } from './ui/card';
 import { ForeignStudentsReport } from './ForeignStudentsReport';
 import { AnalyticsPage } from './AnalyticsPage';
+import { PassesReportPage } from './PassesReportPage';
+import { LocationPage } from './LocationPage';
+import { StudentsReportPage } from './StudentsReportPage';
+import { EmployeesReportPage } from './EmployeesReportPage';
+import { ParkingPage } from './ParkingPage';
+import { StorageSystemsPage } from './StorageSystemsPage';
 
 export function MainPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
