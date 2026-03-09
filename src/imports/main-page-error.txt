@@ -1,0 +1,69 @@
+chunk-NUMECXU6.js?v=040b1844:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+api.ts:14 🌐 Using API URL from env: http://10.101.221.207:3000/v1
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /auth/me with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/auth/me
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /roles with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/roles
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /auth/me with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/auth/me
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /roles with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/roles
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+MainPage.tsx:24 Uncaught ReferenceError: useState is not defined
+    at MainPage (MainPage.tsx:24:45)
+    at renderWithHooks (chunk-NUMECXU6.js?v=040b1844:11548:26)
+    at mountIndeterminateComponent (chunk-NUMECXU6.js?v=040b1844:14926:21)
+    at beginWork (chunk-NUMECXU6.js?v=040b1844:15914:22)
+    at HTMLUnknownElement.callCallback2 (chunk-NUMECXU6.js?v=040b1844:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-NUMECXU6.js?v=040b1844:3699:24)
+    at invokeGuardedCallback (chunk-NUMECXU6.js?v=040b1844:3733:39)
+    at beginWork$1 (chunk-NUMECXU6.js?v=040b1844:19765:15)
+    at performUnitOfWork (chunk-NUMECXU6.js?v=040b1844:19198:20)
+    at workLoopSync (chunk-NUMECXU6.js?v=040b1844:19137:13)
+MainPage.tsx:24 Uncaught ReferenceError: useState is not defined
+    at MainPage (MainPage.tsx:24:45)
+    at renderWithHooks (chunk-NUMECXU6.js?v=040b1844:11548:26)
+    at mountIndeterminateComponent (chunk-NUMECXU6.js?v=040b1844:14926:21)
+    at beginWork (chunk-NUMECXU6.js?v=040b1844:15914:22)
+    at HTMLUnknownElement.callCallback2 (chunk-NUMECXU6.js?v=040b1844:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-NUMECXU6.js?v=040b1844:3699:24)
+    at invokeGuardedCallback (chunk-NUMECXU6.js?v=040b1844:3733:39)
+    at beginWork$1 (chunk-NUMECXU6.js?v=040b1844:19765:15)
+    at performUnitOfWork (chunk-NUMECXU6.js?v=040b1844:19198:20)
+    at workLoopSync (chunk-NUMECXU6.js?v=040b1844:19137:13)
+chunk-NUMECXU6.js?v=040b1844:14032 The above error occurred in the <MainPage> component:
+
+    at MainPage (http://10.101.221.207:5173/components/MainPage.tsx:41:45)
+    at AppContent (http://10.101.221.207:5173/App.tsx:25:20)
+    at AuthProvider (http://10.101.221.207:5173/contexts/AuthContext.tsx:38:32)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+logCapturedError @ chunk-NUMECXU6.js?v=040b1844:14032
+chunk-NUMECXU6.js?v=040b1844:19413 Uncaught ReferenceError: useState is not defined
+    at MainPage (MainPage.tsx:24:45)
+    at renderWithHooks (chunk-NUMECXU6.js?v=040b1844:11548:26)
+    at mountIndeterminateComponent (chunk-NUMECXU6.js?v=040b1844:14926:21)
+    at beginWork (chunk-NUMECXU6.js?v=040b1844:15914:22)
+    at beginWork$1 (chunk-NUMECXU6.js?v=040b1844:19753:22)
+    at performUnitOfWork (chunk-NUMECXU6.js?v=040b1844:19198:20)
+    at workLoopSync (chunk-NUMECXU6.js?v=040b1844:19137:13)
+    at renderRootSync (chunk-NUMECXU6.js?v=040b1844:19116:15)
+    at recoverFromConcurrentError (chunk-NUMECXU6.js?v=040b1844:18736:28)
+    at performConcurrentWorkOnRoot (chunk-NUMECXU6.js?v=040b1844:18684:30)
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8

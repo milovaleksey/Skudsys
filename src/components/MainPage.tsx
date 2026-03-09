@@ -1,3 +1,26 @@
+import { useState, useEffect } from 'react';
+import { 
+  Users, 
+  BarChart3, 
+  Car, 
+  Package, 
+  FileText, 
+  UserCheck, 
+  Briefcase,
+  MapPin,
+  LogOut,
+  Menu,
+  X,
+  Home,
+  Settings,
+  Layout,
+  ScrollText,
+  Search,
+  CheckCircle,
+  XCircle,
+  Wifi,
+  WifiOff
+} from 'lucide-react';
 import { UsersSettingsPage } from './UsersSettingsPage';
 import { RolesManagementPage } from './RolesManagementPage';
 import { DashboardBuilder } from './DashboardBuilder';
