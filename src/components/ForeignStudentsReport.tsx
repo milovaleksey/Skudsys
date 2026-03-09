@@ -557,7 +557,7 @@ export function ForeignStudentsReport() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-colors"
                   style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
                 >
-                  <option value="all">Все страны (кроме Р��ссии)</option>
+                  <option value="all">Все страны (кроме Рссии)</option>
                   {countryStats
                     .filter(c => c.country !== 'РОССИЯ')
                     .map(country => (
@@ -664,7 +664,7 @@ export function ForeignStudentsReport() {
                         <td className="px-6 py-4 text-sm text-gray-600">{result.checkpoint || '—'}</td>
                         <td className="px-6 py-4 text-sm text-gray-500">{result.deviceName || '—'}</td>
                         <td className="px-6 py-4 text-sm">
-                          {!result.time || result.daysMissing === null || result.daysMissing === undefined ? (
+                          {result.daysMissing === null || result.daysMissing === undefined ? (
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                               Не определено
                             </span>
@@ -672,9 +672,11 @@ export function ForeignStudentsReport() {
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                               result.daysMissing >= 7
                                 ? 'bg-red-100 text-red-800'
-                                : 'bg-yellow-100 text-yellow-800'
+                                : result.daysMissing >= 4
+                                ? 'bg-yellow-100 text-yellow-800'
+                                : 'bg-green-100 text-green-800'
                             }`}>
-                              {result.daysMissing} дней
+                              {result.daysMissing} {result.daysMissing === 1 ? 'день' : result.daysMissing >= 2 && result.daysMissing <= 4 ? 'дня' : 'дней'}
                             </span>
                           )}
                         </td>
