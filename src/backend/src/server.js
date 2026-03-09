@@ -19,6 +19,7 @@ const { initMQTTWebSocket } = require('./websocket/mqtt.ws');
 const { initParkingWebSocket } = require('./websocket/parking.ws');
 const { initStorageWebSocket } = require('./websocket/storage.ws');
 const { initForeignStudentsWebSocket } = require('./websocket/foreign-students.ws');
+const { getAnalyticsWebSocketServer } = require('./websocket/analytics.ws');
 
 // Импорт маршрутов
 const authRoutes = require('./routes/auth.routes');
@@ -157,6 +158,11 @@ const startServer = async () => {
     // Инициализация Foreign Students WebSocket
     const foreignStudentsWS = initForeignStudentsWebSocket(server);
 
+    // Инициализация Analytics WebSocket
+    const analyticsWSServer = getAnalyticsWebSocketServer();
+    analyticsWSServer.initialize(server);
+    console.log('✅ Analytics WebSocket initialized');
+
     // Обработка WebSocket upgrade для разных путей
     server.on('upgrade', (request, socket, head) => {
       const pathname = new URL(request.url, `http://${request.headers.host}`).pathname;
@@ -177,6 +183,8 @@ const startServer = async () => {
         foreignStudentsWS.wss.handleUpgrade(request, socket, head, (ws) => {
           foreignStudentsWS.wss.emit('connection', ws, request);
         });
+      } else if (pathname === '/ws/analytics') {
+        // Analytics WebSocket обрабатывается внутри
       } else {
         console.warn(`[WebSocket] Неизвестный путь: ${pathname}`);
         socket.destroy();
@@ -227,6 +235,12 @@ process.on('SIGTERM', () => {
   parkingMQTTService.disconnect();
   storageMQTTService.disconnect();
   foreignStudentsMQTTService.disconnect();
+  
+  const analyticsWSServer = getAnalyticsWebSocketServer();
+  if (analyticsWSServer) {
+    analyticsWSServer.shutdown();
+  }
+  
   process.exit(0);
 });
 
@@ -236,6 +250,12 @@ process.on('SIGINT', () => {
   parkingMQTTService.disconnect();
   storageMQTTService.disconnect();
   foreignStudentsMQTTService.disconnect();
+  
+  const analyticsWSServer = getAnalyticsWebSocketServer();
+  if (analyticsWSServer) {
+    analyticsWSServer.shutdown();
+  }
+  
   process.exit(0);
 });
 

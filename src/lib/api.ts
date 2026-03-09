@@ -655,6 +655,29 @@ export const skudApi = {
   async getAccessPoints() {
     return apiClient.get('/skud/access-points');
   },
+
+  // ===== АНАЛИТИКА =====
+  async getPassesTimeSeries(dateFrom: string, dateTo: string) {
+    return apiClient.get('/skud/analytics/time-series', {
+      dateFrom,
+      dateTo
+    });
+  },
+
+  async getPassesHourly(dateFrom: string, dateTo: string) {
+    return apiClient.get('/skud/analytics/hourly', {
+      dateFrom,
+      dateTo
+    });
+  },
+
+  async getTopLocations(dateFrom: string, dateTo: string, limit: number = 10) {
+    return apiClient.get('/skud/analytics/top-locations', {
+      dateFrom,
+      dateTo,
+      limit: limit.toString()
+    });
+  },
 };
 
 // Экспорт утилит

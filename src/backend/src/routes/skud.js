@@ -127,4 +127,30 @@ router.get(
   skudController.getForeignStudentsPassesByUpn
 );
 
+// ===== АНАЛИТИКА =====
+
+// Временные ряды проходов (по дням)
+router.get(
+  '/analytics/time-series',
+  authenticate,
+  checkPermission('analytics'),
+  skudController.getPassesTimeSeries
+);
+
+// Распределение проходов по часам
+router.get(
+  '/analytics/hourly',
+  authenticate,
+  checkPermission('analytics'),
+  skudController.getPassesHourly
+);
+
+// Топ локаций по активности
+router.get(
+  '/analytics/top-locations',
+  authenticate,
+  checkPermission('analytics'),
+  skudController.getTopLocations
+);
+
 module.exports = router;

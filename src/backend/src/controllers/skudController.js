@@ -1359,6 +1359,145 @@ const getForeignStudentsPassesByUpn = async (req, res) => {
   }
 };
 
+/**
+ * ===== АНАЛИТИКА =====
+ */
+
+/**
+ * Получить временные ряды проходов (по дням)
+ * @route GET /api/v1/skud/analytics/time-series
+ */
+const getPassesTimeSeries = async (req, res) => {
+  try {
+    const { dateFrom, dateTo } = req.query;
+
+    if (!dateFrom || !dateTo) {
+      return res.status(400).json({
+        success: false,
+        message: 'Необходимо указать dateFrom и dateTo'
+      });
+    }
+
+    const pool = getSkudPool();
+
+    // SQL запрос для получения проходов по дням
+    const query = `
+      SELECT 
+        DATE(Time) as date,
+        COUNT(*) as count
+      FROM AcessEvent
+      WHERE Time BETWEEN ? AND ?
+      GROUP BY DATE(Time)
+      ORDER BY date ASC
+    `;
+
+    const [rows] = await pool.query(query, [dateFrom, dateTo]);
+
+    res.json({
+      success: true,
+      data: rows
+    });
+  } catch (error) {
+    console.error('[getPassesTimeSeries] Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Ошибка получения временных рядов',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Получить распределение проходов по часам
+ * @route GET /api/v1/skud/analytics/hourly
+ */
+const getPassesHourly = async (req, res) => {
+  try {
+    const { dateFrom, dateTo } = req.query;
+
+    if (!dateFrom || !dateTo) {
+      return res.status(400).json({
+        success: false,
+        message: 'Необходимо указать dateFrom и dateTo'
+      });
+    }
+
+    const pool = getSkudPool();
+
+    // SQL запрос для получения проходов по часам
+    const query = `
+      SELECT 
+        HOUR(Time) as date,
+        COUNT(*) as count
+      FROM AcessEvent
+      WHERE Time BETWEEN ? AND ?
+      GROUP BY HOUR(Time)
+      ORDER BY date ASC
+    `;
+
+    const [rows] = await pool.query(query, [dateFrom, dateTo]);
+
+    res.json({
+      success: true,
+      data: rows
+    });
+  } catch (error) {
+    console.error('[getPassesHourly] Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Ошибка получения распределения по часам',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Получить топ локаций по активности
+ * @route GET /api/v1/skud/analytics/top-locations
+ */
+const getTopLocations = async (req, res) => {
+  try {
+    const { dateFrom, dateTo, limit = 10 } = req.query;
+
+    if (!dateFrom || !dateTo) {
+      return res.status(400).json({
+        success: false,
+        message: 'Необходимо указать dateFrom и dateTo'
+      });
+    }
+
+    const pool = getSkudPool();
+
+    // SQL запрос для получения топ локаций
+    const query = `
+      SELECT 
+        ap.Name as checkpoint,
+        ap.Building as building,
+        COUNT(*) as count
+      FROM AcessEvent ae
+      LEFT JOIN AcessPoint ap ON ae.AcessPointId = ap.ID
+      WHERE ae.Time BETWEEN ? AND ?
+      GROUP BY ap.ID, ap.Name, ap.Building
+      ORDER BY count DESC
+      LIMIT ?
+    `;
+
+    const [rows] = await pool.query(query, [dateFrom, dateTo, parseInt(limit)]);
+
+    res.json({
+      success: true,
+      data: rows
+    });
+  } catch (error) {
+    console.error('[getTopLocations] Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Ошибка получения топ локаций',
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   searchByIdentifier,
   getPassesReport,
@@ -1373,5 +1512,9 @@ module.exports = {
   getEmployeesPassesByFio,
   getEmployeesPassesByUpn,
   getForeignStudentsPassesByFio,
-  getForeignStudentsPassesByUpn
+  getForeignStudentsPassesByUpn,
+  // Аналитика
+  getPassesTimeSeries,
+  getPassesHourly,
+  getTopLocations
 };

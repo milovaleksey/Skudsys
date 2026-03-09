@@ -21,13 +21,6 @@ import {
   Wifi,
   WifiOff
 } from 'lucide-react';
-import { PassesReportPage } from './PassesReportPage';
-import { LocationPage } from './LocationPage';
-import { StudentsReportPage } from './StudentsReportPage';
-import { EmployeesReportPage } from './EmployeesReportPage';
-import { ParkingPage } from './ParkingPage';
-import { StorageSystemsPage } from './StorageSystemsPage';
-import { UnderConstructionPage } from './UnderConstructionPage';
 import { UsersSettingsPage } from './UsersSettingsPage';
 import { RolesManagementPage } from './RolesManagementPage';
 import { DashboardBuilder } from './DashboardBuilder';
@@ -42,6 +35,7 @@ import { ChangePasswordDialog } from './ChangePasswordDialog';
 import { useMQTTWebSocket } from '../hooks/useMQTT';
 import { Card } from './ui/card';
 import { ForeignStudentsReport } from './ForeignStudentsReport';
+import { AnalyticsPage } from './AnalyticsPage';
 
 export function MainPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -366,7 +360,7 @@ export function MainPage() {
         {activePage === 'employees' && <EmployeesReportPage />}
         {activePage === 'parking' && <ParkingPage />}
         {activePage === 'storage' && <StorageSystemsPage />}
-        {activePage === 'analytics' && <UnderConstructionPage />}
+        {activePage === 'analytics' && <AnalyticsPage />}
         {activePage === 'foreign-students' && <ForeignStudentsReport />}
         {activePage === 'users-settings' && <UsersSettingsPage />}
         {activePage === 'roles-settings' && <RolesManagementPage />}
