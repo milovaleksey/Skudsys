@@ -237,7 +237,13 @@ class MQTTService extends EventEmitter {
       try {
         this.analyticsConfig = JSON.parse(messageStr);
         console.log('[MQTT] 📊 Получена конфигурация аналитики');
-        console.log(`[MQTT] 📊 Конфигурация содержит ${this.analyticsConfig.analytics.length} типов аналитики`);
+        console.log('[MQTT] 📋 Структура конфигурации:', Object.keys(this.analyticsConfig));
+        
+        if (this.analyticsConfig.analytics && Array.isArray(this.analyticsConfig.analytics)) {
+          console.log(`[MQTT] 📊 Конфигурация содержит ${this.analyticsConfig.analytics.length} типов аналитики`);
+        } else {
+          console.warn('[MQTT] ⚠️ Конфигурация не содержит массив analytics:', this.analyticsConfig);
+        }
         
         // Устанавливаем конфигурацию в процессор
         analyticsProcessor.setConfig(this.analyticsConfig);

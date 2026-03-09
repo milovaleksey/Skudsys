@@ -1,0 +1,155 @@
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ 🌐 Using API URL from env: http://10.101.221.207:3000/v1
+ 🔑 Getting token: null
+ 🔑 Getting token: null
+ Skipping roles load - no token
+ 🔑 Getting token: null
+ 🔑 Getting token: null
+ Skipping roles load - no token
+ 🔐 Attempting login for: admin authType: local
+ 🔑 Getting token: null
+ 🌐 Making request to: /auth/login without token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/auth/login
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ 📥 Login response: Object
+ ✅ Login successful, saving tokens...
+ Token: eyJhbGciOiJIUzI1NiIs...
+ Refresh Token: present
+ 💾 Saving token: eyJhbGciOiJIUzI1NiIs...
+ ✅ Token saved to localStorage
+ 💾 Saving refresh token
+ 👤 Setting user: Object
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ ✔️ Token verification after save: saved
+ [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+ [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+ [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+ [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /students/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /employees/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /parking/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+ WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM' failed: WebSocket is closed before the connection is established.
+(anonymous) @ useMQTT.ts:131
+ [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+ [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+ [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+ [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /students/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /employees/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /parking/statistics with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+ [WebSocket] Ошибка: Event
+ws.onerror @ useMQTT.ts:103
+ [WebSocket] Отключено: 1006 
+ [WebSocket] Переподключение через 2000ms (попытка 1/5)
+ [WebSocket] ✅ Подключено
+ [WebSocket] Получено: initial
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+:3000/v1/employees/statistics:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ 📡 Response status: 404
+ 📡 Response content-type: application/json; charset=utf-8
+ Failed to load stats 
+loadStats @ MainPage.tsx:94
+ 📋 Loading roles with token...
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /roles with token
+ 🌐 Full URL: http://10.101.221.207:3000/v1/roles
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+:3000/v1/employees/statistics:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ 📡 Response status: 404
+ 📡 Response content-type: application/json; charset=utf-8
+ Failed to load stats 
+loadStats @ MainPage.tsx:94
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ ✅ Roles loaded: Array(6)
+ [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+ [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:104 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useMQTT.ts:114 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useMQTT.ts:120 [WebSocket] ✅ Подключено
+useMQTT.ts:129 [WebSocket] Получено: initial
+useAnalyticsMQTT.ts:39 [Analytics WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:49 [Analytics WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:148 WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM' failed: WebSocket is closed before the connection is established.
+(anonymous) @ useAnalyticsMQTT.ts:148
+useAnalyticsMQTT.ts:39 [Analytics WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:49 [Analytics WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:114 [Analytics WebSocket] Ошибка: Event
+ws.onerror @ useAnalyticsMQTT.ts:114
+useAnalyticsMQTT.ts:119 [Analytics WebSocket] Отключено: 1006 
+useAnalyticsMQTT.ts:126 [Analytics WebSocket] Переподключение через 2000ms (попытка 1/5)
+useAnalyticsMQTT.ts:55 [Analytics WebSocket] ✅ Подключено
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: initial
+useAnalyticsMQTT.ts:70 [Analytics WebSocket] 📊 Начальные данные: Object
+useAnalyticsMQTT.ts:39 [Analytics WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:49 [Analytics WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:55 [Analytics WebSocket] ✅ Подключено
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: initial
+useAnalyticsMQTT.ts:70 [Analytics WebSocket] 📊 Начальные данные: Object
+useMQTT.ts:129 [WebSocket] Получено: heartbeat
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: heartbeat
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: heartbeat
+useMQTT.ts:129 [WebSocket] Получено: heartbeat
+useAnalyticsMQTT.ts:39 [Analytics WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:49 [Analytics WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:55 [Analytics WebSocket] ✅ Подключено
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: initial
+useAnalyticsMQTT.ts:70 [Analytics WebSocket] 📊 Начальные данные: Object
+useMQTT.ts:129 [WebSocket] Получено: pong
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: pong
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: heartbeat
+useMQTT.ts:129 [WebSocket] Получено: heartbeat
+useMQTT.ts:129 [WebSocket] Получено: heartbeat
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: heartbeat
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: heartbeat
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: analytics-updated
+useAnalyticsMQTT.ts:84 [Analytics WebSocket] 🔄 Обновление: Object
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: analytics-updated
+useAnalyticsMQTT.ts:84 [Analytics WebSocket] 🔄 Обновление: Object
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: analytics-updated
+useAnalyticsMQTT.ts:84 [Analytics WebSocket] 🔄 Обновление: Object
+useMQTT.ts:129 [WebSocket] Получено: analytics-updated
+useMQTT.ts:166 [WebSocket] Неизвестный тип сообщения: analytics-updated
+ws.onmessage @ useMQTT.ts:166
+useMQTT.ts:129 [WebSocket] Получено: analytics-updated
+useMQTT.ts:166 [WebSocket] Неизвестный тип сообщения: analytics-updated
+ws.onmessage @ useMQTT.ts:166
+useAnalyticsMQTT.ts:39 [Analytics WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:49 [Analytics WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:55 [Analytics WebSocket] ✅ Подключено
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: initial
+useAnalyticsMQTT.ts:70 [Analytics WebSocket] 📊 Начальные данные: Object
+useAnalyticsMQTT.ts:39 [Analytics WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:49 [Analytics WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:55 [Analytics WebSocket] ✅ Подключено
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: initial
+useAnalyticsMQTT.ts:70 [Analytics WebSocket] 📊 Начальные данные: Object
+useAnalyticsMQTT.ts:39 [Analytics WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:49 [Analytics WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:55 [Analytics WebSocket] ✅ Подключено
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: initial
+useAnalyticsMQTT.ts:70 [Analytics WebSocket] 📊 Начальные данные: Object
+useAnalyticsMQTT.ts:39 [Analytics WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:49 [Analytics WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMwNzUzMTcsImV4cCI6MTc3MzE2MTcxN30.Nx9v6cN7Bl4qgL7ZdAxxfAyfWaOTShQEYHKcwiZoAYM
+useAnalyticsMQTT.ts:55 [Analytics WebSocket] ✅ Подключено
+useAnalyticsMQTT.ts:64 [Analytics WebSocket] Получено: initial
+useAnalyticsMQTT.ts:70 [Analytics WebSocket] 📊 Начальные данные: Object
