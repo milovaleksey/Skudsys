@@ -626,6 +626,25 @@ export const skudApi = {
     });
   },
 
+  // ===== ОТЧЕТЫ ПО ИНОСТРАННЫМ СТУДЕНТАМ =====
+  async getForeignStudentsPassesByFio(lastName: string, firstName: string, middleName: string, dateFrom: string, dateTo: string) {
+    return apiClient.get('/skud/foreign-students-passes/by-fio', { 
+      lastName, 
+      firstName, 
+      middleName: middleName || '',
+      dateFrom,
+      dateTo
+    });
+  },
+
+  async getForeignStudentsPassesByUpn(upn: string, dateFrom: string, dateTo: string) {
+    return apiClient.get('/skud/foreign-students-passes/by-upn', { 
+      upn,
+      dateFrom,
+      dateTo
+    });
+  },
+
   async getAccessPoints() {
     return apiClient.get('/skud/access-points');
   },

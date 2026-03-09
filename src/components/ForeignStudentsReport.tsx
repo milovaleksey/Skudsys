@@ -19,6 +19,7 @@ import { Card } from './ui/card';
 import { SimpleStatCard } from './SimpleStatCard';
 import { DonutChartCard } from './DonutChartCard';
 import { useForeignStudentsMQTT } from '../hooks/useForeignStudentsMQTT';
+import { skudApi } from '../lib/api';
 import { toast } from 'sonner';
 
 registerLocale('ru', ru);
@@ -39,26 +40,18 @@ interface MissingFormData {
   daysThreshold: number;
 }
 
-interface SearchResult {
+interface PassRecord {
   id: number;
-  fio: string;
-  upn: string;
-  email: string;
-  country: string;
-  lastSeen: string;
-  location: string;
-  direction: string;
-}
-
-interface MissingResult {
-  id: number;
-  fio: string;
-  upn: string;
-  email: string;
-  country: string;
-  lastSeen: string;
-  lastLocation: string;
-  daysMissing: number;
+  time: string;
+  fullName: string;
+  upn: string | null;
+  cardNumber: string | null;
+  checkpoint: string;
+  country?: string | null;
+  eventName?: string | null;
+  direction?: string | null;
+  building?: string | null;
+  daysMissing?: number;
 }
 
 export function ForeignStudentsReport() {
@@ -83,8 +76,8 @@ export function ForeignStudentsReport() {
     daysThreshold: 3
   });
   
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-  const [missingResults, setMissingResults] = useState<MissingResult[]>([]);
+  const [searchResults, setSearchResults] = useState<PassRecord[]>([]);
+  const [missingResults, setMissingResults] = useState<PassRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   // Автоматическое определение типа поиска при вводе
@@ -134,29 +127,40 @@ export function ForeignStudentsReport() {
       const dateFrom = `${dateFromStr} ${searchForm.timeFrom}:00`;
       const dateTo = `${dateToStr} ${searchForm.timeTo}:59`;
 
-      const params = new URLSearchParams({
-        searchType: searchForm.searchType,
-        searchValue: searchForm.searchValue,
-        dateFrom,
-        dateTo
-      });
+      let response;
 
-      const response = await fetch(`/api/foreign-students/search?${params}`);
-      
-      if (!response.ok) {
-        throw new Error('Ошибка при получении данных');
-      }
+      if (searchForm.searchType === 'fio') {
+        // Разбираем ФИО на части
+        const parts = searchForm.searchValue.trim().split(/\s+/);
+        if (parts.length < 2) {
+          toast.error('Введите хотя бы фамилию и имя');
+          setIsLoading(false);
+          return;
+        }
 
-      const data = await response.json();
-      setSearchResults(data.results || []);
-      
-      if (data.results.length === 0) {
-        toast.info('Проходы не найдены за указанный период');
+        const [lastName, firstName, ...middleNameParts] = parts;
+        const middleName = middleNameParts.join(' ');
+
+        response = await skudApi.getForeignStudentsPassesByFio(lastName, firstName, middleName, dateFrom, dateTo);
       } else {
-        toast.success(`Найдено записей: ${data.results.length}`);
+        // Поиск по UPN
+        response = await skudApi.getForeignStudentsPassesByUpn(searchForm.searchValue.trim(), dateFrom, dateTo);
       }
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Произошла ошибка');
+
+      if (response.success && response.data) {
+        setSearchResults(response.data as PassRecord[]);
+        if (response.data.length === 0) {
+          toast.info('Проходы не найдены за указанный период');
+        } else {
+          toast.success(`Найдено записей: ${response.data.length}`);
+        }
+      } else {
+        toast.error(response.error?.message || 'Ошибка при поиске проходов');
+        setSearchResults([]);
+      }
+    } catch (error) {
+      console.error('Search error:', error);
+      toast.error('Ошибка при поиске проходов');
       setSearchResults([]);
     } finally {
       setIsLoading(false);
@@ -180,7 +184,7 @@ export function ForeignStudentsReport() {
         daysThreshold: missingForm.daysThreshold.toString()
       });
 
-      const response = await fetch(`/api/foreign-students/missing?${params}`);
+      const response = await skudApi.get(`/api/foreign-students/missing?${params}`);
       
       if (!response.ok) {
         throw new Error('Ошибка при получении данных');
@@ -217,7 +221,7 @@ export function ForeignStudentsReport() {
       const dateStr = new Date().toISOString().slice(0, 10);
       XLSX.writeFile(workbook, `${filename}_${dateStr}.xlsx`);
       
-      toast.success('Отч��т успешно выгружен в Excel');
+      toast.success('Отчет успешно выгружен в Excel');
     } catch (error) {
       console.error('Export error:', error);
       toast.error('Ошибка при экспорте в Excel');
@@ -410,11 +414,11 @@ export function ForeignStudentsReport() {
               {searchResults.length > 0 && (
                 <button
                   onClick={() => handleExportExcel(searchResults.map(r => ({
-                    'ФИО': r.fio,
+                    'ФИО': r.fullName,
                     'Логин/Почта': r.upn,
                     'Страна': r.country,
-                    'Дата/Время': r.lastSeen,
-                    'Место': r.location,
+                    'Дата/Время': r.time,
+                    'Место': r.checkpoint,
                     'Направление': r.direction
                   })), 'foreign_students_search')}
                   className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700"
@@ -459,7 +463,7 @@ export function ForeignStudentsReport() {
                           index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                         }`}
                       >
-                        <td className="px-6 py-4 text-sm text-gray-900">{result.fio}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{result.fullName}</td>
                         <td className="px-6 py-4 text-sm text-gray-600">{result.upn}</td>
                         <td className="px-6 py-4 text-sm">
                           <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -467,8 +471,8 @@ export function ForeignStudentsReport() {
                             {result.country}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-900">{result.lastSeen}</td>
-                        <td className="px-6 py-4 text-sm text-gray-600">{result.location}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{result.time}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600">{result.checkpoint}</td>
                         <td className="px-6 py-4 text-sm">
                           {result.direction === 'Вход' ? (
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -557,11 +561,11 @@ export function ForeignStudentsReport() {
               {missingResults.length > 0 && (
                 <button
                   onClick={() => handleExportExcel(missingResults.map(r => ({
-                    'ФИО': r.fio,
-                    'Логин/Почта': r.upn,
+                    'ФИО': r.fullName,
+                    'Лог��н/Почта': r.upn,
                     'Страна': r.country,
-                    'Последний визит': r.lastSeen,
-                    'Место': r.lastLocation,
+                    'Последний визит': r.time,
+                    'Место': r.checkpoint,
                     'Дней отсутствия': r.daysMissing
                   })), 'foreign_students_missing')}
                   className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700"
@@ -606,7 +610,7 @@ export function ForeignStudentsReport() {
                           index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                         }`}
                       >
-                        <td className="px-6 py-4 text-sm text-gray-900">{result.fio}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{result.fullName}</td>
                         <td className="px-6 py-4 text-sm text-gray-600">{result.upn}</td>
                         <td className="px-6 py-4 text-sm">
                           <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -614,8 +618,8 @@ export function ForeignStudentsReport() {
                             {result.country}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-900">{result.lastSeen}</td>
-                        <td className="px-6 py-4 text-sm text-gray-600">{result.lastLocation}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{result.time}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600">{result.checkpoint}</td>
                         <td className="px-6 py-4 text-sm">
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                             result.daysMissing >= 7
