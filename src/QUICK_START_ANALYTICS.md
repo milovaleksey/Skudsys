@@ -65,14 +65,41 @@ npm start
 [MQTT] ✅ Обработано 10 типов аналитики
 ```
 
+**Если логов нет:**
+```bash
+# Проверьте что backend запущен
+cd backend
+npm start
+
+# В логах должно быть:
+# [MQTT] 📋 Конфигурация обновлена
+# [Analytics Processor] Получено XXX записей
+```
+
 **Frontend логи** (F12 → Console):
 ```
 [Analytics WebSocket] ✅ Подключено
-[Analytics WebSocket] Получены начальные данные аналитики
+[Analytics WebSocket] 📊 Начальные данные: {
+  ключи: ['total_stats', 'time_series', 'top_zones', ...],
+  top_zones_count: 22,
+  time_series_count: 45
+}
 🔍 Нормализация названий зданий: {
   исходных_записей: 883,
   уникальных_после_нормализации: 22
 }
+```
+
+**Если показывает:**
+```
+[Analytics WebSocket] ⚠️ Начальные данные ПУСТЫЕ!
+```
+
+**Значит backend не получил данные из MQTT. Выполните:**
+```bash
+cd backend
+npm run analytics:setup  # Отправить конфигурацию и данные
+npm start                 # Перезапустить
 ```
 
 ## Дополнительно

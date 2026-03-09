@@ -67,16 +67,29 @@ export function useAnalyticsMQTT() {
             case 'initial':
               // Начальные данные при подключении
               if (data.analytics) {
-                console.log('[Analytics WebSocket] Получены начальные данные аналитики');
+                console.log('[Analytics WebSocket] 📊 Начальные данные:', {
+                  ключи: Object.keys(data.analytics),
+                  top_zones_count: data.analytics.top_zones?.length || 0,
+                  time_series_count: data.analytics.time_series?.length || 0
+                });
                 setAnalyticsData(data.analytics);
+              } else {
+                console.warn('[Analytics WebSocket] ⚠️ Начальные данные ПУСТЫЕ!');
               }
               break;
 
             case 'analytics-updated':
               // Обновление данных аналитики
-              console.log('[Analytics WebSocket] Обновление данных аналитики');
               if (data.analytics) {
+                console.log('[Analytics WebSocket] 🔄 Обновление:', {
+                  ключи: Object.keys(data.analytics),
+                  top_zones_count: data.analytics.top_zones?.length || 0,
+                  time_series_count: data.analytics.time_series?.length || 0,
+                  первые_3_зоны: data.analytics.top_zones?.slice(0, 3).map((z: any) => z.name)
+                });
                 setAnalyticsData(data.analytics);
+              } else {
+                console.warn('[Analytics WebSocket] ⚠️ Данные обновления ПУСТЫЕ!');
               }
               break;
 
