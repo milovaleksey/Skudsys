@@ -416,10 +416,10 @@ export function ForeignStudentsReport() {
                   onClick={() => handleExportExcel(searchResults.map(r => ({
                     'ФИО': r.fullName,
                     'Логин/Почта': r.upn,
-                    'Страна': r.country,
+                    'Страна': r.country || '—',
                     'Дата/Время': r.time,
                     'Место': r.checkpoint,
-                    'Направление': r.direction
+                    'Направление': r.direction === 'in' ? 'Вход' : r.direction === 'out' ? 'Выход' : '—'
                   })), 'foreign_students_search')}
                   className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700"
                 >
@@ -474,11 +474,11 @@ export function ForeignStudentsReport() {
                         <td className="px-6 py-4 text-sm text-gray-900">{result.time}</td>
                         <td className="px-6 py-4 text-sm text-gray-600">{result.checkpoint}</td>
                         <td className="px-6 py-4 text-sm">
-                          {result.direction === 'Вход' ? (
+                          {result.direction === 'in' ? (
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                               Вход
                             </span>
-                          ) : result.direction === 'Выход' ? (
+                          ) : result.direction === 'out' ? (
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                               Выход
                             </span>
@@ -562,8 +562,8 @@ export function ForeignStudentsReport() {
                 <button
                   onClick={() => handleExportExcel(missingResults.map(r => ({
                     'ФИО': r.fullName,
-                    'Лог��н/Почта': r.upn,
-                    'Страна': r.country,
+                    'Логин/Почта': r.upn,
+                    'Страна': r.country || '—',
                     'Последний визит': r.time,
                     'Место': r.checkpoint,
                     'Дней отсутствия': r.daysMissing
