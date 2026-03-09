@@ -81,6 +81,12 @@ class AnalyticsProcessor {
       case 'comparison':
         return this.processComparison(config);
       
+      case 'trend':
+        return this.processTrend(config);
+      
+      case 'heatmap':
+        return this.processHeatmap(config);
+      
       default:
         console.warn(`[Analytics Processor] Неизвестный тип: ${type}`);
         return null;
@@ -366,6 +372,52 @@ class AnalyticsProcessor {
         color: group.color
       };
     });
+  }
+
+  /**
+   * Обработка тренда
+   */
+  processTrend(config) {
+    const { groupBy, aggregation, field } = config;
+    const grouped = {};
+
+    this.rawData.forEach(item => {
+      const key = item[groupBy];
+      if (!grouped[key]) {
+        grouped[key] = [];
+      }
+      grouped[key].push(item[field] || 0);
+    });
+
+    return Object.keys(grouped).sort().map(key => ({
+      date: key,
+      count: aggregation === 'sum' 
+        ? grouped[key].reduce((a, b) => a + b, 0)
+        : Math.round(grouped[key].reduce((a, b) => a + b, 0) / grouped[key].length)
+    }));
+  }
+
+  /**
+   * Обработка тепловой карты
+   */
+  processHeatmap(config) {
+    const { groupBy, aggregation, field } = config;
+    const grouped = {};
+
+    this.rawData.forEach(item => {
+      const key = item[groupBy];
+      if (!grouped[key]) {
+        grouped[key] = [];
+      }
+      grouped[key].push(item[field] || 0);
+    });
+
+    return Object.keys(grouped).sort().map(key => ({
+      date: key,
+      count: aggregation === 'sum' 
+        ? grouped[key].reduce((a, b) => a + b, 0)
+        : Math.round(grouped[key].reduce((a, b) => a + b, 0) / grouped[key].length)
+    }));
   }
 }
 

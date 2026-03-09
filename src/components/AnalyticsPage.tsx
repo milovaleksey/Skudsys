@@ -7,9 +7,9 @@ import {
   Calendar,
   Download,
   RefreshCw,
-  Loader2,
   Wifi,
-  WifiOff
+  WifiOff,
+  Activity
 } from 'lucide-react';
 import { Card } from './ui/card';
 import { 
@@ -34,18 +34,24 @@ const COLORS = ['#00aeef', '#0088cc', '#0066aa', '#004488', '#002266'];
 
 export function AnalyticsPage() {
   // Получаем данные из MQTT через WebSocket
+  const analyticsData = useAnalyticsMQTT();
   const {
-    statistics,
-    timeSeries,
-    topLocations,
-    weekdayPattern,
-    locationsComparison,
     isConnected,
     error: mqttError,
     reconnect,
-  } = useAnalyticsMQTT();
+    ...allData
+  } = analyticsData;
 
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Извлекаем данные из конфигурации
+  const statistics = allData.total_stats;
+  const timeSeries = allData.time_series;
+  const topLocations = allData.top_zones;
+  const weekdayPattern = allData.weekday_pattern;
+  const locationsComparison = allData.zone_comparison;
+  const categorization = allData.zone_categories;
+  const dormitories = allData.dormitory_analysis;
 
   /**
    * Обновление данных
@@ -68,12 +74,9 @@ export function AnalyticsPage() {
       if (statistics) {
         const statsData = [
           ['Параметр', 'Значение'],
-          ['Всего проходов', statistics.totalPasses],
-          ['Уникальных людей', statistics.uniquePeople],
-          ['Уникальных локаций', statistics.uniqueLocations],
-          ['Средняя активность в день', statistics.avgDailyPasses],
-          ['Период с', statistics.dateRange?.from || ''],
-          ['Период по', statistics.dateRange?.to || ''],
+          ['Всего проходов', statistics.totalPasses || 0],
+          ['Уникальных зон', statistics.uniqueZones || 0],
+          ['Среднее в день', statistics.avgDailyPasses || 0],
         ];
         const ws1 = XLSX.utils.aoa_to_sheet(statsData);
         XLSX.utils.book_append_sheet(wb, ws1, 'Статистика');
@@ -136,7 +139,7 @@ export function AnalyticsPage() {
         <div className="flex items-center gap-3">
           <BarChart3 size={32} style={{ color: '#00aeef' }} />
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Аналитика СКУД</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Аналитика СКУД (MQTT)</h2>
             <div className="flex items-center gap-2 mt-1">
               {isConnected ? (
                 <>
@@ -199,7 +202,7 @@ export function AnalyticsPage() {
               <div>
                 <p className="text-sm text-gray-600 mb-1">Всего проходов</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {formatNumber(statistics.totalPasses)}
+                  {formatNumber(statistics.totalPasses || 0)}
                 </p>
               </div>
               <div className="p-3 rounded-lg" style={{ backgroundColor: '#e6f7ff' }}>
@@ -211,23 +214,9 @@ export function AnalyticsPage() {
           <Card className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Уникальных людей</p>
+                <p className="text-sm text-gray-600 mb-1">Уникальных зон</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {formatNumber(statistics.uniquePeople)}
-                </p>
-              </div>
-              <div className="p-3 rounded-lg" style={{ backgroundColor: '#e6f7ff' }}>
-                <Users className="w-6 h-6" style={{ color: '#00aeef' }} />
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">Локаций</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {formatNumber(statistics.uniqueLocations)}
+                  {formatNumber(statistics.uniqueZones || 0)}
                 </p>
               </div>
               <div className="p-3 rounded-lg" style={{ backgroundColor: '#e6f7ff' }}>
@@ -241,7 +230,7 @@ export function AnalyticsPage() {
               <div>
                 <p className="text-sm text-gray-600 mb-1">Среднее в день</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {formatNumber(statistics.avgDailyPasses)}
+                  {formatNumber(statistics.avgDailyPasses || 0)}
                 </p>
               </div>
               <div className="p-3 rounded-lg" style={{ backgroundColor: '#e6f7ff' }}>
@@ -249,34 +238,70 @@ export function AnalyticsPage() {
               </div>
             </div>
           </Card>
+
+          <Card className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Пиковый день</p>
+                {statistics.peakDay && typeof statistics.peakDay === 'object' ? (
+                  <>
+                    <p className="text-lg font-bold text-gray-900">
+                      {formatNumber(statistics.peakDay.value || 0)}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {formatDate(statistics.peakDay.date)}
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-2xl font-bold text-gray-900">-</p>
+                )}
+              </div>
+              <div className="p-3 rounded-lg" style={{ backgroundColor: '#e6f7ff' }}>
+                <Activity className="w-6 h-6" style={{ color: '#00aeef' }} />
+              </div>
+            </div>
+          </Card>
         </div>
       )}
 
-      {/* Временные ряды - Area Chart */}
+      {/* График: Динамика по дням */}
       {timeSeries && timeSeries.length > 0 && (
         <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-4" style={{ color: '#00aeef' }}>
-            Динамика проходов по дням
-          </h3>
+          <h3 className="text-lg font-semibold mb-4 text-gray-900">Динамика проходов по дням</h3>
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={timeSeries}>
-              <CartesianGrid strokeDasharray="3 3" />
+              <defs>
+                <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#00aeef" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#00aeef" stopOpacity={0}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis 
                 dataKey="date" 
                 tickFormatter={formatDate}
+                stroke="#6b7280"
                 style={{ fontSize: '12px' }}
               />
-              <YAxis style={{ fontSize: '12px' }} />
+              <YAxis 
+                stroke="#6b7280"
+                style={{ fontSize: '12px' }}
+              />
               <Tooltip 
-                labelFormatter={formatDate}
-                formatter={(value: number) => formatNumber(value)}
+                contentStyle={{ 
+                  backgroundColor: '#fff',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px'
+                }}
+                labelFormatter={(value) => `Дата: ${formatDate(value)}`}
               />
               <Area 
                 type="monotone" 
                 dataKey="count" 
                 stroke="#00aeef" 
-                fill="#00aeef" 
-                fillOpacity={0.3}
+                strokeWidth={2}
+                fillOpacity={1}
+                fill="url(#colorCount)"
                 name="Проходов"
               />
             </AreaChart>
@@ -284,146 +309,146 @@ export function AnalyticsPage() {
         </Card>
       )}
 
-      {/* Топ локаций и Дни недели */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Топ локаций */}
-        {topLocations && topLocations.length > 0 && (
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-4" style={{ color: '#00aeef' }}>
-              Топ-10 зданий по активности
-            </h3>
-            <div className="space-y-3">
-              {topLocations.map((loc: any, index: number) => (
-                <div key={index} className="flex items-center gap-3">
-                  <div className="w-8 text-center font-semibold text-gray-500">
-                    {index + 1}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-medium text-gray-900">
-                        {loc.name}
-                      </span>
-                      <span className="text-sm text-gray-600">
-                        {formatNumber(loc.count)} ({loc.percentage}%)
-                      </span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="h-2 rounded-full transition-all"
-                        style={{
-                          backgroundColor: '#00aeef',
-                          width: `${loc.percentage}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
-        )}
+      {/* График: Топ-10 зон */}
+      {topLocations && topLocations.length > 0 && (
+        <Card className="p-6">
+          <h3 className="text-lg font-semibold mb-4 text-gray-900">Топ-10 зон по активности</h3>
+          <ResponsiveContainer width="100%" height={400}>
+            <BarChart data={topLocations} layout="vertical">
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis type="number" stroke="#6b7280" style={{ fontSize: '12px' }} />
+              <YAxis 
+                type="category" 
+                dataKey="name" 
+                width={150}
+                stroke="#6b7280"
+                style={{ fontSize: '11px' }}
+              />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: '#fff',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px'
+                }}
+              />
+              <Bar dataKey="count" fill="#00aeef" radius={[0, 4, 4, 0]} name="Проходов" />
+            </BarChart>
+          </ResponsiveContainer>
+        </Card>
+      )}
 
-        {/* Дни недели */}
-        {weekdayPattern && weekdayPattern.length > 0 && (
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-4" style={{ color: '#00aeef' }}>
-              Активность по дням недели
-            </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={weekdayPattern}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" style={{ fontSize: '12px' }} />
-                <YAxis style={{ fontSize: '12px' }} />
-                <Tooltip formatter={(value: number) => formatNumber(value)} />
-                <Bar dataKey="count" fill="#00aeef" name="Проходов" />
-              </BarChart>
-            </ResponsiveContainer>
-          </Card>
-        )}
-      </div>
+      {/* График: По дням недели */}
+      {weekdayPattern && weekdayPattern.length > 0 && (
+        <Card className="p-6">
+          <h3 className="text-lg font-semibold mb-4 text-gray-900">Распределение по дням недели</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={weekdayPattern}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis 
+                dataKey="day" 
+                stroke="#6b7280"
+                style={{ fontSize: '12px' }}
+              />
+              <YAxis 
+                stroke="#6b7280"
+                style={{ fontSize: '12px' }}
+              />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: '#fff',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px'
+                }}
+              />
+              <Bar dataKey="count" fill="#00aeef" radius={[4, 4, 0, 0]} name="Проходов" />
+            </BarChart>
+          </ResponsiveContainer>
+        </Card>
+      )}
 
-      {/* Сравнение локаций */}
+      {/* График: Сравнение зон */}
       {locationsComparison && locationsComparison.length > 0 && (
         <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-4" style={{ color: '#00aeef' }}>
-            Сравнение топ-5 локаций по дням
-          </h3>
+          <h3 className="text-lg font-semibold mb-4 text-gray-900">Сравнение топ-5 зон по дням</h3>
           <ResponsiveContainer width="100%" height={350}>
             <LineChart data={locationsComparison}>
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis 
                 dataKey="date" 
                 tickFormatter={formatDate}
+                stroke="#6b7280"
                 style={{ fontSize: '12px' }}
               />
-              <YAxis style={{ fontSize: '12px' }} />
+              <YAxis 
+                stroke="#6b7280"
+                style={{ fontSize: '12px' }}
+              />
               <Tooltip 
-                labelFormatter={formatDate}
-                formatter={(value: number) => formatNumber(value)}
+                contentStyle={{ 
+                  backgroundColor: '#fff',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px'
+                }}
+                labelFormatter={(value) => `Дата: ${formatDate(value)}`}
               />
               <Legend />
-              {Object.keys(locationsComparison[0] || {})
-                .filter((key) => key !== 'date')
-                .map((location, index) => (
+              {/* Динамически создаем линии для каждой зоны */}
+              {locationsComparison.length > 0 && Object.keys(locationsComparison[0])
+                .filter(key => key !== 'date')
+                .map((key, index) => (
                   <Line
-                    key={location}
+                    key={key}
                     type="monotone"
-                    dataKey={location}
+                    dataKey={key}
                     stroke={COLORS[index % COLORS.length]}
                     strokeWidth={2}
                     dot={{ r: 3 }}
+                    name={key}
                   />
-                ))}
+                ))
+              }
             </LineChart>
           </ResponsiveContainer>
         </Card>
       )}
 
-      {/* Если нет данных */}
-      {!statistics && isConnected && (
+      {/* Загрузка / Нет данных */}
+      {!statistics && !mqttError && (
         <Card className="p-12 text-center">
-          <BarChart3 className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Нет данных
-          </h3>
-          <p className="text-gray-600 mb-4">
-            Данные аналитики еще не опубликованы в MQTT
-          </p>
-        </Card>
-      )}
-
-      {/* Если MQTT не подключен */}
-      {!isConnected && !mqttError && (
-        <Card className="p-12 text-center">
-          <Loader2 className="w-16 h-16 mx-auto mb-4 animate-spin text-gray-400" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Подключение к MQTT...
-          </h3>
-          <p className="text-gray-600">
-            Ожидание данных аналитики из брокера
-          </p>
-        </Card>
-      )}
-
-      {/* Информация о топиках MQTT */}
-      <Card className="p-4 bg-blue-50 border-blue-200">
-        <div className="flex items-start gap-3">
-          <Wifi className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-blue-900">
-            <p className="font-medium mb-1">Источник данных: MQTT</p>
-            <p className="text-xs text-blue-700 mb-2">
-              Данные аналитики загружаются из MQTT топиков в реальном времени:
-            </p>
-            <ul className="text-xs text-blue-700 space-y-1">
-              <li>• <code className="bg-blue-100 px-1 rounded">Skud/analytics/statistics</code> - общая статистика</li>
-              <li>• <code className="bg-blue-100 px-1 rounded">Skud/analytics/timeSeries</code> - временные ряды</li>
-              <li>• <code className="bg-blue-100 px-1 rounded">Skud/analytics/topLocations</code> - топ локаций</li>
-              <li>• <code className="bg-blue-100 px-1 rounded">Skud/analytics/weekdayPattern</code> - по дням недели</li>
-              <li>• <code className="bg-blue-100 px-1 rounded">Skud/analytics/locationsComparison</code> - сравнение локаций</li>
-            </ul>
+          <div className="flex flex-col items-center gap-4">
+            <RefreshCw size={48} className="animate-spin text-gray-400" />
+            <div>
+              <p className="text-lg font-medium text-gray-900">Загрузка данных аналитики...</p>
+              <p className="text-sm text-gray-500 mt-1">
+                Ожидание данных из MQTT топиков
+              </p>
+              <p className="text-xs text-gray-400 mt-2">
+                Топик конфигурации: Skud/analytics/config<br />
+                Топик данных: Skud/analytics/events/aggregated
+              </p>
+            </div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      )}
+
+      {/* Отладочная информация (в production убрать) */}
+      {process.env.NODE_ENV === 'development' && (
+        <Card className="p-4 bg-gray-50">
+          <details>
+            <summary className="text-sm font-medium text-gray-700 cursor-pointer">
+              🔧 Отладочная информация
+            </summary>
+            <div className="mt-4 space-y-2 text-xs">
+              <p><strong>Подключение:</strong> {isConnected ? '✅ Да' : '❌ Нет'}</p>
+              <p><strong>Ошибка:</strong> {mqttError || '—'}</p>
+              <p><strong>Доступные данные:</strong></p>
+              <pre className="mt-2 p-2 bg-white rounded text-xs overflow-auto max-h-96">
+                {JSON.stringify(allData, null, 2)}
+              </pre>
+            </div>
+          </details>
+        </Card>
+      )}
     </div>
   );
 }

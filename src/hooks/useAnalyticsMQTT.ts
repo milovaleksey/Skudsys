@@ -1,26 +1,14 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 
 interface AnalyticsData {
-  statistics: any;
-  timeSeries: any[];
-  topLocations: any[];
-  weekdayPattern: any[];
-  locationsComparison: any[];
-  hourlyDistribution: any[];
+  [key: string]: any; // Динамические поля из конфигурации
 }
 
 /**
  * Хук для подписки на аналитические данные из MQTT через WebSocket
  */
 export function useAnalyticsMQTT() {
-  const [analyticsData, setAnalyticsData] = useState<AnalyticsData>({
-    statistics: null,
-    timeSeries: [],
-    topLocations: [],
-    weekdayPattern: [],
-    locationsComparison: [],
-    hourlyDistribution: []
-  });
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData>({});
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const wsRef = useRef<WebSocket | null>(null);
