@@ -578,6 +578,55 @@ export function AnalyticsPage() {
         </div>
       )}
 
+      {/* График: Сравнение зон */}
+      {filteredData.locationsComparison && filteredData.locationsComparison.length > 0 && (
+        <div className="bg-white rounded-xl shadow-md p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <BarChart3 size={20} style={{ color: '#00aeef' }} />
+            <h3 className="text-lg font-semibold text-gray-900">Сравнение топ-5 зон по дням</h3>
+          </div>
+          <ResponsiveContainer width="100%" height={400}>
+            <LineChart data={filteredData.locationsComparison}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis 
+                dataKey="date" 
+                tickFormatter={formatDate}
+                stroke="#6b7280"
+                style={{ fontSize: '12px' }}
+              />
+              <YAxis 
+                stroke="#6b7280"
+                style={{ fontSize: '12px' }}
+              />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: '#fff',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px'
+                }}
+                labelFormatter={(value) => `Дата: ${formatDate(value)}`}
+              />
+              <Legend />
+              {/* Динамически создаем линии для каждой зоны */}
+              {filteredData.locationsComparison.length > 0 && Object.keys(filteredData.locationsComparison[0])
+                .filter((key: string) => key !== 'date')
+                .map((key: string, index: number) => (
+                  <Line
+                    key={key}
+                    type="monotone"
+                    dataKey={key}
+                    stroke={COLORS[index % COLORS.length]}
+                    strokeWidth={2}
+                    dot={{ r: 3 }}
+                    name={key}
+                  />
+                ))
+              }
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+
       {/* Графики в две колонки: Круговая диаграмма и Тепловая карта */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* График: Круговая диаграмма по типам зданий */}
@@ -811,6 +860,276 @@ export function AnalyticsPage() {
               <div className="flex items-center gap-2">
                 <div className="w-8 h-0.5 bg-[#ff6b6b] border-dashed border-t-2"></div>
                 <span>Тренд (скользящее среднее)</span>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Детальный отчет по корпусам */}
+      {filteredData.topLocations && filteredData.topLocations.length > 0 && (() => {
+        // Группируем данные по корпусам
+        const buildingReport: Record<string, {
+          totalPasses: number;
+          zones: Array<{ name: string; count: number }>;
+          avgPerZone: number;
+        }> = {};
+
+        topLocations.forEach((location: any) => {
+          if (location.name) {
+            // Извлекаем название корпуса
+            const buildingMatch = location.name.match(/^([^-]+)/);
+            if (buildingMatch) {
+              const building = buildingMatch[1].trim();
+              
+              if (!buildingReport[building]) {
+                buildingReport[building] = {
+                  totalPasses: 0,
+                  zones: [],
+                  avgPerZone: 0
+                };
+              }
+              
+              buildingReport[building].totalPasses += location.count || 0;
+              buildingReport[building].zones.push({
+                name: location.name,
+                count: location.count || 0
+              });
+            }
+          }
+        });
+
+        // Вычисляем среднее по зонам
+        Object.keys(buildingReport).forEach(building => {
+          const report = buildingReport[building];
+          report.avgPerZone = report.zones.length > 0 
+            ? Math.round(report.totalPasses / report.zones.length)
+            : 0;
+        });
+
+        // Сортируем по количеству проходов
+        const sortedBuildings = Object.keys(buildingReport).sort((a, b) => 
+          buildingReport[b].totalPasses - buildingReport[a].totalPasses
+        );
+
+        // Функция экспорта детального отчета
+        const handleExportDetailedReport = () => {
+          try {
+            const wb = XLSX.utils.book_new();
+
+            // Лист 1: Сводка по корпусам
+            const summaryData = sortedBuildings.map(building => ({
+              'Корпус/Здание': building,
+              'Всего проходов': buildingReport[building].totalPasses,
+              'Количество зон': buildingReport[building].zones.length,
+              'Среднее на зону': buildingReport[building].avgPerZone,
+              'Период': `${filters.yearFrom} - ${filters.yearTo}`
+            }));
+            const ws1 = XLSX.utils.json_to_sheet(summaryData);
+            XLSX.utils.book_append_sheet(wb, ws1, 'Сводка по корпусам');
+
+            // Лист 2: Детализация по зонам
+            const detailData: any[] = [];
+            sortedBuildings.forEach(building => {
+              buildingReport[building].zones.forEach(zone => {
+                detailData.push({
+                  'Корпус/Здание': building,
+                  'Зона': zone.name,
+                  'Количество проходов': zone.count,
+                  'Процент от корпуса': `${((zone.count / buildingReport[building].totalPasses) * 100).toFixed(1)}%`
+                });
+              });
+            });
+            const ws2 = XLSX.utils.json_to_sheet(detailData);
+            XLSX.utils.book_append_sheet(wb, ws2, 'Детализация по зонам');
+
+            // Лист 3: ТОП-10 самых активных зон
+            const top10Zones = [...topLocations]
+              .sort((a: any, b: any) => (b.count || 0) - (a.count || 0))
+              .slice(0, 10)
+              .map((zone: any, index: number) => ({
+                'Место': index + 1,
+                'Зона': zone.name,
+                'Количество проходов': zone.count || 0
+              }));
+            const ws3 = XLSX.utils.json_to_sheet(top10Zones);
+            XLSX.utils.book_append_sheet(wb, ws3, 'ТОП-10 зон');
+
+            // Сохранение
+            const date = new Date().toISOString().split('T')[0];
+            const fileName = `Отчет_по_корпусам_${filters.yearFrom}-${filters.yearTo}_${date}.xlsx`;
+            XLSX.writeFile(wb, fileName);
+            toast.success('Детальный отчет успешно выгружен');
+          } catch (error) {
+            console.error('Export error:', error);
+            toast.error('Ошибка при экспорте отчета');
+          }
+        };
+
+        return (
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2">
+                <Building2 size={20} style={{ color: '#00aeef' }} />
+                <h3 className="text-lg font-semibold text-gray-900">Детальный отчет по корпусам</h3>
+              </div>
+              <button
+                onClick={handleExportDetailedReport}
+                className="flex items-center gap-2 px-4 py-2 text-white rounded-lg hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: '#00aeef' }}
+              >
+                <Download size={18} />
+                <span>Выгрузить отчет</span>
+              </button>
+            </div>
+
+            {/* Период отчета */}
+            <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-2 text-gray-700">
+                  <Calendar size={16} style={{ color: '#00aeef' }} />
+                  <span className="font-medium">Период отчета:</span>
+                  <span>{filters.yearFrom} - {filters.yearTo}</span>
+                </div>
+                {filters.building !== 'Все корпуса' && (
+                  <div className="flex items-center gap-2 text-gray-700">
+                    <Building2 size={16} style={{ color: '#00aeef' }} />
+                    <span className="font-medium">Фильтр:</span>
+                    <span>{filters.building}</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-2 text-gray-700 ml-auto">
+                  <span className="font-medium">Корпусов найдено:</span>
+                  <span className="px-2 py-1 bg-[#00aeef] text-white rounded-md text-xs font-bold">
+                    {sortedBuildings.length}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Таблица отчета */}
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b-2" style={{ borderColor: '#00aeef' }}>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-900">№</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-900">Корпус / Здание</th>
+                    <th className="text-center py-3 px-4 font-semibold text-gray-900">Всего проходов</th>
+                    <th className="text-center py-3 px-4 font-semibold text-gray-900">Количество зон</th>
+                    <th className="text-center py-3 px-4 font-semibold text-gray-900">Среднее на зону</th>
+                    <th className="text-center py-3 px-4 font-semibold text-gray-900">% от общего</th>
+                    <th className="text-center py-3 px-4 font-semibold text-gray-900">Статус</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sortedBuildings.map((building, index) => {
+                    const report = buildingReport[building];
+                    const totalAllPasses = Object.values(buildingReport).reduce(
+                      (sum, r) => sum + r.totalPasses, 0
+                    );
+                    const percentage = ((report.totalPasses / totalAllPasses) * 100).toFixed(1);
+                    
+                    // Определяем статус активности
+                    let statusColor = '#10b981'; // green
+                    let statusText = 'Высокая';
+                    if (parseFloat(percentage) < 5) {
+                      statusColor = '#ef4444'; // red
+                      statusText = 'Низкая';
+                    } else if (parseFloat(percentage) < 10) {
+                      statusColor = '#f59e0b'; // orange
+                      statusText = 'Средняя';
+                    }
+
+                    return (
+                      <tr 
+                        key={building} 
+                        className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                      >
+                        <td className="py-3 px-4 text-gray-600 font-medium">{index + 1}</td>
+                        <td className="py-3 px-4">
+                          <div className="flex items-center gap-2">
+                            <Building2 size={16} style={{ color: '#00aeef' }} />
+                            <span className="font-medium text-gray-900">{building}</span>
+                          </div>
+                        </td>
+                        <td className="py-3 px-4 text-center">
+                          <span className="font-bold text-gray-900">
+                            {formatNumber(report.totalPasses)}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-center text-gray-700">
+                          {report.zones.length}
+                        </td>
+                        <td className="py-3 px-4 text-center text-gray-700">
+                          {formatNumber(report.avgPerZone)}
+                        </td>
+                        <td className="py-3 px-4 text-center">
+                          <span className="font-semibold" style={{ color: '#00aeef' }}>
+                            {percentage}%
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-center">
+                          <span 
+                            className="px-3 py-1 rounded-full text-xs font-semibold text-white"
+                            style={{ backgroundColor: statusColor }}
+                          >
+                            {statusText}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+                <tfoot>
+                  <tr className="border-t-2 font-bold" style={{ borderColor: '#00aeef', backgroundColor: '#f0f9ff' }}>
+                    <td colSpan={2} className="py-3 px-4 text-gray-900">ИТОГО:</td>
+                    <td className="py-3 px-4 text-center text-gray-900">
+                      {formatNumber(Object.values(buildingReport).reduce((sum, r) => sum + r.totalPasses, 0))}
+                    </td>
+                    <td className="py-3 px-4 text-center text-gray-900">
+                      {Object.values(buildingReport).reduce((sum, r) => sum + r.zones.length, 0)}
+                    </td>
+                    <td className="py-3 px-4 text-center text-gray-900">
+                      {formatNumber(Math.round(
+                        Object.values(buildingReport).reduce((sum, r) => sum + r.totalPasses, 0) /
+                        Object.values(buildingReport).reduce((sum, r) => sum + r.zones.length, 0)
+                      ))}
+                    </td>
+                    <td className="py-3 px-4 text-center text-gray-900">100%</td>
+                    <td className="py-3 px-4"></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            {/* Легенда статусов */}
+            <div className="mt-4 flex items-center justify-center gap-6 text-xs">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                <span className="text-gray-600">Высокая активность (&gt;10%)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                <span className="text-gray-600">Средняя активность (5-10%)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                <span className="text-gray-600">Низкая активность (&lt;5%)</span>
+              </div>
+            </div>
+
+            {/* Подсказка */}
+            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="flex items-start gap-2 text-sm text-blue-900">
+                <FileSpreadsheet size={16} className="mt-0.5 flex-shrink-0" style={{ color: '#00aeef' }} />
+                <div>
+                  <p className="font-medium">Формат выгружаемого отчета:</p>
+                  <ul className="mt-1 ml-4 list-disc text-xs text-blue-800">
+                    <li>Лист 1: Сводка по корпусам (всего проходов, количество зон, средние)</li>
+                    <li>Лист 2: Детализация по зонам (каждая зона с процентом от корпуса)</li>
+                    <li>Лист 3: ТОП-10 самых активных зон за период</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
