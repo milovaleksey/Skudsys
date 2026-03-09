@@ -338,7 +338,7 @@ class AnalyticsProcessor {
 
     // Сортировка
     result.sort((a, b) => orderBy === 'desc' ? b.count - a.count : a.count - b.count);
-
+    
     return result;
   }
 
@@ -375,12 +375,13 @@ class AnalyticsProcessor {
   }
 
   /**
-   * Обработка тренда
+   * Обработка трендов (анализ роста/спада)
    */
   processTrend(config) {
-    const { groupBy, aggregation, field } = config;
+    const { groupBy, aggregation, field, period } = config;
+    
+    // Группируем данные по периоду
     const grouped = {};
-
     this.rawData.forEach(item => {
       const key = item[groupBy];
       if (!grouped[key]) {
@@ -389,35 +390,66 @@ class AnalyticsProcessor {
       grouped[key].push(item[field] || 0);
     });
 
-    return Object.keys(grouped).sort().map(key => ({
-      date: key,
-      count: aggregation === 'sum' 
-        ? grouped[key].reduce((a, b) => a + b, 0)
-        : Math.round(grouped[key].reduce((a, b) => a + b, 0) / grouped[key].length)
-    }));
+    // Вычисляем тренд
+    return Object.keys(grouped).map(key => {
+      const values = grouped[key];
+      const total = aggregation === 'sum'
+        ? values.reduce((a, b) => a + b, 0)
+        : Math.round(values.reduce((a, b) => a + b, 0) / values.length);
+      
+      // Вычисляем процент изменения (если больше одного периода)
+      const change = values.length > 1
+        ? Math.round(((values[values.length - 1] - values[0]) / values[0]) * 100)
+        : 0;
+
+      return {
+        period: key,
+        value: total,
+        change: change,
+        trend: change > 0 ? 'up' : change < 0 ? 'down' : 'stable'
+      };
+    }).sort((a, b) => a.period.localeCompare(b.period));
   }
 
   /**
    * Обработка тепловой карты
    */
   processHeatmap(config) {
-    const { groupBy, aggregation, field } = config;
+    const { xAxis, yAxis, aggregation, field } = config;
+    
+    // Группируем данные по двум осям
     const grouped = {};
-
     this.rawData.forEach(item => {
-      const key = item[groupBy];
-      if (!grouped[key]) {
-        grouped[key] = [];
+      const x = item[xAxis];
+      const y = item[yAxis];
+      
+      if (!grouped[x]) {
+        grouped[x] = {};
       }
-      grouped[key].push(item[field] || 0);
+      if (!grouped[x][y]) {
+        grouped[x][y] = [];
+      }
+      grouped[x][y].push(item[field] || 0);
     });
 
-    return Object.keys(grouped).sort().map(key => ({
-      date: key,
-      count: aggregation === 'sum' 
-        ? grouped[key].reduce((a, b) => a + b, 0)
-        : Math.round(grouped[key].reduce((a, b) => a + b, 0) / grouped[key].length)
-    }));
+    // Формируем результат
+    const result = [];
+    Object.keys(grouped).forEach(x => {
+      Object.keys(grouped[x]).forEach(y => {
+        const values = grouped[x][y];
+        const value = aggregation === 'sum'
+          ? values.reduce((a, b) => a + b, 0)
+          : Math.round(values.reduce((a, b) => a + b, 0) / values.length);
+        
+        result.push({
+          x: x,
+          y: y,
+          value: value
+        });
+      });
+    });
+
+    return result;
   }
 }
 
