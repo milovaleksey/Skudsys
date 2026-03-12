@@ -5,7 +5,7 @@
 const express = require('express');
 const router = express.Router();
 const engineeringController = require('../controllers/engineering.controller');
-const { authenticate } = require('../middleware/auth.middleware');
+const { authenticate } = require('../middleware/auth');
 
 /**
  * GET /api/engineering/bad-events
