@@ -86,10 +86,11 @@ export function EngineeringPage() {
     ws.onmessage = (event) => {
       try {
         const message = JSON.parse(event.data);
+        console.log('[Engineering] Получено WebSocket сообщение:', message);
         
         // Обработка данных из топика Skud/baddialsevent
         if (message.topic === 'Skud/baddialsevent' && message.data) {
-          console.log('🚨 [Engineering] Получено аномальное событие');
+          console.log('🚨 [Engineering] Получено аномальное событие:', message.data);
           const newEvents = Array.isArray(message.data) ? message.data : [message.data];
           setBadEvents(prev => [...newEvents, ...prev].slice(0, 1000)); // Храним последние 1000
         }
@@ -181,7 +182,7 @@ export function EngineeringPage() {
         'UPN': event.UPN || '—',
         'Зона': event.Zone || '—',
         'Подзона': event.Child_Zone || '—',
-        'Устройство': event.Device,
+        'Устр��йство': event.Device,
         'ID карты': event.identificator
       }));
 
@@ -527,7 +528,7 @@ export function EngineeringPage() {
                             : 'bg-gray-100 text-gray-500'
                         }`}
                       >
-                        {rule.isActive ? 'Активно' : 'Неактивно'}
+                        {rule.isActive ? 'Активно' : 'Н��активно'}
                       </button>
                     </td>
                     <td className="py-3 px-3 text-xs text-gray-500">
@@ -559,7 +560,7 @@ export function EngineeringPage() {
         </div>
       </div>
 
-      {/* Модальное окно создания/редактирования правила */}
+      {/* Модальное окно создан��я/редактирования правила */}
       {showRuleModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">

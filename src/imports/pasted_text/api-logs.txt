@@ -1,0 +1,119 @@
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+api.ts:14 🌐 Using API URL from env: http://10.101.221.207:3000/v1
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /auth/me with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/auth/me
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /roles with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/roles
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /auth/me with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/auth/me
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /roles with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/roles
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:93 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:94 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:104 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMzMjYwNzQsImV4cCI6MTc3MzQxMjQ3NH0.rKXGIgASTalak_GeMBloiBM2zsPZw4kv_Fs2cfiOrx8
+useMQTT.ts:114 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMzMjYwNzQsImV4cCI6MTc3MzQxMjQ3NH0.rKXGIgASTalak_GeMBloiBM2zsPZw4kv_Fs2cfiOrx8
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+useMQTT.ts:208 WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMzMjYwNzQsImV4cCI6MTc3MzQxMjQ3NH0.rKXGIgASTalak_GeMBloiBM2zsPZw4kv_Fs2cfiOrx8' failed: WebSocket is closed before the connection is established.
+(anonymous) @ useMQTT.ts:208
+useMQTT.ts:93 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:94 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:104 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMzMjYwNzQsImV4cCI6MTc3MzQxMjQ3NH0.rKXGIgASTalak_GeMBloiBM2zsPZw4kv_Fs2cfiOrx8
+useMQTT.ts:114 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMzMjYwNzQsImV4cCI6MTc3MzQxMjQ3NH0.rKXGIgASTalak_GeMBloiBM2zsPZw4kv_Fs2cfiOrx8
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /students/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/students/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /employees/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/employees/statistics
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /parking/statistics with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/parking/statistics
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:174 [WebSocket] Ошибка: Event
+ws.onerror @ useMQTT.ts:174
+useMQTT.ts:179 [WebSocket] Отключено: 1006 
+useMQTT.ts:186 [WebSocket] Переподключение через 2000ms (попытка 1/5)
+:3000/v1/employees/statistics:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+api.ts:132 📡 Response status: 404
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+:3000/v1/employees/statistics:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+api.ts:132 📡 Response status: 404
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+MainPage.tsx:79 Failed to load stats TypeError: Cannot read properties of undefined (reading 'total')
+    at loadStats (MainPage.tsx:74:88)
+loadStats @ MainPage.tsx:79
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:120 [WebSocket] ✅ Подключено
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:129 [WebSocket] Получено: initial
+MainPage.tsx:79 Failed to load stats TypeError: Cannot read properties of undefined (reading 'total')
+    at loadStats (MainPage.tsx:74:88)
+loadStats @ MainPage.tsx:79
+useMQTT.ts:93 [WebSocket] DEBUG: VITE_API_URL = http://10.101.221.207:3000/v1
+useMQTT.ts:94 [WebSocket] DEBUG: apiUrl = http://10.101.221.207:3000/v1
+useMQTT.ts:104 [WebSocket] Используем WebSocket URL из VITE_API_URL: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMzMjYwNzQsImV4cCI6MTc3MzQxMjQ3NH0.rKXGIgASTalak_GeMBloiBM2zsPZw4kv_Fs2cfiOrx8
+useMQTT.ts:114 [WebSocket] Подключение к ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMzMjYwNzQsImV4cCI6MTc3MzQxMjQ3NH0.rKXGIgASTalak_GeMBloiBM2zsPZw4kv_Fs2cfiOrx8
+useMQTT.ts:120 [WebSocket] ✅ Подключено
+useMQTT.ts:129 [WebSocket] Получено: initial
+EngineeringPage.tsx:77 [Engineering] Подключение к WebSocket: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMzMjYwNzQsImV4cCI6MTc3MzQxMjQ3NH0.rKXGIgASTalak_GeMBloiBM2zsPZw4kv_Fs2cfiOrx8
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /engineering/bad-events with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/engineering/bad-events
+EngineeringPage.tsx:112 WebSocket connection to 'ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMzMjYwNzQsImV4cCI6MTc3MzQxMjQ3NH0.rKXGIgASTalak_GeMBloiBM2zsPZw4kv_Fs2cfiOrx8' failed: WebSocket is closed before the connection is established.
+(anonymous) @ EngineeringPage.tsx:112
+EngineeringPage.tsx:77 [Engineering] Подключение к WebSocket: ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMzMjYwNzQsImV4cCI6MTc3MzQxMjQ3NH0.rKXGIgASTalak_GeMBloiBM2zsPZw4kv_Fs2cfiOrx8
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /engineering/bad-events with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/engineering/bad-events
+EngineeringPage.tsx:102 ❌ [Engineering] WebSocket ошибка: EventisTrusted: truereturnValue: truesrcElement: WebSocketbinaryType: "blob"onclose: () => {…}onerror: (error) => {…}onmessage: (event) => {…}onopen: () => {…}readyState: 3url: "ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMzMjYwNzQsImV4cCI6MTc3MzQxMjQ3NH0.rKXGIgASTalak_GeMBloiBM2zsPZw4kv_Fs2cfiOrx8"[[Prototype]]: WebSockettarget: WebSocketbinaryType: "blob"onclose: () => {…}onerror: (error) => {…}onmessage: (event) => {…}onopen: () => {…}readyState: 3url: "ws://10.101.221.207:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzMzMjYwNzQsImV4cCI6MTc3MzQxMjQ3NH0.rKXGIgASTalak_GeMBloiBM2zsPZw4kv_Fs2cfiOrx8"[[Prototype]]: WebSockettimeStamp: 3681.5type: "error"[[Prototype]]: Event
+ws.onerror @ EngineeringPage.tsx:102
+EngineeringPage.tsx:107 🔌 [Engineering] WebSocket отключен
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /engineering/access-rules with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/engineering/access-rules
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+api.ts:71 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+api.ts:118 🌐 Making request to: /engineering/access-rules with token
+api.ts:125 🌐 Full URL: http://10.101.221.207:3000/v1/engineering/access-rules
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+EngineeringPage.tsx:82 ✅ [Engineering] WebSocket подключен
+api.ts:132 📡 Response status: 200
+api.ts:133 📡 Response content-type: application/json; charset=utf-8
+useMQTT.ts:129 [WebSocket] Получено: heartbeat
+useMQTT.ts:129 [WebSocket] Получено: heartbeat
+useMQTT.ts:129 [WebSocket] Получено: pong
+useMQTT.ts:129 [WebSocket] Получено: heartbeat
+useMQTT.ts:129 [WebSocket] Получено: heartbeat

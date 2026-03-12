@@ -204,13 +204,14 @@ class MQTTService extends EventEmitter {
         const engineeringController = require('../controllers/engineering.controller');
         
         if (Array.isArray(badEvents)) {
-          console.log(`[MQTT] 🚨 Получено ${badEvents.length} аномальных событий`);
+          console.log(`[MQTT] 🚨 Получено ${badEvents.length} аномальных событий из топика Skud/baddialsevent`);
           engineeringController.addBadEvents(badEvents);
         } else {
-          console.log(`[MQTT] 🚨 Получено аномальное событие`);
+          console.log(`[MQTT] 🚨 Получено аномальное событие из топика Skud/baddialsevent`);
           engineeringController.addBadEvent(badEvents);
         }
         
+        console.log(`[MQTT] 🚨 Испускаем событие 'bad-event' для WebSocket клиентов`);
         this.emit('bad-event', badEvents);
       } catch (error) {
         console.error('[MQTT] ❌ Ошибка парсинга аномальных событий:', error.message);
@@ -300,7 +301,7 @@ class MQTTService extends EventEmitter {
     } else if (topic === analyticsDataTopic) {
       try {
         this.analyticsRawData = JSON.parse(messageStr);
-        console.log(`[MQTT] ��� Получено ${this.analyticsRawData.length} записей данных аналитики`);
+        console.log(`[MQTT]  Получено ${this.analyticsRawData.length} записей данных аналитики`);
         
         // Устанавливаем данные в процессор
         analyticsProcessor.setRawData(this.analyticsRawData);

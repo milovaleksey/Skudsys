@@ -126,6 +126,29 @@ function initMQTTWebSocket(server) {
     });
   });
 
+  // Отправка аномальных событий СКУД
+  mqttService.on('bad-event', (badEvents) => {
+    console.log('[WebSocket] 🚨 Рассылка аномальных событий СКУД клиентам');
+    console.log(`[WebSocket] 🚨 Подключено клиентов: ${clients.size}`);
+    console.log(`[WebSocket] 🚨 Данные события:`, badEvents);
+    
+    const message = JSON.stringify({
+      type: 'mqtt-message',
+      topic: 'Skud/baddialsevent',
+      data: badEvents,
+    });
+
+    let sentCount = 0;
+    clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
+        sentCount++;
+      }
+    });
+    
+    console.log(`[WebSocket] ✅ Событие отправлено ${sentCount} клиентам`);
+  });
+
   // Отправка статуса подключения
   mqttService.on('connected', () => {
     console.log('[WebSocket] 📡 Рассылка статуса: подключено');
