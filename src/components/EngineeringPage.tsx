@@ -1,27 +1,18 @@
 import { useState, useEffect, useMemo } from 'react';
-import { 
-  Wrench, 
-  AlertTriangle, 
-  Download, 
-  Plus, 
-  Edit2, 
-  Trash2, 
-  Save, 
-  X,
-  Clock,
-  MapPin,
-  User,
-  Shield,
-  Calendar
-} from 'lucide-react';
-import * as XLSX from 'xlsx';
-import { toast } from 'sonner';
+import { AlertTriangle, User, FileText, Download, Settings, Wifi, WifiOff, Plus, Edit, Trash2, ChevronDown, ChevronUp, Search, Filter, Clock, MapPin, Calendar, Wrench, Shield, X, Save, Edit2 } from 'lucide-react';
+import { Card } from './ui/card';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
 import { api } from '../lib/api';
+import { toast } from 'sonner';
+import * as XLSX from 'xlsx';
 
+// Типы данных
 interface BadEvent {
+  id?: number;
   time_label: string;
   Тип_события: string;
-  ФИО_пользователя: string;
+  ФИО_пользователя: string | null;
   UPN: string | null;
   Zone: string | null;
   Child_Zone: string | null;
@@ -44,12 +35,16 @@ export function EngineeringPage() {
   const [loading, setLoading] = useState(true);
   const [wsConnected, setWsConnected] = useState(false);
 
-  // Фильтры для таблицы аномальных проходов (только тип, устройство и поиск)
+  // Фильтры для таблицы аномальных проходов
   const [filters, setFilters] = useState({
     eventType: 'all',
     device: 'all',
+    fioFilter: 'all', // all | with_fio | without_fio
     searchQuery: ''
   });
+
+  // Состояние складной таблицы
+  const [isTableExpanded, setIsTableExpanded] = useState(true);
 
   // Модальное окно для создания/редактирования правила
   const [showRuleModal, setShowRuleModal] = useState(false);
@@ -153,13 +148,17 @@ export function EngineeringPage() {
       const isToday = eventDate >= today && eventDate < tomorrow;
       const matchType = filters.eventType === 'all' || event.Тип_события === filters.eventType;
       const matchDevice = filters.device === 'all' || event.Device === filters.device;
+      const matchFio = 
+        filters.fioFilter === 'all' ||
+        (filters.fioFilter === 'with_fio' && event.ФИО_пользователя) ||
+        (filters.fioFilter === 'without_fio' && !event.ФИО_пользователя);
       const matchSearch = 
         filters.searchQuery === '' ||
-        event.ФИО_пользователя.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
+        event.ФИО_пользователя?.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
         event.Device.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
         event.identificator.toString().includes(filters.searchQuery);
 
-      return isToday && matchType && matchDevice && matchSearch;
+      return isToday && matchType && matchDevice && matchFio && matchSearch;
     });
   }, [badEvents, filters]);
 
@@ -182,7 +181,7 @@ export function EngineeringPage() {
         'UPN': event.UPN || '—',
         'Зона': event.Zone || '—',
         'Подзона': event.Child_Zone || '—',
-        'Устр��йство': event.Device,
+        'Устрйство': event.Device,
         'ID карты': event.identificator
       }));
 
@@ -332,7 +331,7 @@ export function EngineeringPage() {
         </div>
 
         {/* Фильтры */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">Тип события</label>
             <select
@@ -360,101 +359,154 @@ export function EngineeringPage() {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Поиск</label>
-            <input
-              type="text"
-              placeholder="ФИО, устройство, ID..."
-              value={filters.searchQuery}
-              onChange={(e) => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
+            <label className="block text-xs font-medium text-gray-700 mb-1">ФИО</label>
+            <select
+              value={filters.fioFilter}
+              onChange={(e) => setFilters(prev => ({ ...prev, fioFilter: e.target.value }))}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-            />
+            >
+              <option value="all">Все</option>
+              <option value="with_fio">С ФИО</option>
+              <option value="without_fio">Без ФИО</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-700 mb-1">Поиск</label>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="ФИО, устройство, ID..."
+                value={filters.searchQuery}
+                onChange={(e) => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
+                className="w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Панель управления таблицей */}
+        <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg mb-4">
+          <div className="flex items-center justify-between">
+            {/* Кнопка разворачивания */}
+            <Button
+              onClick={() => setIsTableExpanded(prev => !prev)}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              {isTableExpanded ? (
+                <>
+                  <ChevronUp className="w-4 h-4" />
+                  Свернуть таблицу
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="w-4 h-4" />
+                  Развернуть таблицу ({filteredEvents.length})
+                </>
+              )}
+            </Button>
+
+            {/* Счетчик результатов */}
+            {filters.searchQuery && (
+              <div className="text-sm text-gray-600">
+                Найдено: <span className="font-semibold text-gray-900">{filteredEvents.length}</span> событий
+              </div>
+            )}
           </div>
         </div>
 
         {/* Таблица событий */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b-2" style={{ borderColor: '#00aeef' }}>
-                <th className="text-left py-3 px-3 font-semibold text-gray-700">
-                  <div className="flex items-center gap-2">
-                    <Clock size={16} style={{ color: '#00aeef' }} />
-                    Дата и время
-                  </div>
-                </th>
-                <th className="text-left py-3 px-3 font-semibold text-gray-700">Тип события</th>
-                <th className="text-left py-3 px-3 font-semibold text-gray-700">
-                  <div className="flex items-center gap-2">
-                    <User size={16} style={{ color: '#00aeef' }} />
-                    ФИО
-                  </div>
-                </th>
-                <th className="text-left py-3 px-3 font-semibold text-gray-700">
-                  <div className="flex items-center gap-2">
-                    <MapPin size={16} style={{ color: '#00aeef' }} />
-                    Устройство
-                  </div>
-                </th>
-                <th className="text-left py-3 px-3 font-semibold text-gray-700">Зона</th>
-                <th className="text-left py-3 px-3 font-semibold text-gray-700">ID карты</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={6} className="text-center py-8 text-gray-500">
-                    Загрузка данных...
-                  </td>
+        {isTableExpanded && (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b-2" style={{ borderColor: '#00aeef' }}>
+                  <th className="text-left py-3 px-3 font-semibold text-gray-700">
+                    <div className="flex items-center gap-2">
+                      <Clock size={16} style={{ color: '#00aeef' }} />
+                      Дата и время
+                    </div>
+                  </th>
+                  <th className="text-left py-3 px-3 font-semibold text-gray-700">Тип события</th>
+                  <th className="text-left py-3 px-3 font-semibold text-gray-700">
+                    <div className="flex items-center gap-2">
+                      <User size={16} style={{ color: '#00aeef' }} />
+                      ФИО
+                    </div>
+                  </th>
+                  <th className="text-left py-3 px-3 font-semibold text-gray-700">
+                    <div className="flex items-center gap-2">
+                      <MapPin size={16} style={{ color: '#00aeef' }} />
+                      Устройство
+                    </div>
+                  </th>
+                  <th className="text-left py-3 px-3 font-semibold text-gray-700">Зона</th>
+                  <th className="text-left py-3 px-3 font-semibold text-gray-700">ID карты</th>
                 </tr>
-              ) : filteredEvents.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="text-center py-8 text-gray-500">
-                    Нет аномальных событий за сегодня
-                  </td>
-                </tr>
-              ) : (
-                filteredEvents.slice(0, 100).map((event, idx) => (
-                  <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-3 px-3">
-                      <div className="text-gray-900">
-                        {new Date(event.time_label).toLocaleDateString('ru-RU')}
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {new Date(event.time_label).toLocaleTimeString('ru-RU')}
-                      </div>
-                    </td>
-                    <td className="py-3 px-3">
-                      <span className="px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded">
-                        {event.Тип_события}
-                      </span>
-                    </td>
-                    <td className="py-3 px-3">
-                      <div className="text-gray-900">{event.ФИО_пользователя || '—'}</div>
-                      {event.UPN && (
-                        <div className="text-xs text-gray-500 truncate max-w-xs">{event.UPN}</div>
-                      )}
-                    </td>
-                    <td className="py-3 px-3 text-gray-700">{event.Device}</td>
-                    <td className="py-3 px-3">
-                      <div className="text-gray-900 text-xs">{event.Zone || '—'}</div>
-                      {event.Child_Zone && (
-                        <div className="text-xs text-gray-500">{event.Child_Zone}</div>
-                      )}
-                    </td>
-                    <td className="py-3 px-3">
-                      <span className="font-mono text-xs text-gray-600">{event.identificator}</span>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr>
+                    <td colSpan={6} className="text-center py-8 text-gray-500">
+                      Загрузка данных...
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-          {filteredEvents.length > 100 && (
-            <div className="mt-4 text-center text-sm text-gray-600">
-              Показано первых 100 из {filteredEvents.length} событий. Используйте фильтры для уточнения.
-            </div>
-          )}
-        </div>
+                ) : filteredEvents.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="text-center py-8 text-gray-500">
+                      {filters.searchQuery ? 'По вашему запросу ничего не найдено' : 'Нет аномальных событий за сегодня'}
+                    </td>
+                  </tr>
+                ) : (
+                  filteredEvents.slice(0, 100).map((event, idx) => (
+                    <tr 
+                      key={idx} 
+                      className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${
+                        idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                      }`}
+                    >
+                      <td className="py-3 px-3">
+                        <div className="text-gray-900 font-medium">
+                          {new Date(event.time_label).toLocaleDateString('ru-RU')}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {new Date(event.time_label).toLocaleTimeString('ru-RU')}
+                        </div>
+                      </td>
+                      <td className="py-3 px-3">
+                        <span className="px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded">
+                          {event.Тип_события}
+                        </span>
+                      </td>
+                      <td className="py-3 px-3">
+                        <div className="text-gray-900">{event.ФИО_пользователя || '—'}</div>
+                        {event.UPN && (
+                          <div className="text-xs text-gray-500 truncate max-w-xs">{event.UPN}</div>
+                        )}
+                      </td>
+                      <td className="py-3 px-3 text-gray-700">{event.Device}</td>
+                      <td className="py-3 px-3">
+                        <div className="text-gray-900 text-xs">{event.Zone || '—'}</div>
+                        {event.Child_Zone && (
+                          <div className="text-xs text-gray-500">{event.Child_Zone}</div>
+                        )}
+                      </td>
+                      <td className="py-3 px-3">
+                        <span className="font-mono text-xs text-gray-600">{event.identificator}</span>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+            {filteredEvents.length > 100 && (
+              <div className="mt-4 text-center text-sm text-gray-600">
+                Показано первых 100 из {filteredEvents.length} событий. Используйте фильтры для уточнения.
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Раздел 2: Правила доступа */}
@@ -528,7 +580,7 @@ export function EngineeringPage() {
                             : 'bg-gray-100 text-gray-500'
                         }`}
                       >
-                        {rule.isActive ? 'Активно' : 'Н��активно'}
+                        {rule.isActive ? 'Активно' : 'Нактивно'}
                       </button>
                     </td>
                     <td className="py-3 px-3 text-xs text-gray-500">
@@ -560,7 +612,7 @@ export function EngineeringPage() {
         </div>
       </div>
 
-      {/* Модальное окно создан��я/редактирования правила */}
+      {/* Модальное окно созданя/редактирования правила */}
       {showRuleModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
