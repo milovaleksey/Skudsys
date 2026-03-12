@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from 'react';
 import { 
   Wrench, 
   AlertTriangle, 
-  Filter, 
   Download, 
   Plus, 
   Edit2, 
@@ -13,17 +12,11 @@ import {
   MapPin,
   User,
   Shield,
-  Settings
+  Calendar
 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
-import DatePicker from 'react-datepicker';
-import { registerLocale } from 'react-datepicker';
-import { ru } from 'date-fns/locale/ru';
-import 'react-datepicker/dist/react-datepicker.css';
-import '../styles/datepicker-custom.css';
-
-registerLocale('ru', ru);
+import { api } from '../utils/api';
 
 interface BadEvent {
   time_label: string;
@@ -51,10 +44,8 @@ export function EngineeringPage() {
   const [loading, setLoading] = useState(true);
   const [wsConnected, setWsConnected] = useState(false);
 
-  // Фильтры для таблицы аномальных проходов
+  // Фильтры для таблицы аномальных проходов (только тип, устройство и поиск)
   const [filters, setFilters] = useState({
-    startDate: new Date(new Date().setDate(new Date().getDate() - 7)),
-    endDate: new Date(),
     eventType: 'all',
     device: 'all',
     searchQuery: ''
@@ -71,12 +62,24 @@ export function EngineeringPage() {
 
   // WebSocket подключение для аномальных событий
   useEffect(() => {
+    // Получаем базовый URL из переменных окружения
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/v1';
+    const baseUrl = apiUrl.replace('/v1', '').replace('http://', '').replace('https://', '');
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.hostname}:${window.location.port || 3000}`;
+    
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('[Engineering] Нет токена авторизации');
+      return;
+    }
+
+    const wsUrl = `${protocol}//${baseUrl}/ws/mqtt?token=${token}`;
+    console.log('[Engineering] Подключение к WebSocket:', wsUrl);
+    
     const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {
-      console.log('✅ WebSocket подключен для инженерного раздела');
+      console.log('✅ [Engineering] WebSocket подключен');
       setWsConnected(true);
     };
 
@@ -86,21 +89,22 @@ export function EngineeringPage() {
         
         // Обработка данных из топика Skud/baddialsevent
         if (message.topic === 'Skud/baddialsevent' && message.data) {
+          console.log('🚨 [Engineering] Получено аномальное событие');
           const newEvents = Array.isArray(message.data) ? message.data : [message.data];
           setBadEvents(prev => [...newEvents, ...prev].slice(0, 1000)); // Храним последние 1000
         }
       } catch (error) {
-        console.error('Ошибка парсинга WebSocket сообщения:', error);
+        console.error('[Engineering] Ошибка парсинга WebSocket сообщения:', error);
       }
     };
 
     ws.onerror = (error) => {
-      console.error('❌ WebSocket ошибка:', error);
+      console.error('❌ [Engineering] WebSocket ошибка:', error);
       setWsConnected(false);
     };
 
     ws.onclose = () => {
-      console.log('🔌 WebSocket отключен');
+      console.log('🔌 [Engineering] WebSocket отключен');
       setWsConnected(false);
     };
 
@@ -114,24 +118,16 @@ export function EngineeringPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const token = localStorage.getItem('token');
-        const headers = { 'Authorization': `Bearer ${token}` };
+        // Загрузка аномальных событий через api helper
+        const eventsData = await api.get('/engineering/bad-events');
+        setBadEvents(eventsData.events || []);
 
-        // Загрузка аномальных событий
-        const eventsRes = await fetch('/api/engineering/bad-events', { headers });
-        if (eventsRes.ok) {
-          const data = await eventsRes.json();
-          setBadEvents(data.events || []);
-        }
-
-        // Загрузка правил доступа
-        const rulesRes = await fetch('/api/engineering/access-rules', { headers });
-        if (rulesRes.ok) {
-          const data = await rulesRes.json();
-          setAccessRules(data.rules || []);
-        }
+        // Загрузка правил доступа через api helper
+        const rulesData = await api.get('/engineering/access-rules');
+        setAccessRules(rulesData.rules || []);
       } catch (error) {
-        console.error('Ошибка загрузки данных:', error);
+        console.error('[Engineering] Ошибка загрузки данных:', error);
+        toast.error('Ошибка загрузки данных');
       } finally {
         setLoading(false);
       }
@@ -140,11 +136,16 @@ export function EngineeringPage() {
     fetchData();
   }, []);
 
-  // Фильтрация событий
+  // Фильтрация событий (только за сегодня)
   const filteredEvents = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
     return badEvents.filter(event => {
       const eventDate = new Date(event.time_label);
-      const matchDate = eventDate >= filters.startDate && eventDate <= filters.endDate;
+      const isToday = eventDate >= today && eventDate < tomorrow;
       const matchType = filters.eventType === 'all' || event.Тип_события === filters.eventType;
       const matchDevice = filters.device === 'all' || event.Device === filters.device;
       const matchSearch = 
@@ -153,7 +154,7 @@ export function EngineeringPage() {
         event.Device.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
         event.identificator.toString().includes(filters.searchQuery);
 
-      return matchDate && matchType && matchDevice && matchSearch;
+      return isToday && matchType && matchDevice && matchSearch;
     });
   }, [badEvents, filters]);
 
@@ -184,7 +185,8 @@ export function EngineeringPage() {
       const ws = XLSX.utils.json_to_sheet(exportData);
       XLSX.utils.book_append_sheet(wb, ws, 'Аномальные события');
 
-      const filename = `Аномальные_события_${filters.startDate.toLocaleDateString('ru-RU')}_${filters.endDate.toLocaleDateString('ru-RU')}.xlsx`;
+      const today = new Date().toLocaleDateString('ru-RU');
+      const filename = `Аномальные_события_${today}.xlsx`;
       XLSX.writeFile(wb, filename);
       
       toast.success('Отчет успешно выгружен');
@@ -197,38 +199,20 @@ export function EngineeringPage() {
   // Создание/обновление правила доступа
   const handleSaveRule = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const method = editingRule ? 'PUT' : 'POST';
-      const url = editingRule 
-        ? `/api/engineering/access-rules/${editingRule.id}`
-        : '/api/engineering/access-rules';
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(ruleForm)
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        
-        if (editingRule) {
-          setAccessRules(prev => prev.map(r => r.id === editingRule.id ? data.rule : r));
-          toast.success('Правило обновлено');
-        } else {
-          setAccessRules(prev => [data.rule, ...prev]);
-          toast.success('Правило создано');
-        }
-        
-        setShowRuleModal(false);
-        setEditingRule(null);
-        setRuleForm({ department: '', accessTemplate: '', userType: 'both' });
+      let data;
+      if (editingRule) {
+        data = await api.put(`/engineering/access-rules/${editingRule.id}`, ruleForm);
+        setAccessRules(prev => prev.map(r => r.id === editingRule.id ? data.rule : r));
+        toast.success('Правило обновлено');
       } else {
-        toast.error('Ошибка сохранения правила');
+        data = await api.post('/engineering/access-rules', ruleForm);
+        setAccessRules(prev => [data.rule, ...prev]);
+        toast.success('Правило создано');
       }
+      
+      setShowRuleModal(false);
+      setEditingRule(null);
+      setRuleForm({ department: '', accessTemplate: '', userType: 'both' });
     } catch (error) {
       console.error('Ошибка сохранения:', error);
       toast.error('Ошибка сохранения правила');
@@ -240,18 +224,9 @@ export function EngineeringPage() {
     if (!confirm('Вы уверены, что хотите удалить это правило?')) return;
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/engineering/access-rules/${ruleId}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-
-      if (response.ok) {
-        setAccessRules(prev => prev.filter(r => r.id !== ruleId));
-        toast.success('Правило удалено');
-      } else {
-        toast.error('Ошибка удаления правила');
-      }
+      await api.delete(`/engineering/access-rules/${ruleId}`);
+      setAccessRules(prev => prev.filter(r => r.id !== ruleId));
+      toast.success('Правило удалено');
     } catch (error) {
       console.error('Ошибка удаления:', error);
       toast.error('Ошибка удаления правила');
@@ -261,19 +236,12 @@ export function EngineeringPage() {
   // Переключение активности правила
   const toggleRuleActive = async (ruleId: string) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/engineering/access-rules/${ruleId}/toggle`, {
-        method: 'PATCH',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setAccessRules(prev => prev.map(r => r.id === ruleId ? data.rule : r));
-        toast.success(data.rule.isActive ? 'Правило активировано' : 'Правило деактивировано');
-      }
+      const data = await api.patch(`/engineering/access-rules/${ruleId}/toggle`, {});
+      setAccessRules(prev => prev.map(r => r.id === ruleId ? data.rule : r));
+      toast.success(data.rule.isActive ? 'Правило активировано' : 'Правило деактивировано');
     } catch (error) {
       console.error('Ошибка переключения:', error);
+      toast.error('Ошибка переключения правила');
     }
   };
 
@@ -293,6 +261,12 @@ export function EngineeringPage() {
     setShowRuleModal(true);
   };
 
+  const todayDate = new Date().toLocaleDateString('ru-RU', { 
+    day: 'numeric', 
+    month: 'long', 
+    year: 'numeric' 
+  });
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       {/* Заголовок страницы */}
@@ -308,11 +282,19 @@ export function EngineeringPage() {
         </div>
         
         {/* Индикатор подключения */}
-        <div className="mt-3 flex items-center gap-2">
-          <div className={`w-2 h-2 rounded-full ${wsConnected ? 'bg-green-500' : 'bg-gray-400'}`}></div>
-          <span className="text-xs text-gray-600">
-            {wsConnected ? 'MQTT подключен (Skud/baddialsevent)' : 'MQTT отключен'}
-          </span>
+        <div className="mt-3 flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className={`w-2 h-2 rounded-full ${wsConnected ? 'bg-green-500' : 'bg-gray-400'}`}></div>
+            <span className="text-xs text-gray-600">
+              {wsConnected ? 'MQTT подключен (online)' : 'MQTT отключен'}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Calendar size={14} style={{ color: '#00aeef' }} />
+            <span className="text-xs font-medium" style={{ color: '#00aeef' }}>
+              События за сегодня: {todayDate}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -328,7 +310,8 @@ export function EngineeringPage() {
           </div>
           <button
             onClick={handleExportEvents}
-            className="flex items-center gap-2 px-4 py-2 text-white rounded-lg hover:opacity-90 transition-opacity"
+            disabled={filteredEvents.length === 0}
+            className="flex items-center gap-2 px-4 py-2 text-white rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
             style={{ backgroundColor: '#00aeef' }}
           >
             <Download size={18} />
@@ -337,27 +320,7 @@ export function EngineeringPage() {
         </div>
 
         {/* Фильтры */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Дата от</label>
-            <DatePicker
-              selected={filters.startDate}
-              onChange={(date) => date && setFilters(prev => ({ ...prev, startDate: date }))}
-              dateFormat="dd.MM.yyyy"
-              locale="ru"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Дата до</label>
-            <DatePicker
-              selected={filters.endDate}
-              onChange={(date) => date && setFilters(prev => ({ ...prev, endDate: date }))}
-              dateFormat="dd.MM.yyyy"
-              locale="ru"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-            />
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">Тип события</label>
             <select
@@ -434,7 +397,7 @@ export function EngineeringPage() {
               ) : filteredEvents.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="text-center py-8 text-gray-500">
-                    Нет данных за выбранный период
+                    Нет аномальных событий за сегодня
                   </td>
                 </tr>
               ) : (
