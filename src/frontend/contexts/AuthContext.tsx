@@ -24,6 +24,7 @@ export const ALL_PERMISSIONS = [
   { id: 'passes', name: 'Отчет о проходах', category: 'Безопасность' },
   { id: 'identifier-search', name: 'Поиск по идентификатору', category: 'Безопасность' },
   { id: 'location', name: 'Местонахождение людей', category: 'Безопасность' },
+  { id: 'engineering', name: 'Инженерный раздел', category: 'Безопасность' },
   { id: 'analytics', name: 'Аналитика', category: 'Отчеты' },
   { id: 'parking', name: 'Парковочная система', category: 'Инфраструктура' },
   { id: 'storage', name: 'Система хранения вещей', category: 'Инфраструктура' },

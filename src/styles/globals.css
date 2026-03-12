@@ -187,3 +187,13 @@
 html {
   font-size: var(--font-size);
 }
+
+/* Анимация бегущего кота */
+@keyframes slide {
+  0% {
+    transform: translateX(-40px);
+  }
+  100% {
+    transform: translateX(140px);
+  }
+}

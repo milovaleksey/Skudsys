@@ -294,11 +294,18 @@ export function EngineeringPage() {
         
         {/* Индикатор подключения */}
         <div className="mt-3 flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className={`w-2 h-2 rounded-full ${wsConnected ? 'bg-green-500' : 'bg-gray-400'}`}></div>
-            <span className="text-xs text-gray-600">
-              {wsConnected ? 'MQTT подключен (online)' : 'MQTT отключен'}
-            </span>
+          <div className="flex items-center gap-2 relative overflow-hidden h-6 w-32">
+            {wsConnected && (
+              <div className="absolute animate-[slide_3s_linear_infinite]">
+                <span className="text-xl">🐱</span>
+              </div>
+            )}
+            {!wsConnected && (
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+                <span className="text-xs text-gray-600">MQTT отключен</span>
+              </div>
+            )}
           </div>
           <div className="flex items-center gap-2">
             <Calendar size={14} style={{ color: '#00aeef' }} />

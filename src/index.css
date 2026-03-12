@@ -1098,6 +1098,10 @@
     transform: var(--tw-rotate-x) var(--tw-rotate-y) var(--tw-rotate-z) var(--tw-skew-x) var(--tw-skew-y);
   }
 
+  .animate-\[slide_3s_linear_infinite\] {
+    animation: 3s linear infinite slide;
+  }
+
   .animate-pulse {
     animation: var(--animate-pulse);
   }
@@ -3143,6 +3147,16 @@
 
 .react-datepicker__day--disabled:hover {
   background-color: #0000;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(-40px);
+  }
+
+  100% {
+    transform: translateX(140px);
+  }
 }
 
 :root {
