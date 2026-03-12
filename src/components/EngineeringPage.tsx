@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
-import { api } from '../utils/api';
+import { api } from '../lib/api';
 
 interface BadEvent {
   time_label: string;
@@ -67,7 +67,7 @@ export function EngineeringPage() {
     const baseUrl = apiUrl.replace('/v1', '').replace('http://', '').replace('https://', '');
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('auth_token');
     if (!token) {
       console.error('[Engineering] Нет токена авторизации');
       return;
@@ -119,12 +119,16 @@ export function EngineeringPage() {
       setLoading(true);
       try {
         // Загрузка аномальных событий через api helper
-        const eventsData = await api.get('/engineering/bad-events');
-        setBadEvents(eventsData.events || []);
+        const eventsResponse = await api.get('/engineering/bad-events');
+        if (eventsResponse.success && eventsResponse.data) {
+          setBadEvents(eventsResponse.data.events || []);
+        }
 
         // Загрузка правил доступа через api helper
-        const rulesData = await api.get('/engineering/access-rules');
-        setAccessRules(rulesData.rules || []);
+        const rulesResponse = await api.get('/engineering/access-rules');
+        if (rulesResponse.success && rulesResponse.data) {
+          setAccessRules(rulesResponse.data.rules || []);
+        }
       } catch (error) {
         console.error('[Engineering] Ошибка загрузки данных:', error);
         toast.error('Ошибка загрузки данных');
@@ -199,15 +203,18 @@ export function EngineeringPage() {
   // Создание/обновление правила доступа
   const handleSaveRule = async () => {
     try {
-      let data;
       if (editingRule) {
-        data = await api.put(`/engineering/access-rules/${editingRule.id}`, ruleForm);
-        setAccessRules(prev => prev.map(r => r.id === editingRule.id ? data.rule : r));
-        toast.success('Правило обновлено');
+        const response = await api.put(`/engineering/access-rules/${editingRule.id}`, ruleForm);
+        if (response.success && response.data) {
+          setAccessRules(prev => prev.map(r => r.id === editingRule.id ? response.data.rule : r));
+          toast.success('Правило обновлено');
+        }
       } else {
-        data = await api.post('/engineering/access-rules', ruleForm);
-        setAccessRules(prev => [data.rule, ...prev]);
-        toast.success('Правило создано');
+        const response = await api.post('/engineering/access-rules', ruleForm);
+        if (response.success && response.data) {
+          setAccessRules(prev => [response.data.rule, ...prev]);
+          toast.success('Правило создано');
+        }
       }
       
       setShowRuleModal(false);
@@ -215,7 +222,7 @@ export function EngineeringPage() {
       setRuleForm({ department: '', accessTemplate: '', userType: 'both' });
     } catch (error) {
       console.error('Ошибка сохранения:', error);
-      toast.error('Ошибка сохранения правила');
+      toast.error('Ошиба сохранения правила');
     }
   };
 
@@ -224,9 +231,11 @@ export function EngineeringPage() {
     if (!confirm('Вы уверены, что хотите удалить это правило?')) return;
 
     try {
-      await api.delete(`/engineering/access-rules/${ruleId}`);
-      setAccessRules(prev => prev.filter(r => r.id !== ruleId));
-      toast.success('Правило удалено');
+      const response = await api.delete(`/engineering/access-rules/${ruleId}`);
+      if (response.success) {
+        setAccessRules(prev => prev.filter(r => r.id !== ruleId));
+        toast.success('Правило удалено');
+      }
     } catch (error) {
       console.error('Ошибка удаления:', error);
       toast.error('Ошибка удаления правила');
@@ -236,9 +245,11 @@ export function EngineeringPage() {
   // Переключение активности правила
   const toggleRuleActive = async (ruleId: string) => {
     try {
-      const data = await api.patch(`/engineering/access-rules/${ruleId}/toggle`, {});
-      setAccessRules(prev => prev.map(r => r.id === ruleId ? data.rule : r));
-      toast.success(data.rule.isActive ? 'Правило активировано' : 'Правило деактивировано');
+      const response = await api.patch(`/engineering/access-rules/${ruleId}/toggle`, {});
+      if (response.success && response.data) {
+        setAccessRules(prev => prev.map(r => r.id === ruleId ? response.data.rule : r));
+        toast.success(response.data.rule.isActive ? 'Правило активировано' : 'Правило деактивировано');
+      }
     } catch (error) {
       console.error('Ошибка переключения:', error);
       toast.error('Ошибка переключения правила');
@@ -607,7 +618,7 @@ export function EngineeringPage() {
                       onChange={(e) => setRuleForm(prev => ({ ...prev, userType: e.target.value as any }))}
                       className="mr-2"
                     />
-                    <span className="text-sm text-gray-700">Сотрудники</span>
+                    <span className="text-sm text-gray-700">Сотруднии</span>
                   </label>
                   <label className="flex items-center">
                     <input

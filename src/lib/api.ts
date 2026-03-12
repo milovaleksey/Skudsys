@@ -257,6 +257,9 @@ class ApiClient {
 // Экземпляр API клиента
 const apiClient = new ApiClient(API_URL);
 
+// Экспортируем как api для удобства использования
+export const api = apiClient;
+
 /**
  * Универсальная функция для выполнения API запросов
  * Используется в хуках и компонентах для прямых запросов
