@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { TokenManager, authApi, rolesApi, type ApiResponse, type LoginResponse } from '../lib/api';
 
 // Определение базовых ролей
@@ -298,11 +298,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw error;
     }
   };
-
-  // Показываем загрузку при первой инициализации
-  if (loading) {
-    return null; // Или можно показать компонент загрузки
-  }
 
   return (
     <AuthContext.Provider 
