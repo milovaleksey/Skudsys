@@ -35,6 +35,7 @@ const auditRoutes = require('./routes/audit.routes');
 const mqttRoutes = require('./routes/mqtt.routes');
 const skudRoutes = require('./routes/skud');
 const foreignStudentsRoutes = require('./routes/foreignStudents');
+const engineeringRoutes = require('./routes/engineering.routes');
 
 const app = express();
 
@@ -92,6 +93,7 @@ app.use(`/${API_VERSION}/audit-logs`, auditRoutes);
 app.use(`/${API_VERSION}/mqtt`, mqttRoutes);
 app.use(`/${API_VERSION}/skud`, skudRoutes);
 app.use(`/${API_VERSION}/foreign-students`, foreignStudentsRoutes);
+app.use(`/${API_VERSION}/engineering`, engineeringRoutes);
 
 // API маршруты (версия с /api для совместимости)
 app.use('/api/auth', authRoutes);
@@ -107,6 +109,7 @@ app.use('/api/audit-logs', auditRoutes);
 app.use('/api/mqtt', mqttRoutes);
 app.use('/api/skud', skudRoutes);
 app.use('/api/foreign-students', foreignStudentsRoutes);
+app.use('/api/engineering', engineeringRoutes);
 
 // 404 handler
 app.use((req, res) => {
@@ -197,7 +200,7 @@ const startServer = async () => {
       console.log('🔌 Подключение к Parking MQTT брокеру...');
       parkingMQTTService.connect();
     } else {
-      console.log('⚠️  Parking MQTT отключен в конфигурации');
+      console.log('⚠️  Parking MQTT отключн в конфигурации');
     }
 
     // Подключение к Storage MQTT брокеру

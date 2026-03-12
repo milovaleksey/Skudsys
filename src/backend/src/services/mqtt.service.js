@@ -65,6 +65,9 @@ class MQTTService extends EventEmitter {
         
         // Подписываемся на топики аналитики
         this.subscribeToAnalyticsTopics();
+        
+        // Подписываемся на топик аномальных событий
+        this.subscribeToBadEventsTopic();
       });
 
       this.client.on('error', (error) => {
@@ -174,10 +177,46 @@ class MQTTService extends EventEmitter {
   }
 
   /**
+   * Подписка на топик аномальных событий
+   */
+  subscribeToBadEventsTopic() {
+    const badEventsTopic = 'Skud/baddialsevent';
+    
+    this.client.subscribe(badEventsTopic, (err) => {
+      if (err) {
+        console.error(`[MQTT] ❌ Ошибка подписки на ${badEventsTopic}:`, err.message);
+      } else {
+        console.log(`[MQTT] ✅ Подписка на топик аномальных событий: ${badEventsTopic}`);
+      }
+    });
+  }
+
+  /**
    * Обработка входящих сообщений
    */
   handleMessage(topic, message) {
     const messageStr = message.toString();
+    
+    // Если это топик аномальных событий Skud/baddialsevent
+    if (topic === 'Skud/baddialsevent') {
+      try {
+        const badEvents = JSON.parse(messageStr);
+        const engineeringController = require('../controllers/engineering.controller');
+        
+        if (Array.isArray(badEvents)) {
+          console.log(`[MQTT] 🚨 Получено ${badEvents.length} аномальных событий`);
+          engineeringController.addBadEvents(badEvents);
+        } else {
+          console.log(`[MQTT] 🚨 Получено аномальное событие`);
+          engineeringController.addBadEvent(badEvents);
+        }
+        
+        this.emit('bad-event', badEvents);
+      } catch (error) {
+        console.error('[MQTT] ❌ Ошибка парсинга аномальных событий:', error.message);
+      }
+      return;
+    }
     
     // Если это топик конфигурации
     if (topic === this.config.configTopic) {
@@ -261,7 +300,7 @@ class MQTTService extends EventEmitter {
     } else if (topic === analyticsDataTopic) {
       try {
         this.analyticsRawData = JSON.parse(messageStr);
-        console.log(`[MQTT] 📊 Получено ${this.analyticsRawData.length} записей данных аналитики`);
+        console.log(`[MQTT] ��� Получено ${this.analyticsRawData.length} записей данных аналитики`);
         
         // Устанавливаем данные в процессор
         analyticsProcessor.setRawData(this.analyticsRawData);

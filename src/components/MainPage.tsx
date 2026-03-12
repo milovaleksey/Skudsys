@@ -19,7 +19,8 @@ import {
   CheckCircle,
   XCircle,
   Wifi,
-  WifiOff
+  WifiOff,
+  Wrench
 } from 'lucide-react';
 import { UsersSettingsPage } from './UsersSettingsPage';
 import { RolesManagementPage } from './RolesManagementPage';
@@ -42,6 +43,7 @@ import { StudentsReportPage } from './StudentsReportPage';
 import { EmployeesReportPage } from './EmployeesReportPage';
 import { ParkingPage } from './ParkingPage';
 import { StorageSystemsPage } from './StorageSystemsPage';
+import { EngineeringPage } from './EngineeringPage';
 
 export function MainPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -132,6 +134,12 @@ export function MainPage() {
       label: 'Аналитика',
       icon: BarChart3,
       permission: 'analytics',
+    },
+    {
+      id: 'engineering',
+      label: 'Инженерный раздел',
+      icon: Wrench,
+      permission: 'engineering',
     },
     {
       id: 'parking',
@@ -372,6 +380,7 @@ export function MainPage() {
         {activePage === 'roles-settings' && <RolesManagementPage />}
         {activePage === 'user-logs' && <UserLogsPage />}
         {activePage === 'identifier-search' && <IdentifierSearchPage />}
+        {activePage === 'engineering' && <EngineeringPage />}
       </main>
     </div>
   );
