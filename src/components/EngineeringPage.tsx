@@ -70,7 +70,7 @@ function DiggingCat() {
   }, []);
 
   return (
-    <svg width="40" height="32" viewBox="0 0 120 80" className="digging-cat-mini">
+    <svg width="80" height="64" viewBox="0 0 120 80" className="digging-cat-mini">
       <defs>
         <style>
           {`
@@ -222,7 +222,7 @@ export function EngineeringPage() {
         
         // Обработка данных из топика Skud/baddialsevent
         if (message.topic === 'Skud/baddialsevent' && message.data) {
-          console.log('🚨 [Engineering] Получено аномальное событи��:', message.data);
+          console.log('🚨 [Engineering] Получено аномальное событи:', message.data);
           const newEvents = Array.isArray(message.data) ? message.data : [message.data];
           setBadEvents(prev => [...newEvents, ...prev].slice(0, 1000)); // Храним последние 1000
         }
@@ -459,16 +459,9 @@ export function EngineeringPage() {
         
         {/* Индикатор подключения */}
         <div className="mt-3 flex items-center gap-4">
-          <div className="flex items-center gap-2 relative overflow-hidden h-8 w-40 bg-gradient-to-r from-blue-50 to-transparent rounded-lg px-2">
+          <div className="flex items-center gap-2">
             {wsConnected ? (
-              <>
-                <div className="absolute left-0 text-2xl">
-                  <DiggingCat />
-                </div>
-                <span className="ml-auto text-xs font-medium" style={{ color: '#00aeef' }}>
-                  MQTT Live
-                </span>
-              </>
+              <DiggingCat />
             ) : (
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-gray-400"></div>
@@ -479,7 +472,7 @@ export function EngineeringPage() {
           <div className="flex items-center gap-2">
             <Calendar size={14} style={{ color: '#00aeef' }} />
             <span className="text-xs font-medium" style={{ color: '#00aeef' }}>
-              События за сегодня: {todayDate}
+              С��бытия за сегодня: {todayDate}
             </span>
           </div>
         </div>
