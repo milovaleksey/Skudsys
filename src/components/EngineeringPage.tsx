@@ -57,6 +57,22 @@ const formatDateTime = (dateStr: string): string => {
   return `${formatDate(dateStr)} ${formatTime(dateStr)}`;
 };
 
+// Компонент бегущего кота с анимацией ног
+function RunningCat() {
+  const [frame, setFrame] = useState(0);
+  const cats = ['🐈', '🐈‍⬛', '🐱', '🐾'];
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFrame(prev => (prev + 1) % cats.length);
+    }, 150); // Меняем кадр каждые 150ms
+    
+    return () => clearInterval(interval);
+  }, []);
+  
+  return <span>{cats[frame]}</span>;
+}
+
 export function EngineeringPage() {
   const [badEvents, setBadEvents] = useState<BadEvent[]>([]);
   const [accessRules, setAccessRules] = useState<AccessRule[]>([]);
@@ -353,13 +369,17 @@ export function EngineeringPage() {
         
         {/* Индикатор подключения */}
         <div className="mt-3 flex items-center gap-4">
-          <div className="flex items-center gap-2 relative overflow-hidden h-6 w-32">
-            {wsConnected && (
-              <div className="absolute animate-[slide_3s_linear_infinite]">
-                <span className="text-xl">🐱</span>
-              </div>
-            )}
-            {!wsConnected && (
+          <div className="flex items-center gap-2 relative overflow-hidden h-8 w-40 bg-gradient-to-r from-blue-50 to-transparent rounded-lg px-2">
+            {wsConnected ? (
+              <>
+                <div className="absolute left-0 animate-[slide_3s_linear_infinite] text-2xl">
+                  <RunningCat />
+                </div>
+                <span className="ml-auto text-xs font-medium" style={{ color: '#00aeef' }}>
+                  MQTT Live
+                </span>
+              </>
+            ) : (
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-gray-400"></div>
                 <span className="text-xs text-gray-600">MQTT отключен</span>
@@ -412,7 +432,7 @@ export function EngineeringPage() {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Устройство</label>
+            <label className="block text-xs font-medium text-gray-700 mb-1">Уст��ойство</label>
             <select
               value={filters.device}
               onChange={(e) => setFilters(prev => ({ ...prev, device: e.target.value }))}
@@ -525,7 +545,7 @@ export function EngineeringPage() {
                 ) : filteredAndSortedEvents.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="text-center py-8 text-gray-500">
-                      {filters.searchQuery ? 'По вашему запросу ничего не найдено' : 'Нет аномальных событий за сегодня'}
+                      {filters.searchQuery ? 'По вашему запросу ничего не найдено' : 'Нет аномальных событи�� за сегодня'}
                     </td>
                   </tr>
                 ) : (

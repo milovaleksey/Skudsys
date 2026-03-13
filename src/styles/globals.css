@@ -197,3 +197,19 @@ html {
     transform: translateX(140px);
   }
 }
+
+/* Анимация бегущих ног кота */
+@keyframes catRun {
+  0%, 100% {
+    content: '🐈';
+  }
+  25% {
+    content: '🐈‍⬛';
+  }
+  50% {
+    content: '🐱';
+  }
+  75% {
+    content: '🐈';
+  }
+}
