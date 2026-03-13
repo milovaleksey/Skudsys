@@ -213,3 +213,82 @@ html {
     content: '🐈';
   }
 }
+
+/* Анимация кота который лижет зад */
+.licking-cat-container {
+  display: inline-block;
+  position: relative;
+}
+
+.licking-cat {
+  animation: catBounce 3s ease-in-out infinite;
+}
+
+/* Анимация головы кота - поворачивается к заду */
+.cat-head {
+  transform-origin: 30px 40px;
+  animation: headLick 3s ease-in-out infinite;
+}
+
+/* Анимация языка - появляется и исчезает */
+.cat-tongue {
+  opacity: 0;
+  animation: tongueAppear 3s ease-in-out infinite;
+}
+
+/* Анимация хвоста - виляет */
+.cat-tail {
+  animation: tailWag 3s ease-in-out infinite;
+}
+
+/* Легкое подпрыгивание тела */
+@keyframes catBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+/* Голова поворачивается к заду */
+@keyframes headLick {
+  0%, 20%, 80%, 100% {
+    transform: rotate(0deg) translateX(0);
+  }
+  40%, 60% {
+    transform: rotate(25deg) translateX(10px);
+  }
+}
+
+/* Язык появляется когда голова повернута */
+@keyframes tongueAppear {
+  0%, 35%, 65%, 100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  40%, 60% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Хвост виляет от удовольствия */
+@keyframes tailWag {
+  0%, 20%, 80%, 100% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(-10deg);
+  }
+  70% {
+    transform: rotate(10deg);
+  }
+}

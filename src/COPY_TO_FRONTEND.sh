@@ -6,7 +6,6 @@ echo "🚀 Копирование обновленных файлов в /fronte
 
 # Убедимся, что папки существуют
 mkdir -p frontend/components
-mkdir -p frontend/styles
 
 # Копируем EngineeringPage.tsx
 if [ -f "components/EngineeringPage.tsx" ]; then
@@ -16,30 +15,29 @@ else
   echo "❌ Файл components/EngineeringPage.tsx не найден!"
 fi
 
-# Копируем globals.css
-if [ -f "styles/globals.css" ]; then
-  cp styles/globals.css frontend/styles/globals.css
-  echo "✅ Скопирован styles/globals.css"
-else
-  echo "❌ Файл styles/globals.css не найден!"
-fi
-
 echo ""
 echo "✨ Копирование завершено!"
-echo "📝 Обновленные файлы:"
+echo "📝 Обновленный файл:"
 echo "   - frontend/components/EngineeringPage.tsx"
-echo "   - frontend/styles/globals.css"
 echo ""
-echo "🐈 Что изменилось:"
-echo "   1. Бегущий кот теперь с анимацией ног! 🐈‍⬛ 🐱 🐾"
-echo "   2. Коррекция времени: +3 часа при отображении"
-echo "   3. CSS анимация для плавного движения кота"
+echo "🐈 НОВАЯ АНИМАЦИЯ: КОТИК КОПАЕТСЯ В ЛОТКЕ! 💩"
 echo ""
-echo "🎬 Анимация кота:"
-echo "   - Кадр 1: 🐈 (кот смотрит вправо)"
-echo "   - Кадр 2: 🐈‍⬛ (черный кот)"
-echo "   - Кадр 3: 🐱 (мордочка кота)"
-echo "   - Кадр 4: 🐾 (следы лап)"
-echo "   - Скорость: 150ms на кадр"
-echo "   - Движение: 3 секунды слева направо"
+echo "🎨 Компонент DiggingCat (мини-версия из LoadingCatWidget):"
+echo "   • Лоток с песком 📦"
+echo "   • Оранжевый кот с ушками 🐱"
+echo "   • Копающаяся лапа (3 позиции) 🐾"
+echo "   • Виляющий хвост 〰️"
+echo "   • Песчинки вылетают при копании ✨"
+echo "   • Следы от копания в песке"
+echo ""
+echo "🎬 Анимация (цикл 1.2 секунды):"
+echo "   Кадр 1: Лапа в центре"
+echo "   Кадр 2: Лапа копает влево (песок летит!)"
+echo "   Кадр 3: Лапа копает вправо"
+echo "   → Хвост виляет от удовольствия"
+echo ""
+echo "⏰ Время отображения: +3 часа к UTC"
+echo ""
+echo "🎯 ИТОГ: Кот копается в лотке пока ждёт MQTT события!"
+echo "   = Точно как на странице 'Отчет по иностранным студентам' 🎉"
 echo ""

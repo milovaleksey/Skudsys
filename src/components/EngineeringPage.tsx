@@ -58,19 +58,109 @@ const formatDateTime = (dateStr: string): string => {
 };
 
 // Компонент бегущего кота с анимацией ног
-function RunningCat() {
-  const [frame, setFrame] = useState(0);
-  const cats = ['🐈', '🐈‍⬛', '🐱', '🐾'];
-  
+function DiggingCat() {
+  const [pawPosition, setPawPosition] = useState(0);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setFrame(prev => (prev + 1) % cats.length);
-    }, 150); // Меняем кадр каждые 150ms
-    
+      setPawPosition(prev => (prev + 1) % 3);
+    }, 400);
+
     return () => clearInterval(interval);
   }, []);
-  
-  return <span>{cats[frame]}</span>;
+
+  return (
+    <svg width="40" height="32" viewBox="0 0 120 80" className="digging-cat-mini">
+      <defs>
+        <style>
+          {`
+            @keyframes tailWagMini {
+              0%, 100% { transform: rotate(0deg); }
+              50% { transform: rotate(10deg); }
+            }
+            .tail-mini { 
+              transform-origin: 50px 40px; 
+              animation: tailWagMini 1.5s ease-in-out infinite; 
+            }
+          `}
+        </style>
+      </defs>
+
+      {/* Litter box */}
+      <rect x="20" y="56" width="80" height="16" rx="2" fill="#8B7355" stroke="#654321" strokeWidth="1" />
+      <rect x="22" y="58" width="76" height="10" rx="1" fill="#DEB887" />
+      
+      {/* Digging marks */}
+      <g opacity={pawPosition === 1 ? 0.8 : 0.3}>
+        <path d="M 50 62 Q 53 60 56 62" stroke="#A0826D" strokeWidth="1" fill="none" />
+        <path d="M 60 64 Q 63 62 66 64" stroke="#A0826D" strokeWidth="1" fill="none" />
+      </g>
+
+      {/* Cat */}
+      <g>
+        {/* Tail */}
+        <path
+          className="tail-mini"
+          d="M 50 40 Q 42 30 38 22"
+          stroke="#FF9966"
+          strokeWidth="3"
+          strokeLinecap="round"
+          fill="none"
+        />
+
+        {/* Body */}
+        <ellipse cx="60" cy="44" rx="20" ry="16" fill="#FF9966" />
+
+        {/* Head */}
+        <circle cx="74" cy="34" r="12" fill="#FF9966" />
+
+        {/* Ears */}
+        <polygon points="66,24 69,30 64,29" fill="#FF9966" />
+        <polygon points="82,24 79,30 84,29" fill="#FF9966" />
+
+        {/* Eyes */}
+        <ellipse cx="71" cy="33" rx="1.5" ry="2" fill="#2D3748" />
+        <ellipse cx="77" cy="33" rx="1.5" ry="2" fill="#2D3748" />
+
+        {/* Nose */}
+        <circle cx="74" cy="36" r="1" fill="#FF6B9D" />
+
+        {/* Whiskers */}
+        <g stroke="#2D3748" strokeWidth="0.5" opacity="0.6">
+          <line x1="68" y1="34" x2="62" y2="33" />
+          <line x1="68" y1="36" x2="62" y2="36" />
+          <line x1="80" y1="34" x2="86" y2="33" />
+          <line x1="80" y1="36" x2="86" y2="36" />
+        </g>
+
+        {/* Front leg */}
+        <ellipse cx="54" cy="54" rx="3" ry="6" fill="#FF9966" />
+
+        {/* Animated digging paw */}
+        <g
+          style={{
+            transform: `translate(${pawPosition === 0 ? 0 : pawPosition === 1 ? -6 : 6}px, ${pawPosition === 1 ? 2 : 0}px) rotate(${pawPosition === 1 ? -10 : 0}deg)`,
+            transformOrigin: '65px 52px',
+            transition: 'all 0.3s ease-out'
+          }}
+        >
+          <ellipse cx="65" cy="52" rx="3" ry="7" fill="#FF9966" />
+          <ellipse cx="65" cy="57" rx="2" ry="1.5" fill="#FFB399" />
+        </g>
+
+        {/* Back legs */}
+        <ellipse cx="48" cy="48" rx="4" ry="5" fill="#FF9966" />
+        <ellipse cx="58" cy="50" rx="4" ry="5" fill="#FF9966" />
+      </g>
+
+      {/* Sand particles */}
+      <g opacity={pawPosition === 1 ? 1 : 0}>
+        <circle cx="67" cy="54" r="0.8" fill="#DEB887" />
+        <circle cx="70" cy="55" r="0.6" fill="#DEB887" />
+        <circle cx="68" cy="56" r="0.5" fill="#DEB887" />
+      </g>
+    </svg>
+  );
 }
 
 export function EngineeringPage() {
@@ -132,7 +222,7 @@ export function EngineeringPage() {
         
         // Обработка данных из топика Skud/baddialsevent
         if (message.topic === 'Skud/baddialsevent' && message.data) {
-          console.log('🚨 [Engineering] Получено аномальное событие:', message.data);
+          console.log('🚨 [Engineering] Получено аномальное событи��:', message.data);
           const newEvents = Array.isArray(message.data) ? message.data : [message.data];
           setBadEvents(prev => [...newEvents, ...prev].slice(0, 1000)); // Храним последние 1000
         }
@@ -372,8 +462,8 @@ export function EngineeringPage() {
           <div className="flex items-center gap-2 relative overflow-hidden h-8 w-40 bg-gradient-to-r from-blue-50 to-transparent rounded-lg px-2">
             {wsConnected ? (
               <>
-                <div className="absolute left-0 animate-[slide_3s_linear_infinite] text-2xl">
-                  <RunningCat />
+                <div className="absolute left-0 text-2xl">
+                  <DiggingCat />
                 </div>
                 <span className="ml-auto text-xs font-medium" style={{ color: '#00aeef' }}>
                   MQTT Live
@@ -432,7 +522,7 @@ export function EngineeringPage() {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Уст��ойство</label>
+            <label className="block text-xs font-medium text-gray-700 mb-1">Устройство</label>
             <select
               value={filters.device}
               onChange={(e) => setFilters(prev => ({ ...prev, device: e.target.value }))}
@@ -545,7 +635,7 @@ export function EngineeringPage() {
                 ) : filteredAndSortedEvents.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="text-center py-8 text-gray-500">
-                      {filters.searchQuery ? 'По вашему запросу ничего не найдено' : 'Нет аномальных событи�� за сегодня'}
+                      {filters.searchQuery ? 'По вашему запросу ничего не найдено' : 'Нет аномальных событи за сегодня'}
                     </td>
                   </tr>
                 ) : (

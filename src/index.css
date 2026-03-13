@@ -1102,10 +1102,6 @@
     transform: var(--tw-rotate-x) var(--tw-rotate-y) var(--tw-rotate-z) var(--tw-skew-x) var(--tw-skew-y);
   }
 
-  .animate-\[slide_3s_linear_infinite\] {
-    animation: 3s linear infinite slide;
-  }
-
   .animate-pulse {
     animation: var(--animate-pulse);
   }
@@ -3189,6 +3185,84 @@
 
   75% {
     content: "🐈";
+  }
+}
+
+.licking-cat-container {
+  display: inline-block;
+  position: relative;
+}
+
+.licking-cat {
+  animation: 3s ease-in-out infinite catBounce;
+}
+
+.cat-head {
+  transform-origin: 30px 40px;
+  animation: 3s ease-in-out infinite headLick;
+}
+
+.cat-tongue {
+  opacity: 0;
+  animation: 3s ease-in-out infinite tongueAppear;
+}
+
+.cat-tail {
+  animation: 3s ease-in-out infinite tailWag;
+}
+
+@keyframes catBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes headLick {
+  0%, 20%, 80%, 100% {
+    transform: rotate(0)translateX(0);
+  }
+
+  40%, 60% {
+    transform: rotate(25deg)translateX(10px);
+  }
+}
+
+@keyframes tongueAppear {
+  0%, 35%, 65%, 100% {
+    opacity: 0;
+    transform: scale(.5);
+  }
+
+  40%, 60% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes tailWag {
+  0%, 20%, 80%, 100% {
+    transform: rotate(0);
+  }
+
+  30% {
+    transform: rotate(10deg);
+  }
+
+  50% {
+    transform: rotate(-10deg);
+  }
+
+  70% {
+    transform: rotate(10deg);
   }
 }
 
