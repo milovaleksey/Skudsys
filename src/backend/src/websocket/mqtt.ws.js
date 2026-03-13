@@ -38,6 +38,9 @@ function initMQTTWebSocket(server) {
       // Добавляем клиента в список
       clients.add(ws);
 
+      // Получаем контроллер для доступа к истории событий
+      const engineeringController = require('../controllers/engineering.controller');
+
       // Отправляем текущие данные при подключении
       const initialData = {
         type: 'initial',
@@ -46,6 +49,17 @@ function initMQTTWebSocket(server) {
         status: mqttService.getStatus(),
       };
       ws.send(JSON.stringify(initialData));
+
+      // Отправляем историю аномальных событий при подключении
+      const badEventsHistory = engineeringController.getBadEventsHistory();
+      if (badEventsHistory && badEventsHistory.length > 0) {
+        console.log(`[WebSocket] 📜 Отправка истории: ${badEventsHistory.length} аномальных событий новому клиенту`);
+        ws.send(JSON.stringify({
+          type: 'mqtt-message',
+          topic: 'Skud/baddialsevent',
+          data: badEventsHistory,
+        }));
+      }
 
       // Обработка сообщений от клиента
       ws.on('message', (message) => {
@@ -165,7 +179,7 @@ function initMQTTWebSocket(server) {
   });
 
   mqttService.on('disconnected', () => {
-    console.log('[WebSocket] 📡 Рассылка статуса: отключено');
+    console.log('[WebSocket] 📡 Расс��лка статуса: отключено');
     const message = JSON.stringify({
       type: 'status-changed',
       status: mqttService.getStatus(),

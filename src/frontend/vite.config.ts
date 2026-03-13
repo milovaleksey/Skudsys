@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
 
@@ -8,20 +7,35 @@ const __dirname = dirname(__filename);
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [],
   resolve: {
     alias: {
-      '@': resolve(__dirname, './'),
-      '@/components': resolve(__dirname, './components'),
-      '@/styles': resolve(__dirname, './styles'),
-      '@/contexts': resolve(__dirname, './contexts'),
-      '@/lib': resolve(__dirname, './lib'),
+      '@': resolve(__dirname, '../'),
+      '@/components': resolve(__dirname, '../components'),
+      '@/styles': resolve(__dirname, '../styles'),
+      '@/contexts': resolve(__dirname, '../contexts'),
+      '@/lib': resolve(__dirname, '../lib'),
+      '@/hooks': resolve(__dirname, '../hooks'),
+    },
+  },
+  esbuild: {
+    loader: 'tsx',
+    include: /\.[jt]sx?$/,
+    exclude: [],
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      loader: {
+        '.js': 'jsx',
+        '.ts': 'tsx',
+        '.tsx': 'tsx',
+      },
     },
   },
   server: {
-    host: '0.0.0.0', // Слушать на всех сетевых интерфейсах
+    host: '0.0.0.0',
     port: 5173,
-    strictPort: false, // Если порт занят, попробовать следующий
+    strictPort: false,
     proxy: {
       '/v1': {
         target: 'http://localhost:3000',

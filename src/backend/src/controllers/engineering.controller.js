@@ -240,7 +240,7 @@ exports.addBadEvent = (event) => {
 };
 
 /**
- * Добавить массив аномальных событий из MQTT
+ * Добавить массив аномальных с��бытий из MQTT
  */
 exports.addBadEvents = (events) => {
   if (Array.isArray(events)) {
@@ -255,3 +255,12 @@ exports.getState = () => ({
   badEventsCount: badEvents.length,
   accessRulesCount: accessRules.length
 });
+
+/**
+ * Получить историю аномальных событий
+ * Используется WebSocket сервером для отправки истории новому клиенту
+ */
+exports.getBadEventsHistory = () => {
+  // Возвращаем последние 1000 событий
+  return badEvents.slice(0, 1000);
+};

@@ -28,13 +28,15 @@
       "@/components/*": ["./components/*"],
       "@/styles/*": ["./styles/*"],
       "@/contexts/*": ["./contexts/*"],
-      "@/lib/*": ["./lib/*"]
+      "@/lib/*": ["./lib/*"],
+      "@/hooks/*": ["./hooks/*"]
     }
   },
   "include": [
     "components",
     "contexts",
     "lib",
+    "hooks",
     "App.tsx",
     "main.tsx",
     "vite-env.d.ts"

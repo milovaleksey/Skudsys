@@ -24,15 +24,19 @@
     /* Paths */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@/components/*": ["./components/*"],
-      "@/styles/*": ["./styles/*"],
-      "@/contexts/*": ["./contexts/*"],
-      "@/lib/*": ["./lib/*"]
+      "@/*": ["../*"],
+      "@/components/*": ["../components/*"],
+      "@/styles/*": ["../styles/*"],
+      "@/contexts/*": ["../contexts/*"],
+      "@/lib/*": ["../lib/*"],
+      "@/hooks/*": ["../hooks/*"]
     }
   },
   "include": [
-    "components",
+    "../components",
+    "../contexts",
+    "../lib",
+    "../hooks",
     "contexts",
     "lib",
     "App.tsx",
