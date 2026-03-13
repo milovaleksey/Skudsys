@@ -36,8 +36,12 @@ exports.getBadEvents = async (req, res) => {
   try {
     const { limit = 1000, offset = 0 } = req.query;
     
+    console.log(`[Engineering API] 📊 Запрос bad-events: всего ${badEvents.length} событий в памяти`);
+    
     // Возвращаем события с пагинацией
     const events = badEvents.slice(offset, offset + parseInt(limit));
+    
+    console.log(`[Engineering API] 📤 Отправляем ${events.length} событий клиенту`);
     
     res.json({
       success: true,
@@ -231,6 +235,7 @@ exports.toggleAccessRule = async (req, res) => {
  * Используется внутренне MQTT сервисом
  */
 exports.addBadEvent = (event) => {
+  console.log(`[Engineering] ➕ Добавлено 1 событие, всего: ${badEvents.length + 1}`);
   badEvents.unshift(event);
   
   // Храним последние 10000 событий
@@ -240,10 +245,11 @@ exports.addBadEvent = (event) => {
 };
 
 /**
- * Добавить массив аномальных с��бытий из MQTT
+ * Добавить массив аномальных событий из MQTT
  */
 exports.addBadEvents = (events) => {
   if (Array.isArray(events)) {
+    console.log(`[Engineering] ➕ Добавлено ${events.length} событий, было: ${badEvents.length}, стало: ${events.length + badEvents.length}`);
     badEvents = [...events, ...badEvents].slice(0, 10000);
   }
 };
