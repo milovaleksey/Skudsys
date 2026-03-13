@@ -33,6 +33,9 @@ interface AccessRule {
 // time_label приходит уже в локальном времени UTC+5 (с "Z" на конце)
 const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr);
+  // Добавляем +3 часа
+  date.setHours(date.getHours() + 3);
+  
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
@@ -41,6 +44,9 @@ const formatDate = (dateStr: string): string => {
 
 const formatTime = (dateStr: string): string => {
   const date = new Date(dateStr);
+  // Добавляем +3 часа
+  date.setHours(date.getHours() + 3);
+  
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
   const seconds = String(date.getSeconds()).padStart(2, '0');
@@ -369,7 +375,7 @@ export function EngineeringPage() {
         </div>
       </div>
 
-      {/* Раздел 1: Аном��льные события */}
+      {/* Раздел 1: Аномльные события */}
       <div className="bg-white rounded-xl shadow-md p-6 mb-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
