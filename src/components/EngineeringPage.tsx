@@ -222,7 +222,7 @@ export function EngineeringPage() {
         
         // Обработка данных из топика Skud/baddialsevent
         if (message.topic === 'Skud/baddialsevent' && message.data) {
-          console.log('🚨 [Engineering] Получено аномальное событи:', message.data);
+          console.log('🚨 [Engineering] Получено аномальное событие:', message.data);
           const newEvents = Array.isArray(message.data) ? message.data : [message.data];
           setBadEvents(prev => [...newEvents, ...prev].slice(0, 1000)); // Храним последние 1000
         }
@@ -346,7 +346,7 @@ export function EngineeringPage() {
         'UPN': event.UPN || '—',
         'Зона': event.Zone || '—',
         'Подзона': event.Child_Zone || '—',
-        'Устрйство': event.Device,
+        'Устройство': event.Device,
         'ID карты': event.identificator
       }));
 
@@ -365,7 +365,7 @@ export function EngineeringPage() {
     }
   };
 
-  // Содание/обновление правила доступа
+  // Создание/обновление правила доступа
   const handleSaveRule = async () => {
     try {
       if (editingRule) {
@@ -387,7 +387,7 @@ export function EngineeringPage() {
       setRuleForm({ department: '', accessTemplate: '', userType: 'both' });
     } catch (error) {
       console.error('Ошибка сохранения:', error);
-      toast.error('Ошиба сохранения правила');
+      toast.error('Ошибка сохранения правила');
     }
   };
 
@@ -472,7 +472,7 @@ export function EngineeringPage() {
           <div className="flex items-center gap-2">
             <Calendar size={14} style={{ color: '#00aeef' }} />
             <span className="text-xs font-medium" style={{ color: '#00aeef' }}>
-              С��бытия за сегодня: {todayDate}
+              События за сегодня: {todayDate}
             </span>
           </div>
         </div>
@@ -628,7 +628,7 @@ export function EngineeringPage() {
                 ) : filteredAndSortedEvents.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="text-center py-8 text-gray-500">
-                      {filters.searchQuery ? 'По вашему запросу ничего не найдено' : 'Нет аномальных событи за сегодня'}
+                      {filters.searchQuery ? 'По вашему запросу ничего не найдено' : 'Нет аномальных событий за сегодня'}
                     </td>
                   </tr>
                 ) : (
@@ -753,7 +753,7 @@ export function EngineeringPage() {
                             : 'bg-gray-100 text-gray-500'
                         }`}
                       >
-                        {rule.isActive ? 'Активно' : 'Нактивно'}
+                        {rule.isActive ? 'Активно' : 'Неактивно'}
                       </button>
                     </td>
                     <td className="py-3 px-3 text-xs text-gray-500">
