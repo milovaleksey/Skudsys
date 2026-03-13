@@ -1,12 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
-import { AlertTriangle, User, FileText, Download, Settings, Wifi, WifiOff, Plus, Edit, Trash2, ChevronDown, ChevronUp, Search, Filter, Clock, MapPin, Calendar, Wrench, Shield, X, Save, Edit2 } from 'lucide-react';
+import { AlertTriangle, User, FileText, Download, Settings, Wifi, WifiOff, Plus, Edit, Trash2, ChevronDown, ChevronUp, Search, Filter, Clock, MapPin, Calendar, Wrench, Shield, X, Save, Edit2, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { api } from '../lib/api';
 import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
-import { formatDateTyumen, formatTimeTyumen, formatDateTimeForExport, isTodayTyumen } from '../lib/dateUtils';
 
 // Типы данных
 interface BadEvent {
@@ -30,6 +29,28 @@ interface AccessRule {
   createdAt: string;
 }
 
+// Функции форматирования времени БЕЗ конвертации часового пояса
+// time_label приходит уже в локальном времени UTC+5 (с "Z" на конце)
+const formatDate = (dateStr: string): string => {
+  const date = new Date(dateStr);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`;
+};
+
+const formatTime = (dateStr: string): string => {
+  const date = new Date(dateStr);
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  return `${hours}:${minutes}:${seconds}`;
+};
+
+const formatDateTime = (dateStr: string): string => {
+  return `${formatDate(dateStr)} ${formatTime(dateStr)}`;
+};
+
 export function EngineeringPage() {
   const [badEvents, setBadEvents] = useState<BadEvent[]>([]);
   const [accessRules, setAccessRules] = useState<AccessRule[]>([]);
@@ -46,6 +67,9 @@ export function EngineeringPage() {
 
   // Состояние складной таблицы
   const [isTableExpanded, setIsTableExpanded] = useState(true);
+
+  // Состояние сортировки по времени
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>('desc'); // По умолчанию: новые сверху
 
   // Модальное окно для создания/редактирования правила
   const [showRuleModal, setShowRuleModal] = useState(false);
@@ -137,14 +161,15 @@ export function EngineeringPage() {
     fetchData();
   }, []);
 
-  // Фильтрация событий (только за сегодня)
-  const filteredEvents = useMemo(() => {
+  // Фильтрация и сортировка событий
+  const filteredAndSortedEvents = useMemo(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    return badEvents.filter(event => {
+    // Фильтрация
+    const filtered = badEvents.filter(event => {
       const eventDate = new Date(event.time_label);
       const isToday = eventDate >= today && eventDate < tomorrow;
       const matchType = filters.eventType === 'all' || event.Тип_события === filters.eventType;
@@ -161,7 +186,34 @@ export function EngineeringPage() {
 
       return isToday && matchType && matchDevice && matchFio && matchSearch;
     });
-  }, [badEvents, filters]);
+
+    // Сортировка по времени
+    if (sortOrder) {
+      filtered.sort((a, b) => {
+        const timeA = new Date(a.time_label).getTime();
+        const timeB = new Date(b.time_label).getTime();
+        return sortOrder === 'asc' ? timeA - timeB : timeB - timeA;
+      });
+    }
+
+    return filtered;
+  }, [badEvents, filters, sortOrder]);
+
+  // Обработчик переключения сортировки
+  const toggleSort = () => {
+    setSortOrder(prev => {
+      if (prev === null) return 'desc';
+      if (prev === 'desc') return 'asc';
+      return 'desc';
+    });
+  };
+
+  // Иконка сортировки
+  const getSortIcon = () => {
+    if (sortOrder === 'desc') return <ArrowDown size={14} style={{ color: '#00aeef' }} />;
+    if (sortOrder === 'asc') return <ArrowUp size={14} style={{ color: '#00aeef' }} />;
+    return <ArrowUpDown size={14} className="text-gray-400" />;
+  };
 
   // Уникальные типы событий и устройства для фильтров
   const eventTypes = useMemo(() => {
@@ -175,8 +227,8 @@ export function EngineeringPage() {
   // Экспорт таблицы в Excel
   const handleExportEvents = () => {
     try {
-      const exportData = filteredEvents.map(event => ({
-        'Дата и время': formatDateTimeForExport(event.time_label),
+      const exportData = filteredAndSortedEvents.map(event => ({
+        'Дата и время': formatDateTime(event.time_label),
         'Тип события': event.Тип_события,
         'ФИО': event.ФИО_пользователя || '—',
         'UPN': event.UPN || '—',
@@ -201,7 +253,7 @@ export function EngineeringPage() {
     }
   };
 
-  // Со��дание/обновление правила доступа
+  // Содание/обновление правила доступа
   const handleSaveRule = async () => {
     try {
       if (editingRule) {
@@ -317,19 +369,19 @@ export function EngineeringPage() {
         </div>
       </div>
 
-      {/* Раздел 1: Аномальные события */}
+      {/* Раздел 1: Аном��льные события */}
       <div className="bg-white rounded-xl shadow-md p-6 mb-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <AlertTriangle size={20} style={{ color: '#00aeef' }} />
             <h2 className="text-lg font-semibold text-gray-900">Аномальные события СКУД</h2>
             <span className="px-2 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-md">
-              {filteredEvents.length}
+              {filteredAndSortedEvents.length}
             </span>
           </div>
           <button
             onClick={handleExportEvents}
-            disabled={filteredEvents.length === 0}
+            disabled={filteredAndSortedEvents.length === 0}
             className="flex items-center gap-2 px-4 py-2 text-white rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
             style={{ backgroundColor: '#00aeef' }}
           >
@@ -410,7 +462,7 @@ export function EngineeringPage() {
               ) : (
                 <>
                   <ChevronDown className="w-4 h-4" />
-                  Развернуть таблицу ({filteredEvents.length})
+                  Развернуть таблицу ({filteredAndSortedEvents.length})
                 </>
               )}
             </Button>
@@ -418,7 +470,7 @@ export function EngineeringPage() {
             {/* Счетчик результатов */}
             {filters.searchQuery && (
               <div className="text-sm text-gray-600">
-                Найдено: <span className="font-semibold text-gray-900">{filteredEvents.length}</span> событий
+                Найдено: <span className="font-semibold text-gray-900">{filteredAndSortedEvents.length}</span> событий
               </div>
             )}
           </div>
@@ -431,10 +483,14 @@ export function EngineeringPage() {
               <thead>
                 <tr className="border-b-2" style={{ borderColor: '#00aeef' }}>
                   <th className="text-left py-3 px-3 font-semibold text-gray-700">
-                    <div className="flex items-center gap-2">
+                    <button 
+                      onClick={toggleSort}
+                      className="flex items-center gap-2 hover:opacity-70 transition-opacity cursor-pointer"
+                    >
                       <Clock size={16} style={{ color: '#00aeef' }} />
                       Дата и время
-                    </div>
+                      {getSortIcon()}
+                    </button>
                   </th>
                   <th className="text-left py-3 px-3 font-semibold text-gray-700">Тип события</th>
                   <th className="text-left py-3 px-3 font-semibold text-gray-700">
@@ -460,14 +516,14 @@ export function EngineeringPage() {
                       Загрузка данных...
                     </td>
                   </tr>
-                ) : filteredEvents.length === 0 ? (
+                ) : filteredAndSortedEvents.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="text-center py-8 text-gray-500">
                       {filters.searchQuery ? 'По вашему запросу ничего не найдено' : 'Нет аномальных событий за сегодня'}
                     </td>
                   </tr>
                 ) : (
-                  filteredEvents.slice(0, 100).map((event, idx) => (
+                  filteredAndSortedEvents.slice(0, 100).map((event, idx) => (
                     <tr 
                       key={idx} 
                       className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${
@@ -476,10 +532,10 @@ export function EngineeringPage() {
                     >
                       <td className="py-3 px-3">
                         <div className="text-gray-900 font-medium">
-                          {formatDateTyumen(event.time_label)}
+                          {formatDate(event.time_label)}
                         </div>
                         <div className="text-xs text-gray-500">
-                          {formatTimeTyumen(event.time_label)}
+                          {formatTime(event.time_label)}
                         </div>
                       </td>
                       <td className="py-3 px-3">
@@ -508,9 +564,9 @@ export function EngineeringPage() {
                 )}
               </tbody>
             </table>
-            {filteredEvents.length > 100 && (
+            {filteredAndSortedEvents.length > 100 && (
               <div className="mt-4 text-center text-sm text-gray-600">
-                Показано первых 100 из {filteredEvents.length} событий. Используйте фильтры для уточнения.
+                Показано первых 100 из {filteredAndSortedEvents.length} событий. Используйте фильтры для уточнения.
               </div>
             )}
           </div>
