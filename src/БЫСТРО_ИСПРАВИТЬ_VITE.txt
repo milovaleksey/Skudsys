@@ -1,0 +1,102 @@
+═══════════════════════════════════════════════════════════════
+  VITE ОШИБКА: Failed to resolve import "../hooks/..."
+═══════════════════════════════════════════════════════════════
+
+❌ ОШИБКА
+───────────────────────────────────────────────────────────────
+
+  [vite] Internal server error: Failed to resolve import
+  "../hooks/useMQTT" from "../components/MainPage.tsx"
+
+
+✅ БЫСТРОЕ ИСПРАВЛЕНИЕ (1 команда!)
+═══════════════════════════════════════════════════════════════
+
+  На сервере выполните:
+
+  cd /var/www/utmn-security/debug
+  bash КОПИРОВАТЬ_ВСЁ_В_FRONTEND.sh
+
+
+  Это скопирует:
+  • hooks/      → frontend/hooks/
+  • components/ → frontend/components/
+  • lib/        → frontend/lib/
+  • contexts/   → frontend/contexts/
+  • styles/     → frontend/styles/
+  • public/     → frontend/public/
+
+
+✅ РУЧНОЕ ИСПРАВЛЕНИЕ (если нужно)
+═══════════════════════════════════════════════════════════════
+
+  cd /var/www/utmn-security/debug
+  
+  # Создать директории
+  mkdir -p frontend/hooks
+  mkdir -p frontend/components
+  mkdir -p frontend/lib
+  mkdir -p frontend/contexts
+  
+  # Скопировать hooks
+  cp -r hooks/*.ts frontend/hooks/
+  
+  # Скопировать компоненты (если нужно)
+  rsync -av --ignore-existing components/ frontend/components/
+  
+  # Скопировать lib
+  rsync -av --ignore-existing lib/ frontend/lib/
+  
+  # Скопировать contexts
+  rsync -av --ignore-existing contexts/ frontend/contexts/
+
+
+🔍 ПРОВЕРКА
+═══════════════════════════════════════════════════════════════
+
+  Проверьте что файлы скопировались:
+
+  ls frontend/hooks/
+  
+  Должно быть:
+  ✅ useAnalyticsMQTT.ts
+  ✅ useForeignStudentsMQTT.ts
+  ✅ useMQTT.ts
+  ✅ useParkingMQTT.ts
+  ✅ useStorageMQTT.ts
+  ✅ useStorageWebSocket.ts
+
+
+🚀 ЗАПУСК
+═══════════════════════════════════════════════════════════════
+
+  После копирования:
+
+  cd frontend
+  npm run dev
+
+  Ошибка должна исчезнуть ✅
+
+
+⚡ ЕСЛИ ОШИБКА ОСТАЛАСЬ
+═══════════════════════════════════════════════════════════════
+
+  1. Убедитесь что Vite запущен из /frontend/:
+     cd /var/www/utmn-security/debug/frontend
+     npm run dev
+
+  2. Проверьте что импорты правильные:
+     grep "hooks" frontend/components/MainPage.tsx
+     
+     Должно быть:
+     import { ... } from '../hooks/useMQTT';
+                          ^^^ (две точки!)
+
+  3. Перезапустите Vite:
+     Ctrl+C (остановить)
+     npm run dev (запустить снова)
+
+
+═══════════════════════════════════════════════════════════════
+Статус: ✅ Готово к исправлению
+═══════════════════════════════════════════════════════════════
