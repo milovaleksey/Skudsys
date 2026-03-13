@@ -6,6 +6,7 @@ import { Input } from './ui/input';
 import { api } from '../lib/api';
 import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
+import { formatDateTyumen, formatTimeTyumen, formatDateTimeForExport, isTodayTyumen } from '../lib/dateUtils';
 
 // Типы данных
 interface BadEvent {
@@ -175,7 +176,7 @@ export function EngineeringPage() {
   const handleExportEvents = () => {
     try {
       const exportData = filteredEvents.map(event => ({
-        'Дата и время': new Date(event.time_label).toLocaleString('ru-RU'),
+        'Дата и время': formatDateTimeForExport(event.time_label),
         'Тип события': event.Тип_события,
         'ФИО': event.ФИО_пользователя || '—',
         'UPN': event.UPN || '—',
@@ -200,7 +201,7 @@ export function EngineeringPage() {
     }
   };
 
-  // Создание/обновление правила доступа
+  // Со��дание/обновление правила доступа
   const handleSaveRule = async () => {
     try {
       if (editingRule) {
@@ -475,10 +476,10 @@ export function EngineeringPage() {
                     >
                       <td className="py-3 px-3">
                         <div className="text-gray-900 font-medium">
-                          {new Date(event.time_label).toLocaleDateString('ru-RU')}
+                          {formatDateTyumen(event.time_label)}
                         </div>
                         <div className="text-xs text-gray-500">
-                          {new Date(event.time_label).toLocaleTimeString('ru-RU')}
+                          {formatTimeTyumen(event.time_label)}
                         </div>
                       </td>
                       <td className="py-3 px-3">
