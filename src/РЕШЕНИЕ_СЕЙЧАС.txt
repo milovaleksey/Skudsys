@@ -1,0 +1,97 @@
+═══════════════════════════════════════════════════════════════
+  РЕШЕНИЕ: Failed to resolve import "../hooks/..."
+═══════════════════════════════════════════════════════════════
+
+❌ ПРОБЛЕМА
+───────────────────────────────────────────────────────────────
+
+  Vite читает файлы из КОРНЯ проекта:
+  /var/www/utmn-security/debug/components/MainPage.tsx
+  
+  А должен читать из FRONTEND:
+  /var/www/utmn-security/debug/frontend/components/MainPage.tsx
+
+
+✅ РЕШЕНИЕ (2 команды)
+═══════════════════════════════════════════════════════════════
+
+  cd /var/www/utmn-security/debug
+  bash ФИНАЛЬНОЕ_ИСПРАВЛЕНИЕ_VITE.sh
+
+
+  Это скопирует ВСЁ в frontend/:
+  • components/  → frontend/components/
+  • hooks/       → frontend/hooks/
+  • lib/         → frontend/lib/
+  • contexts/    → frontend/contexts/
+  • styles/      → frontend/styles/
+  • public/      → frontend/public/
+
+
+  Затем ОБЯЗАТЕЛЬНО запустите из frontend/:
+  
+  cd frontend
+  npm run dev
+
+
+🔍 ВАЖНО!
+═══════════════════════════════════════════════════════════════
+
+  Vite ДОЛЖЕН запускаться из директории frontend/:
+  
+  ❌ НЕ ТАК:
+     cd /var/www/utmn-security/debug
+     npm run dev  ← Ошибка!
+  
+  ✅ ТАК:
+     cd /var/www/utmn-security/debug/frontend
+     npm run dev  ← Правильно!
+
+
+📝 ЧТО БЫЛО ИСПРАВЛЕНО
+═══════════════════════════════════════════════════════════════
+
+  1. frontend/vite.config.ts
+     Алиасы теперь указывают на ./hooks вместо ../hooks
+  
+  2. frontend/main.tsx
+     import './styles/globals.css' вместо '../styles/...'
+  
+  3. frontend/App.tsx
+     import './components/...' вместо '../components/...'
+
+
+✅ ПОСЛЕ ИСПРАВЛЕНИЯ
+═══════════════════════════════════════════════════════════════
+
+  cd frontend
+  npm run dev
+  
+  Должно быть:
+  ✅ VITE v5.x.x ready in XXX ms
+  ✅ Local:   http://localhost:5173/
+  ✅ Network: http://10.101.221.207:5173/
+  
+  БЕЗ ошибок "Failed to resolve import"!
+
+
+🧪 ПРОВЕРКА
+═══════════════════════════════════════════════════════════════
+
+  Проверьте что файлы скопированы:
+  
+  ls frontend/hooks/
+  
+  Должно быть:
+  ✅ useAnalyticsMQTT.ts
+  ✅ useForeignStudentsMQTT.ts
+  ✅ useMQTT.ts
+  ✅ useParkingMQTT.ts
+  ✅ useStorageMQTT.ts
+  ✅ useStorageWebSocket.ts
+
+
+═══════════════════════════════════════════════════════════════
+Дата: Март 2026
+Статус: ✅ Готово к запуску
+═══════════════════════════════════════════════════════════════

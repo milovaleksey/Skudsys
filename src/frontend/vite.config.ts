@@ -10,12 +10,12 @@ export default defineConfig({
   plugins: [],
   resolve: {
     alias: {
-      '@': resolve(__dirname, '../'),
-      '@/components': resolve(__dirname, '../components'),
-      '@/styles': resolve(__dirname, '../styles'),
-      '@/contexts': resolve(__dirname, '../contexts'),
-      '@/lib': resolve(__dirname, '../lib'),
-      '@/hooks': resolve(__dirname, '../hooks'),
+      '@': resolve(__dirname, './'),
+      '@/components': resolve(__dirname, './components'),
+      '@/styles': resolve(__dirname, './styles'),
+      '@/contexts': resolve(__dirname, './contexts'),
+      '@/lib': resolve(__dirname, './lib'),
+      '@/hooks': resolve(__dirname, './hooks'),
     },
   },
   esbuild: {

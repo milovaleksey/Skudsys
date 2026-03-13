@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { LoginPage } from '../components/LoginPage';
-import { MainPage } from '../components/MainPage';
-import { AuthProvider, useAuth } from '../contexts/AuthContext';
+import { LoginPage } from './components/LoginPage';
+import { MainPage } from './components/MainPage';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { Toaster } from 'sonner';
 
 function AppContent() {
