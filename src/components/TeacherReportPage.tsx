@@ -168,10 +168,19 @@ function DayTimeline({ dayData }: { dayData: DaySchedule }) {
   
   const getScheduleColor = (type: ScheduleEvent['type']) => {
     switch (type) {
-      case 'lecture': return 'rgba(156, 39, 176, 0.3)'; // Фиолетовый
-      case 'practice': return 'rgba(33, 150, 243, 0.3)'; // Синий
-      case 'lab': return 'rgba(255, 152, 0, 0.3)'; // Оранжевый
-      default: return 'rgba(158, 158, 158, 0.3)';
+      case 'lecture': return 'rgba(156, 39, 176, 0.4)'; // Фиолетовый
+      case 'practice': return 'rgba(33, 150, 243, 0.4)'; // Синий
+      case 'lab': return 'rgba(255, 152, 0, 0.4)'; // Оранжевый
+      default: return 'rgba(158, 158, 158, 0.4)';
+    }
+  };
+  
+  const getLocationLabel = (type: PassEvent['locationType']) => {
+    switch (type) {
+      case 'building': return 'Корпус';
+      case 'room': return 'Аудитория';
+      case 'uncontrolled': return 'Вне территории';
+      default: return '';
     }
   };
   
@@ -272,32 +281,45 @@ function DayTimeline({ dayData }: { dayData: DaySchedule }) {
         <span>23:00</span>
       </div>
       
-      {/* Основной трек */}
-      <div className="relative h-16 bg-gray-200 rounded-lg overflow-hidden">
-        {/* Сегменты проходов */}
-        {passSegments.map((segment, idx) => (
-          <div
-            key={idx}
-            className="absolute top-0 h-full cursor-pointer transition-opacity hover:opacity-80"
-            style={{
-              left: `${segment.start}%`,
-              width: `${segment.end - segment.start}%`,
-              backgroundColor: segment.color
-            }}
-            onMouseEnter={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              setHoveredEvent({
-                type: 'pass',
-                data: segment.pass,
-                x: rect.left + rect.width / 2,
-                y: rect.top
-              });
-            }}
-            onMouseLeave={() => setHoveredEvent(null)}
-          />
-        ))}
-        
-        {/* Расписание занятий (полупрозрачное наложение) */}
+      {/* Нарушения над треком */}
+      {violations.length > 0 && (
+        <div className="relative h-8 mb-2">
+          {violations.map((violation, idx) => {
+            const startPos = timeToPixels(violation.event.startTime);
+            const endPos = timeToPixels(violation.event.endTime);
+            const width = endPos - startPos;
+            
+            return (
+              <div
+                key={idx}
+                className="absolute top-0 h-full flex items-center justify-center px-2"
+                style={{
+                  left: `${startPos}%`,
+                  width: `${width}%`,
+                }}
+              >
+                <div 
+                  className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-white shadow-lg ${
+                    violation.type === 'late' ? 'bg-red-500' : 'bg-orange-500'
+                  }`}
+                >
+                  <AlertTriangle size={14} />
+                  <span>
+                    {violation.type === 'late' 
+                      ? `Опоздание ${violation.minutes} мин`
+                      : `Ушел на ${violation.minutes} мин раньше`
+                    }
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+      
+      {/* Основной трек с обволакивающими мероприятиями */}
+      <div className="relative" style={{ height: '48px' }}>
+        {/* Расписание занятий (обволакивающие блоки) */}
         {dayData.schedule.map((schedEvent, idx) => {
           const startPos = timeToPixels(schedEvent.startTime);
           const endPos = timeToPixels(schedEvent.endTime);
@@ -306,15 +328,17 @@ function DayTimeline({ dayData }: { dayData: DaySchedule }) {
           return (
             <div
               key={idx}
-              className="absolute top-0 h-full cursor-pointer border-2 border-dashed"
+              className="absolute cursor-pointer border-2 border-dashed rounded-lg"
               style={{
                 left: `${startPos}%`,
                 width: `${endPos - startPos}%`,
+                top: '-4px',
+                height: '56px',
                 backgroundColor: getScheduleColor(schedEvent.type),
                 borderColor: violation 
                   ? (violation.type === 'late' ? '#f44336' : '#ff9800')
-                  : 'transparent',
-                zIndex: 10
+                  : 'rgba(0, 0, 0, 0.2)',
+                zIndex: 5
               }}
               onMouseEnter={(e) => {
                 const rect = e.currentTarget.getBoundingClientRect();
@@ -327,15 +351,47 @@ function DayTimeline({ dayData }: { dayData: DaySchedule }) {
               }}
               onMouseLeave={() => setHoveredEvent(null)}
             >
-              {/* Индикатор нарушения */}
-              {violation && (
-                <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
-                  <AlertTriangle size={12} className="text-white" />
-                </div>
-              )}
+              {/* Название мероприятия внутри блока */}
+              <div className="absolute inset-0 flex items-center justify-center px-2">
+                <span className="text-xs font-semibold text-gray-800 truncate text-center">
+                  {schedEvent.title}
+                </span>
+              </div>
             </div>
           );
         })}
+        
+        {/* Сегменты проходов (основной трек) */}
+        <div className="absolute bg-gray-200 rounded-lg overflow-hidden" style={{ top: '8px', left: 0, right: 0, height: '32px', zIndex: 10 }}>
+          {passSegments.map((segment, idx) => (
+            <div
+              key={idx}
+              className="absolute top-0 h-full cursor-pointer transition-opacity hover:opacity-80 flex items-center px-2"
+              style={{
+                left: `${segment.start}%`,
+                width: `${segment.end - segment.start}%`,
+                backgroundColor: segment.color
+              }}
+              onMouseEnter={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                setHoveredEvent({
+                  type: 'pass',
+                  data: segment.pass,
+                  x: rect.left + rect.width / 2,
+                  y: rect.top
+                });
+              }}
+              onMouseLeave={() => setHoveredEvent(null)}
+            >
+              {/* Текст внутри сегмента */}
+              {segment.end - segment.start > 5 && ( // Показываем текст только если сегмент достаточно широкий
+                <span className="text-xs font-medium text-white truncate">
+                  {getLocationLabel(segment.pass.locationType)}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
       
       {/* Tooltip */}
@@ -389,8 +445,20 @@ export function TeacherReportPage() {
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
   const [viewMode, setViewMode] = useState<'week' | 'month'>('week');
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
   
   const teachers = useMemo(() => generateMockTeachers(), []);
+  
+  // Фильтрация преподавателей по поисковому запросу
+  const filteredTeachers = useMemo(() => {
+    if (!searchQuery.trim()) return teachers;
+    const query = searchQuery.toLowerCase();
+    return teachers.filter(t => 
+      t.name.toLowerCase().includes(query) || 
+      t.department.toLowerCase().includes(query)
+    );
+  }, [searchQuery, teachers]);
   
   // Получение дат для отображения
   const displayDates = useMemo(() => {
@@ -548,22 +616,35 @@ export function TeacherReportPage() {
               <User size={16} className="inline mr-2" style={{ color: '#00aeef' }} />
               Выберите преподавателя
             </label>
-            <select
-              value={selectedTeacher?.id || ''}
-              onChange={(e) => {
-                const teacher = teachers.find(t => t.id === e.target.value);
-                setSelectedTeacher(teacher || null);
-              }}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2"
-              style={{ '--tw-ring-color': '#00aeef' } as any}
-            >
-              <option value="">-- Выберите преподавателя --</option>
-              {teachers.map(teacher => (
-                <option key={teacher.id} value={teacher.id}>
-                  {teacher.name} ({teacher.department})
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setShowDropdown(true)}
+                onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2"
+                style={{ '--tw-ring-color': '#00aeef' } as any}
+                placeholder="Поиск..."
+              />
+              {showDropdown && filteredTeachers.length > 0 && (
+                <div className="absolute left-0 right-0 top-full bg-white border border-gray-300 rounded-b-lg shadow-md z-10 max-h-40 overflow-y-auto">
+                  {filteredTeachers.map(teacher => (
+                    <div
+                      key={teacher.id}
+                      className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                      onClick={() => {
+                        setSelectedTeacher(teacher);
+                        setSearchQuery(teacher.name);
+                        setShowDropdown(false);
+                      }}
+                    >
+                      {teacher.name} ({teacher.department})
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
           
           {/* Режим просмотра */}
