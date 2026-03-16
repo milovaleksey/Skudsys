@@ -159,8 +159,8 @@ function DayTimeline({ dayData }: { dayData: DaySchedule }) {
   
   const getLocationColor = (type: PassEvent['locationType']) => {
     switch (type) {
-      case 'building': return '#4CAF50'; // Зеленый - вход в корпус
-      case 'room': return '#FF5722'; // Красно-оранжевый - аудитория
+      case 'building': return '#4CAF50'; // Светло-зеленый - вход в корпус
+      case 'room': return '#2E7D32'; // Темно-зеленый - помещение в корпусе
       case 'uncontrolled': return '#9E9E9E'; // Серый - не контролируемая территория
       default: return '#9E9E9E';
     }
@@ -318,7 +318,7 @@ function DayTimeline({ dayData }: { dayData: DaySchedule }) {
       )}
       
       {/* Основной трек с обволакивающими мероприятиями */}
-      <div className="relative" style={{ height: '48px' }}>
+      <div className="relative" style={{ height: '60px' }}>
         {/* Расписание занятий (обволакивающие блоки) */}
         {dayData.schedule.map((schedEvent, idx) => {
           const startPos = timeToPixels(schedEvent.startTime);
@@ -332,8 +332,8 @@ function DayTimeline({ dayData }: { dayData: DaySchedule }) {
               style={{
                 left: `${startPos}%`,
                 width: `${endPos - startPos}%`,
-                top: '-4px',
-                height: '56px',
+                top: '-8px',
+                height: '76px',
                 backgroundColor: getScheduleColor(schedEvent.type),
                 borderColor: violation 
                   ? (violation.type === 'late' ? '#f44336' : '#ff9800')
@@ -353,7 +353,7 @@ function DayTimeline({ dayData }: { dayData: DaySchedule }) {
             >
               {/* Название мероприятия внутри блока */}
               <div className="absolute inset-0 flex items-center justify-center px-2">
-                <span className="text-xs font-semibold text-gray-800 truncate text-center">
+                <span className="text-sm font-semibold text-gray-800 truncate text-center">
                   {schedEvent.title}
                 </span>
               </div>
@@ -362,11 +362,11 @@ function DayTimeline({ dayData }: { dayData: DaySchedule }) {
         })}
         
         {/* Сегменты проходов (основной трек) */}
-        <div className="absolute bg-gray-200 rounded-lg overflow-hidden" style={{ top: '8px', left: 0, right: 0, height: '32px', zIndex: 10 }}>
+        <div className="absolute bg-gray-200 rounded-lg overflow-hidden" style={{ top: '12px', left: 0, right: 0, height: '48px', zIndex: 10 }}>
           {passSegments.map((segment, idx) => (
             <div
               key={idx}
-              className="absolute top-0 h-full cursor-pointer transition-opacity hover:opacity-80 flex items-center px-2"
+              className="absolute top-0 h-full cursor-pointer transition-opacity hover:opacity-80 flex items-center px-3"
               style={{
                 left: `${segment.start}%`,
                 width: `${segment.end - segment.start}%`,
@@ -383,10 +383,10 @@ function DayTimeline({ dayData }: { dayData: DaySchedule }) {
               }}
               onMouseLeave={() => setHoveredEvent(null)}
             >
-              {/* Текст внутри сегмента */}
-              {segment.end - segment.start > 5 && ( // Показываем текст только если сегмент достаточно широкий
-                <span className="text-xs font-medium text-white truncate">
-                  {getLocationLabel(segment.pass.locationType)}
+              {/* Текст внутри сегмента - полное название зоны */}
+              {segment.end - segment.start > 8 && ( // Показываем текст только если сегмент достаточно широкий
+                <span className="text-sm font-semibold text-white truncate">
+                  {segment.pass.location}
                 </span>
               )}
             </div>
@@ -710,14 +710,14 @@ export function TeacherReportPage() {
       {selectedTeacher && (
         <div className="bg-white rounded-xl shadow-md p-6">
           <h3 className="text-sm font-semibold text-gray-900 mb-3">Легенда</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 rounded" style={{ backgroundColor: '#4CAF50' }}></div>
               <span className="text-sm text-gray-700">Вход в корпус</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded" style={{ backgroundColor: '#FF5722' }}></div>
-              <span className="text-sm text-gray-700">Аудитория</span>
+              <div className="w-6 h-6 rounded" style={{ backgroundColor: '#2E7D32' }}></div>
+              <span className="text-sm text-gray-700">Помещение</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 rounded" style={{ backgroundColor: '#9E9E9E' }}></div>
@@ -725,7 +725,7 @@ export function TeacherReportPage() {
             </div>
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 rounded border-2 border-dashed border-purple-500" style={{ backgroundColor: 'rgba(156, 39, 176, 0.3)' }}></div>
-              <span className="text-sm text-gray-700">Расписание (лекция)</span>
+              <span className="text-sm text-gray-700">Расписание</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 rounded flex items-center justify-center bg-red-500">
