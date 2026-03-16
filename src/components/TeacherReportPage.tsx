@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Download, Calendar, ChevronLeft, ChevronRight, User, Clock, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Download, Calendar, ChevronLeft, ChevronRight, User, Clock, AlertTriangle, CheckCircle, LayoutGrid, LayoutList } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
 
@@ -179,7 +179,7 @@ function DayTimeline({ dayData }: { dayData: DaySchedule }) {
     switch (type) {
       case 'building': return 'Корпус';
       case 'room': return 'Аудитория';
-      case 'uncontrolled': return 'Вне территории';
+      case 'uncontrolled': return 'Вне террито��ии';
       default: return '';
     }
   };
@@ -384,7 +384,7 @@ function DayTimeline({ dayData }: { dayData: DaySchedule }) {
               onMouseLeave={() => setHoveredEvent(null)}
             >
               {/* Текст внутри сегмента - полное название зоны */}
-              {segment.end - segment.start > 8 && ( // Показываем текст только если сегмент достаточно широкий
+              {segment.end - segment.start > 8 && ( // По��азываем текст только если сегмент достаточно широкий
                 <span className="text-sm font-semibold text-white truncate">
                   {segment.pass.location}
                 </span>
@@ -441,9 +441,295 @@ function DayTimeline({ dayData }: { dayData: DaySchedule }) {
   );
 }
 
+// Вертикальный компонент временной шкалы для одного дня
+function DayTimelineVertical({ dayData, dateStr }: { dayData: DaySchedule, dateStr: string }) {
+  const [hoveredEvent, setHoveredEvent] = useState<{ type: 'pass' | 'schedule', data: any, x: number, y: number } | null>(null);
+  
+  const timeToPixels = (timeStr: string) => {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    const totalMinutes = hours * 60 + minutes;
+    // 6:00 = 0px, 23:00 = 100%
+    const startMinutes = 6 * 60; // 6:00
+    const endMinutes = 23 * 60; // 23:00
+    const rangeMinutes = endMinutes - startMinutes;
+    return ((totalMinutes - startMinutes) / rangeMinutes) * 100;
+  };
+  
+  const getTimeFromDate = (isoDate: string) => {
+    const date = new Date(isoDate);
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
+  
+  const getLocationColor = (type: PassEvent['locationType']) => {
+    switch (type) {
+      case 'building': return '#4CAF50';
+      case 'room': return '#2E7D32';
+      case 'uncontrolled': return '#9E9E9E';
+      default: return '#9E9E9E';
+    }
+  };
+  
+  const getScheduleColor = (type: ScheduleEvent['type']) => {
+    switch (type) {
+      case 'lecture': return 'rgba(156, 39, 176, 0.4)';
+      case 'practice': return 'rgba(33, 150, 243, 0.4)';
+      case 'lab': return 'rgba(255, 152, 0, 0.4)';
+      default: return 'rgba(158, 158, 158, 0.4)';
+    }
+  };
+  
+  const violations = useMemo(() => {
+    const result: { type: 'late' | 'early', event: ScheduleEvent, minutes: number }[] = [];
+    
+    dayData.schedule.forEach(schedEvent => {
+      const roomPasses = dayData.passes.filter(p => 
+        p.locationType === 'room' && p.room && schedEvent.room.includes(p.room)
+      );
+      
+      if (roomPasses.length === 0) return;
+      
+      const firstEntry = roomPasses[0];
+      const entryTime = getTimeFromDate(firstEntry.time);
+      const [entryH, entryM] = entryTime.split(':').map(Number);
+      const [startH, startM] = schedEvent.startTime.split(':').map(Number);
+      const [endH, endM] = schedEvent.endTime.split(':').map(Number);
+      
+      const entryMinutes = entryH * 60 + entryM;
+      const startMinutes = startH * 60 + startM;
+      const endMinutes = endH * 60 + endM;
+      
+      if (entryMinutes > startMinutes + 3) {
+        result.push({
+          type: 'late',
+          event: schedEvent,
+          minutes: entryMinutes - startMinutes
+        });
+      }
+      
+      const exitPasses = dayData.passes.filter((p, idx) => {
+        const passTime = getTimeFromDate(p.time);
+        const [h, m] = passTime.split(':').map(Number);
+        const minutes = h * 60 + m;
+        return minutes > startMinutes && minutes < endMinutes && 
+               p.locationType !== 'room' && 
+               idx > dayData.passes.indexOf(firstEntry);
+      });
+      
+      if (exitPasses.length > 0) {
+        const lastExit = exitPasses[exitPasses.length - 1];
+        const exitTime = getTimeFromDate(lastExit.time);
+        const [exitH, exitM] = exitTime.split(':').map(Number);
+        const exitMinutes = exitH * 60 + exitM;
+        
+        if (exitMinutes < endMinutes - 5) {
+          result.push({
+            type: 'early',
+            event: schedEvent,
+            minutes: endMinutes - exitMinutes
+          });
+        }
+      }
+    });
+    
+    return result;
+  }, [dayData]);
+  
+  const passSegments = useMemo(() => {
+    const segments: { start: number, end: number, color: string, pass: PassEvent }[] = [];
+    
+    for (let i = 0; i < dayData.passes.length; i++) {
+      const currentPass = dayData.passes[i];
+      const nextPass = dayData.passes[i + 1];
+      
+      const startPos = timeToPixels(getTimeFromDate(currentPass.time));
+      const endPos = nextPass 
+        ? timeToPixels(getTimeFromDate(nextPass.time))
+        : 100;
+      
+      segments.push({
+        start: startPos,
+        end: endPos,
+        color: getLocationColor(currentPass.locationType),
+        pass: currentPass
+      });
+    }
+    
+    return segments;
+  }, [dayData.passes]);
+  
+  const formatShortDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+    return `${days[date.getDay()]} ${date.getDate()}`;
+  };
+  
+  return (
+    <div className="flex flex-col items-center">
+      {/* Заголовок дня */}
+      <div className="font-medium text-sm text-gray-900 mb-2 text-center">
+        {formatShortDate(dateStr)}
+      </div>
+      
+      {/* Вертикальный трек */}
+      <div className="relative flex" style={{ height: '500px', width: '100px' }}>
+        {/* Нарушения слева от трека */}
+        {violations.length > 0 && (
+          <div className="relative mr-2" style={{ width: '30px' }}>
+            {violations.map((violation, idx) => {
+              const startPos = timeToPixels(violation.event.startTime);
+              const endPos = timeToPixels(violation.event.endTime);
+              const height = endPos - startPos;
+              
+              return (
+                <div
+                  key={idx}
+                  className="absolute left-0 w-full flex items-center justify-center"
+                  style={{
+                    top: `${startPos}%`,
+                    height: `${height}%`,
+                  }}
+                >
+                  <div 
+                    className={`rounded-full p-1 shadow-lg ${
+                      violation.type === 'late' ? 'bg-red-500' : 'bg-orange-500'
+                    }`}
+                    title={violation.type === 'late' 
+                      ? `Опоздание ${violation.minutes} мин`
+                      : `Ушел на ${violation.minutes} мин раньше`}
+                  >
+                    <AlertTriangle size={16} className="text-white" />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+        
+        {/* Основной трек */}
+        <div className="relative" style={{ width: '60px' }}>
+          {/* Расписание (обволакивающие блоки) */}
+          {dayData.schedule.map((schedEvent, idx) => {
+            const startPos = timeToPixels(schedEvent.startTime);
+            const endPos = timeToPixels(schedEvent.endTime);
+            const violation = violations.find(v => v.event === schedEvent);
+            
+            return (
+              <div
+                key={idx}
+                className="absolute cursor-pointer border-2 border-dashed rounded-lg"
+                style={{
+                  top: `${startPos}%`,
+                  height: `${endPos - startPos}%`,
+                  left: '-8px',
+                  width: '76px',
+                  backgroundColor: getScheduleColor(schedEvent.type),
+                  borderColor: violation 
+                    ? (violation.type === 'late' ? '#f44336' : '#ff9800')
+                    : 'rgba(0, 0, 0, 0.2)',
+                  zIndex: 5
+                }}
+                onMouseEnter={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  setHoveredEvent({
+                    type: 'schedule',
+                    data: { ...schedEvent, violation },
+                    x: rect.right + 10,
+                    y: rect.top + rect.height / 2
+                  });
+                }}
+                onMouseLeave={() => setHoveredEvent(null)}
+              />
+            );
+          })}
+          
+          {/* Сегменты проходов */}
+          <div className="absolute bg-gray-200 rounded-lg overflow-hidden" style={{ top: 0, bottom: 0, left: '12px', width: '48px', zIndex: 10 }}>
+            {passSegments.map((segment, idx) => (
+              <div
+                key={idx}
+                className="absolute left-0 w-full cursor-pointer transition-opacity hover:opacity-80 flex items-center justify-center px-1"
+                style={{
+                  top: `${segment.start}%`,
+                  height: `${segment.end - segment.start}%`,
+                  backgroundColor: segment.color,
+                  writingMode: 'vertical-rl',
+                  textOrientation: 'mixed'
+                }}
+                onMouseEnter={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  setHoveredEvent({
+                    type: 'pass',
+                    data: segment.pass,
+                    x: rect.right + 10,
+                    y: rect.top + rect.height / 2
+                  });
+                }}
+                onMouseLeave={() => setHoveredEvent(null)}
+              >
+                {segment.end - segment.start > 8 && (
+                  <span className="text-xs font-semibold text-white transform rotate-180">
+                    {segment.pass.location}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      
+      {/* Tooltip */}
+      {hoveredEvent && (
+        <div
+          className="fixed z-50 bg-white border-2 rounded-lg shadow-xl p-3 max-w-xs pointer-events-none"
+          style={{
+            left: hoveredEvent.x,
+            top: hoveredEvent.y,
+            transform: 'translateY(-50%)',
+            borderColor: '#00aeef'
+          }}
+        >
+          {hoveredEvent.type === 'pass' ? (
+            <div>
+              <div className="font-semibold text-sm mb-1">{hoveredEvent.data.location}</div>
+              <div className="text-xs text-gray-600">
+                Время: {getTimeFromDate(hoveredEvent.data.time)}
+              </div>
+            </div>
+          ) : (
+            <div>
+              <div className="font-semibold text-sm mb-1" style={{ color: '#9c27b0' }}>
+                {hoveredEvent.data.title}
+              </div>
+              <div className="text-xs text-gray-600 mb-1">
+                {hoveredEvent.data.startTime} - {hoveredEvent.data.endTime}
+              </div>
+              <div className="text-xs text-gray-600">
+                Аудитория: {hoveredEvent.data.room}
+              </div>
+              {hoveredEvent.data.violation && (
+                <div className={`text-xs font-semibold mt-2 ${
+                  hoveredEvent.data.violation.type === 'late' ? 'text-red-600' : 'text-orange-600'
+                }`}>
+                  {hoveredEvent.data.violation.type === 'late' 
+                    ? `⚠️ Опоздание на ${hoveredEvent.data.violation.minutes} мин`
+                    : `⚠️ Ушел раньше на ${hoveredEvent.data.violation.minutes} мин`
+                  }
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function TeacherReportPage() {
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
   const [viewMode, setViewMode] = useState<'week' | 'month'>('week');
+  const [layoutMode, setLayoutMode] = useState<'horizontal' | 'vertical'>('horizontal');
   const [currentDate, setCurrentDate] = useState(new Date());
   const [searchQuery, setSearchQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
@@ -558,7 +844,7 @@ export function TeacherReportPage() {
       
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.json_to_sheet(exportData);
-      XLSX.utils.book_append_sheet(wb, ws, 'Отчет по преподавателю');
+      XLSX.utils.book_append_sheet(wb, ws, 'Отчет по препода��ателю');
       
       const filename = `Отчет_${selectedTeacher.name}_${currentDate.toLocaleDateString('ru-RU')}.xlsx`;
       XLSX.writeFile(wb, filename);
@@ -706,10 +992,43 @@ export function TeacherReportPage() {
         )}
       </div>
       
-      {/* Легенда */}
+      {/* Легенда и переключатель вида */}
       {selectedTeacher && (
         <div className="bg-white rounded-xl shadow-md p-6">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">Легенда</h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-semibold text-gray-900">Легенда</h3>
+            
+            {/* Переключатель вида */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setLayoutMode('horizontal')}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition-colors ${
+                  layoutMode === 'horizontal'
+                    ? 'text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+                style={layoutMode === 'horizontal' ? { backgroundColor: '#00aeef' } : {}}
+                title="Горизонтальный вид"
+              >
+                <LayoutList size={18} />
+                <span className="text-sm">Горизонтальный</span>
+              </button>
+              <button
+                onClick={() => setLayoutMode('vertical')}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition-colors ${
+                  layoutMode === 'vertical'
+                    ? 'text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+                style={layoutMode === 'vertical' ? { backgroundColor: '#00aeef' } : {}}
+                title="Вертикальный вид"
+              >
+                <LayoutGrid size={18} />
+                <span className="text-sm">Вертикальный</span>
+              </button>
+            </div>
+          </div>
+          
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 rounded" style={{ backgroundColor: '#4CAF50' }}></div>
@@ -744,28 +1063,72 @@ export function TeacherReportPage() {
             График активности: {selectedTeacher.name}
           </h3>
           
-          <div className="space-y-6">
-            {teacherData.map(dayData => (
-              <div key={dayData.date} className="border-b border-gray-200 pb-4 last:border-0">
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="font-medium text-gray-900">
-                    {formatDateHeader(dayData.date)}
-                  </h4>
-                  <div className="flex items-center gap-3 text-xs text-gray-600">
-                    <span className="flex items-center gap-1">
-                      <Clock size={14} />
-                      {dayData.schedule.length} занятий
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <CheckCircle size={14} />
-                      {dayData.passes.length} проходов
-                    </span>
+          {layoutMode === 'horizontal' ? (
+            <div className="space-y-6">
+              {teacherData.map(dayData => (
+                <div key={dayData.date} className="border-b border-gray-200 pb-4 last:border-0">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="font-medium text-gray-900">
+                      {formatDateHeader(dayData.date)}
+                    </h4>
+                    <div className="flex items-center gap-3 text-xs text-gray-600">
+                      <span className="flex items-center gap-1">
+                        <Clock size={14} />
+                        {dayData.schedule.length} занятий
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <CheckCircle size={14} />
+                        {dayData.passes.length} проходов
+                      </span>
+                    </div>
                   </div>
+                  <DayTimeline dayData={dayData} />
                 </div>
-                <DayTimeline dayData={dayData} />
+              ))}
+            </div>
+          ) : (
+            <div>
+              {/* Временная шкала слева */}
+              <div className="flex gap-4">
+                {/* Временные метки */}
+                <div className="flex flex-col justify-between text-xs text-gray-500" style={{ height: '500px', paddingTop: '32px' }}>
+                  <span>6:00</span>
+                  <span>9:00</span>
+                  <span>12:00</span>
+                  <span>15:00</span>
+                  <span>18:00</span>
+                  <span>21:00</span>
+                  <span>23:00</span>
+                </div>
+                
+                {/* Дни в виде колонок */}
+                <div className="flex gap-4 overflow-x-auto pb-4">
+                  {teacherData.map(dayData => (
+                    <DayTimelineVertical key={dayData.date} dayData={dayData} dateStr={dayData.date} />
+                  ))}
+                </div>
               </div>
-            ))}
-          </div>
+              
+              {/* Статистика снизу */}
+              <div className="mt-6 grid grid-cols-3 md:grid-cols-7 gap-3">
+                {teacherData.map(dayData => {
+                  const date = new Date(dayData.date);
+                  const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+                  return (
+                    <div key={dayData.date} className="text-center p-2 bg-gray-50 rounded-lg">
+                      <div className="text-xs font-semibold text-gray-700 mb-1">
+                        {days[date.getDay()]} {date.getDate()}
+                      </div>
+                      <div className="flex flex-col gap-1 text-xs text-gray-600">
+                        <span>{dayData.schedule.length} занятий</span>
+                        <span>{dayData.passes.length} проходов</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="bg-white rounded-xl shadow-md p-12 text-center">
