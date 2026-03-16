@@ -44,6 +44,7 @@ import { EmployeesReportPage } from './EmployeesReportPage';
 import { ParkingPage } from './ParkingPage';
 import { StorageSystemsPage } from './StorageSystemsPage';
 import { EngineeringPage } from './EngineeringPage';
+import { TeacherReportPage } from './TeacherReportPage';
 
 export function MainPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -170,6 +171,12 @@ export function MainPage() {
       label: 'Отчет по сотрудникам',
       icon: Briefcase,
       permission: 'employees',
+    },
+    {
+      id: 'teachers',
+      label: 'Отчет по преподавателям',
+      icon: Users,
+      permission: 'teachers',
     },
     {
       id: 'users-settings',
@@ -381,6 +388,7 @@ export function MainPage() {
         {activePage === 'user-logs' && <UserLogsPage />}
         {activePage === 'identifier-search' && <IdentifierSearchPage />}
         {activePage === 'engineering' && <EngineeringPage />}
+        {activePage === 'teachers' && <TeacherReportPage />}
       </main>
     </div>
   );

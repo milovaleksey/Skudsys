@@ -31,6 +31,7 @@ export const ALL_PERMISSIONS = [
   { id: 'foreign-students', name: 'Отчет по иностранным студентам', category: 'Отчеты' },
   { id: 'students', name: 'Отчет по студентам', category: 'Отчеты' },
   { id: 'employees', name: 'Отчет по сотрудникам', category: 'Отчеты' },
+  { id: 'teachers', name: 'Отчет по преподавателям', category: 'Отчеты' },
   { id: 'users-settings', name: 'Управление пользователями', category: 'Администрирование' },
   { id: 'roles-settings', name: 'Управление ролями', category: 'Администрирование' },
   { id: 'user-logs', name: 'Логи действий пользователей', category: 'Администрирование' },
@@ -77,7 +78,7 @@ export const DEFAULT_ROLES: Role[] = [
   {
     id: 'viewer',
     name: 'viewer',
-    displayName: 'Наблю��атель',
+    displayName: 'Наблюатель',
     description: 'Только просмотр общей информации',
     permissions: ['dashboard', 'analytics'],
     isSystem: true,
