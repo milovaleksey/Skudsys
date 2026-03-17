@@ -148,7 +148,7 @@ export const generateMockPasses = (date: string): PassEvent[] => {
       });
       
       passes.push({
-        time: new Date(baseTime.setHours(12, 00, 0)).toISOString(),
+        time: new Date(baseTime.setHours(12, 0, 0)).toISOString(),
         location: 'К1 Этаж 3 301',
         locationType: 'room',
         building: 'К1',
@@ -162,7 +162,7 @@ export const generateMockPasses = (date: string): PassEvent[] => {
       });
       break;
       
-    case 2: // Среда - ПРИШЕЛ ВОВРЕМЯ, НО УШЕЛ РАНЬШЕ (вышел из здания)
+    case 2: // Среда - ПРИШЕЛ ВОВРЕМЯ, НО УШЕЛ РАН��ШЕ (вышел из здания)
       passes.push({
         time: new Date(baseTime.setHours(7, 15, 0)).toISOString(),
         location: 'Вход в корпус К1',
@@ -250,7 +250,7 @@ export const generateMockPasses = (date: string): PassEvent[] => {
       });
       break;
       
-    case 4: // ��ятница - ПЕРЕШЕЛ В ДРУГУЮ АУДИТОРИЮ (ушел раньше)
+    case 4: // ятница - ПЕРЕШЕЛ В ДРУГУЮ АУДИТОРИЮ (ушел раньше)
       passes.push({
         time: new Date(baseTime.setHours(7, 20, 0)).toISOString(),
         location: 'Вход в корпус К1',
