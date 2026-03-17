@@ -30,6 +30,13 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
     }
   };
   
+  const getLocationLabel = (pass: PassEvent) => {
+    if (pass.locationType === 'uncontrolled') {
+      return 'Неконтролируемая территория';
+    }
+    return pass.location;
+  };
+  
   const getScheduleColor = (type: ScheduleEvent['type']) => {
     switch (type) {
       case 'lecture': return 'rgba(156, 39, 176, 0.4)';
@@ -256,7 +263,7 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
         >
           {hoveredEvent.type === 'pass' ? (
             <div>
-              <div className="font-semibold text-sm mb-1">{hoveredEvent.data.location}</div>
+              <div className="font-semibold text-sm mb-1">{getLocationLabel(hoveredEvent.data)}</div>
               <div className="text-xs text-gray-600">
                 Время: {getTimeFromDate(hoveredEvent.data.time)}
               </div>
