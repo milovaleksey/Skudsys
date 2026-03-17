@@ -50,46 +50,49 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
     const result: { type: 'late' | 'early' | 'warning', event: ScheduleEvent, minutes?: number }[] = [];
     
     dayData.schedule.forEach(schedEvent => {
+      const [startH, startM] = schedEvent.startTime.split(':').map(Number);
+      const [endH, endM] = schedEvent.endTime.split(':').map(Number);
+      const startMinutes = startH * 60 + startM;
+      const endMinutes = endH * 60 + endM;
+      
       const roomPasses = dayData.passes.filter(p => 
         p.locationType === 'room' && p.room && schedEvent.room.includes(p.room)
       );
       
-      // Если нет проходов в аудиторию, проверяем наличие в корпусе
+      // Проверяем, был ли человек в корпусе во время мероприятия
+      const buildingPasses = dayData.passes.filter(p => {
+        const passTime = getTimeFromDate(p.time);
+        const [h, m] = passTime.split(':').map(Number);
+        const minutes = h * 60 + m;
+        return (p.locationType === 'building' || p.locationType === 'room') && 
+               minutes >= startMinutes && minutes <= endMinutes;
+      });
+      
+      // Если нет проходов в аудиторию
       if (roomPasses.length === 0) {
-        const [startH, startM] = schedEvent.startTime.split(':').map(Number);
-        const [endH, endM] = schedEvent.endTime.split(':').map(Number);
-        const startMinutes = startH * 60 + startM;
-        const endMinutes = endH * 60 + endM;
-        
-        // Проверяем, был ли человек в корпусе во время мероприятия
-        const buildingPasses = dayData.passes.filter(p => {
-          const passTime = getTimeFromDate(p.time);
-          const [h, m] = passTime.split(':').map(Number);
-          const minutes = h * 60 + m;
-          return p.locationType === 'building' && minutes >= startMinutes && minutes <= endMinutes;
-        });
-        
-        if (buildingPasses.length > 0) {
+        // Если не было вообще нигде (ни в корпусе, ни в аудитории) - это опоздание/не явка
+        if (buildingPasses.length === 0) {
+          const lateMinutes = 0; // Можно вычислить по первому появлению после начала
+          result.push({ type: 'late', event: schedEvent, minutes: lateMinutes });
+        } else {
+          // Был в корпусе, но не зафиксирован вход в аудиторию - предупреждение
           result.push({ type: 'warning', event: schedEvent });
         }
-        
         return;
       }
       
       const firstEntry = roomPasses[0];
       const entryTime = getTimeFromDate(firstEntry.time);
       const [entryH, entryM] = entryTime.split(':').map(Number);
-      const [startH, startM] = schedEvent.startTime.split(':').map(Number);
-      const [endH, endM] = schedEvent.endTime.split(':').map(Number);
       
       const entryMinutes = entryH * 60 + entryM;
-      const startMinutes = startH * 60 + startM;
-      const endMinutes = endH * 60 + endM;
       
+      // Опоздание - зашел в аудиторию позже чем за 3 минуты после начала
       if (entryMinutes > startMinutes + 3) {
         result.push({ type: 'late', event: schedEvent, minutes: entryMinutes - startMinutes });
       }
       
+      // Проверка на ранний уход - вышел на неконтролируемую территорию
       const exitPasses = dayData.passes.filter((p, idx) => {
         const passTime = getTimeFromDate(p.time);
         const [h, m] = passTime.split(':').map(Number);
@@ -160,14 +163,14 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
                 style={{ left: `${startPos}%`, width: `${endPos - startPos}%` }}
               >
                 <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-white shadow-lg ${
-                  violation.type === 'late' ? 'bg-red-500' : violation.type === 'early' ? 'bg-orange-500' : 'bg-yellow-500'
+                  violation.type === 'early' ? 'bg-red-500' : violation.type === 'late' ? 'bg-yellow-500' : 'bg-blue-500'
                 }`}>
                   <AlertTriangle size={14} />
                   <span>
-                    {violation.type === 'late' 
-                      ? `Опоздание ${violation.minutes} мин`
-                      : violation.type === 'early' 
-                        ? `Ушел на ${violation.minutes} мин раньше`
+                    {violation.type === 'early' 
+                      ? `Ушел на ${violation.minutes} мин раньше`
+                      : violation.type === 'late' 
+                        ? violation.minutes ? `Опоздание ${violation.minutes} мин` : 'Не явился'
                         : 'Не в аудитории'}
                   </span>
                 </div>
