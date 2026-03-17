@@ -57,68 +57,258 @@ export const generateMockSchedule = (date: string): ScheduleEvent[] => {
 
 export const generateMockPasses = (date: string): PassEvent[] => {
   const baseTime = new Date(date);
+  const dayOfWeek = baseTime.getDay();
   const passes: PassEvent[] = [];
   
-  passes.push({
-    time: new Date(baseTime.setHours(6, 12, 0)).toISOString(),
-    location: 'Вход в корпус К1',
-    locationType: 'building',
-    building: 'К1'
-  });
+  // Генерируем разные сценарии в зависимости от дня недели
+  const scenario = dayOfWeek % 5;
   
-  const isLate = Math.random() > 0.7;
-  const lateMinutes = isLate ? Math.floor(Math.random() * 15) + 3 : 0;
-  passes.push({
-    time: new Date(baseTime.setHours(7, 59 + lateMinutes, 0)).toISOString(),
-    location: 'К1 Этаж 3 301',
-    locationType: 'room',
-    building: 'К1',
-    room: '301'
-  });
-  
-  const leftEarly = Math.random() > 0.8;
-  const earlyMinutes = leftEarly ? Math.floor(Math.random() * 10) + 5 : 0;
-  passes.push({
-    time: new Date(baseTime.setHours(9, 30 - earlyMinutes, 0)).toISOString(),
-    location: 'К1 Этаж 3',
-    locationType: 'uncontrolled',
-    building: 'К1'
-  });
-  
-  passes.push({
-    time: new Date(baseTime.setHours(9, 34, 0)).toISOString(),
-    location: 'К1 Этаж Т 351',
-    locationType: 'room',
-    building: 'К1',
-    room: '351'
-  });
-  
-  passes.push({
-    time: new Date(baseTime.setHours(11, 20, 0)).toISOString(),
-    location: 'Выход из корпуса К1',
-    locationType: 'uncontrolled',
-  });
-  
-  passes.push({
-    time: new Date(baseTime.setHours(12, 45, 0)).toISOString(),
-    location: 'Вход в корпус К2',
-    locationType: 'building',
-    building: 'К2'
-  });
-  
-  passes.push({
-    time: new Date(baseTime.setHours(12, 58, 0)).toISOString(),
-    location: 'К2 Этаж 1 105',
-    locationType: 'room',
-    building: 'К2',
-    room: '105'
-  });
-  
-  passes.push({
-    time: new Date(baseTime.setHours(14, 35, 0)).toISOString(),
-    location: 'Выход из корпуса К2',
-    locationType: 'uncontrolled',
-  });
+  switch (scenario) {
+    case 0: // Понедельник - ВСЕ ХОРОШО (пришел вовремя, был на всех занятиях)
+      passes.push({
+        time: new Date(baseTime.setHours(6, 30, 0)).toISOString(),
+        location: 'Вход в корпус К1',
+        locationType: 'building',
+        building: 'К1'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(7, 58, 0)).toISOString(),
+        location: 'К1 Этаж 3 301',
+        locationType: 'room',
+        building: 'К1',
+        room: '301'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(9, 35, 0)).toISOString(),
+        location: 'К1 Этаж 3 Коридор',
+        locationType: 'building',
+        building: 'К1'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(9, 43, 0)).toISOString(),
+        location: 'К1 Этаж Т 351',
+        locationType: 'room',
+        building: 'К1',
+        room: '351'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(11, 20, 0)).toISOString(),
+        location: 'Неконтролируемая территория',
+        locationType: 'uncontrolled',
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(12, 45, 0)).toISOString(),
+        location: 'Вход в корпус К2',
+        locationType: 'building',
+        building: 'К2'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(12, 58, 0)).toISOString(),
+        location: 'К2 Этаж 1 105',
+        locationType: 'room',
+        building: 'К2',
+        room: '105'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(14, 35, 0)).toISOString(),
+        location: 'Неконтролируемая территория',
+        locationType: 'uncontrolled',
+      });
+      break;
+      
+    case 1: // Вторник - ОПОЗДАЛ НА 10 МИНУТ (но остался до конца)
+      passes.push({
+        time: new Date(baseTime.setHours(9, 30, 0)).toISOString(),
+        location: 'Вход в корпус К1',
+        locationType: 'building',
+        building: 'К1'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(10, 10, 0)).toISOString(),
+        location: 'К1 Этаж 2 205',
+        locationType: 'room',
+        building: 'К1',
+        room: '205'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(11, 32, 0)).toISOString(),
+        location: 'К1 Этаж 2 Коридор',
+        locationType: 'building',
+        building: 'К1'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(12, 00, 0)).toISOString(),
+        location: 'К1 Этаж 3 301',
+        locationType: 'room',
+        building: 'К1',
+        room: '301'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(13, 35, 0)).toISOString(),
+        location: 'Неконтролируемая территория',
+        locationType: 'uncontrolled',
+      });
+      break;
+      
+    case 2: // Среда - ПРИШЕЛ ВОВРЕМЯ, НО УШЕЛ РАНЬШЕ (вышел из здания)
+      passes.push({
+        time: new Date(baseTime.setHours(7, 15, 0)).toISOString(),
+        location: 'Вход в корпус К1',
+        locationType: 'building',
+        building: 'К1'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(7, 59, 0)).toISOString(),
+        location: 'К1 Этаж 3 301',
+        locationType: 'room',
+        building: 'К1',
+        room: '301'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(9, 10, 0)).toISOString(),
+        location: 'Неконтролируемая территория',
+        locationType: 'uncontrolled',
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(9, 40, 0)).toISOString(),
+        location: 'Вход в корпус К1',
+        locationType: 'building',
+        building: 'К1'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(9, 44, 0)).toISOString(),
+        location: 'К1 Этаж Т 351',
+        locationType: 'room',
+        building: 'К1',
+        room: '351'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(11, 17, 0)).toISOString(),
+        location: 'Неконтролируемая территория',
+        locationType: 'uncontrolled',
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(12, 50, 0)).toISOString(),
+        location: 'Вход в корпус К2',
+        locationType: 'building',
+        building: 'К2'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(12, 57, 0)).toISOString(),
+        location: 'К2 Этаж 1 105',
+        locationType: 'room',
+        building: 'К2',
+        room: '105'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(14, 32, 0)).toISOString(),
+        location: 'Неконтролируемая территория',
+        locationType: 'uncontrolled',
+      });
+      break;
+      
+    case 3: // Четверг - НЕ ЯВИЛСЯ НА ПЕРВОЕ ЗАНЯТИЕ
+      passes.push({
+        time: new Date(baseTime.setHours(11, 45, 0)).toISOString(),
+        location: 'Вход в корпус К1',
+        locationType: 'building',
+        building: 'К1'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(11, 59, 0)).toISOString(),
+        location: 'К1 Этаж 3 301',
+        locationType: 'room',
+        building: 'К1',
+        room: '301'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(13, 32, 0)).toISOString(),
+        location: 'Неконтролируемая территория',
+        locationType: 'uncontrolled',
+      });
+      break;
+      
+    case 4: // Пятница - ПЕРЕШЕЛ В ДРУГУЮ АУДИТОРИЮ (ушел раньше)
+      passes.push({
+        time: new Date(baseTime.setHours(7, 20, 0)).toISOString(),
+        location: 'Вход в корпус К1',
+        locationType: 'building',
+        building: 'К1'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(8, 01, 0)).toISOString(),
+        location: 'К1 Этаж 3 301',
+        locationType: 'room',
+        building: 'К1',
+        room: '301'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(9, 05, 0)).toISOString(),
+        location: 'К1 Этаж 2 205',
+        locationType: 'room',
+        building: 'К1',
+        room: '205'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(9, 42, 0)).toISOString(),
+        location: 'К1 Этаж Т 351',
+        locationType: 'room',
+        building: 'К1',
+        room: '351'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(11, 16, 0)).toISOString(),
+        location: 'Неконтролируемая территория',
+        locationType: 'uncontrolled',
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(12, 55, 0)).toISOString(),
+        location: 'Вход в корпус К2',
+        locationType: 'building',
+        building: 'К2'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(13, 02, 0)).toISOString(),
+        location: 'К2 Этаж 1 105',
+        locationType: 'room',
+        building: 'К2',
+        room: '105'
+      });
+      
+      passes.push({
+        time: new Date(baseTime.setHours(14, 31, 0)).toISOString(),
+        location: 'Неконтролируемая территория',
+        locationType: 'uncontrolled',
+      });
+      break;
+  }
   
   return passes;
 };
