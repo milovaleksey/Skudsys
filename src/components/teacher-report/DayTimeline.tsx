@@ -40,14 +40,34 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
   };
   
   const violations = useMemo(() => {
-    const result: { type: 'late' | 'early', event: ScheduleEvent, minutes: number }[] = [];
+    const result: { type: 'late' | 'early' | 'warning', event: ScheduleEvent, minutes?: number }[] = [];
     
     dayData.schedule.forEach(schedEvent => {
       const roomPasses = dayData.passes.filter(p => 
         p.locationType === 'room' && p.room && schedEvent.room.includes(p.room)
       );
       
-      if (roomPasses.length === 0) return;
+      // Если нет проходов в аудиторию, проверяем наличие в корпусе
+      if (roomPasses.length === 0) {
+        const [startH, startM] = schedEvent.startTime.split(':').map(Number);
+        const [endH, endM] = schedEvent.endTime.split(':').map(Number);
+        const startMinutes = startH * 60 + startM;
+        const endMinutes = endH * 60 + endM;
+        
+        // Проверяем, был ли человек в корпусе во время мероприятия
+        const buildingPasses = dayData.passes.filter(p => {
+          const passTime = getTimeFromDate(p.time);
+          const [h, m] = passTime.split(':').map(Number);
+          const minutes = h * 60 + m;
+          return p.locationType === 'building' && minutes >= startMinutes && minutes <= endMinutes;
+        });
+        
+        if (buildingPasses.length > 0) {
+          result.push({ type: 'warning', event: schedEvent });
+        }
+        
+        return;
+      }
       
       const firstEntry = roomPasses[0];
       const entryTime = getTimeFromDate(firstEntry.time);
@@ -60,11 +80,7 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
       const endMinutes = endH * 60 + endM;
       
       if (entryMinutes > startMinutes + 3) {
-        result.push({
-          type: 'late',
-          event: schedEvent,
-          minutes: entryMinutes - startMinutes
-        });
+        result.push({ type: 'late', event: schedEvent, minutes: entryMinutes - startMinutes });
       }
       
       const exitPasses = dayData.passes.filter((p, idx) => {
@@ -83,11 +99,7 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
         const exitMinutes = exitH * 60 + exitM;
         
         if (exitMinutes < endMinutes - 5) {
-          result.push({
-            type: 'early',
-            event: schedEvent,
-            minutes: endMinutes - exitMinutes
-          });
+          result.push({ type: 'early', event: schedEvent, minutes: endMinutes - exitMinutes });
         }
       }
     });
@@ -141,13 +153,15 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
                 style={{ left: `${startPos}%`, width: `${endPos - startPos}%` }}
               >
                 <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-white shadow-lg ${
-                  violation.type === 'late' ? 'bg-red-500' : 'bg-orange-500'
+                  violation.type === 'late' ? 'bg-red-500' : violation.type === 'early' ? 'bg-orange-500' : 'bg-yellow-500'
                 }`}>
                   <AlertTriangle size={14} />
                   <span>
                     {violation.type === 'late' 
                       ? `Опоздание ${violation.minutes} мин`
-                      : `Ушел на ${violation.minutes} мин раньше`}
+                      : violation.type === 'early' 
+                        ? `Ушел на ${violation.minutes} мин раньше`
+                        : 'Не в аудитории'}
                   </span>
                 </div>
               </div>
@@ -218,7 +232,7 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
                 className="w-full h-full rounded-lg border-2 border-dashed flex items-center justify-center px-2"
                 style={{
                   backgroundColor: getScheduleColor(schedEvent.type),
-                  borderColor: violation ? (violation.type === 'late' ? '#f44336' : '#ff9800') : 'rgba(0, 0, 0, 0.3)',
+                  borderColor: violation ? (violation.type === 'late' ? '#f44336' : violation.type === 'early' ? '#ff9800' : '#ffeb3b') : 'rgba(0, 0, 0, 0.3)',
                 }}
               >
                 <span className="text-xs font-semibold text-gray-800 truncate text-center">
@@ -260,11 +274,13 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
               </div>
               {hoveredEvent.data.violation && (
                 <div className={`text-xs font-semibold mt-2 ${
-                  hoveredEvent.data.violation.type === 'late' ? 'text-red-600' : 'text-orange-600'
+                  hoveredEvent.data.violation.type === 'late' ? 'text-red-600' : hoveredEvent.data.violation.type === 'early' ? 'text-orange-600' : 'text-yellow-600'
                 }`}>
                   {hoveredEvent.data.violation.type === 'late' 
                     ? `⚠️ Опоздание на ${hoveredEvent.data.violation.minutes} мин`
-                    : `⚠️ Ушел раньше на ${hoveredEvent.data.violation.minutes} мин`}
+                    : hoveredEvent.data.violation.type === 'early' 
+                      ? `⚠️ Ушел раньше на ${hoveredEvent.data.violation.minutes} мин`
+                      : `⚠️ Не в аудитории`}
                 </div>
               )}
             </div>
