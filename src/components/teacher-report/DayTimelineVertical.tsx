@@ -163,7 +163,15 @@ export function DayTimelineVertical({ dayData, dateStr }: { dayData: DaySchedule
                 style={{ top: `${startPos}%`, height: `${endPos - startPos}%` }}
               >
                 <div 
-                  className={`rounded-full p-1 shadow-lg ${\n                    violation.type === 'early' ? 'bg-red-500' : \n                    violation.type === 'late' ? 'bg-yellow-500' : 'bg-blue-500'\n                  }`}\n                  title={violation.type === 'early' \n                    ? `Ушел на ${violation.minutes} мин раньше`\n                    : violation.type === 'late' \n                      ? violation.minutes ? `Опоздание ${violation.minutes} мин` : 'Не явился'\n                      : 'Не был в аудитории'}
+                  className={`rounded-full p-1 shadow-lg ${
+                    violation.type === 'early' ? 'bg-red-500' : 
+                    violation.type === 'late' ? 'bg-yellow-500' : 'bg-blue-500'
+                  }`}
+                  title={violation.type === 'early' 
+                    ? `Ушел на ${violation.minutes} мин раньше`
+                    : violation.type === 'late' 
+                      ? violation.minutes ? `Опоздание ${violation.minutes} мин` : 'Не явился'
+                      : 'Не был в аудитории'}
                 >
                   <AlertTriangle size={16} className="text-white" />
                 </div>
