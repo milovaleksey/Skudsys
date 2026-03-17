@@ -120,7 +120,7 @@ export function DayTimelineVertical({ dayData, dateStr }: { dayData: DaySchedule
         {formatShortDate(dateStr)}
       </div>
       
-      <div className="relative flex" style={{ height: '500px', width: '160px' }}>
+      <div className="relative flex" style={{ height: '500px', width: '100%' }}>
         {violations.length > 0 && (
           <div className="relative mr-2" style={{ width: '40px' }}>
             {violations.map((violation, idx) => {
@@ -149,7 +149,7 @@ export function DayTimelineVertical({ dayData, dateStr }: { dayData: DaySchedule
           </div>
         )}
         
-        <div className="relative" style={{ width: '120px' }}>
+        <div className="relative flex-1">
           {dayData.schedule.map((schedEvent, idx) => {
             const startPos = timeToPixels(schedEvent.startTime);
             const endPos = timeToPixels(schedEvent.endTime);
@@ -163,7 +163,7 @@ export function DayTimelineVertical({ dayData, dateStr }: { dayData: DaySchedule
                   top: `${startPos}%`,
                   height: `${endPos - startPos}%`,
                   left: '-8px',
-                  width: '136px',
+                  right: '-8px',
                   backgroundColor: getScheduleColor(schedEvent.type),
                   borderColor: violation ? (violation.type === 'late' ? '#f44336' : '#ff9800') : 'rgba(0, 0, 0, 0.2)',
                   zIndex: 5
@@ -182,7 +182,7 @@ export function DayTimelineVertical({ dayData, dateStr }: { dayData: DaySchedule
             );
           })}
           
-          <div className="absolute bg-gray-200 rounded-lg overflow-hidden" style={{ top: 0, bottom: 0, left: '12px', width: '108px', zIndex: 10 }}>
+          <div className="absolute bg-gray-200 rounded-lg overflow-hidden" style={{ top: 0, bottom: 0, left: '12px', right: '12px', zIndex: 10 }}>
             {passSegments.map((segment, idx) => (
               <div
                 key={idx}
