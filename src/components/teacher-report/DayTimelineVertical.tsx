@@ -121,33 +121,31 @@ export function DayTimelineVertical({ dayData, dateStr }: { dayData: DaySchedule
       </div>
       
       <div className="relative flex" style={{ height: '500px', width: '100%' }}>
-        {violations.length > 0 && (
-          <div className="relative mr-2" style={{ width: '40px' }}>
-            {violations.map((violation, idx) => {
-              const startPos = timeToPixels(violation.event.startTime);
-              const endPos = timeToPixels(violation.event.endTime);
-              
-              return (
-                <div
-                  key={idx}
-                  className="absolute left-0 w-full flex items-center justify-center"
-                  style={{ top: `${startPos}%`, height: `${endPos - startPos}%` }}
+        <div className="relative" style={{ width: '40px', flexShrink: 0 }}>
+          {violations.map((violation, idx) => {
+            const startPos = timeToPixels(violation.event.startTime);
+            const endPos = timeToPixels(violation.event.endTime);
+            
+            return (
+              <div
+                key={idx}
+                className="absolute left-0 w-full flex items-center justify-center"
+                style={{ top: `${startPos}%`, height: `${endPos - startPos}%` }}
+              >
+                <div 
+                  className={`rounded-full p-1 shadow-lg ${
+                    violation.type === 'late' ? 'bg-red-500' : 'bg-orange-500'
+                  }`}
+                  title={violation.type === 'late' 
+                    ? `Опоздание ${violation.minutes} мин`
+                    : `Ушел на ${violation.minutes} мин раньше`}
                 >
-                  <div 
-                    className={`rounded-full p-1 shadow-lg ${
-                      violation.type === 'late' ? 'bg-red-500' : 'bg-orange-500'
-                    }`}
-                    title={violation.type === 'late' 
-                      ? `Опоздание ${violation.minutes} мин`
-                      : `Ушел на ${violation.minutes} мин раньше`}
-                  >
-                    <AlertTriangle size={16} className="text-white" />
-                  </div>
+                  <AlertTriangle size={16} className="text-white" />
                 </div>
-              );
-            })}
-          </div>
-        )}
+              </div>
+            );
+          })}
+        </div>
         
         <div className="relative flex-1">
           {dayData.schedule.map((schedEvent, idx) => {
