@@ -157,44 +157,6 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
       )}
       
       <div className="relative" style={{ height: '60px' }}>
-        {dayData.schedule.map((schedEvent, idx) => {
-          const startPos = timeToPixels(schedEvent.startTime);
-          const endPos = timeToPixels(schedEvent.endTime);
-          const violation = violations.find(v => v.event === schedEvent);
-          
-          return (
-            <div
-              key={idx}
-              className="absolute cursor-pointer border-2 border-dashed rounded-lg"
-              style={{
-                left: `${startPos}%`,
-                width: `${endPos - startPos}%`,
-                top: '-8px',
-                height: '76px',
-                backgroundColor: getScheduleColor(schedEvent.type),
-                borderColor: violation ? (violation.type === 'late' ? '#f44336' : '#ff9800') : 'rgba(0, 0, 0, 0.2)',
-                zIndex: 15
-              }}
-              onMouseEnter={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                setHoveredEvent({
-                  type: 'schedule',
-                  data: { ...schedEvent, violation },
-                  x: rect.left + rect.width / 2,
-                  y: rect.top
-                });
-              }}
-              onMouseLeave={() => setHoveredEvent(null)}
-            >
-              <div className="absolute inset-0 flex items-center justify-center px-2">
-                <span className="text-sm font-semibold text-gray-800 truncate text-center">
-                  {schedEvent.title}
-                </span>
-              </div>
-            </div>
-          );
-        })}
-        
         <div className="absolute bg-gray-200 rounded-lg overflow-hidden" style={{ top: '12px', left: 0, right: 0, height: '48px', zIndex: 10 }}>
           {passSegments.map((segment, idx) => (
             <div
@@ -224,6 +186,48 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
             </div>
           ))}
         </div>
+        
+        {dayData.schedule.map((schedEvent, idx) => {
+          const startPos = timeToPixels(schedEvent.startTime);
+          const endPos = timeToPixels(schedEvent.endTime);
+          const violation = violations.find(v => v.event === schedEvent);
+          
+          return (
+            <div
+              key={idx}
+              className="absolute cursor-pointer"
+              style={{
+                left: `${startPos}%`,
+                width: `${endPos - startPos}%`,
+                top: '-32px',
+                height: '28px',
+                zIndex: 15
+              }}
+              onMouseEnter={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                setHoveredEvent({
+                  type: 'schedule',
+                  data: { ...schedEvent, violation },
+                  x: rect.left + rect.width / 2,
+                  y: rect.top
+                });
+              }}
+              onMouseLeave={() => setHoveredEvent(null)}
+            >
+              <div 
+                className="w-full h-full rounded-lg border-2 border-dashed flex items-center justify-center px-2"
+                style={{
+                  backgroundColor: getScheduleColor(schedEvent.type),
+                  borderColor: violation ? (violation.type === 'late' ? '#f44336' : '#ff9800') : 'rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                <span className="text-xs font-semibold text-gray-800 truncate text-center">
+                  {schedEvent.title}
+                </span>
+              </div>
+            </div>
+          );
+        })}
       </div>
       
       {hoveredEvent && (
