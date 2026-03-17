@@ -166,7 +166,7 @@ export function DayTimelineVertical({ dayData, dateStr }: { dayData: DaySchedule
                   right: '-8px',
                   backgroundColor: getScheduleColor(schedEvent.type),
                   borderColor: violation ? (violation.type === 'late' ? '#f44336' : '#ff9800') : 'rgba(0, 0, 0, 0.2)',
-                  zIndex: 5
+                  zIndex: 15
                 }}
                 onMouseEnter={(e) => {
                   const rect = e.currentTarget.getBoundingClientRect();

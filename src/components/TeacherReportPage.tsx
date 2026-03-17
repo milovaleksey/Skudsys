@@ -354,10 +354,10 @@ export function TeacherReportPage() {
                   <span>23:00</span>
                 </div>
                 
-                <div className="flex-1">
+                <div className="flex-1 overflow-x-auto">
                   <div className="flex gap-3">
                     {teacherData.map(dayData => (
-                      <div key={dayData.date} className="flex-1">
+                      <div key={dayData.date} style={{ minWidth: '140px', width: '140px' }}>
                         <DayTimelineVertical dayData={dayData} dateStr={dayData.date} />
                       </div>
                     ))}
@@ -366,22 +366,24 @@ export function TeacherReportPage() {
               </div>
               
               <div className="mt-6 flex gap-4 pl-12">
-                <div className="flex-1 flex gap-3">
-                  {teacherData.map(dayData => {
-                    const date = new Date(dayData.date);
-                    const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-                    return (
-                      <div key={dayData.date} className="flex-1 text-center p-2 bg-gray-50 rounded-lg">
-                        <div className="text-xs font-semibold text-gray-700 mb-1">
-                          {days[date.getDay()]} {date.getDate()}
+                <div className="flex-1 overflow-x-auto">
+                  <div className="flex gap-3">
+                    {teacherData.map(dayData => {
+                      const date = new Date(dayData.date);
+                      const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+                      return (
+                        <div key={dayData.date} className="text-center p-2 bg-gray-50 rounded-lg" style={{ minWidth: '140px', width: '140px' }}>
+                          <div className="text-xs font-semibold text-gray-700 mb-1">
+                            {days[date.getDay()]} {date.getDate()}
+                          </div>
+                          <div className="flex flex-col gap-1 text-xs text-gray-600">
+                            <span>{dayData.schedule.length} занятий</span>
+                            <span>{dayData.passes.length} проходов</span>
+                          </div>
                         </div>
-                        <div className="flex flex-col gap-1 text-xs text-gray-600">
-                          <span>{dayData.schedule.length} занятий</span>
-                          <span>{dayData.passes.length} проходов</span>
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
