@@ -129,7 +129,7 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
       </div>
       
       {violations.length > 0 && (
-        <div className="relative h-8 mb-6">
+        <div className="relative h-8 mb-10">
           {violations.map((violation, idx) => {
             const startPos = timeToPixels(violation.event.startTime);
             const endPos = timeToPixels(violation.event.endTime);
