@@ -275,10 +275,16 @@ export function DayTimelineVertical({ dayData, dateStr }: { dayData: DaySchedule
                 Аудитория: {hoveredEvent.data.room}
               </div>
               {hoveredEvent.data.violation && (
-                <div className={`text-xs font-semibold mt-2 ${\n                  hoveredEvent.data.violation.type === 'late' ? 'text-red-600' : 'text-orange-600'\n                }`}>\n                  {hoveredEvent.data.violation.type === 'late' \n                    ? hoveredEvent.data.violation.minutes 
+                <div className={`text-xs font-semibold mt-2 ${
+                  hoveredEvent.data.violation.type === 'late' ? 'text-red-600' : 'text-orange-600'
+                }`}>
+                  {hoveredEvent.data.violation.type === 'late' 
+                    ? hoveredEvent.data.violation.minutes 
                       ? `⚠️ Опоздание на ${hoveredEvent.data.violation.minutes} мин`
                       : `⚠️ Не явился`
-                    : `⚠️ Ушел раньше на ${hoveredEvent.data.violation.minutes} мин`}\n                </div>\n              )}
+                    : `⚠️ Ушел раньше на ${hoveredEvent.data.violation.minutes} мин`}
+                </div>
+              )}
             </div>
           )}
         </div>

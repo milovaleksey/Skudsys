@@ -96,7 +96,7 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
         const [h, m] = passTime.split(':').map(Number);
         const minutes = h * 60 + m;
         
-        // Должен быть до окончания занятия
+        // Долж��н быть до окончания занятия
         if (minutes >= endMinutes) return false;
         
         // Вышел из здания (неконтролируемая территория)
@@ -287,8 +287,18 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
                 Аудитория: {hoveredEvent.data.room}
               </div>
               {hoveredEvent.data.violation && (
-                <div className={`text-xs font-semibold mt-2 ${\n                  hoveredEvent.data.violation.type === 'late' ? 'text-red-600' : hoveredEvent.data.violation.type === 'early' ? 'text-orange-600' : 'text-yellow-600'\n                }`}>\n                  {hoveredEvent.data.violation.type === 'late' \n                    ? hoveredEvent.data.violation.minutes \n                      ? `⚠️ Опоздание на ${hoveredEvent.data.violation.minutes} мин`
-                      : `⚠️ Не явился`\n                    : hoveredEvent.data.violation.type === 'early' \n                      ? `⚠️ Ушел раньше на ${hoveredEvent.data.violation.minutes} мин`\n                      : `⚠️ Не в аудитории`}\n                </div>\n              )}
+                <div className={`text-xs font-semibold mt-2 ${
+                  hoveredEvent.data.violation.type === 'late' ? 'text-red-600' : hoveredEvent.data.violation.type === 'early' ? 'text-orange-600' : 'text-yellow-600'
+                }`}>
+                  {hoveredEvent.data.violation.type === 'late' 
+                    ? hoveredEvent.data.violation.minutes 
+                      ? `⚠️ Опоздание на ${hoveredEvent.data.violation.minutes} мин`
+                      : `⚠️ Не явился`
+                    : hoveredEvent.data.violation.type === 'early' 
+                      ? `⚠️ Ушел раньше на ${hoveredEvent.data.violation.minutes} мин`
+                      : `⚠️ Не в аудитории`}
+                </div>
+              )}
             </div>
           )}
         </div>
