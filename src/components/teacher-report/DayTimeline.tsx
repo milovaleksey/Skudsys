@@ -72,7 +72,7 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
         const [h, m] = passTime.split(':').map(Number);
         const minutes = h * 60 + m;
         return minutes > startMinutes && minutes < endMinutes && 
-               p.locationType !== 'room' && 
+               p.locationType === 'uncontrolled' && 
                idx > dayData.passes.indexOf(firstEntry);
       });
       
