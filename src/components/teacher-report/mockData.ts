@@ -73,7 +73,7 @@ export const generateMockPasses = (date: string): PassEvent[] => {
       });
       
       passes.push({
-        time: new Date(baseTime.setHours(7, 58, 0)).toISOString(),
+        time: new Date(baseTime.setHours(8, 1, 0)).toISOString(),
         location: 'К1 Этаж 3 301',
         locationType: 'room',
         building: 'К1',
@@ -81,10 +81,11 @@ export const generateMockPasses = (date: string): PassEvent[] => {
       });
       
       passes.push({
-        time: new Date(baseTime.setHours(9, 35, 0)).toISOString(),
-        location: 'К1 Этаж 3 Коридор',
-        locationType: 'building',
-        building: 'К1'
+        time: new Date(baseTime.setHours(9, 5, 0)).toISOString(),
+        location: 'К1 Этаж 2 205',
+        locationType: 'room',
+        building: 'К1',
+        room: '205'
       });
       
       passes.push({
@@ -249,7 +250,7 @@ export const generateMockPasses = (date: string): PassEvent[] => {
       });
       break;
       
-    case 4: // Пятница - ПЕРЕШЕЛ В ДРУГУЮ АУДИТОРИЮ (ушел раньше)
+    case 4: // ��ятница - ПЕРЕШЕЛ В ДРУГУЮ АУДИТОРИЮ (ушел раньше)
       passes.push({
         time: new Date(baseTime.setHours(7, 20, 0)).toISOString(),
         location: 'Вход в корпус К1',
@@ -258,7 +259,7 @@ export const generateMockPasses = (date: string): PassEvent[] => {
       });
       
       passes.push({
-        time: new Date(baseTime.setHours(8, 01, 0)).toISOString(),
+        time: new Date(baseTime.setHours(8, 1, 0)).toISOString(),
         location: 'К1 Этаж 3 301',
         locationType: 'room',
         building: 'К1',
@@ -266,7 +267,7 @@ export const generateMockPasses = (date: string): PassEvent[] => {
       });
       
       passes.push({
-        time: new Date(baseTime.setHours(9, 05, 0)).toISOString(),
+        time: new Date(baseTime.setHours(9, 5, 0)).toISOString(),
         location: 'К1 Этаж 2 205',
         locationType: 'room',
         building: 'К1',
@@ -295,7 +296,7 @@ export const generateMockPasses = (date: string): PassEvent[] => {
       });
       
       passes.push({
-        time: new Date(baseTime.setHours(13, 02, 0)).toISOString(),
+        time: new Date(baseTime.setHours(13, 2, 0)).toISOString(),
         location: 'К2 Этаж 1 105',
         locationType: 'room',
         building: 'К2',
