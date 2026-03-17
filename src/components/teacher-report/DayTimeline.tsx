@@ -47,7 +47,7 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
   };
   
   const violations = useMemo(() => {
-    const result: { type: 'late' | 'early' | 'warning', event: ScheduleEvent, minutes?: number }[] = [];
+    const result: { type: 'late' | 'early', event: ScheduleEvent, minutes?: number }[] = [];
     
     dayData.schedule.forEach(schedEvent => {
       const [startH, startM] = schedEvent.startTime.split(':').map(Number);
@@ -55,62 +55,57 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
       const startMinutes = startH * 60 + startM;
       const endMinutes = endH * 60 + endM;
       
+      // Находим все проходы в нужную аудиторию
       const roomPasses = dayData.passes.filter(p => 
         p.locationType === 'room' && p.room && schedEvent.room.includes(p.room)
       );
       
-      // Проверяем, был ли человек в корпусе во время мероприятия
-      const buildingPasses = dayData.passes.filter(p => {
-        const passTime = getTimeFromDate(p.time);
-        const [h, m] = passTime.split(':').map(Number);
-        const minutes = h * 60 + m;
-        return (p.locationType === 'building' || p.locationType === 'room') && 
-               minutes >= startMinutes && minutes <= endMinutes;
-      });
-      
-      // Если нет проходов в аудиторию
+      // Если нет проходов в аудиторию - опоздал/не явился
       if (roomPasses.length === 0) {
-        // Если не было вообще нигде (ни в корпусе, ни в аудитории) - это опоздание/не явка
-        if (buildingPasses.length === 0) {
-          const lateMinutes = 0; // Можно вычислить по первому появлению после начала
-          result.push({ type: 'late', event: schedEvent, minutes: lateMinutes });
-        } else {
-          // Был в корпусе, но не зафиксирован вход в аудиторию - предупреждение
-          result.push({ type: 'warning', event: schedEvent });
-        }
+        result.push({ type: 'late', event: schedEvent, minutes: 0 });
         return;
       }
       
+      // Проверяем опоздание - первый вход в аудиторию
       const firstEntry = roomPasses[0];
       const entryTime = getTimeFromDate(firstEntry.time);
       const [entryH, entryM] = entryTime.split(':').map(Number);
-      
       const entryMinutes = entryH * 60 + entryM;
       
-      // Опоздание - зашел в аудиторию позже чем за 3 минуты после начала
+      // Опоздал более чем на 3 минуты
       if (entryMinutes > startMinutes + 3) {
         result.push({ type: 'late', event: schedEvent, minutes: entryMinutes - startMinutes });
       }
       
-      // Проверка на ранний уход - вышел на неконтролируемую территорию
-      const exitPasses = dayData.passes.filter((p, idx) => {
+      // Проверяем ранний уход - вышел из здания или перешел в другое помещение
+      const firstEntryIndex = dayData.passes.indexOf(firstEntry);
+      const earlyExitPasses = dayData.passes.filter((p, idx) => {
+        // Должен быть после входа в аудиторию
+        if (idx <= firstEntryIndex) return false;
+        
         const passTime = getTimeFromDate(p.time);
         const [h, m] = passTime.split(':').map(Number);
         const minutes = h * 60 + m;
-        return minutes > startMinutes && minutes < endMinutes && 
-               p.locationType === 'uncontrolled' && 
-               idx > dayData.passes.indexOf(firstEntry);
+        
+        // Должен быть до окончания занятия
+        if (minutes >= endMinutes) return false;
+        
+        // Вышел из здания (неконтролируемая территория)
+        if (p.locationType === 'uncontrolled') return true;
+        
+        // Перешел в другое помещение (не та аудитория)
+        if (p.locationType === 'room' && p.room && !schedEvent.room.includes(p.room)) return true;
+        
+        return false;
       });
       
-      if (exitPasses.length > 0) {
-        const lastExit = exitPasses[exitPasses.length - 1];
-        const exitTime = getTimeFromDate(lastExit.time);
+      if (earlyExitPasses.length > 0) {
+        const firstExit = earlyExitPasses[0];
+        const exitTime = getTimeFromDate(firstExit.time);
         const [exitH, exitM] = exitTime.split(':').map(Number);
         const exitMinutes = exitH * 60 + exitM;
         
-        if (exitMinutes < endMinutes - 5) {
-          result.push({ type: 'early', event: schedEvent, minutes: endMinutes - exitMinutes });
-        }
+        result.push({ type: 'early', event: schedEvent, minutes: endMinutes - exitMinutes });
       }
     });
     
@@ -163,7 +158,7 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
                 style={{ left: `${startPos}%`, width: `${endPos - startPos}%` }}
               >
                 <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-white shadow-lg ${
-                  violation.type === 'early' ? 'bg-red-500' : violation.type === 'late' ? 'bg-yellow-500' : 'bg-blue-500'
+                  violation.type === 'early' ? 'bg-red-500' : 'bg-yellow-500'
                 }`}>
                   <AlertTriangle size={14} />
                   <span>
