@@ -56,9 +56,21 @@ export function DayTimelineVertical({ dayData, dateStr }: { dayData: DaySchedule
       const endMinutes = endH * 60 + endM;
       
       // Находим все проходы в нужную аудиторию
-      const roomPasses = dayData.passes.filter(p => 
-        p.locationType === 'room' && p.room && schedEvent.room.includes(p.room)
-      );
+      const roomPasses = dayData.passes.filter(p => {
+        if (p.locationType !== 'room' || !p.room) return false;
+        if (!schedEvent.room.includes(p.room)) return false;
+        
+        // Проход должен быть в окне времени занятия (за 30 мин до начала и до конца)
+        const passTime = getTimeFromDate(p.time);
+        const [passH, passM] = passTime.split(':').map(Number);
+        const passMinutes = passH * 60 + passM;
+        
+        // Допускаем приход за 30 минут до начала занятия
+        const windowStart = startMinutes - 30;
+        const windowEnd = endMinutes;
+        
+        return passMinutes >= windowStart && passMinutes <= windowEnd;
+      });
       
       // Если нет проходов в аудиторию - не явился
       if (roomPasses.length === 0) {

@@ -56,9 +56,21 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
       const endMinutes = endH * 60 + endM;
       
       // Находим все проходы в нужную аудиторию
-      const roomPasses = dayData.passes.filter(p => 
-        p.locationType === 'room' && p.room && schedEvent.room.includes(p.room)
-      );
+      const roomPasses = dayData.passes.filter(p => {
+        if (p.locationType !== 'room' || !p.room) return false;
+        if (!schedEvent.room.includes(p.room)) return false;
+        
+        // Проход должен быть в окне времени занятия (за 30 мин до начала и до конца)
+        const passTime = getTimeFromDate(p.time);
+        const [passH, passM] = passTime.split(':').map(Number);
+        const passMinutes = passH * 60 + passM;
+        
+        // Допускаем приход за 30 минут до начала занятия
+        const windowStart = startMinutes - 30;
+        const windowEnd = endMinutes;
+        
+        return passMinutes >= windowStart && passMinutes <= windowEnd;
+      });
       
       // Если нет проходов в аудиторию - не явился
       if (roomPasses.length === 0) {
@@ -96,7 +108,7 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
         const [h, m] = passTime.split(':').map(Number);
         const minutes = h * 60 + m;
         
-        // Долж��н быть до окончания занятия
+        // Должн быть до окончания занятия
         if (minutes >= endMinutes) return false;
         
         // Вышел из здания (неконтролируемая территория)
