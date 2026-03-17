@@ -60,7 +60,7 @@ export function DayTimelineVertical({ dayData, dateStr }: { dayData: DaySchedule
         p.locationType === 'room' && p.room && schedEvent.room.includes(p.room)
       );
       
-      // Если нет проходов в аудиторию - опоздал/не явился
+      // Если нет проходов в аудиторию - не явился
       if (roomPasses.length === 0) {
         result.push({ type: 'late', event: schedEvent, minutes: 0 });
         return;
@@ -72,9 +72,18 @@ export function DayTimelineVertical({ dayData, dateStr }: { dayData: DaySchedule
       const [entryH, entryM] = entryTime.split(':').map(Number);
       const entryMinutes = entryH * 60 + entryM;
       
+      // Длительность занятия
+      const lessonDuration = endMinutes - startMinutes;
+      const lateMinutes = entryMinutes - startMinutes;
+      
       // Опоздал более чем на 3 минуты
       if (entryMinutes > startMinutes + 3) {
-        result.push({ type: 'late', event: schedEvent, minutes: entryMinutes - startMinutes });
+        // Если опоздание больше половины занятия - считаем как "Не явился"
+        if (lateMinutes > lessonDuration / 2) {
+          result.push({ type: 'late', event: schedEvent, minutes: 0 });
+        } else {
+          result.push({ type: 'late', event: schedEvent, minutes: lateMinutes });
+        }
       }
       
       // Проверяем ранний уход - вышел из здания или перешел в другое помещение
@@ -163,7 +172,7 @@ export function DayTimelineVertical({ dayData, dateStr }: { dayData: DaySchedule
                   }`}
                   title={violation.type === 'early' 
                     ? `Ушел на ${violation.minutes} мин раньше`
-                    : `Опоздание ${violation.minutes} мин`}
+                    : violation.minutes ? `Опоздание ${violation.minutes} мин` : 'Не явился'}
                 >
                   <AlertTriangle size={16} className="text-white" />
                 </div>
@@ -266,14 +275,10 @@ export function DayTimelineVertical({ dayData, dateStr }: { dayData: DaySchedule
                 Аудитория: {hoveredEvent.data.room}
               </div>
               {hoveredEvent.data.violation && (
-                <div className={`text-xs font-semibold mt-2 ${
-                  hoveredEvent.data.violation.type === 'late' ? 'text-red-600' : 'text-orange-600'
-                }`}>
-                  {hoveredEvent.data.violation.type === 'late' 
-                    ? `⚠️ Опоздание на ${hoveredEvent.data.violation.minutes} мин`
-                    : `⚠️ Ушел раньше на ${hoveredEvent.data.violation.minutes} мин`}
-                </div>
-              )}
+                <div className={`text-xs font-semibold mt-2 ${\n                  hoveredEvent.data.violation.type === 'late' ? 'text-red-600' : 'text-orange-600'\n                }`}>\n                  {hoveredEvent.data.violation.type === 'late' \n                    ? hoveredEvent.data.violation.minutes 
+                      ? `⚠️ Опоздание на ${hoveredEvent.data.violation.minutes} мин`
+                      : `⚠️ Не явился`
+                    : `⚠️ Ушел раньше на ${hoveredEvent.data.violation.minutes} мин`}\n                </div>\n              )}
             </div>
           )}
         </div>

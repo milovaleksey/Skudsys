@@ -60,7 +60,7 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
         p.locationType === 'room' && p.room && schedEvent.room.includes(p.room)
       );
       
-      // Если нет проходов в аудиторию - опоздал/не явился
+      // Если нет проходов в аудиторию - не явился
       if (roomPasses.length === 0) {
         result.push({ type: 'late', event: schedEvent, minutes: 0 });
         return;
@@ -72,9 +72,18 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
       const [entryH, entryM] = entryTime.split(':').map(Number);
       const entryMinutes = entryH * 60 + entryM;
       
+      // Длительность занятия
+      const lessonDuration = endMinutes - startMinutes;
+      const lateMinutes = entryMinutes - startMinutes;
+      
       // Опоздал более чем на 3 минуты
       if (entryMinutes > startMinutes + 3) {
-        result.push({ type: 'late', event: schedEvent, minutes: entryMinutes - startMinutes });
+        // Если опоздание больше половины занятия - считаем как "Не явился"
+        if (lateMinutes > lessonDuration / 2) {
+          result.push({ type: 'late', event: schedEvent, minutes: 0 });
+        } else {
+          result.push({ type: 'late', event: schedEvent, minutes: lateMinutes });
+        }
       }
       
       // Проверяем ранний уход - вышел из здания или перешел в другое помещение
@@ -278,16 +287,8 @@ export function DayTimeline({ dayData }: { dayData: DaySchedule }) {
                 Аудитория: {hoveredEvent.data.room}
               </div>
               {hoveredEvent.data.violation && (
-                <div className={`text-xs font-semibold mt-2 ${
-                  hoveredEvent.data.violation.type === 'late' ? 'text-red-600' : hoveredEvent.data.violation.type === 'early' ? 'text-orange-600' : 'text-yellow-600'
-                }`}>
-                  {hoveredEvent.data.violation.type === 'late' 
-                    ? `⚠️ Опоздание на ${hoveredEvent.data.violation.minutes} мин`
-                    : hoveredEvent.data.violation.type === 'early' 
-                      ? `⚠️ Ушел раньше на ${hoveredEvent.data.violation.minutes} мин`
-                      : `⚠️ Не в аудитории`}
-                </div>
-              )}
+                <div className={`text-xs font-semibold mt-2 ${\n                  hoveredEvent.data.violation.type === 'late' ? 'text-red-600' : hoveredEvent.data.violation.type === 'early' ? 'text-orange-600' : 'text-yellow-600'\n                }`}>\n                  {hoveredEvent.data.violation.type === 'late' \n                    ? hoveredEvent.data.violation.minutes \n                      ? `⚠️ Опоздание на ${hoveredEvent.data.violation.minutes} мин`
+                      : `⚠️ Не явился`\n                    : hoveredEvent.data.violation.type === 'early' \n                      ? `⚠️ Ушел раньше на ${hoveredEvent.data.violation.minutes} мин`\n                      : `⚠️ Не в аудитории`}\n                </div>\n              )}
             </div>
           )}
         </div>
