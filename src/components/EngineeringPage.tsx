@@ -194,57 +194,91 @@ export function EngineeringPage() {
 
   // WebSocket подключение для аномальных событий
   useEffect(() => {
-    // Получаем базовый URL из переменных окружения
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/v1';
-    const baseUrl = apiUrl.replace('/v1', '').replace('http://', '').replace('https://', '');
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    
-    const token = localStorage.getItem('auth_token');
-    if (!token) {
-      console.error('[Engineering] Нет токена авторизации');
-      return;
-    }
+    let ws: WebSocket | null = null;
+    let reconnectTimeout: NodeJS.Timeout | null = null;
+    let reconnectAttempts = 0;
+    const MAX_RECONNECT_ATTEMPTS = 10;
+    const RECONNECT_DELAY = 3000; // 3 секунды
 
-    const wsUrl = `${protocol}//${baseUrl}/ws/mqtt?token=${token}`;
-    console.log('[Engineering] Подключение к WebSocket:', wsUrl);
-    
-    const ws = new WebSocket(wsUrl);
-
-    ws.onopen = () => {
-      console.log('✅ [Engineering] WebSocket подключен');
-      setWsConnected(true);
-    };
-
-    ws.onmessage = (event) => {
-      try {
-        const message = JSON.parse(event.data);
-        console.log('[Engineering] Получено WebSocket сообщение:', message);
-        
-        // Обработка данных из топика Skud/baddialsevent
-        if (message.topic === 'Skud/baddialsevent' && message.data) {
-          console.log('🚨 [Engineering] Получено аномальное событие:', message.data);
-          const newEvents = Array.isArray(message.data) ? message.data : [message.data];
-          setBadEvents(prev => [...newEvents, ...prev].slice(0, 1000)); // Храним последние 1000
-        }
-      } catch (error) {
-        console.error('[Engineering] Ошибка парсинга WebSocket сообщения:', error);
+    const connect = () => {
+      // Получаем базовый URL из переменных окружения
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/v1';
+      const baseUrl = apiUrl.replace('/v1', '').replace('http://', '').replace('https://', '');
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      
+      // Всегда получаем СВЕЖИЙ токен из localStorage
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        console.error('[Engineering] Нет токена авторизации');
+        return;
       }
+
+      const wsUrl = `${protocol}//${baseUrl}/ws/mqtt?token=${token}`;
+      console.log('[Engineering] Подключение к WebSocket:', wsUrl.replace(/token=.*/, 'token=***'));
+      
+      ws = new WebSocket(wsUrl);
+
+      ws.onopen = () => {
+        console.log('✅ [Engineering] WebSocket подключен');
+        setWsConnected(true);
+        reconnectAttempts = 0; // Сбрасываем счетчик при успешном подключении
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const message = JSON.parse(event.data);
+          console.log('[Engineering] Получено WebSocket сообщение:', message);
+          
+          // Обработка данных из топика Skud/baddialsevent
+          if (message.topic === 'Skud/baddialsevent' && message.data) {
+            console.log('🚨 [Engineering] Получено аномальное событие:', message.data);
+            const newEvents = Array.isArray(message.data) ? message.data : [message.data];
+            setBadEvents(prev => [...newEvents, ...prev].slice(0, 1000)); // Храним последние 1000
+          }
+        } catch (error) {
+          console.error('[Engineering] Ошибка парсинга WebSocket сообщения:', error);
+        }
+      };
+
+      ws.onerror = (error) => {
+        console.error('❌ [Engineering] WebSocket ошибка:', error);
+        setWsConnected(false);
+      };
+
+      ws.onclose = (event) => {
+        console.log('🔌 [Engineering] WebSocket отключен, код:', event.code, 'причина:', event.reason);
+        setWsConnected(false);
+
+        // Если токен истёк (код 4001), пробуем переподключиться с новым токеном
+        if (event.code === 4001 || event.reason?.includes('токен')) {
+          console.log('🔄 [Engineering] Токен истёк, переподключение через', RECONNECT_DELAY / 1000, 'сек...');
+          reconnectTimeout = setTimeout(() => {
+            connect();
+          }, RECONNECT_DELAY);
+        } else if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+          // Автоматическое переподключение при других ошибках
+          reconnectAttempts++;
+          console.log(`🔄 [Engineering] Попытка переподключения ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS} через ${RECONNECT_DELAY / 1000} сек...`);
+          reconnectTimeout = setTimeout(() => {
+            connect();
+          }, RECONNECT_DELAY);
+        } else {
+          console.error('❌ [Engineering] Превышено максимальное количество попыток переподключения');
+        }
+      };
     };
 
-    ws.onerror = (error) => {
-      console.error('❌ [Engineering] WebSocket ошибка:', error);
-      setWsConnected(false);
-    };
-
-    ws.onclose = () => {
-      console.log('🔌 [Engineering] WebSocket отключен');
-      setWsConnected(false);
-    };
+    connect();
 
     return () => {
-      ws.close();
+      if (reconnectTimeout) {
+        clearTimeout(reconnectTimeout);
+      }
+      if (ws) {
+        ws.close();
+      }
     };
-  }, []);
+  }, []); // Зависимости пустые, но мы читаем свежий токен внутри connect()
 
   // Загрузка данных с backend
   useEffect(() => {
@@ -299,7 +333,7 @@ export function EngineeringPage() {
       return isToday && matchType && matchDevice && matchFio && matchSearch;
     });
 
-    // Сортировка по времени
+    // ��ортировка по времени
     if (sortOrder) {
       filtered.sort((a, b) => {
         const timeA = new Date(a.time_label).getTime();
@@ -499,7 +533,7 @@ export function EngineeringPage() {
           </button>
         </div>
 
-        {/* Фильтры */}
+        {/* Ф��льтры */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">Тип события</label>
