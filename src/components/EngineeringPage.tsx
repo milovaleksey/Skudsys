@@ -229,7 +229,7 @@ export function EngineeringPage() {
           if (message.topic === 'Skud/baddialsevent' && message.data) {
             console.log('🚨 [Engineering] Получено аномальное событие:', message.data);
             const newEvents = Array.isArray(message.data) ? message.data : [message.data];
-            setBadEvents(prev => [...newEvents, ...prev].slice(0, 1000)); // Храним последние 1000
+            setBadEvents(prev => [...newEvents, ...prev].slice(0, 50000)); // Храним последние 50000
           }
         } catch (error) {
           console.error('[Engineering] Ошибка парсинга WebSocket сообщения:', error);
@@ -247,7 +247,7 @@ export function EngineeringPage() {
 
         // Если токен истёк (код 4001), пробуем переподключиться с новым токеном
         if (event.code === 4001 || event.reason?.includes('токен')) {
-          console.log('🔄 [Engineering] Токен истёк, переподк��ючение через', RECONNECT_DELAY / 1000, 'сек...');
+          console.log('🔄 [Engineering] Токен истёк, переподкючение через', RECONNECT_DELAY / 1000, 'сек...');
           reconnectTimeout = setTimeout(() => {
             connect();
           }, RECONNECT_DELAY);
@@ -529,7 +529,7 @@ export function EngineeringPage() {
           </button>
         </div>
 
-        {/* Фльтры */}
+        {/* Фильтры */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">Тип события</label>
@@ -662,7 +662,7 @@ export function EngineeringPage() {
                     </td>
                   </tr>
                 ) : (
-                  filteredAndSortedEvents.slice(0, 100).map((event, idx) => (
+                  filteredAndSortedEvents.slice(0, 5000).map((event, idx) => (
                     <tr 
                       key={idx} 
                       className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${
@@ -703,9 +703,9 @@ export function EngineeringPage() {
                 )}
               </tbody>
             </table>
-            {filteredAndSortedEvents.length > 100 && (
+            {filteredAndSortedEvents.length > 5000 && (
               <div className="mt-4 text-center text-sm text-gray-600">
-                Показано первых 100 из {filteredAndSortedEvents.length} событий. Используйте фильтры для уточнения.
+                Показано первых 5000 из {filteredAndSortedEvents.length} событий. Используйте фильтры для уточнения.
               </div>
             )}
           </div>
@@ -755,7 +755,7 @@ export function EngineeringPage() {
               ) : accessRules.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="text-center py-8 text-gray-500">
-                    Правила доступа не настроены. Создайте первое правило.
+                    Правила доступа не настроены. ��оздайте первое правило.
                   </td>
                 </tr>
               ) : (
