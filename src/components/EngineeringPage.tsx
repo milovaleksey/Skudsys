@@ -33,8 +33,6 @@ interface AccessRule {
 // time_label приходит уже в локальном времени UTC+5 (с "Z" на конце)
 const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr);
-  // Добавляем +3 часа
-  date.setHours(date.getHours() + 3);
   
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -44,8 +42,6 @@ const formatDate = (dateStr: string): string => {
 
 const formatTime = (dateStr: string): string => {
   const date = new Date(dateStr);
-  // Добавляем +3 часа
-  date.setHours(date.getHours() + 3);
   
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
@@ -251,7 +247,7 @@ export function EngineeringPage() {
 
         // Если токен истёк (код 4001), пробуем переподключиться с новым токеном
         if (event.code === 4001 || event.reason?.includes('токен')) {
-          console.log('🔄 [Engineering] Токен истёк, переподключение через', RECONNECT_DELAY / 1000, 'сек...');
+          console.log('🔄 [Engineering] Токен истёк, переподк��ючение через', RECONNECT_DELAY / 1000, 'сек...');
           reconnectTimeout = setTimeout(() => {
             connect();
           }, RECONNECT_DELAY);
@@ -333,7 +329,7 @@ export function EngineeringPage() {
       return isToday && matchType && matchDevice && matchFio && matchSearch;
     });
 
-    // ��ортировка по времени
+    // ортировка по времени
     if (sortOrder) {
       filtered.sort((a, b) => {
         const timeA = new Date(a.time_label).getTime();
@@ -533,7 +529,7 @@ export function EngineeringPage() {
           </button>
         </div>
 
-        {/* Ф��льтры */}
+        {/* Фльтры */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">Тип события</label>
