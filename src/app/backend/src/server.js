@@ -19,7 +19,6 @@ const { initMQTTWebSocket } = require('./websocket/mqtt.ws');
 const { initParkingWebSocket } = require('./websocket/parking.ws');
 const { initStorageWebSocket } = require('./websocket/storage.ws');
 const { initForeignStudentsWebSocket } = require('./websocket/foreign-students.ws');
-const { getAnalyticsWebSocketServer } = require('./websocket/analytics.ws');
 
 // Импорт маршрутов
 const authRoutes = require('./routes/auth.routes');
@@ -232,11 +231,6 @@ process.on('SIGTERM', () => {
   storageMQTTService.disconnect();
   foreignStudentsMQTTService.disconnect();
   
-  const analyticsWSServer = getAnalyticsWebSocketServer();
-  if (analyticsWSServer) {
-    analyticsWSServer.shutdown();
-  }
-  
   process.exit(0);
 });
 
@@ -246,11 +240,6 @@ process.on('SIGINT', () => {
   parkingMQTTService.disconnect();
   storageMQTTService.disconnect();
   foreignStudentsMQTTService.disconnect();
-  
-  const analyticsWSServer = getAnalyticsWebSocketServer();
-  if (analyticsWSServer) {
-    analyticsWSServer.shutdown();
-  }
   
   process.exit(0);
 });
