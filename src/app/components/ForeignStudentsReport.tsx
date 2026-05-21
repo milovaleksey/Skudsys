@@ -13,7 +13,7 @@ import DatePicker from 'react-datepicker';
 import { registerLocale } from 'react-datepicker';
 import { ru } from 'date-fns/locale/ru';
 import 'react-datepicker/dist/react-datepicker.css';
-import '../styles/datepicker-custom.css';
+import '../../styles/datepicker-custom.css';
 import * as XLSX from 'xlsx';
 import { Card } from './ui/card';
 import { SimpleStatCard } from './SimpleStatCard';
