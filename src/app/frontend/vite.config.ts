@@ -11,11 +11,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './'),
-      '@/components': resolve(__dirname, './components'),
+      '@/components': resolve(__dirname, '../components'),
       '@/styles': resolve(__dirname, './styles'),
       '@/contexts': resolve(__dirname, './contexts'),
       '@/lib': resolve(__dirname, './lib'),
-      '@/hooks': resolve(__dirname, './hooks'),
+      '@/hooks': resolve(__dirname, '../hooks'),
     },
   },
   esbuild: {
