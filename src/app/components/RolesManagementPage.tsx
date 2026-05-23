@@ -295,9 +295,6 @@ export function RolesManagementPage() {
                   </h3>
                   <div className="flex items-center gap-2 mt-1">
                     {getRoleTypeBadge(role)}
-                    <span className="text-sm text-gray-500">
-                      ID: {role.name}
-                    </span>
                   </div>
                 </div>
               </div>

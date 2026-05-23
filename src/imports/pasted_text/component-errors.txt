@@ -1,0 +1,2055 @@
+../components/ForeignStudentsReport.tsx:17:23 - error TS2307: Cannot find module 'xlsx' or its corresponding type declarations.
+
+17 import * as XLSX from 'xlsx';
+                         ~~~~~~
+
+../components/ForeignStudentsReport.tsx:23:23 - error TS2307: Cannot find module 'sonner' or its corresponding type declarations.
+
+23 import { toast } from 'sonner';
+                         ~~~~~~~~
+
+../components/ForeignStudentsReport.tsx:218:34 - error TS2339: Property 'results' does not exist on type 'ApiResponse<unknown>'.
+
+218         const results = response.results || [];
+                                     ~~~~~~~
+
+../components/ForeignStudentsReport.tsx:294:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+294     <div className="space-y-6">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+295       {/* Header */}
+    ~~~~~~~~~~~~~~~~~~~~
+...
+841       />
+    ~~~~~~~~
+842     </div>
+    ~~~~~~~~~~
+
+../components/IdentifierSearchPage.tsx:1:26 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState } from 'react';
+                           ~~~~~~~
+
+../components/IdentifierSearchPage.tsx:2:66 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+2 import { Search, User, CreditCard, Building2, Clock, Mail } from 'lucide-react';
+                                                                   ~~~~~~~~~~~~~~
+
+../components/IdentifierSearchPage.tsx:4:23 - error TS2307: Cannot find module 'sonner' or its corresponding type declarations.
+
+4 import { toast } from 'sonner';
+                        ~~~~~~~~
+
+../components/IdentifierSearchPage.tsx:45:27 - error TS2339: Property 'length' does not exist on type 'unknown'.
+
+45         if (response.data.length === 0) {
+                             ~~~~~~
+
+../components/IdentifierSearchPage.tsx:48:59 - error TS2339: Property 'length' does not exist on type 'unknown'.
+
+48           toast.success(`Найдено записей: ${response.data.length}`);
+                                                             ~~~~~~
+
+../components/IdentifierSearchPage.tsx:72:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 72     <div className="space-y-6">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 73       {/* Header */}
+    ~~~~~~~~~~~~~~~~~~~~
+...
+273       )}
+    ~~~~~~~~
+274     </div>
+    ~~~~~~~~~~
+
+../components/LoadingCatWidget.tsx:1:37 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useEffect, useState } from 'react';
+                                      ~~~~~~~
+
+../components/LoadingCatWidget.tsx:2:19 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+2 import { X } from 'lucide-react';
+                    ~~~~~~~~~~~~~~
+
+../components/LoadingCatWidget.tsx:40:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 40     <div
+        ~~~~
+ 41       className={`fixed bottom-6 right-6 z-50 transition-all duration-500 ease-out ${
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+355       </div>
+    ~~~~~~~~~~~~
+356     </div>
+    ~~~~~~~~~~
+
+../components/LocationPage.tsx:1:26 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState } from 'react';
+                           ~~~~~~~
+
+../components/LocationPage.tsx:2:75 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+2 import { Search, MapPin, User, CreditCard, Building2, Users, Clock } from 'lucide-react';
+                                                                            ~~~~~~~~~~~~~~
+
+../components/LocationPage.tsx:4:23 - error TS2307: Cannot find module 'sonner' or its corresponding type declarations.
+
+4 import { toast } from 'sonner';
+                        ~~~~~~~~
+
+../components/LocationPage.tsx:95:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 95     <div className="space-y-6">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 96       {/* Header */}
+    ~~~~~~~~~~~~~~~~~~~~
+...
+293       )}
+    ~~~~~~~~
+294     </div>
+    ~~~~~~~~~~
+
+../components/LoginPage.tsx:1:26 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState } from 'react';
+                           ~~~~~~~
+
+../components/LoginPage.tsx:2:41 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+2 import { Eye, EyeOff, Lock, User } from 'lucide-react';
+                                          ~~~~~~~~~~~~~~
+
+../components/LoginPage.tsx:5:23 - error TS2307: Cannot find module 'sonner' or its corresponding type declarations.
+
+5 import { toast } from 'sonner';
+                        ~~~~~~~~
+
+../components/LoginPage.tsx:65:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 65     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 66       <div className="w-full max-w-md">
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+198       </div>
+    ~~~~~~~~~~~~
+199     </div>
+    ~~~~~~~~~~
+
+../components/Logo.tsx:1:26 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState } from 'react';
+                           ~~~~~~~
+
+../components/Logo.tsx:16:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 16     <img
+        ~~~~
+ 17       src={useFallback ? "/logo.svg" : "/logo.png"}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 20       onError={handleError}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 21     />
+    ~~~~~~
+
+../components/MainPage.tsx:1:37 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState, useEffect } from 'react';
+                                      ~~~~~~~
+
+../components/MainPage.tsx:24:8 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+24 } from 'lucide-react';
+          ~~~~~~~~~~~~~~
+
+../components/MainPage.tsx:205:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+205     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+206       {/* Sidebar */}
+    ~~~~~~~~~~~~~~~~~~~~~
+...
+392       </main>
+    ~~~~~~~~~~~~~
+393     </div>
+    ~~~~~~~~~~
+
+../components/ParkingPage.tsx:1:26 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState } from 'react';
+                           ~~~~~~~
+
+../components/ParkingPage.tsx:2:116 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+2 import { Car, Clock, Search, ChevronDown, ChevronUp, Wifi, WifiOff, RefreshCw, MapPin, CheckCircle, XCircle } from 'lucide-react';
+                                                                                                                     ~~~~~~~~~~~~~~
+
+../components/ParkingPage.tsx:189:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+189     <div className="space-y-6">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+190       {/* Page Header */}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+298       )}
+    ~~~~~~~~
+299     </div>
+    ~~~~~~~~~~
+
+../components/PassesReportPage.tsx:1:37 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState, useEffect } from 'react';
+                                      ~~~~~~~
+
+../components/PassesReportPage.tsx:2:71 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+2 import { Search, Download, FileSpreadsheet, FileText, Calendar } from 'lucide-react';
+                                                                        ~~~~~~~~~~~~~~
+
+../components/PassesReportPage.tsx:3:24 - error TS2307: Cannot find module 'react-datepicker' or its corresponding type declarations.
+
+3 import DatePicker from 'react-datepicker';
+                         ~~~~~~~~~~~~~~~~~~
+
+../components/PassesReportPage.tsx:4:32 - error TS2307: Cannot find module 'react-datepicker' or its corresponding type declarations.
+
+4 import { registerLocale } from 'react-datepicker';
+                                 ~~~~~~~~~~~~~~~~~~
+
+../components/PassesReportPage.tsx:5:20 - error TS2307: Cannot find module 'date-fns/locale/ru' or its corresponding type declarations.
+
+5 import { ru } from 'date-fns/locale/ru';
+                     ~~~~~~~~~~~~~~~~~~~~
+
+../components/PassesReportPage.tsx:8:23 - error TS2307: Cannot find module 'xlsx' or its corresponding type declarations.
+
+8 import * as XLSX from 'xlsx';
+                        ~~~~~~
+
+../components/PassesReportPage.tsx:10:23 - error TS2307: Cannot find module 'sonner' or its corresponding type declarations.
+
+10 import { toast } from 'sonner';
+                         ~~~~~~~~
+
+../components/PassesReportPage.tsx:175:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+175     <div className="space-y-6">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+176       {/* Header */}
+    ~~~~~~~~~~~~~~~~~~~~
+...
+395       </div>
+    ~~~~~~~~~~~~
+396     </div>
+    ~~~~~~~~~~
+
+../components/PasswordRequirements.tsx:1:26 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+1 import { Check, X } from "lucide-react";
+                           ~~~~~~~~~~~~~~
+
+../components/PasswordRequirements.tsx:33:7 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+33       <p className="text-xs text-gray-500">
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+34         Минимум 8 символов (рекомендуется: заглавные, строчные буквы и цифры)
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+35       </p>
+   ~~~~~~~~~~
+
+../components/RolesManagementPage.tsx:1:26 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState } from 'react';
+                           ~~~~~~~
+
+../components/RolesManagementPage.tsx:12:8 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+12 } from 'lucide-react';
+          ~~~~~~~~~~~~~~
+
+../components/RolesManagementPage.tsx:37:23 - error TS2307: Cannot find module 'sonner' or its corresponding type declarations.
+
+37 import { toast } from 'sonner';
+                         ~~~~~~~~
+
+../components/RolesManagementPage.tsx:248:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+248     <div className="space-y-6">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+249       {/* Заголовок и кнопка добавления */}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+777       </AlertDialog>
+    ~~~~~~~~~~~~~~~~~~~~
+778     </div>
+    ~~~~~~~~~~
+
+../components/SimpleStatCard.tsx:1:28 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+1 import { LucideIcon } from 'lucide-react';
+                             ~~~~~~~~~~~~~~
+
+../components/SimpleStatCard.tsx:2:24 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+2 import * as Icons from 'lucide-react';
+                         ~~~~~~~~~~~~~~
+
+../components/SimpleStatCard.tsx:16:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 16     <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 17       <div className="flex items-center justify-between">
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 30       </div>
+    ~~~~~~~~~~~~
+ 31     </div>
+    ~~~~~~~~~~
+
+../components/StorageSystemsPage.tsx:7:26 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+7 import { useState } from 'react';
+                           ~~~~~~~
+
+../components/StorageSystemsPage.tsx:9:111 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+9 import { Building2, Package, Shirt, AlertCircle, CheckCircle, XCircle, Clock, Wifi, WifiOff, RefreshCw } from 'lucide-react';
+                                                                                                                ~~~~~~~~~~~~~~
+
+../components/StorageSystemsPage.tsx:84:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 84     <div className="min-h-screen bg-gray-50 p-6">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 85       {/* Header */}
+    ~~~~~~~~~~~~~~~~~~~~
+...
+334       )}
+    ~~~~~~~~
+335     </div>
+    ~~~~~~~~~~
+
+../components/StorageSystemsPage.tsx:211:25 - error TS2322: Type 'unknown' is not assignable to type 'Key'.
+
+211                 <option key={building} value={building}>
+                            ~~~
+
+  node_modules/@types/react/index.d.ts:262:9
+    262         key?: Key | null | undefined;
+                ~~~
+    The expected type comes from property 'key' which is declared here on type 'DetailedHTMLProps<OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>'
+
+../components/StorageSystemsPage.tsx:211:40 - error TS2322: Type 'unknown' is not assignable to type 'string | number | readonly string[]'.
+
+211                 <option key={building} value={building}>
+                                           ~~~~~
+
+  node_modules/@types/react/index.d.ts:3522:9
+    3522         value?: string | readonly string[] | number | undefined;
+                 ~~~~~
+    The expected type comes from property 'value' which is declared here on type 'DetailedHTMLProps<OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>'
+
+../components/StorageSystemsPage.tsx:212:19 - error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+
+212                   {building}
+                      ~~~~~~~~~~
+
+  node_modules/@types/react/index.d.ts:2398:9
+    2398         children?: ReactNode | undefined;
+                 ~~~~~~~~
+    The expected type comes from property 'children' which is declared here on type 'DetailedHTMLProps<OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>'
+
+../components/StudentsReportPage.tsx:1:37 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState, useEffect } from 'react';
+                                      ~~~~~~~
+
+../components/StudentsReportPage.tsx:2:71 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+2 import { Search, Download, FileSpreadsheet, FileText, Calendar } from 'lucide-react';
+                                                                        ~~~~~~~~~~~~~~
+
+../components/StudentsReportPage.tsx:3:24 - error TS2307: Cannot find module 'react-datepicker' or its corresponding type declarations.
+
+3 import DatePicker from 'react-datepicker';
+                         ~~~~~~~~~~~~~~~~~~
+
+../components/StudentsReportPage.tsx:4:32 - error TS2307: Cannot find module 'react-datepicker' or its corresponding type declarations.
+
+4 import { registerLocale } from 'react-datepicker';
+                                 ~~~~~~~~~~~~~~~~~~
+
+../components/StudentsReportPage.tsx:5:20 - error TS2307: Cannot find module 'date-fns/locale/ru' or its corresponding type declarations.
+
+5 import { ru } from 'date-fns/locale/ru';
+                     ~~~~~~~~~~~~~~~~~~~~
+
+../components/StudentsReportPage.tsx:8:23 - error TS2307: Cannot find module 'xlsx' or its corresponding type declarations.
+
+8 import * as XLSX from 'xlsx';
+                        ~~~~~~
+
+../components/StudentsReportPage.tsx:10:23 - error TS2307: Cannot find module 'sonner' or its corresponding type declarations.
+
+10 import { toast } from 'sonner';
+                         ~~~~~~~~
+
+../components/StudentsReportPage.tsx:175:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+175     <div className="space-y-6">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+176       {/* Header */}
+    ~~~~~~~~~~~~~~~~~~~~
+...
+395       </div>
+    ~~~~~~~~~~~~
+396     </div>
+    ~~~~~~~~~~
+
+../components/TeacherReportPage.tsx:1:35 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState, useMemo } from 'react';
+                                    ~~~~~~~
+
+../components/TeacherReportPage.tsx:2:128 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+2 import { Download, Calendar, ChevronLeft, ChevronRight, User, Clock, AlertTriangle, CheckCircle, LayoutGrid, LayoutList } from 'lucide-react';
+                                                                                                                                 ~~~~~~~~~~~~~~
+
+../components/TeacherReportPage.tsx:3:23 - error TS2307: Cannot find module 'xlsx' or its corresponding type declarations.
+
+3 import * as XLSX from 'xlsx';
+                        ~~~~~~
+
+../components/TeacherReportPage.tsx:4:23 - error TS2307: Cannot find module 'sonner' or its corresponding type declarations.
+
+4 import { toast } from 'sonner';
+                        ~~~~~~~~
+
+../components/TeacherReportPage.tsx:152:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+152     <div className="space-y-6">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+153       <div className="flex items-center justify-between">
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+397       )}
+    ~~~~~~~~
+398     </div>
+    ~~~~~~~~~~
+
+../components/UnderConstructionPage.tsx:1:30 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+1 import { Construction } from 'lucide-react';
+                               ~~~~~~~~~~~~~~
+
+../components/UnderConstructionPage.tsx:5:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+  5     <div className="flex items-center justify-center min-h-[600px]">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  6       <div className="text-center max-w-2xl px-6">
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+172       </div>
+    ~~~~~~~~~~~~
+173     </div>
+    ~~~~~~~~~~
+
+../components/UserLogsPage.tsx:1:37 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState, useEffect } from 'react';
+                                      ~~~~~~~
+
+../components/UserLogsPage.tsx:18:8 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+18 } from 'lucide-react';
+          ~~~~~~~~~~~~~~
+
+../components/UserLogsPage.tsx:39:23 - error TS2307: Cannot find module 'sonner' or its corresponding type declarations.
+
+39 import { toast } from 'sonner';
+                         ~~~~~~~~
+
+../components/UserLogsPage.tsx:181:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+181     <div className="space-y-6">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+182       {/* Заголовок */}
+    ~~~~~~~~~~~~~~~~~~~~~~~
+...
+463       </Dialog>
+    ~~~~~~~~~~~~~~~
+464     </div>
+    ~~~~~~~~~~
+
+../components/UsersSettingsPage.tsx:1:37 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState, useEffect } from "react";
+                                      ~~~~~~~
+
+../components/UsersSettingsPage.tsx:2:23 - error TS2307: Cannot find module 'sonner' or its corresponding type declarations.
+
+2 import { toast } from "sonner";
+                        ~~~~~~~~
+
+../components/UsersSettingsPage.tsx:20:8 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+20 } from "lucide-react";
+          ~~~~~~~~~~~~~~
+
+../components/UsersSettingsPage.tsx:395:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 395     <div className="p-6">
+         ~~~~~~~~~~~~~~~~~~~~~
+ 396       <div className="mb-6">
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ...
+1067       </AlertDialog>
+     ~~~~~~~~~~~~~~~~~~~~
+1068     </div>
+     ~~~~~~~~~~
+
+../components/figma/ImageWithFallback.tsx:1:33 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import React, { useState } from 'react'
+                                  ~~~~~~~
+
+../components/figma/ImageWithFallback.tsx:16:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 16     <div
+        ~~~~
+ 17       className={`inline-block bg-gray-100 text-center align-middle ${className ?? ''}`}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 22       </div>
+    ~~~~~~~~~~~~
+ 23     </div>
+    ~~~~~~~~~~
+
+../components/teacher-report/DayTimeline.tsx:1:35 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState, useMemo } from 'react';
+                                    ~~~~~~~
+
+../components/teacher-report/DayTimeline.tsx:2:31 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+2 import { AlertTriangle } from 'lucide-react';
+                                ~~~~~~~~~~~~~~
+
+../components/teacher-report/DayTimeline.tsx:158:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+158     <div className="relative">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~
+159       <div className="flex justify-between text-xs text-gray-500 mb-2">
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+317       )}
+    ~~~~~~~~
+318     </div>
+    ~~~~~~~~~~
+
+../components/teacher-report/DayTimelineVertical.tsx:1:35 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState, useMemo } from 'react';
+                                    ~~~~~~~
+
+../components/teacher-report/DayTimelineVertical.tsx:2:31 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+2 import { AlertTriangle } from 'lucide-react';
+                                ~~~~~~~~~~~~~~
+
+../components/teacher-report/DayTimelineVertical.tsx:164:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+164     <div className="flex flex-col items-center">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+165       <div className="font-medium text-sm text-gray-900 mb-2 text-center">
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+303       )}
+    ~~~~~~~~
+304     </div>
+    ~~~~~~~~~~
+
+../components/ui/accordion.tsx:1:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/accordion.tsx:2:37 - error TS2307: Cannot find module '@radix-ui/react-accordion' or its corresponding type declarations.
+
+2 import * as AccordionPrimitive from "@radix-ui/react-accordion";
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/accordion.tsx:3:33 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+3 import { ChevronDownIcon } from "lucide-react";
+                                  ~~~~~~~~~~~~~~
+
+../components/ui/accordion.tsx:10:10 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+10   return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/alert-dialog.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/alert-dialog.tsx:4:39 - error TS2307: Cannot find module '@radix-ui/react-alert-dialog' or its corresponding type declarations.
+
+4 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/alert-dialog.tsx:12:10 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+12   return <AlertDialogPrimitive.Root data-slot="alert-dialog" {...props} />;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/alert.tsx:1:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/alert.tsx:2:40 - error TS2307: Cannot find module 'class-variance-authority' or its corresponding type declarations.
+
+2 import { cva, type VariantProps } from "class-variance-authority";
+                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/alert.tsx:28:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 28     <div
+        ~~~~
+ 29       data-slot="alert"
+    ~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 32       {...props}
+    ~~~~~~~~~~~~~~~~
+ 33     />
+    ~~~~~~
+
+../components/ui/aspect-ratio.tsx:3:39 - error TS2307: Cannot find module '@radix-ui/react-aspect-ratio' or its corresponding type declarations.
+
+3 import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio";
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/aspect-ratio.tsx:8:10 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+8   return <AspectRatioPrimitive.Root data-slot="aspect-ratio" {...props} />;
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/avatar.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/avatar.tsx:4:34 - error TS2307: Cannot find module '@radix-ui/react-avatar' or its corresponding type declarations.
+
+4 import * as AvatarPrimitive from "@radix-ui/react-avatar";
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/avatar.tsx:13:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 13     <AvatarPrimitive.Root
+        ~~~~~~~~~~~~~~~~~~~~~
+ 14       data-slot="avatar"
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 19       {...props}
+    ~~~~~~~~~~~~~~~~
+ 20     />
+    ~~~~~~
+
+../components/ui/badge.tsx:1:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/badge.tsx:2:22 - error TS2307: Cannot find module '@radix-ui/react-slot' or its corresponding type declarations.
+
+2 import { Slot } from "@radix-ui/react-slot";
+                       ~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/badge.tsx:3:40 - error TS2307: Cannot find module 'class-variance-authority' or its corresponding type declarations.
+
+3 import { cva, type VariantProps } from "class-variance-authority";
+                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/badge.tsx:38:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 38     <Comp
+        ~~~~~
+ 39       data-slot="badge"
+    ~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 41       {...props}
+    ~~~~~~~~~~~~~~~~
+ 42     />
+    ~~~~~~
+
+../components/ui/breadcrumb.tsx:1:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/breadcrumb.tsx:2:22 - error TS2307: Cannot find module '@radix-ui/react-slot' or its corresponding type declarations.
+
+2 import { Slot } from "@radix-ui/react-slot";
+                       ~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/breadcrumb.tsx:3:46 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+3 import { ChevronRight, MoreHorizontal } from "lucide-react";
+                                               ~~~~~~~~~~~~~~
+
+../components/ui/breadcrumb.tsx:8:10 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+8   return <nav aria-label="breadcrumb" data-slot="breadcrumb" {...props} />;
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/button.tsx:1:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/button.tsx:2:22 - error TS2307: Cannot find module '@radix-ui/react-slot' or its corresponding type declarations.
+
+2 import { Slot } from "@radix-ui/react-slot";
+                       ~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/button.tsx:3:40 - error TS2307: Cannot find module 'class-variance-authority' or its corresponding type declarations.
+
+3 import { cva, type VariantProps } from "class-variance-authority";
+                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/button.tsx:50:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 50     <Comp
+        ~~~~~
+ 51       data-slot="button"
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 53       {...props}
+    ~~~~~~~~~~~~~~~~
+ 54     />
+    ~~~~~~
+
+../components/ui/calendar.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/calendar.tsx:4:43 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+4 import { ChevronLeft, ChevronRight } from "lucide-react";
+                                            ~~~~~~~~~~~~~~
+
+../components/ui/calendar.tsx:93:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 93     <div className={cn("p-3", className)}>
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 94       <div className="flex flex-col gap-4">
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+155       </div>
+    ~~~~~~~~~~~~
+156     </div>
+    ~~~~~~~~~~
+
+../components/ui/card.tsx:1:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/card.tsx:7:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+  7     <div
+        ~~~~
+  8       data-slot="card"
+    ~~~~~~~~~~~~~~~~~~~~~~
+...
+ 13       {...props}
+    ~~~~~~~~~~~~~~~~
+ 14     />
+    ~~~~~~
+
+../components/ui/carousel.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/carousel.tsx:6:8 - error TS2307: Cannot find module 'embla-carousel-react' or its corresponding type declarations.
+
+6 } from "embla-carousel-react";
+         ~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/carousel.tsx:7:39 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+7 import { ArrowLeft, ArrowRight } from "lucide-react";
+                                        ~~~~~~~~~~~~~~
+
+../components/ui/carousel.tsx:108:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+108     <CarouselContext.Provider
+        ~~~~~~~~~~~~~~~~~~~~~~~~~
+109       value={{
+    ~~~~~~~~~~~~~~
+...
+130       </div>
+    ~~~~~~~~~~~~
+131     </CarouselContext.Provider>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/chart.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/chart.tsx:4:36 - error TS2307: Cannot find module 'recharts' or its corresponding type declarations.
+
+4 import * as RechartsPrimitive from "recharts";
+                                     ~~~~~~~~~~
+
+../components/ui/chart.tsx:53:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 53     <ChartContext.Provider value={{ config }}>
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 54       <div
+    ~~~~~~~~~~
+...
+ 67       </div>
+    ~~~~~~~~~~~~
+ 68     </ChartContext.Provider>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/checkbox.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/checkbox.tsx:4:36 - error TS2307: Cannot find module '@radix-ui/react-checkbox' or its corresponding type declarations.
+
+4 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/checkbox.tsx:5:27 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+5 import { CheckIcon } from "lucide-react";
+                            ~~~~~~~~~~~~~~
+
+../components/ui/checkbox.tsx:14:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 14     <CheckboxPrimitive.Root
+        ~~~~~~~~~~~~~~~~~~~~~~~
+ 15       data-slot="checkbox"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 27       </CheckboxPrimitive.Indicator>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 28     </CheckboxPrimitive.Root>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/collapsible.tsx:3:39 - error TS2307: Cannot find module '@radix-ui/react-collapsible' or its corresponding type declarations.
+
+3 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/collapsible.tsx:8:10 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+8   return <CollapsiblePrimitive.Root data-slot="collapsible" {...props} />;
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/command.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/command.tsx:4:45 - error TS2307: Cannot find module 'cmdk' or its corresponding type declarations.
+
+4 import { Command as CommandPrimitive } from "cmdk";
+                                              ~~~~~~
+
+../components/ui/command.tsx:5:28 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+5 import { SearchIcon } from "lucide-react";
+                             ~~~~~~~~~~~~~~
+
+../components/ui/command.tsx:21:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 21     <CommandPrimitive
+        ~~~~~~~~~~~~~~~~~
+ 22       data-slot="command"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 27       {...props}
+    ~~~~~~~~~~~~~~~~
+ 28     />
+    ~~~~~~
+
+../components/ui/context-menu.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/context-menu.tsx:4:39 - error TS2307: Cannot find module '@radix-ui/react-context-menu' or its corresponding type declarations.
+
+4 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/context-menu.tsx:5:57 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+5 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
+                                                          ~~~~~~~~~~~~~~
+
+../components/ui/context-menu.tsx:12:10 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+12   return <ContextMenuPrimitive.Root data-slot="context-menu" {...props} />;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/dialog.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/dialog.tsx:4:34 - error TS2307: Cannot find module '@radix-ui/react-dialog' or its corresponding type declarations.
+
+4 import * as DialogPrimitive from "@radix-ui/react-dialog";
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/dialog.tsx:5:23 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+5 import { XIcon } from "lucide-react";
+                        ~~~~~~~~~~~~~~
+
+../components/ui/dialog.tsx:12:10 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+12   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/drawer.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/drawer.tsx:4:43 - error TS2307: Cannot find module 'vaul' or its corresponding type declarations.
+
+4 import { Drawer as DrawerPrimitive } from "vaul";
+                                            ~~~~~~
+
+../components/ui/drawer.tsx:11:10 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+11   return <DrawerPrimitive.Root data-slot="drawer" {...props} />;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/dropdown-menu.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/dropdown-menu.tsx:4:40 - error TS2307: Cannot find module '@radix-ui/react-dropdown-menu' or its corresponding type declarations.
+
+4 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
+                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/dropdown-menu.tsx:5:57 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+5 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
+                                                          ~~~~~~~~~~~~~~
+
+../components/ui/dropdown-menu.tsx:12:10 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+12   return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/form.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/form.tsx:4:33 - error TS2307: Cannot find module '@radix-ui/react-label' or its corresponding type declarations.
+
+4 import * as LabelPrimitive from "@radix-ui/react-label";
+                                  ~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/form.tsx:5:22 - error TS2307: Cannot find module '@radix-ui/react-slot' or its corresponding type declarations.
+
+5 import { Slot } from "@radix-ui/react-slot";
+                       ~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/form.tsx:14:8 - error TS2307: Cannot find module 'react-hook-form' or its corresponding type declarations.
+
+14 } from "react-hook-form";
+          ~~~~~~~~~~~~~~~~~
+
+../components/ui/form.tsx:80:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 80     <FormItemContext.Provider value={{ id }}>
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 81       <div
+    ~~~~~~~~~~
+...
+ 85       />
+    ~~~~~~~~
+ 86     </FormItemContext.Provider>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/hover-card.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/hover-card.tsx:4:37 - error TS2307: Cannot find module '@radix-ui/react-hover-card' or its corresponding type declarations.
+
+4 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/hover-card.tsx:11:10 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+11   return <HoverCardPrimitive.Root data-slot="hover-card" {...props} />;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/input-otp.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/input-otp.tsx:4:43 - error TS2307: Cannot find module 'input-otp' or its corresponding type declarations.
+
+4 import { OTPInput, OTPInputContext } from "input-otp";
+                                            ~~~~~~~~~~~
+
+../components/ui/input-otp.tsx:5:27 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+5 import { MinusIcon } from "lucide-react";
+                            ~~~~~~~~~~~~~~
+
+../components/ui/input-otp.tsx:17:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 17     <OTPInput
+        ~~~~~~~~~
+ 18       data-slot="input-otp"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 24       {...props}
+    ~~~~~~~~~~~~~~~~
+ 25     />
+    ~~~~~~
+
+../components/ui/input.tsx:1:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/input.tsx:7:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+  7     <input
+        ~~~~~~
+  8       type={type}
+    ~~~~~~~~~~~~~~~~~
+...
+ 16       {...props}
+    ~~~~~~~~~~~~~~~~
+ 17     />
+    ~~~~~~
+
+../components/ui/label.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/label.tsx:4:33 - error TS2307: Cannot find module '@radix-ui/react-label' or its corresponding type declarations.
+
+4 import * as LabelPrimitive from "@radix-ui/react-label";
+                                  ~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/label.tsx:13:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 13     <LabelPrimitive.Root
+        ~~~~~~~~~~~~~~~~~~~~
+ 14       data-slot="label"
+    ~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 19       {...props}
+    ~~~~~~~~~~~~~~~~
+ 20     />
+    ~~~~~~
+
+../components/ui/menubar.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/menubar.tsx:4:35 - error TS2307: Cannot find module '@radix-ui/react-menubar' or its corresponding type declarations.
+
+4 import * as MenubarPrimitive from "@radix-ui/react-menubar";
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/menubar.tsx:5:57 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+5 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
+                                                          ~~~~~~~~~~~~~~
+
+../components/ui/menubar.tsx:14:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 14     <MenubarPrimitive.Root
+        ~~~~~~~~~~~~~~~~~~~~~~
+ 15       data-slot="menubar"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 20       {...props}
+    ~~~~~~~~~~~~~~~~
+ 21     />
+    ~~~~~~
+
+../components/ui/navigation-menu.tsx:1:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/navigation-menu.tsx:2:42 - error TS2307: Cannot find module '@radix-ui/react-navigation-menu' or its corresponding type declarations.
+
+2 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
+                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/navigation-menu.tsx:3:21 - error TS2307: Cannot find module 'class-variance-authority' or its corresponding type declarations.
+
+3 import { cva } from "class-variance-authority";
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/navigation-menu.tsx:4:33 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+4 import { ChevronDownIcon } from "lucide-react";
+                                  ~~~~~~~~~~~~~~
+
+../components/ui/navigation-menu.tsx:17:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 17     <NavigationMenuPrimitive.Root
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 18       data-slot="navigation-menu"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 27       {viewport && <NavigationMenuViewport />}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 28     </NavigationMenuPrimitive.Root>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/pagination.tsx:1:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/pagination.tsx:6:8 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+6 } from "lucide-react";
+         ~~~~~~~~~~~~~~
+
+../components/ui/pagination.tsx:13:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 13     <nav
+        ~~~~
+ 14       role="navigation"
+    ~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 18       {...props}
+    ~~~~~~~~~~~~~~~~
+ 19     />
+    ~~~~~~
+
+../components/ui/popover.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/popover.tsx:4:35 - error TS2307: Cannot find module '@radix-ui/react-popover' or its corresponding type declarations.
+
+4 import * as PopoverPrimitive from "@radix-ui/react-popover";
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/popover.tsx:11:10 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+11   return <PopoverPrimitive.Root data-slot="popover" {...props} />;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/progress.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/progress.tsx:4:36 - error TS2307: Cannot find module '@radix-ui/react-progress' or its corresponding type declarations.
+
+4 import * as ProgressPrimitive from "@radix-ui/react-progress";
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/progress.tsx:14:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 14     <ProgressPrimitive.Root
+        ~~~~~~~~~~~~~~~~~~~~~~~
+ 15       data-slot="progress"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 26       />
+    ~~~~~~~~
+ 27     </ProgressPrimitive.Root>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/radio-group.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/radio-group.tsx:4:38 - error TS2307: Cannot find module '@radix-ui/react-radio-group' or its corresponding type declarations.
+
+4 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/radio-group.tsx:5:28 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+5 import { CircleIcon } from "lucide-react";
+                             ~~~~~~~~~~~~~~
+
+../components/ui/radio-group.tsx:14:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 14     <RadioGroupPrimitive.Root
+        ~~~~~~~~~~~~~~~~~~~~~~~~~
+ 15       data-slot="radio-group"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 17       {...props}
+    ~~~~~~~~~~~~~~~~
+ 18     />
+    ~~~~~~
+
+../components/ui/resizable.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/resizable.tsx:4:34 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+4 import { GripVerticalIcon } from "lucide-react";
+                                   ~~~~~~~~~~~~~~
+
+../components/ui/resizable.tsx:5:37 - error TS2307: Cannot find module 'react-resizable-panels' or its corresponding type declarations.
+
+5 import * as ResizablePrimitive from "react-resizable-panels";
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/resizable.tsx:14:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 14     <ResizablePrimitive.PanelGroup
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 15       data-slot="resizable-panel-group"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 20       {...props}
+    ~~~~~~~~~~~~~~~~
+ 21     />
+    ~~~~~~
+
+../components/ui/scroll-area.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/scroll-area.tsx:4:38 - error TS2307: Cannot find module '@radix-ui/react-scroll-area' or its corresponding type declarations.
+
+4 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/scroll-area.tsx:14:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 14     <ScrollAreaPrimitive.Root
+        ~~~~~~~~~~~~~~~~~~~~~~~~~
+ 15       data-slot="scroll-area"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 26       <ScrollAreaPrimitive.Corner />
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 27     </ScrollAreaPrimitive.Root>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/select.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/select.tsx:4:34 - error TS2307: Cannot find module '@radix-ui/react-select' or its corresponding type declarations.
+
+4 import * as SelectPrimitive from "@radix-ui/react-select";
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/select.tsx:9:8 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+9 } from "lucide-react";
+         ~~~~~~~~~~~~~~
+
+../components/ui/select.tsx:16:10 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+16   return <SelectPrimitive.Root data-slot="select" {...props} />;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/separator.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/separator.tsx:4:37 - error TS2307: Cannot find module '@radix-ui/react-separator' or its corresponding type declarations.
+
+4 import * as SeparatorPrimitive from "@radix-ui/react-separator";
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/separator.tsx:15:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 15     <SeparatorPrimitive.Root
+        ~~~~~~~~~~~~~~~~~~~~~~~~
+ 16       data-slot="separator-root"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 23       {...props}
+    ~~~~~~~~~~~~~~~~
+ 24     />
+    ~~~~~~
+
+../components/ui/sheet.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/sheet.tsx:4:33 - error TS2307: Cannot find module '@radix-ui/react-dialog' or its corresponding type declarations.
+
+4 import * as SheetPrimitive from "@radix-ui/react-dialog";
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/sheet.tsx:5:23 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+5 import { XIcon } from "lucide-react";
+                        ~~~~~~~~~~~~~~
+
+../components/ui/sheet.tsx:10:10 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+10   return <SheetPrimitive.Root data-slot="sheet" {...props} />;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/sidebar.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/sidebar.tsx:4:22 - error TS2307: Cannot find module '@radix-ui/react-slot' or its corresponding type declarations.
+
+4 import { Slot } from "@radix-ui/react-slot";
+                       ~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/sidebar.tsx:5:35 - error TS2307: Cannot find module 'class-variance-authority' or its corresponding type declarations.
+
+5 import { VariantProps, cva } from "class-variance-authority";
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/sidebar.tsx:6:31 - error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+
+6 import { PanelLeftIcon } from "lucide-react";
+                                ~~~~~~~~~~~~~~
+
+../components/ui/sidebar.tsx:130:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+130     <SidebarContext.Provider value={contextValue}>
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+131       <TooltipProvider delayDuration={0}>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+149       </TooltipProvider>
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+150     </SidebarContext.Provider>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/skeleton.tsx:5:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+  5     <div
+        ~~~~
+  6       data-slot="skeleton"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+  8       {...props}
+    ~~~~~~~~~~~~~~~~
+  9     />
+    ~~~~~~
+
+../components/ui/slider.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/slider.tsx:4:34 - error TS2307: Cannot find module '@radix-ui/react-slider' or its corresponding type declarations.
+
+4 import * as SliderPrimitive from "@radix-ui/react-slider";
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/slider.tsx:27:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 27     <SliderPrimitive.Root
+        ~~~~~~~~~~~~~~~~~~~~~
+ 28       data-slot="slider"
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 58       ))}
+    ~~~~~~~~~
+ 59     </SliderPrimitive.Root>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/sonner.tsx:3:49 - error TS2307: Cannot find module 'sonner' or its corresponding type declarations.
+
+3 import { Toaster as Sonner, ToasterProps } from "sonner";
+                                                  ~~~~~~~~
+
+../components/ui/sonner.tsx:9:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+  9     <Sonner
+        ~~~~~~~
+ 10       theme={theme as ToasterProps["theme"]}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 19       {...props}
+    ~~~~~~~~~~~~~~~~
+ 20     />
+    ~~~~~~
+
+../components/ui/switch.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/switch.tsx:4:34 - error TS2307: Cannot find module '@radix-ui/react-switch' or its corresponding type declarations.
+
+4 import * as SwitchPrimitive from "@radix-ui/react-switch";
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/switch.tsx:13:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 13     <SwitchPrimitive.Root
+        ~~~~~~~~~~~~~~~~~~~~~
+ 14       data-slot="switch"
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 26       />
+    ~~~~~~~~
+ 27     </SwitchPrimitive.Root>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/table.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/table.tsx:9:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+  9     <div
+        ~~~~
+ 10       data-slot="table-container"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 17       />
+    ~~~~~~~~
+ 18     </div>
+    ~~~~~~~~~~
+
+../components/ui/tabs.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/tabs.tsx:4:32 - error TS2307: Cannot find module '@radix-ui/react-tabs' or its corresponding type declarations.
+
+4 import * as TabsPrimitive from "@radix-ui/react-tabs";
+                                 ~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/tabs.tsx:13:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 13     <TabsPrimitive.Root
+        ~~~~~~~~~~~~~~~~~~~
+ 14       data-slot="tabs"
+    ~~~~~~~~~~~~~~~~~~~~~~
+...
+ 16       {...props}
+    ~~~~~~~~~~~~~~~~
+ 17     />
+    ~~~~~~
+
+../components/ui/textarea.tsx:1:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/textarea.tsx:7:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+  7     <textarea
+        ~~~~~~~~~
+  8       data-slot="textarea"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 13       {...props}
+    ~~~~~~~~~~~~~~~~
+ 14     />
+    ~~~~~~
+
+../components/ui/toggle-group.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/toggle-group.tsx:4:39 - error TS2307: Cannot find module '@radix-ui/react-toggle-group' or its corresponding type declarations.
+
+4 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/toggle-group.tsx:5:35 - error TS2307: Cannot find module 'class-variance-authority' or its corresponding type declarations.
+
+5 import { type VariantProps } from "class-variance-authority";
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/toggle-group.tsx:26:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 26     <ToggleGroupPrimitive.Root
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 27       data-slot="toggle-group"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 38       </ToggleGroupContext.Provider>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 39     </ToggleGroupPrimitive.Root>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/toggle.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/toggle.tsx:4:34 - error TS2307: Cannot find module '@radix-ui/react-toggle' or its corresponding type declarations.
+
+4 import * as TogglePrimitive from "@radix-ui/react-toggle";
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/toggle.tsx:5:40 - error TS2307: Cannot find module 'class-variance-authority' or its corresponding type declarations.
+
+5 import { cva, type VariantProps } from "class-variance-authority";
+                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/toggle.tsx:39:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 39     <TogglePrimitive.Root
+        ~~~~~~~~~~~~~~~~~~~~~
+ 40       data-slot="toggle"
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 42       {...props}
+    ~~~~~~~~~~~~~~~~
+ 43     />
+    ~~~~~~
+
+../components/ui/tooltip.tsx:3:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+3 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/tooltip.tsx:4:35 - error TS2307: Cannot find module '@radix-ui/react-tooltip' or its corresponding type declarations.
+
+4 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+../components/ui/tooltip.tsx:13:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+ 13     <TooltipPrimitive.Provider
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 14       data-slot="tooltip-provider"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+ 16       {...props}
+    ~~~~~~~~~~~~~~~~
+ 17     />
+    ~~~~~~
+
+../components/ui/use-mobile.ts:1:24 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import * as React from "react";
+                         ~~~~~~~
+
+../components/ui/utils.ts:1:39 - error TS2307: Cannot find module 'clsx' or its corresponding type declarations.
+
+1 import { clsx, type ClassValue } from "clsx";
+                                        ~~~~~~
+
+../components/ui/utils.ts:2:25 - error TS2307: Cannot find module 'tailwind-merge' or its corresponding type declarations.
+
+2 import { twMerge } from "tailwind-merge";
+                          ~~~~~~~~~~~~~~~~
+
+../contexts/AuthContext.tsx:1:82 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+                                                                                   ~~~~~~~
+
+../contexts/AuthContext.tsx:305:5 - error TS2875: This JSX tag requires the module path 'react/jsx-runtime' to exist, but none could be found. Make sure you have types for the appropriate package installed.
+
+305     <AuthContext.Provider
+        ~~~~~~~~~~~~~~~~~~~~~
+306       value={{
+    ~~~~~~~~~~~~~~
+...
+321       {children}
+    ~~~~~~~~~~~~~~~~
+322     </AuthContext.Provider>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+components/AnalyticsPage.tsx:76:30 - error TS2339: Property 'total_stats' does not exist on type '{}'.
+
+76   const statistics = allData.total_stats;
+                                ~~~~~~~~~~~
+
+components/AnalyticsPage.tsx:77:30 - error TS2339: Property 'time_series' does not exist on type '{}'.
+
+77   const timeSeries = allData.time_series;
+                                ~~~~~~~~~~~
+
+components/AnalyticsPage.tsx:78:32 - error TS2339: Property 'top_zones' does not exist on type '{}'.
+
+78   const topLocations = allData.top_zones;
+                                  ~~~~~~~~~
+
+components/AnalyticsPage.tsx:79:34 - error TS2339: Property 'weekday_pattern' does not exist on type '{}'.
+
+79   const weekdayPattern = allData.weekday_pattern;
+                                    ~~~~~~~~~~~~~~~
+
+components/AnalyticsPage.tsx:80:39 - error TS2339: Property 'zone_comparison' does not exist on type '{}'.
+
+80   const locationsComparison = allData.zone_comparison;
+                                         ~~~~~~~~~~~~~~~
+
+components/AnalyticsPage.tsx:81:38 - error TS2339: Property 'hourly_distribution' does not exist on type '{}'.
+
+81   const hourlyDistribution = allData.hourly_distribution;
+                                        ~~~~~~~~~~~~~~~~~~~
+
+components/AnalyticsPage.tsx:82:31 - error TS2339: Property 'dormitory_analysis' does not exist on type '{}'.
+
+82   const dormitories = allData.dormitory_analysis;
+                                 ~~~~~~~~~~~~~~~~~~
+
+components/AnalyticsPage.tsx:1308:21 - error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ReactDatePickerProps<undefined, undefined>): ReactDatePicker<undefined, undefined>', gave the following error.
+    Type '{ selected: Date; onChange: (date: Date) => void; dateFormat: string; locale: string; className: string; style: CSSProperties; maxDate: Date; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<ReactDatePicker<undefined, undefined>> & Readonly<ReactDatePickerProps<undefined, undefined>>'.
+      Property 'style' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<ReactDatePicker<undefined, undefined>> & Readonly<ReactDatePickerProps<undefined, undefined>>'.
+  Overload 2 of 2, '(props: ReactDatePickerProps<undefined, undefined>, context: any): ReactDatePicker<undefined, undefined>', gave the following error.
+    Type '{ selected: Date; onChange: (date: Date) => void; dateFormat: string; locale: string; className: string; style: CSSProperties; maxDate: Date; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<ReactDatePicker<undefined, undefined>> & Readonly<ReactDatePickerProps<undefined, undefined>>'.
+      Property 'style' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<ReactDatePicker<undefined, undefined>> & Readonly<ReactDatePickerProps<undefined, undefined>>'.
+
+1308                     style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
+                         ~~~~~
+
+
+components/AnalyticsPage.tsx:1330:21 - error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ReactDatePickerProps<undefined, undefined>): ReactDatePicker<undefined, undefined>', gave the following error.
+    Type '{ selected: Date; onChange: (date: Date) => void; dateFormat: string; locale: string; className: string; style: CSSProperties; minDate: Date; maxDate: Date; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<ReactDatePicker<undefined, undefined>> & Readonly<ReactDatePickerProps<undefined, undefined>>'.
+      Property 'style' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<ReactDatePicker<undefined, undefined>> & Readonly<ReactDatePickerProps<undefined, undefined>>'.
+  Overload 2 of 2, '(props: ReactDatePickerProps<undefined, undefined>, context: any): ReactDatePicker<undefined, undefined>', gave the following error.
+    Type '{ selected: Date; onChange: (date: Date) => void; dateFormat: string; locale: string; className: string; style: CSSProperties; minDate: Date; maxDate: Date; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<ReactDatePicker<undefined, undefined>> & Readonly<ReactDatePickerProps<undefined, undefined>>'.
+      Property 'style' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<ReactDatePicker<undefined, undefined>> & Readonly<ReactDatePickerProps<undefined, undefined>>'.
+
+1330                     style={{ '--tw-ring-color': '#00aeef' } as React.CSSProperties}
+                         ~~~~~
+
+
+components/DynamicStatCard.tsx:17:26 - error TS2307: Cannot find module '../lib/mqtt' or its corresponding type declarations.
+
+17 import { StatCard } from '../lib/mqtt';
+                            ~~~~~~~~~~~~~
+
+components/DynamicStatCard.tsx:26:3 - error TS2322: Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ComponentType<{ size?: number; className?: string; }>'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'FunctionComponent<{ size?: number; className?: string; }>'.
+    The types of 'propTypes.size' are incompatible between these types.
+      Type 'Validator<string | number>' is not assignable to type 'Validator<number>'.
+        Type 'string | number' is not assignable to type 'number'.
+          Type 'string' is not assignable to type 'number'.
+
+26   users: Users,
+     ~~~~~
+
+components/DynamicStatCard.tsx:27:3 - error TS2322: Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ComponentType<{ size?: number; className?: string; }>'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'FunctionComponent<{ size?: number; className?: string; }>'.
+    The types of 'propTypes.size' are incompatible between these types.
+      Type 'Validator<string | number>' is not assignable to type 'Validator<number>'.
+        Type 'string | number' is not assignable to type 'number'.
+          Type 'string' is not assignable to type 'number'.
+
+27   briefcase: Briefcase,
+     ~~~~~~~~~
+
+components/DynamicStatCard.tsx:28:3 - error TS2322: Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ComponentType<{ size?: number; className?: string; }>'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'FunctionComponent<{ size?: number; className?: string; }>'.
+    The types of 'propTypes.size' are incompatible between these types.
+      Type 'Validator<string | number>' is not assignable to type 'Validator<number>'.
+        Type 'string | number' is not assignable to type 'number'.
+          Type 'string' is not assignable to type 'number'.
+
+28   car: Car,
+     ~~~
+
+components/DynamicStatCard.tsx:29:3 - error TS2322: Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ComponentType<{ size?: number; className?: string; }>'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'FunctionComponent<{ size?: number; className?: string; }>'.
+    The types of 'propTypes.size' are incompatible between these types.
+      Type 'Validator<string | number>' is not assignable to type 'Validator<number>'.
+        Type 'string | number' is not assignable to type 'number'.
+          Type 'string' is not assignable to type 'number'.
+
+29   activity: Activity,
+     ~~~~~~~~
+
+components/DynamicStatCard.tsx:30:3 - error TS2322: Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ComponentType<{ size?: number; className?: string; }>'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'FunctionComponent<{ size?: number; className?: string; }>'.
+    The types of 'propTypes.size' are incompatible between these types.
+      Type 'Validator<string | number>' is not assignable to type 'Validator<number>'.
+        Type 'string | number' is not assignable to type 'number'.
+          Type 'string' is not assignable to type 'number'.
+
+30   'trending-up': TrendingUp,
+     ~~~~~~~~~~~~~
+
+components/DynamicStatCard.tsx:31:3 - error TS2322: Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ComponentType<{ size?: number; className?: string; }>'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'FunctionComponent<{ size?: number; className?: string; }>'.
+    The types of 'propTypes.size' are incompatible between these types.
+      Type 'Validator<string | number>' is not assignable to type 'Validator<number>'.
+        Type 'string | number' is not assignable to type 'number'.
+          Type 'string' is not assignable to type 'number'.
+
+31   'trending-down': TrendingDown,
+     ~~~~~~~~~~~~~~~
+
+components/DynamicStatCard.tsx:32:3 - error TS2322: Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ComponentType<{ size?: number; className?: string; }>'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'FunctionComponent<{ size?: number; className?: string; }>'.
+    The types of 'propTypes.size' are incompatible between these types.
+      Type 'Validator<string | number>' is not assignable to type 'Validator<number>'.
+        Type 'string | number' is not assignable to type 'number'.
+          Type 'string' is not assignable to type 'number'.
+
+32   'alert-circle': AlertCircle,
+     ~~~~~~~~~~~~~~
+
+components/DynamicStatCard.tsx:33:3 - error TS2322: Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ComponentType<{ size?: number; className?: string; }>'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'FunctionComponent<{ size?: number; className?: string; }>'.
+    The types of 'propTypes.size' are incompatible between these types.
+      Type 'Validator<string | number>' is not assignable to type 'Validator<number>'.
+        Type 'string | number' is not assignable to type 'number'.
+          Type 'string' is not assignable to type 'number'.
+
+33   'check-circle': CheckCircle,
+     ~~~~~~~~~~~~~~
+
+components/DynamicStatCard.tsx:34:3 - error TS2322: Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ComponentType<{ size?: number; className?: string; }>'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'FunctionComponent<{ size?: number; className?: string; }>'.
+    The types of 'propTypes.size' are incompatible between these types.
+      Type 'Validator<string | number>' is not assignable to type 'Validator<number>'.
+        Type 'string | number' is not assignable to type 'number'.
+          Type 'string' is not assignable to type 'number'.
+
+34   'x-circle': XCircle,
+     ~~~~~~~~~~
+
+components/DynamicStatCard.tsx:35:3 - error TS2322: Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ComponentType<{ size?: number; className?: string; }>'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'FunctionComponent<{ size?: number; className?: string; }>'.
+    The types of 'propTypes.size' are incompatible between these types.
+      Type 'Validator<string | number>' is not assignable to type 'Validator<number>'.
+        Type 'string | number' is not assignable to type 'number'.
+          Type 'string' is not assignable to type 'number'.
+
+35   clock: Clock,
+     ~~~~~
+
+components/DynamicStatCard.tsx:36:3 - error TS2322: Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ComponentType<{ size?: number; className?: string; }>'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'FunctionComponent<{ size?: number; className?: string; }>'.
+    The types of 'propTypes.size' are incompatible between these types.
+      Type 'Validator<string | number>' is not assignable to type 'Validator<number>'.
+        Type 'string | number' is not assignable to type 'number'.
+          Type 'string' is not assignable to type 'number'.
+
+36   database: Database,
+     ~~~~~~~~
+
+components/DynamicStatCard.tsx:37:3 - error TS2322: Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ComponentType<{ size?: number; className?: string; }>'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'FunctionComponent<{ size?: number; className?: string; }>'.
+    The types of 'propTypes.size' are incompatible between these types.
+      Type 'Validator<string | number>' is not assignable to type 'Validator<number>'.
+        Type 'string | number' is not assignable to type 'number'.
+          Type 'string' is not assignable to type 'number'.
+
+37   server: Server,
+     ~~~~~~
+
+components/DynamicStatCard.tsx:38:3 - error TS2322: Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ComponentType<{ size?: number; className?: string; }>'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'FunctionComponent<{ size?: number; className?: string; }>'.
+    The types of 'propTypes.size' are incompatible between these types.
+      Type 'Validator<string | number>' is not assignable to type 'Validator<number>'.
+        Type 'string | number' is not assignable to type 'number'.
+          Type 'string' is not assignable to type 'number'.
+
+38   wifi: Wifi,
+     ~~~~
+
+components/DynamicStatCard.tsx:39:3 - error TS2322: Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ComponentType<{ size?: number; className?: string; }>'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'FunctionComponent<{ size?: number; className?: string; }>'.
+    The types of 'propTypes.size' are incompatible between these types.
+      Type 'Validator<string | number>' is not assignable to type 'Validator<number>'.
+        Type 'string | number' is not assignable to type 'number'.
+          Type 'string' is not assignable to type 'number'.
+
+39   'wifi-off': WifiOff,
+     ~~~~~~~~~~
+
+components/EngineeringPage.tsx:194:27 - error TS2503: Cannot find namespace 'NodeJS'.
+
+194     let reconnectTimeout: NodeJS.Timeout | null = null;
+                              ~~~~~~
+
+components/EngineeringPage.tsx:287:44 - error TS2339: Property 'events' does not exist on type 'unknown'.
+
+287           setBadEvents(eventsResponse.data.events || []);
+                                               ~~~~~~
+
+components/EngineeringPage.tsx:293:45 - error TS2339: Property 'rules' does not exist on type 'unknown'.
+
+293           setAccessRules(rulesResponse.data.rules || []);
+                                                ~~~~~
+
+components/EngineeringPage.tsx:404:88 - error TS2339: Property 'rule' does not exist on type 'unknown'.
+
+404           setAccessRules(prev => prev.map(r => r.id === editingRule.id ? response.data.rule : r));
+                                                                                           ~~~~
+
+components/EngineeringPage.tsx:410:49 - error TS2339: Property 'rule' does not exist on type 'unknown'.
+
+410           setAccessRules(prev => [response.data.rule, ...prev]);
+                                                    ~~~~
+
+components/EngineeringPage.tsx:445:78 - error TS2339: Property 'rule' does not exist on type 'unknown'.
+
+445         setAccessRules(prev => prev.map(r => r.id === ruleId ? response.data.rule : r));
+                                                                                 ~~~~
+
+components/EngineeringPage.tsx:446:37 - error TS2339: Property 'rule' does not exist on type 'unknown'.
+
+446         toast.success(response.data.rule.isActive ? 'Правило активировано' : 'Правило деактивировано');
+                                        ~~~~
+
+components/ForeignStudentsReport.tsx:218:34 - error TS2339: Property 'results' does not exist on type 'ApiResponse<unknown>'.
+
+218         const results = response.results || [];
+                                     ~~~~~~~
+
+components/IdentifierSearchPage.tsx:45:27 - error TS2339: Property 'length' does not exist on type 'unknown'.
+
+45         if (response.data.length === 0) {
+                             ~~~~~~
+
+components/IdentifierSearchPage.tsx:48:59 - error TS2339: Property 'length' does not exist on type 'unknown'.
+
+48           toast.success(`Найдено записей: ${response.data.length}`);
+                                                             ~~~~~~
+
+hooks/useAnalyticsMQTT.ts:15:38 - error TS2503: Cannot find namespace 'NodeJS'.
+
+15   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+                                        ~~~~~~
+
+hooks/useForeignStudentsMQTT.ts:24:27 - error TS2503: Cannot find namespace 'NodeJS'.
+
+24     let reconnectTimeout: NodeJS.Timeout | null = null;
+                             ~~~~~~
+
+hooks/useMQTT.ts:76:38 - error TS2503: Cannot find namespace 'NodeJS'.
+
+76   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+                                        ~~~~~~
+
+hooks/useMQTT.ts:255:50 - error TS2339: Property 'message' does not exist on type 'ApiResponse<any>'.
+
+255         return { success: false, error: response.message };
+                                                     ~~~~~~~
+
+hooks/useParkingMQTT.ts:29:38 - error TS2503: Cannot find namespace 'NodeJS'.
+
+29   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+                                        ~~~~~~
+
+hooks/useStorageMQTT.ts:27:38 - error TS2503: Cannot find namespace 'NodeJS'.
+
+27   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+                                        ~~~~~~
+
+../hooks/useAnalyticsMQTT.ts:1:58 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useEffect, useState, useCallback, useRef } from 'react';
+                                                           ~~~~~~~
+
+../hooks/useAnalyticsMQTT.ts:15:38 - error TS2503: Cannot find namespace 'NodeJS'.
+
+15   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+                                        ~~~~~~
+
+../hooks/useForeignStudentsMQTT.ts:1:37 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState, useEffect } from 'react';
+                                      ~~~~~~~
+
+../hooks/useForeignStudentsMQTT.ts:24:27 - error TS2503: Cannot find namespace 'NodeJS'.
+
+24     let reconnectTimeout: NodeJS.Timeout | null = null;
+                             ~~~~~~
+
+../hooks/useMQTT.ts:1:58 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useEffect, useState, useCallback, useRef } from 'react';
+                                                           ~~~~~~~
+
+../hooks/useMQTT.ts:76:38 - error TS2503: Cannot find namespace 'NodeJS'.
+
+76   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+                                        ~~~~~~
+
+../hooks/useMQTT.ts:255:50 - error TS2339: Property 'message' does not exist on type 'ApiResponse<any>'.
+
+255         return { success: false, error: response.message };
+                                                     ~~~~~~~
+
+../hooks/useParkingMQTT.ts:1:45 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState, useEffect, useRef } from 'react';
+                                              ~~~~~~~
+
+../hooks/useParkingMQTT.ts:29:38 - error TS2503: Cannot find namespace 'NodeJS'.
+
+29   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+                                        ~~~~~~
+
+../hooks/useStorageMQTT.ts:1:45 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+1 import { useState, useEffect, useRef } from 'react';
+                                              ~~~~~~~
+
+../hooks/useStorageMQTT.ts:27:38 - error TS2503: Cannot find namespace 'NodeJS'.
+
+27   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+                                        ~~~~~~
+
+../hooks/useStorageWebSocket.ts:6:58 - error TS2307: Cannot find module 'react' or its corresponding type declarations.
+
+6 import { useEffect, useRef, useState, useCallback } from 'react';
+                                                           ~~~~~~~
+
+../hooks/useStorageWebSocket.ts:57:38 - error TS2503: Cannot find namespace 'NodeJS'.
+
+57   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+                                        ~~~~~~
+
+../hooks/useStorageWebSocket.ts:58:34 - error TS2503: Cannot find namespace 'NodeJS'.
+
+58   const pingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+                                    ~~~~~~
+
+
+Found 350 errors in 95 files.
+
+Errors  Files
+     9  ../components/AnalyticsPage.tsx:1
+     6  ../components/BuildingDynamicsReport.tsx:1
+     4  ../components/ChangePasswordDialog.tsx:1
+     2  ../components/ChartStatCard.tsx:1
+     4  ../components/DashboardBuilder.tsx:1
+     2  ../components/DonutChartCard.tsx:1
+     3  ../components/DynamicStatCard.tsx:16
+     8  ../components/EmployeesReportPage.tsx:1
+    12  ../components/EngineeringPage.tsx:1
+     9  ../components/ForeignStudentsReport.tsx:1
+     6  ../components/IdentifierSearchPage.tsx:1
+     3  ../components/LoadingCatWidget.tsx:1
+     4  ../components/LocationPage.tsx:1
+     4  ../components/LoginPage.tsx:1
+     2  ../components/Logo.tsx:1
+     3  ../components/MainPage.tsx:1
+     3  ../components/ParkingPage.tsx:1
+     8  ../components/PassesReportPage.tsx:1
+     2  ../components/PasswordRequirements.tsx:1
+     4  ../components/RolesManagementPage.tsx:1
+     3  ../components/SimpleStatCard.tsx:1
+     6  ../components/StorageSystemsPage.tsx:7
+     8  ../components/StudentsReportPage.tsx:1
+     5  ../components/TeacherReportPage.tsx:1
+     2  ../components/UnderConstructionPage.tsx:1
+     4  ../components/UserLogsPage.tsx:1
+     4  ../components/UsersSettingsPage.tsx:1
+     2  ../components/figma/ImageWithFallback.tsx:1
+     3  ../components/teacher-report/DayTimeline.tsx:1
+     3  ../components/teacher-report/DayTimelineVertical.tsx:1
+     4  ../components/ui/accordion.tsx:1
+     3  ../components/ui/alert-dialog.tsx:3
+     3  ../components/ui/alert.tsx:1
+     2  ../components/ui/aspect-ratio.tsx:3
+     3  ../components/ui/avatar.tsx:3
+     4  ../components/ui/badge.tsx:1
+     4  ../components/ui/breadcrumb.tsx:1
+     4  ../components/ui/button.tsx:1
+     3  ../components/ui/calendar.tsx:3
+     2  ../components/ui/card.tsx:1
+     4  ../components/ui/carousel.tsx:3
+     3  ../components/ui/chart.tsx:3
+     4  ../components/ui/checkbox.tsx:3
+     2  ../components/ui/collapsible.tsx:3
+     4  ../components/ui/command.tsx:3
+     4  ../components/ui/context-menu.tsx:3
+     4  ../components/ui/dialog.tsx:3
+     3  ../components/ui/drawer.tsx:3
+     4  ../components/ui/dropdown-menu.tsx:3
+     5  ../components/ui/form.tsx:3
+     3  ../components/ui/hover-card.tsx:3
+     4  ../components/ui/input-otp.tsx:3
+     2  ../components/ui/input.tsx:1
+     3  ../components/ui/label.tsx:3
+     4  ../components/ui/menubar.tsx:3
+     5  ../components/ui/navigation-menu.tsx:1
+     3  ../components/ui/pagination.tsx:1
+     3  ../components/ui/popover.tsx:3
+     3  ../components/ui/progress.tsx:3
+     4  ../components/ui/radio-group.tsx:3
+     4  ../components/ui/resizable.tsx:3
+     3  ../components/ui/scroll-area.tsx:3
+     4  ../components/ui/select.tsx:3
+     3  ../components/ui/separator.tsx:3
+     4  ../components/ui/sheet.tsx:3
+     5  ../components/ui/sidebar.tsx:3
+     1  ../components/ui/skeleton.tsx:5
+     3  ../components/ui/slider.tsx:3
+     2  ../components/ui/sonner.tsx:3
+     3  ../components/ui/switch.tsx:3
+     2  ../components/ui/table.tsx:3
+     3  ../components/ui/tabs.tsx:3
+     2  ../components/ui/textarea.tsx:1
+     4  ../components/ui/toggle-group.tsx:3
+     4  ../components/ui/toggle.tsx:3
+     3  ../components/ui/tooltip.tsx:3
+     1  ../components/ui/use-mobile.ts:1
+     2  ../components/ui/utils.ts:1
+     2  ../contexts/AuthContext.tsx:1
+     9  components/AnalyticsPage.tsx:76
+    15  components/DynamicStatCard.tsx:17
+     7  components/EngineeringPage.tsx:194
+     1  components/ForeignStudentsReport.tsx:218
+     2  components/IdentifierSearchPage.tsx:45
+     1  hooks/useAnalyticsMQTT.ts:15
+     1  hooks/useForeignStudentsMQTT.ts:24
+     2  hooks/useMQTT.ts:76
+     1  hooks/useParkingMQTT.ts:29
+     1  hooks/useStorageMQTT.ts:27
+     2  ../hooks/useAnalyticsMQTT.ts:1
+     2  ../hooks/useForeignStudentsMQTT.ts:1
+     3  ../hooks/useMQTT.ts:1
+     2  ../hooks/useParkingMQTT.ts:1
+     2  ../hooks/useStorageMQTT.ts:1
+     3  ../hooks/useStorageWebSocket.ts:6
