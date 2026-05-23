@@ -40,23 +40,33 @@ export function LoginPage({ onLogin }: LoginPageProps) {
   };
 
   const handleSSOLogin = async () => {
-    if (!username) {
-      toast.error('Введите email для SSO авторизации');
-      return;
-    }
-
     setIsLoading(true);
-    setAuthType('sso');
 
     try {
-      // Для SSO используем email как username, пароль не требуется
-      await login(username, '', 'sso');
-      toast.success('SSO авторизация выполнена');
-      onLogin();
+      // Получаем URL для авторизации через ADFS
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const baseUrl = apiUrl || window.location.origin;
+
+      const response = await fetch(`${baseUrl}/v1/auth/oidc/login`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('Ошибка получения URL авторизации');
+      }
+
+      const data = await response.json();
+
+      if (data.success && data.data.authUrl) {
+        // Перенаправляем на ADFS для авторизации
+        window.location.href = data.data.authUrl;
+      } else {
+        throw new Error('Некорректный ответ от сервера');
+      }
     } catch (error: any) {
       console.error('SSO Login error:', error);
       toast.error(error.message || 'Ошибка SSO авторизации');
-    } finally {
       setIsLoading(false);
     }
   };
@@ -185,14 +195,14 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             type="button"
             onClick={handleSSOLogin}
             className="w-full bg-white border-2 py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all font-medium hover:bg-gray-50"
-            style={{ 
+            style={{
               borderColor: '#00aeef',
               color: '#00aeef',
               '--tw-ring-color': '#00aeef'
             } as React.CSSProperties}
             disabled={isLoading}
           >
-            Войти через SSO_UTMN
+            {isLoading ? 'Перенаправление...' : 'Войти через SSO ТюмГУ'}
           </button>
         </div>
       </div>
