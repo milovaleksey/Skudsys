@@ -29,12 +29,24 @@ export function useForeignStudentsMQTT() {
       if (!isMounted) return;
 
       try {
-        // Подключение к WebSocket серверу через backend
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/v1';
-        const baseUrl = apiUrl.replace('/v1', '').replace('http://', '').replace('https://', '');
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsUrl = `${protocol}//${baseUrl}/ws`;
-        
+        // Получаем базовый URL API из переменной окружения
+        const apiUrl = import.meta.env.VITE_API_URL || '';
+
+        // Определяем WebSocket URL
+        let wsUrl: string;
+
+        // Если VITE_API_URL задан полностью (http://... или https://...)
+        if (apiUrl && (apiUrl.startsWith('http://') || apiUrl.startsWith('https://'))) {
+          const url = new URL(apiUrl);
+          const protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+          wsUrl = `${protocol}//${url.host}/ws/foreign-students`;
+        }
+        // Если не задан - используем текущий хост
+        else {
+          const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+          wsUrl = `${protocol}//${window.location.host}/ws/foreign-students`;
+        }
+
         console.log('[Foreign Students MQTT] Подключение к:', wsUrl);
         ws = new WebSocket(wsUrl);
 

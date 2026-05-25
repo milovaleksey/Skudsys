@@ -30,9 +30,26 @@ export function useStorageMQTT() {
 
   const connect = () => {
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/v1';
-      const wsUrl = apiUrl.replace(/^http/, 'ws').replace(/\/v1$/, '');
-      const ws = new WebSocket(`${wsUrl}/ws/storage`);
+      // Получаем базовый URL API из переменной окружения
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+
+      // Определяем WebSocket URL
+      let wsUrl: string;
+
+      // Если VITE_API_URL задан полностью (http://... или https://...)
+      if (apiUrl && (apiUrl.startsWith('http://') || apiUrl.startsWith('https://'))) {
+        const url = new URL(apiUrl);
+        const protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+        wsUrl = `${protocol}//${url.host}/ws/storage`;
+      }
+      // Если не задан - используем текущий хост
+      else {
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        wsUrl = `${protocol}//${window.location.host}/ws/storage`;
+      }
+
+      console.log('[Storage WS] Подключение к', wsUrl);
+      const ws = new WebSocket(wsUrl);
 
       ws.onopen = () => {
         console.log('[Storage WebSocket] Подключено');

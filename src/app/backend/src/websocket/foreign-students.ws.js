@@ -9,7 +9,7 @@ function initForeignStudentsWebSocket(server) {
     noServer: true
   });
 
-  console.log('[Foreign Students WebSocket] Инициализирован для /ws');
+  console.log('[Foreign Students WebSocket] Инициализирован для /ws/foreign-students');
 
   // Множество подключенных клиентов
   const clients = new Set();
@@ -165,7 +165,7 @@ function initForeignStudentsWebSocket(server) {
     clearInterval(heartbeatInterval);
   });
 
-  return { wss, path: '/ws' };
+  return { wss, path: '/ws/foreign-students' };
 }
 
 module.exports = { initForeignStudentsWebSocket };

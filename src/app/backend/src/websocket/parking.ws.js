@@ -8,7 +8,7 @@ const parkingMQTTService = require('../services/parking-mqtt.service');
 function initParkingWebSocket(server) {
   const wss = new WebSocket.Server({ noServer: true });
 
-  console.log('[Parking WS] ✅ WebSocket инициализирован для /parking-ws');
+  console.log('[Parking WS] ✅ WebSocket инициализирован для /ws/parking');
 
   // Обработка подключений
   wss.on('connection', (ws, req) => {
@@ -63,7 +63,7 @@ function initParkingWebSocket(server) {
     clearInterval(interval);
   });
 
-  return { wss, path: '/parking-ws' };
+  return { wss, path: '/ws/parking' };
 }
 
 module.exports = { initParkingWebSocket };
