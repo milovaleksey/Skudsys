@@ -1,0 +1,154 @@
+ 🌐 Using relative API URL: /v1
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /auth/me with token
+ 🌐 Full URL: /v1/auth/me
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /roles with token
+ 🌐 Full URL: /v1/roles
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ [WebSocket] DEBUG: VITE_API_URL = 
+ [WebSocket] DEBUG: apiUrl = 
+ [WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTY1NDcsImV4cCI6MTc3OTgwMjk0N30.-Q54SlUR3Ir26rGKiqiZgIzYB8h_Wwq_OlGFwpa25iI
+ [WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTY1NDcsImV4cCI6MTc3OTgwMjk0N30.-Q54SlUR3Ir26rGKiqiZgIzYB8h_Wwq_OlGFwpa25iI
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /students/statistics with token
+ 🌐 Full URL: /v1/students/statistics
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /employees/statistics with token
+ 🌐 Full URL: /v1/employees/statistics
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /parking/statistics with token
+ 🌐 Full URL: /v1/parking/statistics
+/v1/employees/statistics:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ 📡 Response status: 404
+ 📡 Response content-type: application/json; charset=utf-8
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ Failed to load stats 
+(anonymous) @ index-COp9io_e.js:9
+ WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTY1NDcsImV4cCI6MTc3OTgwMjk0N30.-Q54SlUR3Ir26rGKiqiZgIzYB8h_Wwq_OlGFwpa25iI' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-COp9io_e.js:9
+ [WebSocket] Ошибка: Event
+o.onerror @ index-COp9io_e.js:9
+ [WebSocket] Отключено: 1006 
+ [WebSocket] Переподключение через 2000ms (попытка 1/5)
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /auth/logout with token
+ 🌐 Full URL: /v1/auth/logout
+ [WebSocket] DEBUG: VITE_API_URL = 
+ [WebSocket] DEBUG: apiUrl = 
+ [WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTY1NDcsImV4cCI6MTc3OTgwMjk0N30.-Q54SlUR3Ir26rGKiqiZgIzYB8h_Wwq_OlGFwpa25iI
+ [WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTY1NDcsImV4cCI6MTc3OTgwMjk0N30.-Q54SlUR3Ir26rGKiqiZgIzYB8h_Wwq_OlGFwpa25iI
+ WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTY1NDcsImV4cCI6MTc3OTgwMjk0N30.-Q54SlUR3Ir26rGKiqiZgIzYB8h_Wwq_OlGFwpa25iI' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-COp9io_e.js:9
+ [WebSocket] Ошибка: Event
+o.onerror @ index-COp9io_e.js:9
+ [WebSocket] Отключено: 1006 
+ [WebSocket] Переподключение через 4000ms (попытка 2/5)
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ 🗑️ Clearing all tokens
+ 🗑️ Clearing all tokens
+ 🔐 Attempting login for: admin authType: local
+ 🔑 Getting token: null
+ 🌐 Making request to: /auth/login without token
+ 🌐 Full URL: /v1/auth/login
+/v1/auth/login:1  Failed to load resource: the server responded with a status of 401 (Unauthorized)
+ 📡 Response status: 401
+ 📡 Response content-type: application/json; charset=utf-8
+ 📥 Login response: Object
+ ❌ Login error: 
+login @ index-COp9io_e.js:1
+ Login error: 
+onSubmit @ index-COp9io_e.js:1
+ 🔐 Attempting login for: admin authType: local
+ 🔑 Getting token: null
+ 🌐 Making request to: /auth/login without token
+ 🌐 Full URL: /v1/auth/login
+/v1/auth/login:1  Failed to load resource: the server responded with a status of 401 (Unauthorized)
+ 📡 Response status: 401
+ 📡 Response content-type: application/json; charset=utf-8
+ 📥 Login response: Object
+ ❌ Login error: 
+login @ index-COp9io_e.js:1
+ Login error: 
+onSubmit @ index-COp9io_e.js:1
+ 🔐 Attempting login for: test authType: local
+ 🔑 Getting token: null
+ 🌐 Making request to: /auth/login without token
+ 🌐 Full URL: /v1/auth/login
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ 📥 Login response: Object
+ ✅ Login successful, saving tokens...
+ Token: eyJhbGciOiJIUzI1NiIs...
+ Refresh Token: present
+ 💾 Saving token: eyJhbGciOiJIUzI1NiIs...
+ ✅ Token saved to localStorage
+ 💾 Saving refresh token
+ 👤 Setting user: Object
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ ✔️ Token verification after save: saved
+ [WebSocket] DEBUG: VITE_API_URL = 
+ [WebSocket] DEBUG: apiUrl = 
+ [WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE3Nzk3MTg3NTgsImV4cCI6MTc3OTgwNTE1OH0.aHR_-UKWNF43NylsenkkJcfvdPfGxUA_V_Ebl68Xdlw
+ [WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE3Nzk3MTg3NTgsImV4cCI6MTc3OTgwNTE1OH0.aHR_-UKWNF43NylsenkkJcfvdPfGxUA_V_Ebl68Xdlw
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /students/statistics with token
+ 🌐 Full URL: /v1/students/statistics
+index-COp9io_e.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-COp9io_e.js:1 🌐 Making request to: /employees/statistics with token
+index-COp9io_e.js:1 🌐 Full URL: /v1/employees/statistics
+index-COp9io_e.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-COp9io_e.js:1 🌐 Making request to: /parking/statistics with token
+index-COp9io_e.js:1 🌐 Full URL: /v1/parking/statistics
+/v1/employees/statistics:1  Failed to load resource: the server responded with a status of 403 (Forbidden)
+index-COp9io_e.js:1 📡 Response status: 403
+index-COp9io_e.js:1 📡 Response content-type: application/json; charset=utf-8
+/v1/students/statistics:1  Failed to load resource: the server responded with a status of 403 (Forbidden)
+index-COp9io_e.js:1 📡 Response status: 403
+index-COp9io_e.js:1 📡 Response content-type: application/json; charset=utf-8
+/v1/parking/statistics:1  Failed to load resource: the server responded with a status of 403 (Forbidden)
+index-COp9io_e.js:1 📡 Response status: 403
+index-COp9io_e.js:1 📡 Response content-type: application/json; charset=utf-8
+index-COp9io_e.js:9 WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE3Nzk3MTg3NTgsImV4cCI6MTc3OTgwNTE1OH0.aHR_-UKWNF43NylsenkkJcfvdPfGxUA_V_Ebl68Xdlw' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-COp9io_e.js:9
+index-COp9io_e.js:9 [WebSocket] Ошибка: Event
+o.onerror @ index-COp9io_e.js:9
+index-COp9io_e.js:9 [WebSocket] Отключено: 1006 
+index-COp9io_e.js:9 [WebSocket] Переподключение через 2000ms (попытка 1/5)
+index-COp9io_e.js:1 📋 Loading roles with token...
+index-COp9io_e.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-COp9io_e.js:1 🌐 Making request to: /roles with token
+index-COp9io_e.js:1 🌐 Full URL: /v1/roles
+index-COp9io_e.js:1 📡 Response status: 200
+index-COp9io_e.js:1 📡 Response content-type: application/json; charset=utf-8
+index-COp9io_e.js:1 ✅ Roles loaded: Array(7)
+index-COp9io_e.js:9 [WebSocket] DEBUG: VITE_API_URL = 
+index-COp9io_e.js:9 [WebSocket] DEBUG: apiUrl = 
+index-COp9io_e.js:9 [WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE3Nzk3MTg3NTgsImV4cCI6MTc3OTgwNTE1OH0.aHR_-UKWNF43NylsenkkJcfvdPfGxUA_V_Ebl68Xdlw
+index-COp9io_e.js:9 [WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE3Nzk3MTg3NTgsImV4cCI6MTc3OTgwNTE1OH0.aHR_-UKWNF43NylsenkkJcfvdPfGxUA_V_Ebl68Xdlw
+index-COp9io_e.js:9 WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE3Nzk3MTg3NTgsImV4cCI6MTc3OTgwNTE1OH0.aHR_-UKWNF43NylsenkkJcfvdPfGxUA_V_Ebl68Xdlw' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-COp9io_e.js:9
+index-COp9io_e.js:9 [WebSocket] Ошибка: Event
+o.onerror @ index-COp9io_e.js:9
+index-COp9io_e.js:9 [WebSocket] Отключено: 1006 
+index-COp9io_e.js:9 [WebSocket] Переподключение через 4000ms (попытка 2/5)
+index-COp9io_e.js:9 [WebSocket] DEBUG: VITE_API_URL = 
+index-COp9io_e.js:9 [WebSocket] DEBUG: apiUrl = 
+index-COp9io_e.js:9 [WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE3Nzk3MTg3NTgsImV4cCI6MTc3OTgwNTE1OH0.aHR_-UKWNF43NylsenkkJcfvdPfGxUA_V_Ebl68Xdlw
+index-COp9io_e.js:9 [WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE3Nzk3MTg3NTgsImV4cCI6MTc3OTgwNTE1OH0.aHR_-UKWNF43NylsenkkJcfvdPfGxUA_V_Ebl68Xdlw
+index-COp9io_e.js:9 WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE3Nzk3MTg3NTgsImV4cCI6MTc3OTgwNTE1OH0.aHR_-UKWNF43NylsenkkJcfvdPfGxUA_V_Ebl68Xdlw' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-COp9io_e.js:9
+(anonymous) @ index-COp9io_e.js:9
+index-COp9io_e.js:9 [WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+o.onerror @ index-COp9io_e.js:9
+index-COp9io_e.js:9 [WebSocket] Отключено: 1006 
+index-COp9io_e.js:9 [WebSocket] Переподключение через 8000ms (попытка 3/5)
