@@ -108,7 +108,6 @@ interface AuthContextType {
   hasPermission: (permission: string) => boolean;
   hasAnyPermission: (permissions: string[]) => boolean;
   updateUser: (user: User) => void;
-  setUser: (user: User | null) => void;
   addRole: (role: Omit<Role, 'id' | 'createdAt'>) => Promise<Role>;
   updateRole: (roleId: string, updates: Partial<Role>) => void;
   deleteRole: (roleId: string) => void;
@@ -313,7 +312,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         hasPermission,
         hasAnyPermission,
         updateUser,
-        setUser,
         addRole,
         updateRole,
         deleteRole,
