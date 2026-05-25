@@ -1,0 +1,148 @@
+ 🌐 Using relative API URL: /v1
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /auth/me with token
+ 🌐 Full URL: /v1/auth/me
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /roles with token
+ 🌐 Full URL: /v1/roles
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ [WebSocket] DEBUG: VITE_API_URL = undefined
+ [WebSocket] DEBUG: apiUrl = 
+ [WebSocket] Используем дефолтный WebSocket URL (порт 3000): ws://10.255.254.46:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk1NDE2NTMsImV4cCI6MTc3OTYyODA1M30.eymyETGxCLe2gbAPysXzGmmSv9pF3bqH-ZX0sNTuyFM
+index-sWFmEaer.js:9 [WebSocket] Подключение к ws://10.255.254.46:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk1NDE2NTMsImV4cCI6MTc3OTYyODA1M30.eymyETGxCLe2gbAPysXzGmmSv9pF3bqH-ZX0sNTuyFM
+index-sWFmEaer.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-sWFmEaer.js:1 🌐 Making request to: /students/statistics with token
+index-sWFmEaer.js:1 🌐 Full URL: /v1/students/statistics
+index-sWFmEaer.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-sWFmEaer.js:1 🌐 Making request to: /employees/statistics with token
+index-sWFmEaer.js:1 🌐 Full URL: /v1/employees/statistics
+index-sWFmEaer.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-sWFmEaer.js:1 🌐 Making request to: /parking/statistics with token
+index-sWFmEaer.js:1 🌐 Full URL: /v1/parking/statistics
+/v1/employees/statistics:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+index-sWFmEaer.js:1 📡 Response status: 404
+index-sWFmEaer.js:1 📡 Response content-type: application/json; charset=utf-8
+index-sWFmEaer.js:1 📡 Response status: 200
+index-sWFmEaer.js:1 📡 Response content-type: application/json; charset=utf-8
+index-sWFmEaer.js:9 [WebSocket] ✅ Подключено
+index-sWFmEaer.js:1 📡 Response status: 200
+index-sWFmEaer.js:1 📡 Response content-type: application/json; charset=utf-8
+index-sWFmEaer.js:9 Failed to load stats TypeError: Cannot read properties of undefined (reading 'total')
+    at index-sWFmEaer.js:9:225209
+(anonymous) @ index-sWFmEaer.js:9
+index-sWFmEaer.js:9 [WebSocket] Получено: initial
+index-sWFmEaer.js:9 [WebSocket] Получено: mqtt-message
+index-sWFmEaer.js:9 [WebSocket] Неизвестный тип сообщения: mqtt-message
+o.onmessage @ index-sWFmEaer.js:9
+index-sWFmEaer.js:9 WebSocket connection to 'ws://localhost:3000/parking-ws' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+c @ index-sWFmEaer.js:9
+index-sWFmEaer.js:9 [Parking WebSocket] Ошибка подключения: Event
+r.onerror @ index-sWFmEaer.js:9
+index-sWFmEaer.js:9 [Parking WebSocket] Отключено
+index-sWFmEaer.js:9 [Parking WebSocket] Переподключение через 1000ms (попытка 1)
+index-sWFmEaer.js:9 WebSocket connection to 'ws://localhost:3000/parking-ws' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+c @ index-sWFmEaer.js:9
+index-sWFmEaer.js:9 [Parking WebSocket] Ошибка подключения: Event
+r.onerror @ index-sWFmEaer.js:9
+index-sWFmEaer.js:9 [Parking WebSocket] Отключено
+index-sWFmEaer.js:9 [Parking WebSocket] Переподключение через 2000ms (попытка 2)
+index-sWFmEaer.js:9 WebSocket connection to 'ws://localhost:3000/parking-ws' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+c @ index-sWFmEaer.js:9
+index-sWFmEaer.js:9 [Parking WebSocket] Ошибка подключения: Event
+r.onerror @ index-sWFmEaer.js:9
+index-sWFmEaer.js:9 [Parking WebSocket] Отключено
+index-sWFmEaer.js:9 [Parking WebSocket] Переподключение через 4000ms (попытка 3)
+index-sWFmEaer.js:9 WebSocket connection to 'ws://localhost:3000/parking-ws' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+c @ index-sWFmEaer.js:9
+(anonymous) @ index-sWFmEaer.js:9
+index-sWFmEaer.js:9 [Parking WebSocket] Ошибка подключения: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+r.onerror @ index-sWFmEaer.js:9
+index-sWFmEaer.js:9 [Parking WebSocket] Отключено
+index-sWFmEaer.js:9 [Parking WebSocket] Переподключение через 8000ms (попытка 4)
+index-sWFmEaer.js:9 WebSocket connection to 'ws://localhost:3000/parking-ws' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+c @ index-sWFmEaer.js:9
+(anonymous) @ index-sWFmEaer.js:9
+index-sWFmEaer.js:9 [Parking WebSocket] Ошибка подключения: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+r.onerror @ index-sWFmEaer.js:9
+index-sWFmEaer.js:9 [Parking WebSocket] Отключено
+index-sWFmEaer.js:9 [Parking WebSocket] Переподключение через 16000ms (попытка 5)
+index-sWFmEaer.js:9 [WebSocket] Получено: heartbeat
+index-sWFmEaer.js:9 [WebSocket] Получено: pong
+index-sWFmEaer.js:9 WebSocket connection to 'ws://localhost:3000/parking-ws' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+c @ index-sWFmEaer.js:9
+(anonymous) @ index-sWFmEaer.js:9
+index-sWFmEaer.js:9 [Parking WebSocket] Ошибка подключения: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+r.onerror @ index-sWFmEaer.js:9
+index-sWFmEaer.js:9 [Parking WebSocket] Отключено
+index-sWFmEaer.js:9 [Parking WebSocket] Переподключение через 30000ms (попытка 6)
+index-sWFmEaer.js:9 [WebSocket] Получено: heartbeat
+index-sWFmEaer.js:9 [WebSocket] Получено: pong
+index-sWFmEaer.js:9 WebSocket connection to 'ws://localhost:3000/parking-ws' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+c @ index-sWFmEaer.js:9
+(anonymous) @ index-sWFmEaer.js:9
+ [Parking WebSocket] Ошибка подключения: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+r.onerror @ index-sWFmEaer.js:9
+ [Parking WebSocket] Отключено
+ [Parking WebSocket] Переподключение через 30000ms (попытка 7)
+ [WebSocket] Получено: heartbeat
+ [WebSocket] Получено: pong
+ WebSocket connection to 'ws://localhost:3000/parking-ws' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+c @ index-sWFmEaer.js:9
+(anonymous) @ index-sWFmEaer.js:9
+ [Parking WebSocket] Ошибка подключения: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+r.onerror @ index-sWFmEaer.js:9
+ [Parking WebSocket] Отключено
+ [Parking WebSocket] Переподключение через 30000ms (попытка 8)
+ [WebSocket] Получено: heartbeat
+ [WebSocket] Получено: pong
+ WebSocket connection to 'ws://localhost:3000/parking-ws' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+c @ index-sWFmEaer.js:9
+(anonymous) @ index-sWFmEaer.js:9
+ [Parking WebSocket] Ошибка подключения: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+r.onerror @ index-sWFmEaer.js:9
+ [Parking WebSocket] Отключено
+ [Parking WebSocket] Переподключение через 30000ms (попытка 9)
+ [WebSocket] Получено: heartbeat
+ [WebSocket] Получено: pong
+ WebSocket connection to 'ws://localhost:3000/parking-ws' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+c @ index-sWFmEaer.js:9
+(anonymous) @ index-sWFmEaer.js:9
+ [Parking WebSocket] Ошибка подключения: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+r.onerror @ index-sWFmEaer.js:9
+ [Parking WebSocket] Отключено
+ [Parking WebSocket] Переподключение через 30000ms (попытка 10)
+ [WebSocket] Получено: heartbeat
+ [WebSocket] Получено: value-updated
+ [WebSocket] Получено: value-updated
+ [WebSocket] Получено: value-updated
+ [WebSocket] Получено: value-updated
+ [WebSocket] Получено: value-updated
+ [WebSocket] Получено: value-updated
+ [WebSocket] Получено: analytics-updated
+ [WebSocket] Неизвестный тип сообщения: analytics-updated
+o.onmessage @ index-sWFmEaer.js:9
+ [WebSocket] Получено: config-updated
+ [WebSocket] Получено: pong
+ [WebSocket] Получено: value-updated
+ WebSocket connection to 'ws://localhost:3000/parking-ws' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+c @ index-sWFmEaer.js:9
+(anonymous) @ index-sWFmEaer.js:9
+ [Parking WebSocket] Ошибка подключения: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+r.onerror @ index-sWFmEaer.js:9
+ [Parking WebSocket] Отключено
+ [Parking WebSocket] Переподключение через 30000ms (попытка 11)
+ [WebSocket] Получено: heartbeat
+ [WebSocket] Получено: pong
+ WebSocket connection to 'ws://localhost:3000/parking-ws' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+c @ index-sWFmEaer.js:9
+(anonymous) @ index-sWFmEaer.js:9
+ [Parking WebSocket] Ошибка подключения: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+r.onerror @ index-sWFmEaer.js:9
+ [Parking WebSocket] Отключено
+ [Parking WebSocket] Переподключение через 30000ms (попытка 12)
+ [WebSocket] Получено: heartbeat

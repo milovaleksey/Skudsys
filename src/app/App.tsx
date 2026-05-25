@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { LoginPage } from './components/LoginPage';
 import { MainPage } from './components/MainPage';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { TokenManager } from './lib/api';
 import { Toaster } from 'sonner';
 
 function AppContent() {
   const { user, loading, setUser } = useAuth();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Проверяем токен из URL (после OIDC callback)
   useEffect(() => {
@@ -17,10 +17,10 @@ function AppContent() {
     if (token) {
       console.log('🔐 Обнаружен токен из SSO callback');
 
-      // Сохраняем токены
-      localStorage.setItem('auth_token', token);
+      // Сохраняем токены через TokenManager
+      TokenManager.setToken(token);
       if (refreshToken) {
-        localStorage.setItem('refresh_token', refreshToken);
+        TokenManager.setRefreshToken(refreshToken);
       }
 
       // Очищаем URL от параметров
@@ -37,25 +37,19 @@ function AppContent() {
       })
         .then(res => res.json())
         .then(data => {
+          console.log('📥 Получены данные пользователя из SSO:', data);
           if (data.success && data.data) {
+            console.log('✅ Устанавливаем пользователя:', data.data);
             setUser(data.data);
-            setIsLoggedIn(true);
+          } else {
+            console.error('❌ Ошибка в ответе /auth/me:', data);
           }
         })
         .catch(error => {
-          console.error('Ошибка получения данных пользователя:', error);
+          console.error('❌ Ошибка получения данных пользователя:', error);
         });
     }
   }, [setUser]);
-
-  // Синхронизируем состояние с AuthContext
-  useEffect(() => {
-    setIsLoggedIn(!!user);
-  }, [user]);
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
 
   // Показываем загрузку пока проверяем токен
   if (loading) {
@@ -72,8 +66,8 @@ function AppContent() {
   return (
     <>
       <Toaster position="top-right" richColors />
-      {!isLoggedIn ? (
-        <LoginPage onLogin={handleLogin} />
+      {!user ? (
+        <LoginPage onLogin={() => {}} />
       ) : (
         <MainPage />
       )}
