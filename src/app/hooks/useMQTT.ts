@@ -1,14 +1,28 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { apiRequest } from '../lib/api';
 
-interface StatCard {
+export interface ListRow {
+  id?: string;
+  label: string;
+  valueTopic: string;
+  unit?: string;
+  value?: string;
+}
+
+export interface StatCard {
   id: string;
   label: string;
   icon?: string;
-  valueTopic: string;
+  valueTopic?: string;
   color?: string;
   unit?: string;
   value?: string | null;
+  /** 'stat' — одно значение (по умолчанию), 'list' — несколько строк */
+  type?: 'stat' | 'list';
+  /** Строки для карточки типа 'list' */
+  rows?: ListRow[];
+  /** Значения строк: { [valueTopic]: value } */
+  rowValues?: Record<string, string>;
 }
 
 interface MQTTStatus {
@@ -106,8 +120,8 @@ export function useMQTTWebSocket() {
       // Если не задан или задан относительный путь - используем текущий хост с портом 3000
       else {
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const hostname = window.location.hostname; // только hostname без порта
-        wsUrl = `${protocol}//${hostname}:3000/ws/mqtt?token=${token}`;
+        const hostname = window.location.host; // только hostname без порта
+        wsUrl = `${protocol}//${hostname}/ws/mqtt?token=${token}`;
         console.log('[WebSocket] Используем дефолтный WebSocket URL (порт 3000):', wsUrl);
       }
 
@@ -141,12 +155,14 @@ export function useMQTTWebSocket() {
               break;
 
             case 'value-updated':
-              // Обновление значения одной карточки
-              setCards(prev => prev.map(card => 
-                card.id === data.cardId 
-                  ? { ...card, value: data.value }
-                  : card
-              ));
+              // Обновление значения карточки (stat) или строк (list)
+              setCards(prev => prev.map(card => {
+                if (card.id !== data.cardId) return card;
+                if (data.rowValues) {
+                  return { ...card, rowValues: { ...(card.rowValues ?? {}), ...data.rowValues } };
+                }
+                return { ...card, value: data.value };
+              }));
               break;
 
             case 'status-changed':

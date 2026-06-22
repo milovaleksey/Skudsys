@@ -14,7 +14,7 @@ import {
   Wifi,
   WifiOff
 } from 'lucide-react';
-import { StatCard } from '../lib/mqtt';
+import { StatCard } from '../hooks/useMQTT';
 
 interface DynamicStatCardProps {
   card: StatCard;

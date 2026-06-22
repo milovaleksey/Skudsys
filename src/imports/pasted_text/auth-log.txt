@@ -1,0 +1,97 @@
+index-BHjEc3Je.js:1 🌐 Using relative API URL: /v1
+index-BHjEc3Je.js:1 🔑 Getting token: null
+index-BHjEc3Je.js:1 🔑 Getting token: null
+index-BHjEc3Je.js:1 Skipping roles load - no token
+index-BHjEc3Je.js:1 🔐 Attempting login for: test authType: local
+index-BHjEc3Je.js:1 🔑 Getting token: null
+index-BHjEc3Je.js:1 🌐 Making request to: /auth/login without token
+index-BHjEc3Je.js:1 🌐 Full URL: /v1/auth/login
+index-BHjEc3Je.js:1 📡 Response status: 200
+index-BHjEc3Je.js:1 📡 Response content-type: application/json; charset=utf-8
+index-BHjEc3Je.js:1 📥 Login response: {success: true, data: {…}}
+index-BHjEc3Je.js:1 ✅ Login successful, saving tokens...
+index-BHjEc3Je.js:1 Token: eyJhbGciOiJIUzI1NiIs...
+index-BHjEc3Je.js:1 Refresh Token: present
+index-BHjEc3Je.js:1 💾 Saving token: eyJhbGciOiJIUzI1NiIs...
+index-BHjEc3Je.js:1 ✅ Token saved to localStorage
+index-BHjEc3Je.js:1 💾 Saving refresh token
+index-BHjEc3Je.js:1 👤 Setting user: {id: 15, username: 'test', fullName: 'test', email: 'test@utmn.ru', role: 'emploee_role', …}
+index-BHjEc3Je.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-BHjEc3Je.js:1 ✔️ Token verification after save: saved
+index-BHjEc3Je.js:9 [WebSocket] DEBUG: VITE_API_URL = 
+index-BHjEc3Je.js:9 [WebSocket] DEBUG: apiUrl = 
+index-BHjEc3Je.js:9 [WebSocket] Используем дефолтный WebSocket URL (порт 3000): ws://10.255.254.46:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE3Nzk3MjAyOTYsImV4cCI6MTc3OTgwNjY5Nn0.r6jcJeY-UJaZvBxbqaFmSGeg3H-LIRhK3JPpoQdmTxM
+index-BHjEc3Je.js:9 [WebSocket] Подключение к ws://10.255.254.46:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE3Nzk3MjAyOTYsImV4cCI6MTc3OTgwNjY5Nn0.r6jcJeY-UJaZvBxbqaFmSGeg3H-LIRhK3JPpoQdmTxM
+index-BHjEc3Je.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-BHjEc3Je.js:1 🌐 Making request to: /students/statistics with token
+index-BHjEc3Je.js:1 🌐 Full URL: /v1/students/statistics
+index-BHjEc3Je.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-BHjEc3Je.js:1 🌐 Making request to: /employees/statistics with token
+index-BHjEc3Je.js:1 🌐 Full URL: /v1/employees/statistics
+index-BHjEc3Je.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-BHjEc3Je.js:1 🌐 Making request to: /parking/statistics with token
+index-BHjEc3Je.js:1 🌐 Full URL: /v1/parking/statistics
+index-BHjEc3Je.js:1  GET http://10.255.254.46/v1/students/statistics 403 (Forbidden)
+request @ index-BHjEc3Je.js:1
+get @ index-BHjEc3Je.js:1
+getStatistics @ index-BHjEc3Je.js:1
+(anonymous) @ index-BHjEc3Je.js:9
+(anonymous) @ index-BHjEc3Je.js:9
+bu @ radix-ui-CtQ1uuYC.js:20
+As @ radix-ui-CtQ1uuYC.js:20
+Es @ radix-ui-CtQ1uuYC.js:20
+ll @ radix-ui-CtQ1uuYC.js:20
+(anonymous) @ radix-ui-CtQ1uuYC.js:20
+Fs @ radix-ui-CtQ1uuYC.js:20
+ws @ radix-ui-CtQ1uuYC.js:20
+x @ radix-ui-CtQ1uuYC.js:11
+N @ radix-ui-CtQ1uuYC.js:11
+index-BHjEc3Je.js:1 📡 Response status: 403
+index-BHjEc3Je.js:1 📡 Response content-type: application/json; charset=utf-8
+index-BHjEc3Je.js:9 [WebSocket] ✅ Подключено
+index-BHjEc3Je.js:1  GET http://10.255.254.46/v1/employees/statistics 403 (Forbidden)
+request @ index-BHjEc3Je.js:1
+get @ index-BHjEc3Je.js:1
+getStatistics @ index-BHjEc3Je.js:1
+(anonymous) @ index-BHjEc3Je.js:9
+(anonymous) @ index-BHjEc3Je.js:9
+bu @ radix-ui-CtQ1uuYC.js:20
+As @ radix-ui-CtQ1uuYC.js:20
+Es @ radix-ui-CtQ1uuYC.js:20
+ll @ radix-ui-CtQ1uuYC.js:20
+(anonymous) @ radix-ui-CtQ1uuYC.js:20
+Fs @ radix-ui-CtQ1uuYC.js:20
+ws @ radix-ui-CtQ1uuYC.js:20
+x @ radix-ui-CtQ1uuYC.js:11
+N @ radix-ui-CtQ1uuYC.js:11
+index-BHjEc3Je.js:1 📡 Response status: 403
+index-BHjEc3Je.js:1 📡 Response content-type: application/json; charset=utf-8
+index-BHjEc3Je.js:1  GET http://10.255.254.46/v1/parking/statistics 403 (Forbidden)
+request @ index-BHjEc3Je.js:1
+get @ index-BHjEc3Je.js:1
+getStatistics @ index-BHjEc3Je.js:1
+(anonymous) @ index-BHjEc3Je.js:9
+(anonymous) @ index-BHjEc3Je.js:9
+bu @ radix-ui-CtQ1uuYC.js:20
+As @ radix-ui-CtQ1uuYC.js:20
+Es @ radix-ui-CtQ1uuYC.js:20
+ll @ radix-ui-CtQ1uuYC.js:20
+(anonymous) @ radix-ui-CtQ1uuYC.js:20
+Fs @ radix-ui-CtQ1uuYC.js:20
+ws @ radix-ui-CtQ1uuYC.js:20
+x @ radix-ui-CtQ1uuYC.js:11
+N @ radix-ui-CtQ1uuYC.js:11
+index-BHjEc3Je.js:1 📡 Response status: 403
+index-BHjEc3Je.js:1 📡 Response content-type: application/json; charset=utf-8
+index-BHjEc3Je.js:9 [WebSocket] Получено: initial
+index-BHjEc3Je.js:9 [WebSocket] Получено: mqtt-message
+index-BHjEc3Je.js:9 [WebSocket] Неизвестный тип сообщения: mqtt-message
+o.onmessage @ index-BHjEc3Je.js:9
+index-BHjEc3Je.js:1 📋 Loading roles with token...
+index-BHjEc3Je.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-BHjEc3Je.js:1 🌐 Making request to: /roles with token
+index-BHjEc3Je.js:1 🌐 Full URL: /v1/roles
+index-BHjEc3Je.js:1 📡 Response status: 200
+index-BHjEc3Je.js:1 📡 Response content-type: application/json; charset=utf-8
+index-BHjEc3Je.js:1 ✅ Roles loaded: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+index-BHjEc3Je.js:9 [WebSocket] Получено: heartbeat

@@ -1,0 +1,63 @@
+index-BHjEc3Je.js:1 🌐 Using relative API URL: /v1
+index-BHjEc3Je.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-BHjEc3Je.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-BHjEc3Je.js:1 🌐 Making request to: /auth/me with token
+index-BHjEc3Je.js:1 🌐 Full URL: /v1/auth/me
+index-BHjEc3Je.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-BHjEc3Je.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-BHjEc3Je.js:1 🌐 Making request to: /roles with token
+index-BHjEc3Je.js:1 🌐 Full URL: /v1/roles
+index-BHjEc3Je.js:1 📡 Response status: 200
+index-BHjEc3Je.js:1 📡 Response content-type: application/json; charset=utf-8
+index-BHjEc3Je.js:9 [WebSocket] DEBUG: VITE_API_URL = 
+index-BHjEc3Je.js:9 [WebSocket] DEBUG: apiUrl = 
+index-BHjEc3Je.js:9 [WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-BHjEc3Je.js:9 [WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-BHjEc3Je.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-BHjEc3Je.js:1 🌐 Making request to: /students/statistics with token
+index-BHjEc3Je.js:1 🌐 Full URL: /v1/students/statistics
+index-BHjEc3Je.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-BHjEc3Je.js:1 🌐 Making request to: /employees/statistics with token
+index-BHjEc3Je.js:1 🌐 Full URL: /v1/employees/statistics
+index-BHjEc3Je.js:1 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+index-BHjEc3Je.js:1 🌐 Making request to: /parking/statistics with token
+index-BHjEc3Je.js:1 🌐 Full URL: /v1/parking/statistics
+index-BHjEc3Je.js:1 📡 Response status: 200
+index-BHjEc3Je.js:1 📡 Response content-type: application/json; charset=utf-8
+index-BHjEc3Je.js:1 📡 Response status: 200
+index-BHjEc3Je.js:1 📡 Response content-type: application/json; charset=utf-8
+index-BHjEc3Je.js:9 WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-BHjEc3Je.js:9
+index-BHjEc3Je.js:9 [WebSocket] Ошибка: Event
+o.onerror @ index-BHjEc3Je.js:9
+index-BHjEc3Je.js:9 [WebSocket] Отключено: 1006 
+index-BHjEc3Je.js:9 [WebSocket] Переподключение через 2000ms (попытка 1/5)
+/v1/employees/statistics:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+index-BHjEc3Je.js:1 📡 Response status: 404
+index-BHjEc3Je.js:1 📡 Response content-type: application/json; charset=utf-8
+index-BHjEc3Je.js:1 📡 Response status: 200
+index-BHjEc3Je.js:1 📡 Response content-type: application/json; charset=utf-8
+index-BHjEc3Je.js:9 Failed to load stats TypeError: Cannot read properties of undefined (reading 'total')
+    at index-BHjEc3Je.js:9:225389
+(anonymous) @ index-BHjEc3Je.js:9
+index-BHjEc3Je.js:9 [WebSocket] DEBUG: VITE_API_URL = 
+index-BHjEc3Je.js:9 [WebSocket] DEBUG: apiUrl = 
+index-BHjEc3Je.js:9 [WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-BHjEc3Je.js:9 [WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-BHjEc3Je.js:9 WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-BHjEc3Je.js:9
+index-BHjEc3Je.js:9 [WebSocket] Ошибка: Event
+o.onerror @ index-BHjEc3Je.js:9
+index-BHjEc3Je.js:9 [WebSocket] Отключено: 1006 
+index-BHjEc3Je.js:9 [WebSocket] Переподключение через 4000ms (попытка 2/5)
+index-BHjEc3Je.js:9 [WebSocket] DEBUG: VITE_API_URL = 
+index-BHjEc3Je.js:9 [WebSocket] DEBUG: apiUrl = 
+index-BHjEc3Je.js:9 [WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-BHjEc3Je.js:9 [WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-BHjEc3Je.js:9 WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-BHjEc3Je.js:9
+(anonymous) @ index-BHjEc3Je.js:9
+index-BHjEc3Je.js:9 [WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+o.onerror @ index-BHjEc3Je.js:9
+index-BHjEc3Je.js:9 [WebSocket] Отключено: 1006 
+index-BHjEc3Je.js:9 [WebSocket] Переподключение через 8000ms (попытка 3/5)

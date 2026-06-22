@@ -28,6 +28,7 @@ import { DashboardBuilder } from './DashboardBuilder';
 import { UserLogsPage } from './UserLogsPage';
 import { IdentifierSearchPage } from './IdentifierSearchPage';
 import { DynamicStatCard } from './DynamicStatCard';
+import { DynamicListCard } from './DynamicListCard';
 import { useAuth } from '../contexts/AuthContext';
 import { Badge } from './ui/badge';
 import { Logo } from './Logo';
@@ -320,13 +321,17 @@ export function MainPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {wsConnected && mqttCards.length > 0 ? (
                 // Динамические карточки из MQTT
-                mqttCards.map((card) => (
-                  <DynamicStatCard
-                    key={card.id}
-                    card={card}
-                    value={card.value}
-                  />
-                ))
+                mqttCards.map((card) =>
+                  card.type === 'list' ? (
+                    <DynamicListCard key={card.id} card={card} />
+                  ) : (
+                    <DynamicStatCard
+                      key={card.id}
+                      card={card}
+                      value={card.value}
+                    />
+                  )
+                )
               ) : (
                 // Fallback статичные карточки из API
                 stats.map((stat, index) => (

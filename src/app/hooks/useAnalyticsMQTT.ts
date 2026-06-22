@@ -41,8 +41,8 @@ export function useAnalyticsMQTT() {
       // Если не задан или задан относительный путь - используем текущий хост с портом 3000
       else {
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const hostname = window.location.hostname;
-        wsUrl = `${protocol}//${hostname}:3000/ws/mqtt?token=${token}`;
+        const hostname = window.location.host;
+        wsUrl = `${protocol}//${hostname}/ws/mqtt?token=${token}`;
         console.log('[Analytics WebSocket] Используем дефолтный WebSocket URL (порт 3000):', wsUrl);
       }
 

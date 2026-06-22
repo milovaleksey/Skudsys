@@ -87,8 +87,8 @@ export const useStorageWebSocket = (options: UseStorageWebSocketOptions = {}) =>
       // Если не задан или задан относительный путь - используем текущий хост с портом 3000
       else {
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const hostname = window.location.hostname; // только hostname без порта
-        wsUrl = `${protocol}//${hostname}:3000/ws/storage?token=${token}`;
+        const hostname = window.location.host; // только hostname без порта
+        wsUrl = `${protocol}//${hostname}/ws/storage?token=${token}`;
         console.log('[Storage WebSocket] Используем дефолтный WebSocket URL (порт 3000):', wsUrl);
       }
 

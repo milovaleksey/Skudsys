@@ -1,0 +1,189 @@
+ 🌐 Using relative API URL: /v1
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /auth/me with token
+ 🌐 Full URL: /v1/auth/me
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /roles with token
+ 🌐 Full URL: /v1/roles
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ [WebSocket] DEBUG: VITE_API_URL = 
+ [WebSocket] DEBUG: apiUrl = 
+ [WebSocket] Используем дефолтный WebSocket URL (порт 80): wss://report.utmn.ru/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+ [WebSocket] Подключение к wss://report.utmn.ru/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /students/statistics with token
+ 🌐 Full URL: /v1/students/statistics
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /employees/statistics with token
+ 🌐 Full URL: /v1/employees/statistics
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /parking/statistics with token
+ 🌐 Full URL: /v1/parking/statistics
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+/v1/employees/statistics:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ 📡 Response status: 404
+ 📡 Response content-type: application/json; charset=utf-8
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ Failed to load stats 
+(anonymous) @ index-Drwu3c_O.js:9
+ [WebSocket] ✅ Подключено
+ [WebSocket] Получено: initial
+ [WebSocket] Получено: mqtt-message
+ [WebSocket] Неизвестный тип сообщения: mqtt-message
+o.onmessage @ index-Drwu3c_O.js:9
+ [Analytics WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+ [Analytics WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+ WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-Drwu3c_O.js:9
+ [Analytics WebSocket] Ошибка: Event
+d.onerror @ index-Drwu3c_O.js:9
+ [Analytics WebSocket] Отключено: 1006 
+ [Analytics WebSocket] Переподключение через 2000ms (попытка 1/5)
+ [Analytics WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+ [Analytics WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+ WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-Drwu3c_O.js:9
+ [Analytics WebSocket] Ошибка: Event
+d.onerror @ index-Drwu3c_O.js:9
+ [Analytics WebSocket] Отключено: 1006 
+ [Analytics WebSocket] Переподключение через 2000ms (попытка 1/5)
+ [Analytics WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+ [Analytics WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+ WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-Drwu3c_O.js:9
+ [Analytics WebSocket] Ошибка: Event
+d.onerror @ index-Drwu3c_O.js:9
+ [Analytics WebSocket] Отключено: 1006 
+ [Analytics WebSocket] Переподключение через 4000ms (попытка 2/5)
+ [Engineering] Подключение к WebSocket: wss://report.utmn.ru/ws/mqtt?token=***
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /engineering/bad-events with token
+ 🌐 Full URL: /v1/engineering/bad-events
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ 🔑 Getting token: eyJhbGciOiJIUzI1NiIs...
+ 🌐 Making request to: /engineering/access-rules with token
+ 🌐 Full URL: /v1/engineering/access-rules
+ 📡 Response status: 200
+ 📡 Response content-type: application/json; charset=utf-8
+ [WebSocket] Получено: heartbeat
+ ✅ [Engineering] WebSocket подключен
+ [Engineering] Получено WebSocket сообщение: Object
+ [Engineering] Получено WebSocket сообщение: Object
+ 🚨 [Engineering] Получено аномальное событие: Array(962)
+ [Parking WS] Подключение к wss://report.utmn.ru/ws/parking
+ 🔌 [Engineering] WebSocket отключен, код: 1005 причина: 
+index-Drwu3c_O.js:9 🔄 [Engineering] Попытка переподключения 1/10 через 3 сек...
+index-Drwu3c_O.js:9 [Parking WebSocket] Подключено
+index-Drwu3c_O.js:9 [Parking WebSocket] Получена конфигурация парковок: Array(2)
+index-Drwu3c_O.js:9 [Parking WebSocket] Обновление транспорта: parking_k1 21
+index-Drwu3c_O.js:9 [Parking WebSocket] Обновление транспорта: parking_k5 110
+index-Drwu3c_O.js:9 [Storage WS] Подключение к wss://report.utmn.ru/ws/storage
+index-Drwu3c_O.js:9 [Parking WebSocket] Отключено
+index-Drwu3c_O.js:9 [Parking WebSocket] Переподключение через 1000ms (попытка 1)
+index-Drwu3c_O.js:9 [Storage WebSocket] Подключено
+index-Drwu3c_O.js:9 [Storage WebSocket] Сообщение подключения: Connected to storage updates
+index-Drwu3c_O.js:9 [Storage WebSocket] Получена конфигурация систем хранения: Array(3)
+index-Drwu3c_O.js:9 [Storage WebSocket] Обновление занятости: Object
+index-Drwu3c_O.js:9 [Parking WS] Подключение к wss://report.utmn.ru/ws/parking
+index-Drwu3c_O.js:9 [Parking WebSocket] Подключено
+index-Drwu3c_O.js:9 [Parking WebSocket] Получена конфигурация парковок: Array(2)
+index-Drwu3c_O.js:9 [Parking WebSocket] Обновление транспорта: parking_k1 21
+index-Drwu3c_O.js:9 [Parking WebSocket] Обновление транспорта: parking_k5 110
+index-Drwu3c_O.js:9 [Engineering] Подключение к WebSocket: wss://report.utmn.ru/ws/mqtt?token=***
+index-Drwu3c_O.js:9 ✅ [Engineering] WebSocket подключен
+index-Drwu3c_O.js:9 [Engineering] Получено WebSocket сообщение: Object
+index-Drwu3c_O.js:9 [Engineering] Получено WebSocket сообщение: Object
+index-Drwu3c_O.js:9 🚨 [Engineering] Получено аномальное событие: Array(962)
+index-Drwu3c_O.js:9 [Storage WebSocket] Обновление занятости: Object
+index-Drwu3c_O.js:9 [Storage WebSocket] Обновление статуса: Object
+index-Drwu3c_O.js:9 [Storage WebSocket] Обновление статуса: Object
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Подключение к: wss://report.utmn.ru/ws/foreign-students
+index-Drwu3c_O.js:9 [Storage WebSocket] Отключено
+index-Drwu3c_O.js:9 [Storage WebSocket] Переподключение через 1000ms (попытка 1)
+index-Drwu3c_O.js:9 [Foreign Students MQTT] WebSocket connected
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Получено: Object
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Config loaded: 2 cards
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Получено: Object
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Получены данные стран: Array(65)
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Количество записей: 65
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Общая сумма студентов из данных: 2024
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Записи с null/пустой страной (будут заменены на "Без гражданства"): Array(1)
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Country stats loaded: 65 записей
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Получено: Object
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Card value updated: Skud/foreign-students/data/total = 2024
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Получено: Object
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Card value updated: Skud/foreign-students/data/countries = 63
+index-Drwu3c_O.js:9 [DonutChartCard] Исходные данные: Array(65)
+index-Drwu3c_O.js:9 [DonutChartCard] Количество записей: 65
+index-Drwu3c_O.js:9 [DonutChartCard] Заменяем null/пустую строку на "Без гражданства"
+index-Drwu3c_O.js:9 [DonutChartCard] Обработанные данные: Array(65)
+index-Drwu3c_O.js:9 [DonutChartCard] Количество после обработки: 65
+index-Drwu3c_O.js:9 [DonutChartCard] Итоговая сумма: 2024
+index-Drwu3c_O.js:9 [Storage WS] Подключение к wss://report.utmn.ru/ws/storage
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Компонент размонтируется, закрываем WebSocket
+index-Drwu3c_O.js:9 [Foreign Students MQTT] WebSocket closed
+index-Drwu3c_O.js:9 [Foreign Students MQTT] Компонент размонтирован, переподключение отменено
+index-Drwu3c_O.js:9 [Analytics WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-Drwu3c_O.js:9 [Analytics WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-Drwu3c_O.js:9 WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-Drwu3c_O.js:9
+index-Drwu3c_O.js:9 [Analytics WebSocket] Ошибка: Event
+d.onerror @ index-Drwu3c_O.js:9
+index-Drwu3c_O.js:9 [Analytics WebSocket] Отключено: 1006 
+index-Drwu3c_O.js:9 [Analytics WebSocket] Переподключение через 2000ms (попытка 1/5)
+index-Drwu3c_O.js:9 [Analytics WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-Drwu3c_O.js:9 [Analytics WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-Drwu3c_O.js:9 WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-Drwu3c_O.js:9
+index-Drwu3c_O.js:9 [Analytics WebSocket] Ошибка: Event
+d.onerror @ index-Drwu3c_O.js:9
+index-Drwu3c_O.js:9 [Analytics WebSocket] Отключено: 1006 
+index-Drwu3c_O.js:9 [Analytics WebSocket] Переподключение через 2000ms (попытка 1/5)
+index-Drwu3c_O.js:9 [WebSocket] Получено: pong
+index-Drwu3c_O.js:9 [WebSocket] Получено: mqtt-message
+index-Drwu3c_O.js:9 [WebSocket] Неизвестный тип сообщения: mqtt-message
+o.onmessage @ index-Drwu3c_O.js:9
+index-Drwu3c_O.js:9 [Engineering] Получено WebSocket сообщение: Object
+index-Drwu3c_O.js:9 🚨 [Engineering] Получено аномальное событие: Array(371)
+index-Drwu3c_O.js:9 [Analytics WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-Drwu3c_O.js:9 [Analytics WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-Drwu3c_O.js:9 WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-Drwu3c_O.js:9
+index-Drwu3c_O.js:9 [Analytics WebSocket] Ошибка: Event
+d.onerror @ index-Drwu3c_O.js:9
+index-Drwu3c_O.js:9 [Analytics WebSocket] Отключено: 1006 
+index-Drwu3c_O.js:9 [Analytics WebSocket] Переподключение через 2000ms (попытка 1/5)
+index-Drwu3c_O.js:9 [Analytics WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-Drwu3c_O.js:9 [Analytics WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-Drwu3c_O.js:9 WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-Drwu3c_O.js:9
+index-Drwu3c_O.js:9 [Analytics WebSocket] Ошибка: Event
+d.onerror @ index-Drwu3c_O.js:9
+index-Drwu3c_O.js:9 [Analytics WebSocket] Отключено: 1006 
+index-Drwu3c_O.js:9 [Analytics WebSocket] Переподключение через 4000ms (попытка 2/5)
+index-Drwu3c_O.js:9 [Engineering] Получено WebSocket сообщение: Object
+index-Drwu3c_O.js:9 [WebSocket] Получено: heartbeat
+index-Drwu3c_O.js:9 [Analytics WebSocket] Используем дефолтный WebSocket URL (порт 3000): wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-Drwu3c_O.js:9 [Analytics WebSocket] Подключение к wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78
+index-Drwu3c_O.js:9 WebSocket connection to 'wss://report.utmn.ru:3000/ws/mqtt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzk3MTk4NjcsImV4cCI6MTc3OTgwNjI2N30.8YLbpZa4jTsb3Fpo7wCaQ9hsu7JrLoT5K2JJddpaM78' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+(anonymous) @ index-Drwu3c_O.js:9
+(anonymous) @ index-Drwu3c_O.js:9
+index-Drwu3c_O.js:9 [Analytics WebSocket] Ошибка: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+d.onerror @ index-Drwu3c_O.js:9
+index-Drwu3c_O.js:9 [Analytics WebSocket] Отключено: 1006 
+index-Drwu3c_O.js:9 [Analytics WebSocket] Переподключение через 8000ms (попытка 3/5)
+index-Drwu3c_O.js:9 [Parking WebSocket] Обновление транспорта: parking_k1 21
+index-Drwu3c_O.js:9 WebSocket connection to 'wss://report.utmn.ru/ws/storage' failed: WebSocket opening handshake timed out
+d @ index-Drwu3c_O.js:9
+index-Drwu3c_O.js:9 [Storage WebSocket] Ошибка подключения: Event {isTrusted: true, type: 'error', target: WebSocket, currentTarget: WebSocket, eventPhase: 2, …}
+a.onerror @ index-Drwu3c_O.js:9
+index-Drwu3c_O.js:9 [Storage WebSocket] Отключено
+index-Drwu3c_O.js:9 [Storage WebSocket] Переподключение через 2000ms (попытка 2)
