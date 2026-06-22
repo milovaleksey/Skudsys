@@ -233,17 +233,34 @@ export function useMQTTWebSocket() {
     }
   }, []);
 
+  // Периодический REST-опрос для синхронизации значений (раз в минуту)
+  const syncFromApi = useCallback(async () => {
+    try {
+      const response = await apiRequest('/mqtt/cards');
+      if (response.success && Array.isArray(response.data?.cards)) {
+        setCards(response.data.cards);
+        if (response.data.status) setStatus(response.data.status);
+      }
+    } catch {
+      // Молча игнорируем — WebSocket остаётся основным каналом
+    }
+  }, []);
+
   useEffect(() => {
     connect();
 
     // Ping каждые 30 секунд для поддержания соединения
     const pingInterval = setInterval(sendPing, 30000);
 
+    // Синхронизация с API раз в 60 секунд на случай пропущенных обновлений
+    const syncInterval = setInterval(syncFromApi, 60000);
+
     return () => {
       clearInterval(pingInterval);
+      clearInterval(syncInterval);
       disconnect();
     };
-  }, [connect, disconnect, sendPing]);
+  }, [connect, disconnect, sendPing, syncFromApi]);
 
   return {
     cards,
