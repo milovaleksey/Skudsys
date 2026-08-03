@@ -56,6 +56,7 @@ interface PassRecord {
   direction?: string | null;
   building?: string | null;
   daysMissing?: number;
+  academicLeave?: number | null;
 }
 
 export function ForeignStudentsReport() {
@@ -84,6 +85,7 @@ export function ForeignStudentsReport() {
   const [missingResults, setMissingResults] = useState<PassRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [daysFilter, setDaysFilter] = useState<DaysFilter>('all');
+  const [showOnLeave, setShowOnLeave] = useState(false);
 
   // Функция форматирования даты
   const formatDateTime = (dateString: string | null): string => {
@@ -261,15 +263,14 @@ export function ForeignStudentsReport() {
     }
   };
 
-  // Фильтрация результатов по дням отсутствия
-  const filterMissingResultsByDays = (results: PassRecord[]): PassRecord[] => {
-    if (daysFilter === 'all') {
-      return results;
-    }
-
+  // Фильтрация результатов по дням отсутствия и академическому отпуску
+  const filterMissingResults = (results: PassRecord[]): PassRecord[] => {
     return results.filter(result => {
+      // Фильтр по академическому отпуску: скрываем студентов в отпуске, если галочка не стоит
+      if (!showOnLeave && result.academicLeave === 1) return false;
+
+      // Фильтр по дням отсутствия
       const days = result.daysMissing;
-      
       switch (daysFilter) {
         case 'undefined':
           return days === null || days === undefined;
@@ -288,7 +289,7 @@ export function ForeignStudentsReport() {
   };
 
   // Получаем отфильтрованные результаты
-  const filteredMissingResults = filterMissingResultsByDays(missingResults);
+  const filteredMissingResults = filterMissingResults(missingResults);
 
   return (
     <div className="space-y-6">
@@ -660,7 +661,8 @@ export function ForeignStudentsReport() {
                     'Последний визит': r.time,
                     'Место': r.checkpoint,
                     'Точка прохода': r.deviceName || '—',
-                    'Дней отсутствия': r.daysMissing
+                    'Дней отсутствия': r.daysMissing,
+                    'Академический отпуск': r.academicLeave === 1 ? 'Да' : r.academicLeave === 0 ? 'Нет' : '—',
                   })), 'foreign_students_missing')}
                   className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700"
                 >
@@ -670,79 +672,69 @@ export function ForeignStudentsReport() {
               )}
             </div>
 
-            {/* Days Filter */}
+            {/* Days Filter + Academic Leave */}
             {missingResults.length > 0 && (
-              <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Фильтр по дням отсутствия
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    onClick={() => setDaysFilter('all')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      daysFilter === 'all'
-                        ? 'text-white'
-                        : 'bg-white text-gray-700 hover:bg-gray-50'
-                    }`}
-                    style={daysFilter === 'all' ? { backgroundColor: '#00aeef' } : {}}
-                  >
-                    Показать все
-                  </button>
-                  <button
-                    onClick={() => setDaysFilter('up10')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      daysFilter === 'up10'
-                        ? 'text-white'
-                        : 'bg-white text-gray-700 hover:bg-gray-50'
-                    }`}
-                    style={daysFilter === 'up10' ? { backgroundColor: '#00aeef' } : {}}
-                  >
-                    До 10 дней
-                  </button>
-                  <button
-                    onClick={() => setDaysFilter('up30')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      daysFilter === 'up30'
-                        ? 'text-white'
-                        : 'bg-white text-gray-700 hover:bg-gray-50'
-                    }`}
-                    style={daysFilter === 'up30' ? { backgroundColor: '#00aeef' } : {}}
-                  >
-                    До 30 дней
-                  </button>
-                  <button
-                    onClick={() => setDaysFilter('up100')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      daysFilter === 'up100'
-                        ? 'text-white'
-                        : 'bg-white text-gray-700 hover:bg-gray-50'
-                    }`}
-                    style={daysFilter === 'up100' ? { backgroundColor: '#00aeef' } : {}}
-                  >
-                    До 100 дней
-                  </button>
-                  <button
-                    onClick={() => setDaysFilter('over100')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      daysFilter === 'over100'
-                        ? 'text-white'
-                        : 'bg-white text-gray-700 hover:bg-gray-50'
-                    }`}
-                    style={daysFilter === 'over100' ? { backgroundColor: '#00aeef' } : {}}
-                  >
-                    Более 100 дней
-                  </button>
-                  <button
-                    onClick={() => setDaysFilter('undefined')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      daysFilter === 'undefined'
-                        ? 'text-white'
-                        : 'bg-white text-gray-700 hover:bg-gray-50'
-                    }`}
-                    style={daysFilter === 'undefined' ? { backgroundColor: '#00aeef' } : {}}
-                  >
-                    Не определено
-                  </button>
+              <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Фильтр по дням отсутствия
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {([
+                      ['all', 'Показать все'],
+                      ['up10', 'До 10 дней'],
+                      ['up30', 'До 30 дней'],
+                      ['up100', 'До 100 дней'],
+                      ['over100', 'Более 100 дней'],
+                      ['undefined', 'Не определено'],
+                    ] as [DaysFilter, string][]).map(([value, label]) => (
+                      <button
+                        key={value}
+                        onClick={() => setDaysFilter(value)}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          daysFilter === value ? 'text-white' : 'bg-white text-gray-700 hover:bg-gray-50'
+                        }`}
+                        style={daysFilter === value ? { backgroundColor: '#00aeef' } : {}}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Академический отпуск */}
+                <div className="pt-2 border-t border-blue-200">
+                  <label className="flex items-center gap-2.5 cursor-pointer select-none w-fit">
+                    <div className="relative">
+                      <input
+                        type="checkbox"
+                        checked={showOnLeave}
+                        onChange={(e) => setShowOnLeave(e.target.checked)}
+                        className="sr-only"
+                      />
+                      <div
+                        className="w-5 h-5 rounded border-2 flex items-center justify-center transition-colors"
+                        style={{
+                          backgroundColor: showOnLeave ? '#00aeef' : 'white',
+                          borderColor: showOnLeave ? '#00aeef' : '#d1d5db',
+                        }}
+                      >
+                        {showOnLeave && (
+                          <svg className="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none">
+                            <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        )}
+                      </div>
+                    </div>
+                    <span className="text-sm font-medium text-gray-700">
+                      Показать студентов в академическом отпуске
+                    </span>
+                    {missingResults.filter(r => r.academicLeave === 1).length > 0 && (
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-medium">
+                        {missingResults.filter(r => r.academicLeave === 1).length} чел.
+                      </span>
+                    )}
+                  </label>
                 </div>
               </div>
             )}
@@ -777,14 +769,17 @@ export function ForeignStudentsReport() {
                       <th className="px-6 py-4 text-left text-sm font-semibold text-white">Место</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-white">Точка прохода</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-white">Дней отсутствия</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Акад. отпуск</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {filteredMissingResults.map((result, index) => (
-                      <tr 
+                      <tr
                         key={result.id}
                         className={`hover:bg-gray-50 transition-colors ${
-                          index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                          result.academicLeave === 1
+                            ? 'bg-amber-50'
+                            : index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                         }`}
                       >
                         <td className="px-6 py-4 text-sm text-gray-900">{result.fullName}</td>
@@ -813,6 +808,22 @@ export function ForeignStudentsReport() {
                             }`}>
                               {result.daysMissing} {result.daysMissing === 1 ? 'день' : result.daysMissing >= 2 && result.daysMissing <= 4 ? 'дня' : 'дней'}
                             </span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          {result.academicLeave === 1 ? (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                              <svg className="w-3 h-3" viewBox="0 0 12 12" fill="currentColor">
+                                <path d="M6 1a5 5 0 100 10A5 5 0 006 1zm0 1.5a3.5 3.5 0 110 7 3.5 3.5 0 010-7zm0 1a.5.5 0 00-.5.5V6a.5.5 0 00.146.354l1.5 1.5a.5.5 0 00.708-.708L6.5 5.793V4a.5.5 0 00-.5-.5z"/>
+                              </svg>
+                              В отпуске
+                            </span>
+                          ) : result.academicLeave === 0 ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                              Нет
+                            </span>
+                          ) : (
+                            <span className="text-gray-400 text-xs">—</span>
                           )}
                         </td>
                       </tr>
