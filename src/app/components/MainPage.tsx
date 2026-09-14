@@ -46,6 +46,7 @@ import { ParkingPage } from './ParkingPage';
 import { StorageSystemsPage } from './StorageSystemsPage';
 import { EngineeringPage } from './EngineeringPage';
 import { TeacherReportPage } from './TeacherReportPage';
+import { AnalyticsAdvancedPage } from './AnalyticsAdvancedPage';
 
 export function MainPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -133,8 +134,14 @@ export function MainPage() {
     },
     {
       id: 'analytics',
-      label: 'Аналитика',
+      label: 'Статистика',
       icon: BarChart3,
+      permission: 'analytics',
+    },
+    {
+      id: 'analytics-advanced',
+      label: 'Аналитика',
+      icon: Activity,
       permission: 'analytics',
     },
     {
@@ -387,6 +394,7 @@ export function MainPage() {
         {activePage === 'parking' && <ParkingPage />}
         {activePage === 'storage' && <StorageSystemsPage />}
         {activePage === 'analytics' && <AnalyticsPage />}
+        {activePage === 'analytics-advanced' && <AnalyticsAdvancedPage />}
         {activePage === 'foreign-students' && <ForeignStudentsReport />}
         {activePage === 'users-settings' && <UsersSettingsPage />}
         {activePage === 'roles-settings' && <RolesManagementPage />}
