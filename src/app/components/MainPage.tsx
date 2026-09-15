@@ -20,7 +20,8 @@ import {
   XCircle,
   Wifi,
   WifiOff,
-  Wrench
+  Wrench,
+  Activity
 } from 'lucide-react';
 import { UsersSettingsPage } from './UsersSettingsPage';
 import { RolesManagementPage } from './RolesManagementPage';
